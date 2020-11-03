@@ -19,4 +19,5 @@ This is the repository of group 9 in course CMPE352 Fundamentals of Software Eng
 - [Mehmet Berk Kemaloğlu](https://github.com/bounswe/bounswe2020group9/wiki/Mehmet-Berk-Kemalo%C4%9Flu)
 - [Fırat Bulut](https://github.com/bounswe/bounswe2020group9/wiki/F%C4%B1rat-Bulut)
 - [Mehmet Can Ünal](https://github.com/bounswe/bounswe2020group9/wiki/Mehmet-Can-%C3%9Cnal) 
+- [Gökhan Tekel](https://github.com/gkhntkl)
 
