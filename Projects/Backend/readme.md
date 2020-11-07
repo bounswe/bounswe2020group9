@@ -10,7 +10,7 @@
 You should be able to run the project now. To do so, use:
 
 ```
-cd ./api
+cd ./src
 python manage.py runserver
 ```
 
