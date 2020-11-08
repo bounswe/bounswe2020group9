@@ -13,5 +13,4 @@ practice-app/.DS_Store
 Projects/Backend/venv
 *.sqlite3
 Projects/Backend/.vscode
-Projects/Backend/src/user/migrations
-Projects/Backend/src/product/migrations
+Projects/Backend/src/*/migrations
