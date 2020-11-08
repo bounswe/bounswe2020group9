@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # Custom apps
     "product",
     "user",
+    "message"
 ]
 
 MIDDLEWARE = [
