@@ -11,6 +11,7 @@ class ProductList(models.Model):
 
 class Cart(models.Model):
     owner = models.OneToOneField(Customer, on_delete=models.CASCADE, primary_key=True)
+    completed = models.BooleanField(default=False)
 
 
 class Product(models.Model):
