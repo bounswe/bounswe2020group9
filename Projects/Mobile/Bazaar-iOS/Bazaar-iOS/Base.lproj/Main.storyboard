@@ -38,17 +38,28 @@
                                     <constraint firstItem="87z-Hl-h1F" firstAttribute="height" secondItem="c2c-qR-Fcn" secondAttribute="height" multiplier="0.8" id="Wvx-zk-MX5"/>
                                 </constraints>
                             </stackView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="7YP-nJ-ocK">
+                                <rect key="frame" x="10" y="219.5" width="394" height="642.5"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="c2c-qR-Fcn" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.08" id="2Gb-z2-msC"/>
+                            <constraint firstItem="7YP-nJ-ocK" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="Ch6-dX-hM8"/>
+                            <constraint firstItem="7YP-nJ-ocK" firstAttribute="top" secondItem="c2c-qR-Fcn" secondAttribute="bottom" constant="50" id="NrF-Up-J3F"/>
                             <constraint firstItem="c2c-qR-Fcn" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="d1Y-nS-xnK"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="c2c-qR-Fcn" secondAttribute="trailing" constant="10" id="iPm-vc-3cZ"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="7YP-nJ-ocK" secondAttribute="bottom" id="j2W-ps-y55"/>
                             <constraint firstItem="c2c-qR-Fcn" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="l7A-Uf-cH8"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="7YP-nJ-ocK" secondAttribute="trailing" constant="10" id="rYp-ZP-3wH"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="MYc-uR-rci"/>
+                    <connections>
+                        <outlet property="productTableView" destination="7YP-nJ-ocK" id="8HZ-pa-ygJ"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
