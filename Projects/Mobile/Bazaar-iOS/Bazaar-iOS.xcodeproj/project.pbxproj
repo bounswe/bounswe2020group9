@@ -16,6 +16,8 @@
 		93EE3CB22558822700B504DF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 93EE3CB02558822700B504DF /* LaunchScreen.storyboard */; };
 		93EE3CBD2558822700B504DF /* Bazaar_iOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EE3CBC2558822700B504DF /* Bazaar_iOSTests.swift */; };
 		93EE3CC82558822700B504DF /* Bazaar_iOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EE3CC72558822700B504DF /* Bazaar_iOSUITests.swift */; };
+		93EE3CDA25594A6800B504DF /* ProductCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EE3CD825594A6800B504DF /* ProductCell.swift */; };
+		93EE3CDB25594A6800B504DF /* ProductCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 93EE3CD925594A6800B504DF /* ProductCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +53,8 @@
 		93EE3CC32558822700B504DF /* Bazaar-iOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Bazaar-iOSUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		93EE3CC72558822700B504DF /* Bazaar_iOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bazaar_iOSUITests.swift; sourceTree = "<group>"; };
 		93EE3CC92558822700B504DF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		93EE3CD825594A6800B504DF /* ProductCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCell.swift; sourceTree = "<group>"; };
+		93EE3CD925594A6800B504DF /* ProductCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProductCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,8 +107,8 @@
 			children = (
 				93EE3CA22558822500B504DF /* AppDelegate.swift */,
 				93EE3CA42558822500B504DF /* SceneDelegate.swift */,
-				93EE3CA62558822500B504DF /* ViewController.swift */,
-				93EE3CA82558822500B504DF /* Main.storyboard */,
+				93EE3CDF25594A9400B504DF /* View */,
+				93EE3CE325594A9D00B504DF /* Controller */,
 				93EE3CAE2558822700B504DF /* Assets.xcassets */,
 				93EE3CB02558822700B504DF /* LaunchScreen.storyboard */,
 				93EE3CB32558822700B504DF /* Info.plist */,
@@ -129,6 +133,24 @@
 				93EE3CC92558822700B504DF /* Info.plist */,
 			);
 			path = "Bazaar-iOSUITests";
+			sourceTree = "<group>";
+		};
+		93EE3CDF25594A9400B504DF /* View */ = {
+			isa = PBXGroup;
+			children = (
+				93EE3CD825594A6800B504DF /* ProductCell.swift */,
+				93EE3CD925594A6800B504DF /* ProductCell.xib */,
+				93EE3CA82558822500B504DF /* Main.storyboard */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		93EE3CE325594A9D00B504DF /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				93EE3CA62558822500B504DF /* ViewController.swift */,
+			);
+			path = Controller;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -235,6 +257,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				93EE3CB22558822700B504DF /* LaunchScreen.storyboard in Resources */,
+				93EE3CDB25594A6800B504DF /* ProductCell.xib in Resources */,
 				93EE3CAF2558822700B504DF /* Assets.xcassets in Resources */,
 				93EE3CAA2558822500B504DF /* Main.storyboard in Resources */,
 			);
@@ -263,6 +286,7 @@
 			files = (
 				93EE3CA72558822500B504DF /* ViewController.swift in Sources */,
 				93EE3CA32558822500B504DF /* AppDelegate.swift in Sources */,
+				93EE3CDA25594A6800B504DF /* ProductCell.swift in Sources */,
 				93EE3CAD2558822500B504DF /* Bazaar_iOS.xcdatamodeld in Sources */,
 				93EE3CA52558822500B504DF /* SceneDelegate.swift in Sources */,
 			);
