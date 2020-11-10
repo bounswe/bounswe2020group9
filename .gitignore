@@ -5,5 +5,13 @@ practice-app/cmpe352API/venv
 practice-app/cmpe352API/templates/.DS_Store
 practice-app/.DS_Store
 .DS_Store
-.idea
+*.idea
 *.pyc
+
+
+# Backend ignore files
+Projects/Backend/venv
+Projects/Backend/src/venv
+*.sqlite3
+Projects/Backend/.vscode
+Projects/Backend/src/*/migrations
