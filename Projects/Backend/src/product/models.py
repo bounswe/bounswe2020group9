@@ -8,7 +8,7 @@ class ProductList(models.Model):
     name = models.CharField(max_length=255)
     owner = models.ForeignKey(Customer, on_delete=models.CASCADE)
 
-
+    
 class Product(models.Model):
     name = models.CharField(max_length=255)
     vendor = models.ForeignKey(
