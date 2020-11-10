@@ -9,10 +9,6 @@ class ProductList(models.Model):
     owner = models.ForeignKey(Customer, on_delete=models.CASCADE)
 
 
-class Cart(models.Model):
-    owner = models.OneToOneField(Customer, on_delete=models.CASCADE, primary_key=True)
-
-
 class Product(models.Model):
     name = models.CharField(max_length=255)
     vendor = models.ForeignKey(
@@ -21,12 +17,15 @@ class Product(models.Model):
         related_name="products"
     )
     in_lists = models.ManyToManyField(ProductList)
-    in_carts = models.ManyToManyField(Cart)
+    in_carts = models.ManyToManyField(Customer, related_name="cart_list")
+    in_alerted_lists = models.ManyToManyField(Customer, related_name="in_alerted_list")
 
 
 class Order(models.Model):
-    vendor = models.OneToOneField(Vendor, on_delete=models.CASCADE)
-    customer = models.OneToOneField(Customer, on_delete=models.CASCADE)
+    vendor = models.ForeignKey(Vendor, default=1, on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, default=1, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, default=1, on_delete=models.CASCADE)
+    dummy = models.IntegerField()
     timestamp = models.DateTimeField()
 
 

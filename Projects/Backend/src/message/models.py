@@ -13,5 +13,5 @@ class Conversation(models.Model):
 class Message(models.Model):
     timestamp = models.DateTimeField()
     conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE)
-
-
+    body = models.CharField(max_length=255)
+    is_user1 = models.BooleanField(default=True)
