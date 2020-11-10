@@ -10,6 +10,7 @@ class ProductList(models.Model):
 
 
 class Cart(models.Model):
+    # Cart where Cart(Sepete ekle)
     owner = models.OneToOneField(Customer, on_delete=models.CASCADE, primary_key=True)
 
 
@@ -25,8 +26,10 @@ class Product(models.Model):
 
 
 class Order(models.Model):
-    vendor = models.OneToOneField(Vendor, on_delete=models.CASCADE)
-    customer = models.OneToOneField(Customer, on_delete=models.CASCADE)
+    vendor = models.ForeignKey(Vendor, default=1, on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, default=1, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, default=1, on_delete=models.CASCADE)
+    dummy = models.IntegerField()
     timestamp = models.DateTimeField()
 
 
