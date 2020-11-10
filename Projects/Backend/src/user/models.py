@@ -10,8 +10,10 @@ class User(AbstractUser):
         (2, "Vendor"),
         (3, "Admin")
     )
-    user_type = models.PositiveSmallIntegerField(choices=USER_TYPES)
+    user_type = models.PositiveSmallIntegerField(choices=USER_TYPES, default=0)
 
+    def __str__(self):
+        return self.email
 
 class Vendor(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
