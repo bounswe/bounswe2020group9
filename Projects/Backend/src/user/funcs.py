@@ -9,9 +9,14 @@ def create_user(user_type, email, password, name="", surname=""):
     new_user.user_type = user_types[user_type]
     new_user.email = email
     new_user.username = email
+    # TODO new_user.username_validator
     new_user.first_name = name
     new_user.last_name = surname
-    new_user.save()
+    try:
+        new_user.save()
+    except:
+        print("ERROR")
+        return
     if user_type == "Vendor":
         new_type = Vendor()
     elif user_type == "Customer":
@@ -27,6 +32,7 @@ def create_user(user_type, email, password, name="", surname=""):
     except:
         print("ERROR")
         return
+    # TODO create "cart" and "alert_product_list"
 
 
 def delete_user(email):

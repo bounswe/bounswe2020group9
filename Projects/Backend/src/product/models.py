@@ -9,11 +9,6 @@ class ProductList(models.Model):
     owner = models.ForeignKey(Customer, on_delete=models.CASCADE)
 
 
-class Cart(models.Model):
-    # Cart where Cart(Sepete ekle)
-    owner = models.OneToOneField(Customer, on_delete=models.CASCADE, primary_key=True)
-
-
 class Product(models.Model):
     name = models.CharField(max_length=255)
     vendor = models.ForeignKey(
@@ -22,7 +17,8 @@ class Product(models.Model):
         related_name="products"
     )
     in_lists = models.ManyToManyField(ProductList)
-    in_carts = models.ManyToManyField(Cart)
+    in_carts = models.ManyToManyField(Customer, related_name="cart_list")
+    in_alerted_lists = models.ManyToManyField(Customer, related_name="in_alerted_list")
 
 
 class Order(models.Model):
