@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6994EACD255DA3D400AC48F6 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6994EACB255DA3D400AC48F6 /* MainTabBarController.swift */; };
+		6994EACE255DA3D400AC48F6 /* MainTabBarController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6994EACC255DA3D400AC48F6 /* MainTabBarController.xib */; };
+		6994EAD0255DB7BC00AC48F6 /* WishlistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6994EACF255DB7BC00AC48F6 /* WishlistViewController.swift */; };
+		6994EAD2255DB9F500AC48F6 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6994EAD1255DB9F500AC48F6 /* SearchViewController.swift */; };
+		6994EAD4255DBA1300AC48F6 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6994EAD3255DBA1300AC48F6 /* ProfileViewController.swift */; };
 		93EE3CA32558822500B504DF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EE3CA22558822500B504DF /* AppDelegate.swift */; };
 		93EE3CA52558822500B504DF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EE3CA42558822500B504DF /* SceneDelegate.swift */; };
 		93EE3CA72558822500B504DF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EE3CA62558822500B504DF /* ViewController.swift */; };
@@ -38,6 +43,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6994EACB255DA3D400AC48F6 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
+		6994EACC255DA3D400AC48F6 /* MainTabBarController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainTabBarController.xib; sourceTree = "<group>"; };
+		6994EACF255DB7BC00AC48F6 /* WishlistViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WishlistViewController.swift; path = "Bazaar-iOS/Controller/WishlistViewController.swift"; sourceTree = SOURCE_ROOT; };
+		6994EAD1255DB9F500AC48F6 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchViewController.swift; path = "Bazaar-iOS/Controller/SearchViewController.swift"; sourceTree = SOURCE_ROOT; };
+		6994EAD3255DBA1300AC48F6 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		93EE3C9F2558822500B504DF /* Bazaar-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Bazaar-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		93EE3CA22558822500B504DF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		93EE3CA42558822500B504DF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -82,6 +92,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6994EAC9255DA38000AC48F6 /* Main Tab Bar */ = {
+			isa = PBXGroup;
+			children = (
+				6994EACB255DA3D400AC48F6 /* MainTabBarController.swift */,
+				6994EACC255DA3D400AC48F6 /* MainTabBarController.xib */,
+			);
+			path = "Main Tab Bar";
+			sourceTree = "<group>";
+		};
+		6994EACA255DA3A200AC48F6 /* Product Cell */ = {
+			isa = PBXGroup;
+			children = (
+				93EE3CD825594A6800B504DF /* ProductCell.swift */,
+				93EE3CD925594A6800B504DF /* ProductCell.xib */,
+			);
+			path = "Product Cell";
+			sourceTree = "<group>";
+		};
 		93EE3C962558822500B504DF = {
 			isa = PBXGroup;
 			children = (
@@ -138,8 +166,8 @@
 		93EE3CDF25594A9400B504DF /* View */ = {
 			isa = PBXGroup;
 			children = (
-				93EE3CD825594A6800B504DF /* ProductCell.swift */,
-				93EE3CD925594A6800B504DF /* ProductCell.xib */,
+				6994EAC9255DA38000AC48F6 /* Main Tab Bar */,
+				6994EACA255DA3A200AC48F6 /* Product Cell */,
 				93EE3CA82558822500B504DF /* Main.storyboard */,
 			);
 			path = View;
@@ -149,6 +177,9 @@
 			isa = PBXGroup;
 			children = (
 				93EE3CA62558822500B504DF /* ViewController.swift */,
+				6994EACF255DB7BC00AC48F6 /* WishlistViewController.swift */,
+				6994EAD1255DB9F500AC48F6 /* SearchViewController.swift */,
+				6994EAD3255DBA1300AC48F6 /* ProfileViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -260,6 +291,7 @@
 				93EE3CDB25594A6800B504DF /* ProductCell.xib in Resources */,
 				93EE3CAF2558822700B504DF /* Assets.xcassets in Resources */,
 				93EE3CAA2558822500B504DF /* Main.storyboard in Resources */,
+				6994EACE255DA3D400AC48F6 /* MainTabBarController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -286,7 +318,11 @@
 			files = (
 				93EE3CA72558822500B504DF /* ViewController.swift in Sources */,
 				93EE3CA32558822500B504DF /* AppDelegate.swift in Sources */,
+				6994EAD2255DB9F500AC48F6 /* SearchViewController.swift in Sources */,
+				6994EAD0255DB7BC00AC48F6 /* WishlistViewController.swift in Sources */,
+				6994EACD255DA3D400AC48F6 /* MainTabBarController.swift in Sources */,
 				93EE3CDA25594A6800B504DF /* ProductCell.swift in Sources */,
+				6994EAD4255DBA1300AC48F6 /* ProfileViewController.swift in Sources */,
 				93EE3CAD2558822500B504DF /* Bazaar_iOS.xcdatamodeld in Sources */,
 				93EE3CA52558822500B504DF /* SceneDelegate.swift in Sources */,
 			);
@@ -394,7 +430,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -449,7 +485,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
