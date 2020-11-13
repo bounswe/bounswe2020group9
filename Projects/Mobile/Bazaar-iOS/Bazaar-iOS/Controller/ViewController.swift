@@ -27,8 +27,12 @@ extension ViewController:UITableViewDelegate,UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = productTableView.dequeueReusableCell(withIdentifier: "ReusableProdcutCell", for: indexPath) as! ProductCell
-        cell.productNameLabel.text = "Iphone12"
-        cell.productPriceLabel.text = "99.99$"
+        cell.productNameLabel.text = "iPhone 12"
+        cell.productNameLabel.font = UIFont.systemFont(ofSize: 15, weight: .black)
+        cell.productDescriptionLabel.text = "Apple"
+        cell.productDescriptionLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
+        cell.productPriceLabel.text = "$999"
+        cell.productPriceLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         cell.productImageView.image = UIImage(named: "iphone12")
         return cell
     }
