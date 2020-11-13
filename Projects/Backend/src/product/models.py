@@ -12,6 +12,7 @@ class ProductList(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=255)
+    price = models.FloatField()
     vendor = models.ForeignKey(
         Vendor,
         on_delete=models.CASCADE,
