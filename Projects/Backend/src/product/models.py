@@ -24,13 +24,13 @@ class Product(models.Model):
 
 
 class Label(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     products = models.ManyToManyField(Product, related_name="labels")
 
 
 class Category(models.Model):
-    name = models.CharField(max_length=255)
-    parent = models.ForeignKey("self", default=0, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255, unique=True)
+    parent = models.ForeignKey("self", default=0, on_delete=models.CASCADE, db_constraint=False)
     products = models.ManyToManyField(Product, related_name="categories")
 
 
