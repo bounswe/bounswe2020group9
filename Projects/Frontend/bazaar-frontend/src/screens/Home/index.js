@@ -11,6 +11,9 @@ const Home = () => {
               <Link to="/">Home</Link>
             </li>
             <li>
+              <Link to="/components/Header">Header</Link>
+            </li>
+            <li>
               <Link to="/signIn">Sign In</Link>
             </li>
             <li>

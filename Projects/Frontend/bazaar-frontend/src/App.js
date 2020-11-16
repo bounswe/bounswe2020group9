@@ -9,6 +9,7 @@ import SignUp from "./screens/Sign-Up"
 import Home from "./screens/Home"
 
 //components
+import Header from "./components/Header"
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
     <Router>
       <Switch>
         <Route exact path="/">
+          <Header/>
           <Home />
         </Route>
         <Route path="/signUp">
