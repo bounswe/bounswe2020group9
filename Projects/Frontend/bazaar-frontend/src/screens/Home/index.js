@@ -177,7 +177,9 @@ class Home extends React.Component {
         </div>
       </div>
     );
+
   }
+}
   
   
 export default Home;
