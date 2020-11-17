@@ -12,6 +12,8 @@ class ProductList(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=255)
+    image = models.ImageField(upload_to ='pics')#option is to select media directory TODO need to implement
+    brand = models.CharField(max_length=255)
     price = models.FloatField()
     vendor = models.ForeignKey(
         Vendor,
