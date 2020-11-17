@@ -1,0 +1,10 @@
+footer {
+  position: absolute;
+  padding: 10px;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  background-color: palegoldenrod;
+  border-top-style: solid;
+  border-top-width: 1px;
+}
