@@ -15,4 +15,6 @@ Projects/Backend/src/venv
 Projects/Backend/src/.vscode
 *.sqlite3
 Projects/Backend/.vscode
+Projects/Backend/src/.vscode/
 Projects/Backend/src/*/migrations
+*.sqlite3
