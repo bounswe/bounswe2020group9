@@ -42,7 +42,7 @@ class Order(models.Model):
     customer_id = models.ForeignKey(Customer, default=1, on_delete=models.CASCADE)
     product_id = models.ForeignKey(Product, default=1, on_delete=models.CASCADE)
     timestamp = models.DateTimeField()
-    delivery_time = models.DataTimeField()
+    delivery_time = models.DateTimeField()
     current_status = models.CharField(max_length=255)
 
 
