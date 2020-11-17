@@ -53,20 +53,19 @@ class Notification(models.Model):
     body = models.CharField(max_length=255)
 
 
-
 class Comment(models.Model):
     RATES = (
         (1, "Awful"),
-        (2, "Awful"),
-        (3, "Awful"),
-        (4, "Awful"),
-        (5, "Awful"),
+        (2, "Bad"),
+        (3, "Mediocre"),
+        (4, "Good"),
+        (5, "Excellent"),
     )
     timestamp = models.DateTimeField()
     body = models.CharField(max_length=255)
     rating = models.PositiveSmallIntegerField(choices=RATES, default=5)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    product = models.OneToOneField(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
 
 class Payment(models.Model):
