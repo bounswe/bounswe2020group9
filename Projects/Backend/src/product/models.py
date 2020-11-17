@@ -51,4 +51,4 @@ class Comment(models.Model):
     body = models.CharField(max_length=255)
     customer_id = models.ForeignKey(Customer, on_delete=models.CASCADE)
     rating = models.IntegerField()
-    product_id = models.OneToOneField(Product, on_delete=models.CASCADE)
+    product_id = models.ForeignKey(Product, on_delete=models.CASCADE)
