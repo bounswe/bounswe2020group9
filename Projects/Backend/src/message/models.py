@@ -6,8 +6,8 @@ from user.models import User
 
 
 class Conversation(models.Model):
-    user1 = models.ManyToManyField(User, related_name="user1", on_delete=models.CASCADE)
-    user2 = models.ManyToManyField(User, related_name="user2", on_delete=models.CASCADE)
+    user1 = models.ManyToManyField(User, related_name="user1")
+    user2 = models.ManyToManyField(User, related_name="user2")
 
 
 class Message(models.Model):
@@ -17,7 +17,7 @@ class Message(models.Model):
     is_user1 = models.BooleanField(default=True)
 
 class Notification(models.Model):
-    user_id = models.ManyToManyField(User,on_delete=models.CASCADE)
+    user_id = models.ManyToManyField(User)
     body = models.CharField(max_length=255)
     timestamp = models.DateTimeField()
     notification_type = models.CharField(max_length=255)
