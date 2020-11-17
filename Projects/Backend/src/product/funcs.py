@@ -50,20 +50,16 @@ def delete_category(name):
     deleting_category = Category.objects.get(name=name)
     Category.delete(deleting_category)
 
-# TODO below is not tested yet, test if they work:
 
 
 def create_order(customer_id, product_id, delivery_time):
-    new_order = Order()
+    customer = Customer.objects.get(pk=customer_id)
+    product = Product.objects.get(pk=product_id)
+
+    new_order = Order(customer=customer, product=product)
     new_order.timestamp = timezone.now()
     new_order.delivery_time = delivery_time
     new_order.save()
-
-    customer = Customer.objects.get(id=customer_id)
-    customer.order_set.add(new_order)
-
-    product = Product.objects.get(id=product_id)
-    product.order_set.add(new_order)
 
 
 def delete_order(order_id):
@@ -72,13 +68,11 @@ def delete_order(order_id):
 
 
 def create_notification(type, user_id, body):
-    new_notification = Notification()
+    user = User.objects.get(id=user_id)
+    new_notification = Notification(user=user)
     new_notification.type = type
     new_notification.body = body
     new_notification.save()
-
-    user = User.objects.get(id=user_id)
-    user.notification_set.add(new_notification)
 
 
 def delete_notification(notification_id):
@@ -87,17 +81,21 @@ def delete_notification(notification_id):
 
 
 def create_comment(body, rating, customer_id, product_id):
-    new_comment = Comment()
+    customer = Customer.objects.get(pk=customer_id)
+    product = Product.objects.get(pk=product_id)
+
+    new_comment = Comment(product=product, customer=customer)
     new_comment.timestamp = timezone.now()
     new_comment.body = body
-    new_comment.rating = True
+
+    rating_types = {v: k for k, v in dict(new_comment.RATES).items()}
+    new_comment.rating = rating_types[rating]
+
+    #exit()
+    # customer.comment_set.add(new_comment)
+
+    #product.comment_set.get(new_comment)
     new_comment.save()
-
-    customer = Customer.objects.get(id=customer_id)
-    customer.comment_set.add(new_comment)
-
-    product = Product.objects.get(id=product_id)
-    product.comment_set.get(new_comment)
 
 
 def delete_comment(comment_id):
@@ -106,20 +104,19 @@ def delete_comment(comment_id):
 
 
 def create_payment(customer_id, card):
-    card_id = card.id
-    date_month = card.date_month
-    date_year = card.date_year
-    cvv = card.cvv
+    card_id = card["number"]
+    date_month = card["date_month"]
+    date_year = card["date_year"]
+    cvv = card["cvv"]
 
-    new_payment = Payment()
+    customer = Customer.objects.get(pk=customer_id)
+
+    new_payment = Payment(owner=customer)
     new_payment.card_id = card_id
     new_payment.date_month = date_month
     new_payment.date_year = date_year
     new_payment.cvv = cvv
     new_payment.save()
-
-    customer = Customer.objects.get(customer_id)
-    customer.payment_set.add(new_payment)
 
 
 def delete_payment(payment_id):
