@@ -7,22 +7,36 @@ from user.models import Vendor, Customer, User
 
 class ProductList(models.Model):
     name = models.CharField(max_length=255)
-    owner = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    customer_id = models.ForeignKey(Customer, on_delete=models.CASCADE)
 
+class CartList(models.Model):
+    customer_id = models.OneToOneField(Customer,on_delete=models.CASCADE)
+
+class AlertedList(models.Model):
+    customer_id = models.OneToOneField(Customer,on_delete=models.CASCADE)
+
+class Categories(models.Model):
+    category_name = models.CharField(max_length=255)
+    parent_category_id = models.IntegerField()
+    
+class Labels(models.Model):
+    label_name = models.CharField(max_length=255)
 
 class Product(models.Model):
     name = models.CharField(max_length=255)
+    vendor = models.ForeignKey(Vendor,on_delete=models.CASCADE,related_name="products")
     # image = models.ImageField(upload_to ='pics')#option is to select media directory TODO need to implement
     brand = models.CharField(max_length=255)
     price = models.FloatField()
-    vendor = models.ForeignKey(
-        Vendor,
-        on_delete=models.CASCADE,
-        related_name="products"
-    )
+    stock_counter = models.IntegerField()
+    rating = models.FloatField()
+    sell_counter = models.IntegerField()
+    category_id = models.ForeignKey(Categories, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField()
+    in_labels = models.ManyToManyField(Labels, related_name="label_list")
     in_lists = models.ManyToManyField(ProductList)
-    in_carts = models.ManyToManyField(Customer, related_name="cart_list")
-    in_alerted_lists = models.ManyToManyField(Customer, related_name="in_alerted_list")
+    in_carts = models.ManyToManyField(CartList, related_name="cart_list")
+    in_alerted_lists = models.ManyToManyField(AlertedList, related_name="in_alerted_list")
 
 
 class Label(models.Model):
