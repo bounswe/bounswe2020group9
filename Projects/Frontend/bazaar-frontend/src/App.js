@@ -10,6 +10,7 @@ import Home from "./screens/Home"
 
 //components
 import Header from "./components/Header"
+import Footer from "./components/Footer"
 
 
 function App() {
@@ -17,14 +18,19 @@ function App() {
     <Router>
       <Switch>
         <Route exact path="/">
-          <Header/>
+          <Header />
           <Home />
+          <Footer />
         </Route>
         <Route path="/signUp">
+          <Header />
           <SignUp />
+          <Footer />
         </Route>
         <Route path="/signIn">
+          <Header />  
           <SignIn />
+          <Footer />
         </Route>
       </Switch>
     </Router>

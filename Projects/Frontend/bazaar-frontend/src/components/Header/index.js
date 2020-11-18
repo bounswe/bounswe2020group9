@@ -3,6 +3,7 @@ import React from 'react';
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap/dist/js/bootstrap.bundle"
 
+import "./header.css";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -11,9 +12,8 @@ import { faSignInAlt } from '@fortawesome/free-solid-svg-icons'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons'
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
-import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 
-
+import bazaarIMG from '../../assets/bazaar-4.png'
 
 
 
@@ -21,15 +21,14 @@ import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 
 const Header = () => {
   return (
-    <nav className="navbar navbar-expand-md navbar-light " style={{ height: '100px', backgroundColor: 'rgb(246,162,37)'}}>
+    <nav className="navbar navbar-expand-md navbar-light myNavbar">
         <a className="navbar-brand" > 
           <img
-          src="/components/bazaar-4.png"
+          src={bazaarIMG}
+          href="/"
           width="100"
           height= "100"
-          //className="d-inline-block align-top"
-          alt=""
-        />BAZAAR</a>
+        /></a>
         <button className="navbar-toggler hidden-lg-up" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
             aria-expanded="false" aria-label="Menü">
                 
@@ -39,19 +38,6 @@ const Header = () => {
               
             </ul>
             <ul className="navbar-nav navbar-right">
-                <li className="nav-item">
-                    <a className="nav-link" >
-                        <FontAwesomeIcon icon = {faUserPlus}/>
-                        <span className="mr-1"></span>Register
-                    </a>
-                </li>
-                <li className="nav-item">
-                    <a className="nav-link" href="#">
-                        <FontAwesomeIcon icon = {faSignInAlt}/>
-
-                        <span className="mr-1"></span>Sign In
-                    </a>
-                </li>
                 <li className="nav-item dropdown">
                     <a className="nav-link dropdown-toggle" href="#" id="ddlProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <FontAwesomeIcon icon = {faUser}/>
@@ -91,12 +77,18 @@ const Header = () => {
                     </div>
                 </li>
                 <li className="nav-item">
-                    <a className="nav-link" >
-                        <FontAwesomeIcon icon = {faSignOutAlt}/>
-                        <span className="mr-1"></span>Sign Out
+                    <a className="nav-link" href="/signUp">
+                        <FontAwesomeIcon icon = {faUserPlus}/>
+                        <span className="mr-1"></span>Sign Up
                     </a>
                 </li>
-                
+                <li className="nav-item">
+                    <a className="nav-link" href="/signIn">
+                        <FontAwesomeIcon icon = {faSignInAlt}/>
+
+                        <span className="mr-1"></span>Sign In
+                    </a>
+                </li> 
             </ul>
         </div>
     </nav>
