@@ -141,7 +141,53 @@
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ntr-J6-vgb">
                                 <rect key="frame" x="15" y="333.66666666666674" width="384" height="488.33333333333326"/>
+                                <subviews>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="E-Posta" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="riA-Gy-ttb">
+                                        <rect key="frame" x="20" y="20" width="344" height="34"/>
+                                        <color key="backgroundColor" red="0.95686274509803915" green="0.95686274509803915" blue="0.94901960784313721" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Şifre" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5Go-B8-phC">
+                                        <rect key="frame" x="20" y="69" width="344" height="34"/>
+                                        <color key="backgroundColor" red="0.95686274509803915" green="0.95686274509803915" blue="0.94901960784313721" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sWJ-CF-2K8">
+                                        <rect key="frame" x="278" y="118" width="86" height="26"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                        <state key="normal" title="Şifremi Unuttum">
+                                            <color key="titleColor" red="1" green="0.64313725489999995" blue="0.35686274509999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nSX-4R-nQN">
+                                        <rect key="frame" x="20" y="159" width="344" height="30"/>
+                                        <color key="backgroundColor" red="1" green="0.64313725489999995" blue="0.35686274509999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <state key="normal" title="Giriş Yap">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <integer key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </button>
+                                </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="nSX-4R-nQN" firstAttribute="top" secondItem="sWJ-CF-2K8" secondAttribute="bottom" constant="15" id="6un-1X-5Es"/>
+                                    <constraint firstItem="5Go-B8-phC" firstAttribute="top" secondItem="riA-Gy-ttb" secondAttribute="bottom" constant="15" id="JlB-Pl-iux"/>
+                                    <constraint firstItem="5Go-B8-phC" firstAttribute="leading" secondItem="ntr-J6-vgb" secondAttribute="leading" constant="20" id="Ll3-ab-Uw5"/>
+                                    <constraint firstAttribute="trailing" secondItem="sWJ-CF-2K8" secondAttribute="trailing" constant="20" id="MoH-Fx-3dR"/>
+                                    <constraint firstAttribute="trailing" secondItem="riA-Gy-ttb" secondAttribute="trailing" constant="20" id="SFb-Yd-OG4"/>
+                                    <constraint firstAttribute="trailing" secondItem="nSX-4R-nQN" secondAttribute="trailing" constant="20" id="Zib-Ub-gqb"/>
+                                    <constraint firstAttribute="trailing" secondItem="5Go-B8-phC" secondAttribute="trailing" constant="20" id="gOu-wM-qrl"/>
+                                    <constraint firstItem="sWJ-CF-2K8" firstAttribute="top" secondItem="5Go-B8-phC" secondAttribute="bottom" constant="15" id="mHR-96-bx5"/>
+                                    <constraint firstItem="nSX-4R-nQN" firstAttribute="leading" secondItem="ntr-J6-vgb" secondAttribute="leading" constant="20" id="uSf-Je-dfR"/>
+                                    <constraint firstItem="riA-Gy-ttb" firstAttribute="leading" secondItem="ntr-J6-vgb" secondAttribute="leading" constant="20" id="usX-CK-dmD"/>
+                                    <constraint firstItem="riA-Gy-ttb" firstAttribute="top" secondItem="ntr-J6-vgb" secondAttribute="top" constant="20" id="ymk-r2-FFT"/>
+                                </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                         <integer key="value" value="20"/>
