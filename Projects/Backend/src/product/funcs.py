@@ -1,6 +1,6 @@
 from django.utils import timezone
 
-from product.models import Product, ProductList, Label, Category, Order, Notification, Comment, Payment
+from product.models import Product, ProductList, Label, Category, Order, Comment, Payment
 from user.models import Vendor, Customer, User
 
 
@@ -29,6 +29,9 @@ def create_label(name):
     new_label.name = name
     new_label.save()
 
+def add_label(product, label_name):
+    product.labels.add(Label.objects.get(name=label_name))
+
 
 def delete_label(name):
     deleting_label = Label.objects.get(name=name)
@@ -44,6 +47,10 @@ def create_category(name, parent_name):
         new_category = Category()
         new_category.name = name
         new_category.save()
+
+
+def add_category(product, category_name):
+    product.categories.add(Category.objects.get(name=category_name))
 
 
 def delete_category(name):
