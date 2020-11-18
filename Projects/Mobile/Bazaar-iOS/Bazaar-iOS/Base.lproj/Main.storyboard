@@ -187,6 +187,23 @@
                                             <constraint firstAttribute="width" constant="40" id="Rbo-2o-b8E"/>
                                         </constraints>
                                     </imageView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="la0-wa-e6d">
+                                        <rect key="frame" x="108.33333333333333" y="323.99999999999994" width="167.66666666666669" height="30"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Üye değil misin?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ttm-tI-Q8c">
+                                                <rect key="frame" x="0.0" y="0.0" width="111.66666666666667" height="30"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k7u-bb-sSr">
+                                                <rect key="frame" x="121.66666666666669" y="0.0" width="46" height="30"/>
+                                                <state key="normal" title="Üye Ol">
+                                                    <color key="titleColor" red="1" green="0.64313725489999995" blue="0.35686274509999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </state>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
@@ -194,10 +211,12 @@
                                     <constraint firstItem="5Go-B8-phC" firstAttribute="top" secondItem="riA-Gy-ttb" secondAttribute="bottom" constant="15" id="JlB-Pl-iux"/>
                                     <constraint firstItem="5Go-B8-phC" firstAttribute="leading" secondItem="ntr-J6-vgb" secondAttribute="leading" constant="20" id="Ll3-ab-Uw5"/>
                                     <constraint firstAttribute="trailing" secondItem="sWJ-CF-2K8" secondAttribute="trailing" constant="20" id="MoH-Fx-3dR"/>
+                                    <constraint firstItem="la0-wa-e6d" firstAttribute="centerX" secondItem="ntr-J6-vgb" secondAttribute="centerX" id="MrD-4o-W9A"/>
                                     <constraint firstItem="Gpe-aj-fFE" firstAttribute="top" secondItem="oo2-pd-AR1" secondAttribute="bottom" constant="5" id="SF4-2L-gSC"/>
                                     <constraint firstAttribute="trailing" secondItem="riA-Gy-ttb" secondAttribute="trailing" constant="20" id="SFb-Yd-OG4"/>
                                     <constraint firstAttribute="trailing" secondItem="nSX-4R-nQN" secondAttribute="trailing" constant="20" id="Zib-Ub-gqb"/>
                                     <constraint firstAttribute="trailing" secondItem="5Go-B8-phC" secondAttribute="trailing" constant="20" id="gOu-wM-qrl"/>
+                                    <constraint firstItem="la0-wa-e6d" firstAttribute="top" secondItem="Gpe-aj-fFE" secondAttribute="bottom" constant="40" id="h6g-5f-Iwj"/>
                                     <constraint firstItem="sWJ-CF-2K8" firstAttribute="top" secondItem="5Go-B8-phC" secondAttribute="bottom" constant="15" id="mHR-96-bx5"/>
                                     <constraint firstItem="oo2-pd-AR1" firstAttribute="centerX" secondItem="ntr-J6-vgb" secondAttribute="centerX" id="tcS-fJ-dW8"/>
                                     <constraint firstItem="nSX-4R-nQN" firstAttribute="leading" secondItem="ntr-J6-vgb" secondAttribute="leading" constant="20" id="uSf-Je-dfR"/>
