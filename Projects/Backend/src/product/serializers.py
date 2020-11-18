@@ -13,6 +13,9 @@ class ProductSerializer(serializers.Serializer):
     name = serializers.CharField(required=True, allow_blank=False, max_length=255)
     brand = serializers.CharField(required=True, allow_blank=False, max_length=255)
     price = serializers.FloatField()
+    stock = serializers.IntegerField()
+    sell_counter = serializers.IntegerField()
+    rating = serializers.FloatField()
     #vendor = serializers.RelatedField(source="vendor", read_only=True)
 
     def create(self, validated_data):
@@ -22,9 +25,12 @@ class ProductSerializer(serializers.Serializer):
         instance.name = validated_data.get("name", instance.name)
         instance.brand = validated_data.get("brand", instance.name)
         instance.price = validated_data.get("price", instance.name)
+        instance.stock = validated_data.get("stock", instance.name)
+        instance.sell_counter = validated_data.get("sell_counter", instance.name)
+        instance.rating = validated_data.get("rating", instance.name)
         instance.save()
         return instance
 
     class Meta:
         model = Product
-        fields = ("id", "name", "brand", "price")
+        fields = ("id", "name", "brand", "price", "stock", "sell_counter", "rating")
