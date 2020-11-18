@@ -1,4 +1,6 @@
 from django.db import models
+from django.utils import timezone
+
 from user.models import Vendor, Customer, User
 
 
@@ -7,7 +9,7 @@ from user.models import Vendor, Customer, User
 
 class ProductList(models.Model):
     name = models.CharField(max_length=255)
-    owner = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
 
 
 class Product(models.Model):
@@ -15,11 +17,17 @@ class Product(models.Model):
     # image = models.ImageField(upload_to ='pics')#option is to select media directory TODO need to implement
     brand = models.CharField(max_length=255)
     price = models.FloatField()
+    stock = models.IntegerField(default=0)
+    rating = models.FloatField(default=0)
+    sell_counter = models.IntegerField(default=0)
+    release_date = models.DateTimeField(default=timezone.now)
+
     vendor = models.ForeignKey(
         Vendor,
         on_delete=models.CASCADE,
         related_name="products"
     )
+
     in_lists = models.ManyToManyField(ProductList)
     in_carts = models.ManyToManyField(Customer, related_name="cart_list")
     in_alerted_lists = models.ManyToManyField(Customer, related_name="in_alerted_list")
@@ -47,12 +55,6 @@ class Order(models.Model):
     timestamp = models.DateTimeField()
     delivery_time = models.DateTimeField()
     current_status = models.PositiveSmallIntegerField(choices=STATUS_TYPES, default=1)
-
-
-class Notification(models.Model):
-    type = models.CharField(max_length=255)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    body = models.CharField(max_length=255)
 
 
 class Comment(models.Model):
