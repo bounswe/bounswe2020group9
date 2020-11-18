@@ -4,9 +4,9 @@ from product.models import Product, ProductList, Label, Category, Order, Notific
 from user.models import Vendor, Customer, User
 
 
-def create_product(name, price, vendor_id):
+def create_product(name, brand, price, vendor_id):
     vendor = Vendor.objects.get(pk=vendor_id)
-    vendor.products.create(name=name, price=price)
+    vendor.products.create(name=name, brand=brand, price=price)
 
 
 def delete_product(product_id):
