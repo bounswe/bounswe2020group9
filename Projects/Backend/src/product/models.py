@@ -1,4 +1,6 @@
 from django.db import models
+from django.utils import timezone
+
 from user.models import Vendor, Customer, User
 
 
@@ -7,36 +9,28 @@ from user.models import Vendor, Customer, User
 
 class ProductList(models.Model):
     name = models.CharField(max_length=255)
-    customer_id = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
 
-class CartList(models.Model):
-    customer_id = models.OneToOneField(Customer,on_delete=models.CASCADE)
-
-class AlertedList(models.Model):
-    customer_id = models.OneToOneField(Customer,on_delete=models.CASCADE)
-
-class Categories(models.Model):
-    category_name = models.CharField(max_length=255)
-    parent_category_id = models.IntegerField()
-    
-class Labels(models.Model):
-    label_name = models.CharField(max_length=255)
 
 class Product(models.Model):
     name = models.CharField(max_length=255)
-    vendor = models.ForeignKey(Vendor,on_delete=models.CASCADE,related_name="products")
-    image = models.ImageField(upload_to ='pics')#option is to select media directory
+    # image = models.ImageField(upload_to ='pics')#option is to select media directory TODO need to implement
     brand = models.CharField(max_length=255)
     price = models.FloatField()
-    stock_counter = models.IntegerField()
-    rating = models.FloatField()
-    sell_counter = models.IntegerField()
-    category_id = models.ForeignKey(Categories, on_delete=models.CASCADE)
-    timestamp = models.DateTimeField()
-    in_labels = models.ManyToManyField(Labels, related_name="label_list")
+    stock = models.IntegerField(default=0)
+    rating = models.FloatField(default=0)
+    sell_counter = models.IntegerField(default=0)
+    release_date = models.DateTimeField(default=timezone.now)
+
+    vendor = models.ForeignKey(
+        Vendor,
+        on_delete=models.CASCADE,
+        related_name="products"
+    )
+
     in_lists = models.ManyToManyField(ProductList)
-    in_carts = models.ManyToManyField(CartList, related_name="cart_list")
-    in_alerted_lists = models.ManyToManyField(AlertedList, related_name="in_alerted_list")
+    in_carts = models.ManyToManyField(Customer, related_name="cart_list")
+    in_alerted_lists = models.ManyToManyField(Customer, related_name="in_alerted_list")
 
 
 class Label(models.Model):
@@ -61,12 +55,6 @@ class Order(models.Model):
     timestamp = models.DateTimeField()
     delivery_time = models.DateTimeField()
     current_status = models.PositiveSmallIntegerField(choices=STATUS_TYPES, default=1)
-
-
-class Notification(models.Model):
-    type = models.CharField(max_length=255)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    body = models.CharField(max_length=255)
 
 
 class Comment(models.Model):

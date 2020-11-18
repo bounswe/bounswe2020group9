@@ -12,8 +12,6 @@ practice-app/.DS_Store
 # Backend ignore files
 Projects/Backend/venv
 Projects/Backend/src/venv
-Projects/Backend/src/.vscode
-*.sqlite3
 Projects/Backend/.vscode
 Projects/Backend/src/.vscode/
 Projects/Backend/src/*/migrations
