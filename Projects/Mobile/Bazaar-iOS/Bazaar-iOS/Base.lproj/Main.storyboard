@@ -155,15 +155,16 @@
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sWJ-CF-2K8">
-                                        <rect key="frame" x="278" y="118" width="86" height="26"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                        <rect key="frame" x="272" y="118" width="92" height="27"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <state key="normal" title="Şifremi Unuttum">
                                             <color key="titleColor" red="1" green="0.64313725489999995" blue="0.35686274509999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nSX-4R-nQN">
-                                        <rect key="frame" x="20" y="159" width="344" height="30"/>
+                                        <rect key="frame" x="20" y="160" width="344" height="36"/>
                                         <color key="backgroundColor" red="1" green="0.64313725489999995" blue="0.35686274509999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                         <state key="normal" title="Giriş Yap">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
@@ -173,6 +174,19 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Diğer Giriş Seçenekleri" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oo2-pd-AR1">
+                                        <rect key="frame" x="114.33333333333336" y="220.99999999999994" width="155.66666666666663" height="18"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                        <color key="textColor" red="0.43921568630000002" green="0.43921568630000002" blue="0.43921568630000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="google_icon" translatesAutoresizingMaskIntoConstraints="NO" id="Gpe-aj-fFE">
+                                        <rect key="frame" x="172" y="243.99999999999994" width="40" height="40"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="40" id="8My-WD-614"/>
+                                            <constraint firstAttribute="width" constant="40" id="Rbo-2o-b8E"/>
+                                        </constraints>
+                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
@@ -180,12 +194,16 @@
                                     <constraint firstItem="5Go-B8-phC" firstAttribute="top" secondItem="riA-Gy-ttb" secondAttribute="bottom" constant="15" id="JlB-Pl-iux"/>
                                     <constraint firstItem="5Go-B8-phC" firstAttribute="leading" secondItem="ntr-J6-vgb" secondAttribute="leading" constant="20" id="Ll3-ab-Uw5"/>
                                     <constraint firstAttribute="trailing" secondItem="sWJ-CF-2K8" secondAttribute="trailing" constant="20" id="MoH-Fx-3dR"/>
+                                    <constraint firstItem="Gpe-aj-fFE" firstAttribute="top" secondItem="oo2-pd-AR1" secondAttribute="bottom" constant="5" id="SF4-2L-gSC"/>
                                     <constraint firstAttribute="trailing" secondItem="riA-Gy-ttb" secondAttribute="trailing" constant="20" id="SFb-Yd-OG4"/>
                                     <constraint firstAttribute="trailing" secondItem="nSX-4R-nQN" secondAttribute="trailing" constant="20" id="Zib-Ub-gqb"/>
                                     <constraint firstAttribute="trailing" secondItem="5Go-B8-phC" secondAttribute="trailing" constant="20" id="gOu-wM-qrl"/>
                                     <constraint firstItem="sWJ-CF-2K8" firstAttribute="top" secondItem="5Go-B8-phC" secondAttribute="bottom" constant="15" id="mHR-96-bx5"/>
+                                    <constraint firstItem="oo2-pd-AR1" firstAttribute="centerX" secondItem="ntr-J6-vgb" secondAttribute="centerX" id="tcS-fJ-dW8"/>
                                     <constraint firstItem="nSX-4R-nQN" firstAttribute="leading" secondItem="ntr-J6-vgb" secondAttribute="leading" constant="20" id="uSf-Je-dfR"/>
+                                    <constraint firstItem="Gpe-aj-fFE" firstAttribute="centerX" secondItem="ntr-J6-vgb" secondAttribute="centerX" id="udo-vK-Ymy"/>
                                     <constraint firstItem="riA-Gy-ttb" firstAttribute="leading" secondItem="ntr-J6-vgb" secondAttribute="leading" constant="20" id="usX-CK-dmD"/>
+                                    <constraint firstItem="oo2-pd-AR1" firstAttribute="top" secondItem="nSX-4R-nQN" secondAttribute="bottom" constant="25" id="vKe-Fy-DUI"/>
                                     <constraint firstItem="riA-Gy-ttb" firstAttribute="top" secondItem="ntr-J6-vgb" secondAttribute="top" constant="20" id="ymk-r2-FFT"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
@@ -391,6 +409,7 @@
     <resources>
         <image name="cart" catalog="system" width="128" height="102"/>
         <image name="cart.fill" catalog="system" width="128" height="102"/>
+        <image name="google_icon" width="300" height="300"/>
         <image name="heart" catalog="system" width="128" height="109"/>
         <image name="heart.fill" catalog="system" width="128" height="109"/>
         <image name="house" catalog="system" width="128" height="106"/>
