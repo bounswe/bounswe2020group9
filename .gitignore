@@ -16,3 +16,4 @@ Projects/Backend/.vscode
 Projects/Backend/src/.vscode/
 Projects/Backend/src/*/migrations
 *.sqlite3
+Projects/Backend/src/api/static/
