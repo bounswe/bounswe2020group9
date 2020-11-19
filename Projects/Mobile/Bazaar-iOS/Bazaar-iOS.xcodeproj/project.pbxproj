@@ -24,6 +24,7 @@
 		93EE3CC82558822700B504DF /* Bazaar_iOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EE3CC72558822700B504DF /* Bazaar_iOSUITests.swift */; };
 		93EE3CDA25594A6800B504DF /* ProductCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EE3CD825594A6800B504DF /* ProductCell.swift */; };
 		93EE3CDB25594A6800B504DF /* ProductCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 93EE3CD925594A6800B504DF /* ProductCell.xib */; };
+		99462A322566917D006055FF /* ProfileViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 99462A312566917D006055FF /* ProfileViewController.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +68,7 @@
 		93EE3CC92558822700B504DF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		93EE3CD825594A6800B504DF /* ProductCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCell.swift; sourceTree = "<group>"; };
 		93EE3CD925594A6800B504DF /* ProductCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProductCell.xib; sourceTree = "<group>"; };
+		99462A312566917D006055FF /* ProfileViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = ProfileViewController.storyboard; path = "Bazaar-iOS/View/ProfileViewController.storyboard"; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -178,13 +180,22 @@
 		93EE3CE325594A9D00B504DF /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				99462A3025669132006055FF /* ProfileViewController */,
 				93EE3CA62558822500B504DF /* ViewController.swift */,
 				6994EACF255DB7BC00AC48F6 /* WishlistViewController.swift */,
 				6994EAD1255DB9F500AC48F6 /* SearchViewController.swift */,
-				6994EAD3255DBA1300AC48F6 /* ProfileViewController.swift */,
 				6994EAD5255DBF4A00AC48F6 /* MyCartViewController.swift */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		99462A3025669132006055FF /* ProfileViewController */ = {
+			isa = PBXGroup;
+			children = (
+				99462A312566917D006055FF /* ProfileViewController.storyboard */,
+				6994EAD3255DBA1300AC48F6 /* ProfileViewController.swift */,
+			);
+			path = ProfileViewController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -292,6 +303,7 @@
 			files = (
 				93EE3CB22558822700B504DF /* LaunchScreen.storyboard in Resources */,
 				93EE3CDB25594A6800B504DF /* ProductCell.xib in Resources */,
+				99462A322566917D006055FF /* ProfileViewController.storyboard in Resources */,
 				93EE3CAF2558822700B504DF /* Assets.xcassets in Resources */,
 				93EE3CAA2558822500B504DF /* Main.storyboard in Resources */,
 				6994EACE255DA3D400AC48F6 /* MainTabBarController.xib in Resources */,

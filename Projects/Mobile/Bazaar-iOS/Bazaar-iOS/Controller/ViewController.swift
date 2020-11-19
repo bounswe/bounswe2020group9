@@ -36,6 +36,4 @@ extension ViewController:UITableViewDelegate,UITableViewDataSource {
         cell.productImageView.image = UIImage(named: "iphone12")
         return cell
     }
-    
-    
 }
