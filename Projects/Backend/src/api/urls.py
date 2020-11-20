@@ -1,6 +1,4 @@
-"""api URL Configuration
-
-The `urlpatterns` list routes URLs to views. For more information please see:
+"""The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.1/topics/http/urls/
 Examples:
 Function views
@@ -19,10 +17,16 @@ from django.contrib import admin
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.urls import path, include
 from django.views.generic import RedirectView
+from rest_framework.urlpatterns import format_suffix_patterns
 
-urlpatterns = [
-    path('', include("product.urls")),
+from api import views
+
+urlpatterns = format_suffix_patterns([
+    path('', views.api_root),
     path('admin/', admin.site.urls),
+    path('api/', views.api_root),
     path('api/product/', include("product.urls")),
+    path('api/user/', include("user.urls")),
+    path('api/location/', include("location.urls")),
     path('favicon.ico', RedirectView.as_view(url=staticfiles_storage.url('images/favicon.ico')))
-]
+])
