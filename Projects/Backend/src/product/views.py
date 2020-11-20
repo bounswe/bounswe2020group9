@@ -2,11 +2,13 @@ from django.http import HttpResponse
 from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
-from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST
+from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_204_NO_CONTENT
 from rest_framework.views import APIView
 
 from product.models import Product
 from product.serializers import ProductSerializer
+
+
 # Create your views here.
 
 
@@ -22,15 +24,16 @@ class ProductListAPIView(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=HTTP_201_CREATED)
-        return  Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+
 
 class ProductDetailAPIView(APIView):
 
     def get_product(self, id):
         try:
-            Product.objects.get(id=id)
+            return Product.objects.get(id=id)
         except Product.DoesNotExist:
-            return HttpResponse(status=404)
+            return HttpResponse(status=HTTP_404_NOT_FOUND)
 
     def get(self, request, id):
         product = self.get_product(id)
@@ -39,20 +42,19 @@ class ProductDetailAPIView(APIView):
 
     def put(self, request, id):
         product = self.get_product(id)
-        data = JSONParser().parse(request)
-        serializer = ProductSerializer(product,data=data)
+        serializer = ProductSerializer(product, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
-        return Response(serializer.errors, status=400)
+        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
     def delete(self, request, id):
         product = self.get_product(id)
         product.delete()
-        return HttpResponse(status=204)
+        return HttpResponse(status=HTTP_204_NO_CONTENT)
+
 
 """
-
 @api_view(['GET', 'POST'])
 def product_list(request):
     if request.method == "GET":
