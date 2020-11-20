@@ -19,10 +19,16 @@ from django.contrib import admin
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.urls import path, include
 from django.views.generic import RedirectView
+from rest_framework.urlpatterns import format_suffix_patterns
 
-urlpatterns = [
-    path('', include("product.urls")),
+from api import views
+
+urlpatterns = format_suffix_patterns([
+    path('', views.api_root),
     path('admin/', admin.site.urls),
+    path('api/', views.api_root),
     path('api/product/', include("product.urls")),
+    path('api/user/', include("user.urls")),
+    path('api/location/', include("location.urls")),
     path('favicon.ico', RedirectView.as_view(url=staticfiles_storage.url('images/favicon.ico')))
-]
+])

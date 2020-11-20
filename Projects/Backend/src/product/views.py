@@ -1,4 +1,5 @@
 from django.http import HttpResponse, JsonResponse
+from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
 from product.models import Product
 from product.serializers import ProductSerializer
@@ -8,7 +9,7 @@ from product.serializers import ProductSerializer
 def get_product(request):
     return HttpResponse("Hello World!")
 
-
+@api_view(['GET', 'POST'])
 def product_list(request):
     if request.method == "GET":
         products = Product.objects.all()
@@ -24,6 +25,7 @@ def product_list(request):
         return  JsonResponse(serializer.errors, status=400)
 
 
+@api_view(['GET', 'PUT', 'DELETE'])
 def product_detail(request, pk):
     try:
         product = Product.objects.get(pk=pk)
