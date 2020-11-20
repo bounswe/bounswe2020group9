@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
-from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST
+from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_204_NO_CONTENT
 from rest_framework.views import APIView
 
 from product.models import Product
@@ -31,7 +31,7 @@ class ProductDetailAPIView(APIView):
 
     def get_product(self, id):
         try:
-            Product.objects.get(id=id)
+            return Product.objects.get(id=id)
         except Product.DoesNotExist:
             return HttpResponse(status=HTTP_404_NOT_FOUND)
 
