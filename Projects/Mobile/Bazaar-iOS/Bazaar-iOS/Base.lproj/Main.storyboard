@@ -218,8 +218,8 @@
                                                         <state key="normal" image="google_icon"/>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9qq-Xk-iNr">
-                                                        <rect key="frame" x="118" y="365.99999999999994" width="138" height="30"/>
-                                                        <state key="normal" title="Continue as a Guest"/>
+                                                        <rect key="frame" x="124" y="365.99999999999994" width="126" height="30"/>
+                                                        <state key="normal" title="Continue as Guest"/>
                                                         <connections>
                                                             <action selector="continueAsGuestButtonPressed:" destination="Ghz-qv-MNd" eventType="touchUpInside" id="1tL-gC-Wus"/>
                                                         </connections>
@@ -717,6 +717,8 @@
                         <outlet property="emailTextField" destination="0XM-DC-Wp1" id="7Ui-AO-PN9"/>
                         <outlet property="firstNameTextField" destination="iZB-bB-f48" id="Raj-ZI-HZ9"/>
                         <outlet property="frameView" destination="pus-pD-cSQ" id="31I-hC-X8Z"/>
+                        <outlet property="isCustomerButton" destination="8Xv-IK-imB" id="Ldp-Dv-1vD"/>
+                        <outlet property="isVendorButton" destination="Dpb-Nw-seZ" id="Elc-Al-B1K"/>
                         <outlet property="lastNameTextField" destination="Aus-0v-s5f" id="ksL-3t-hzg"/>
                         <outlet property="passwordTextField" destination="qmb-OC-YrS" id="7P9-Qc-bcM"/>
                         <segue destination="n1Y-by-cQR" kind="presentation" identifier="signUpToMain" modalPresentationStyle="fullScreen" id="SKc-FT-cW5"/>
@@ -736,7 +738,7 @@
         </designable>
     </designables>
     <inferredMetricsTieBreakers>
-        <segue reference="SKc-FT-cW5"/>
+        <segue reference="FXs-qr-xx3"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="cart" catalog="system" width="128" height="102"/>

@@ -9,11 +9,17 @@ import UIKit
 
 class SignUpViewController: UIViewController {
     
+    @IBOutlet weak var isCustomerButton: RadioButton!
+    @IBOutlet weak var isVendorButton: RadioButton!
     @IBOutlet weak var firstNameTextField: UITextField!
     @IBOutlet weak var lastNameTextField: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var frameView: UIView!
+    enum UserType:Int {
+        case Vendor , Customer
+    }
+    var signUpUserType: UserType?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,12 +51,15 @@ class SignUpViewController: UIViewController {
                                         alertController.message = "Password must be at least 8 , at most 20 characters in length"
                                         self.present(alertController, animated: true, completion: nil)
                                     }else {
-                                        performSegue(withIdentifier: "signUpToMain", sender: nil)
+                                        if let userType = self.signUpUserType{
+                                            performSegue(withIdentifier: "signUpToMain", sender: nil)
+                                        }else {
+                                            alertController.message = "Choose one, Vendor or Customer"
+                                            self.present(alertController, animated: true, completion: nil)
+                                        }
                                     }
-                                }else{
                                 }
                             }
-                        }else{
                         }
                     }
                 }
@@ -65,18 +74,24 @@ class SignUpViewController: UIViewController {
     @IBAction func isVendorButtonPressed(_ sender: RadioButton) {
         sender.isSelected = !sender.isSelected
         if sender.isSelected {
-           print( "Selected")
+            if (self.signUpUserType != nil) {
+                self.isCustomerButton.sendActions(for: .touchUpInside)
+            }
+            self.signUpUserType = UserType.Vendor
         } else{
-           print("Not Selected")
-         }
+            self.signUpUserType = nil
+        }
     }
     
     @IBAction func isCustomerButtonPressed(_ sender: RadioButton) {
         sender.isSelected = !sender.isSelected
         if sender.isSelected {
-           print( "Selected")
+            if (self.signUpUserType != nil) {
+                self.isVendorButton.sendActions(for: .touchUpInside)
+            }
+            self.signUpUserType = UserType.Customer
         } else{
-           print("Not Selected")
-         }
+            self.signUpUserType = nil
+        }
     }
 }
