@@ -148,22 +148,22 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ntr-J6-vgb">
                                                 <rect key="frame" x="20" y="265.66666666666669" width="374" height="380.00000000000006"/>
                                                 <subviews>
-                                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="E-Posta" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="riA-Gy-ttb">
+                                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="E-Mail" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="riA-Gy-ttb">
                                                         <rect key="frame" x="20" y="30" width="334" height="34"/>
                                                         <color key="backgroundColor" red="0.95686274509803915" green="0.95686274509803915" blue="0.94901960784313721" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                        <textInputTraits key="textInputTraits"/>
+                                                        <textInputTraits key="textInputTraits" textContentType="email"/>
                                                     </textField>
-                                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Şifre" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5Go-B8-phC">
+                                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="5Go-B8-phC">
                                                         <rect key="frame" x="20" y="79" width="334" height="34"/>
                                                         <color key="backgroundColor" red="0.95686274509803915" green="0.95686274509803915" blue="0.94901960784313721" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                        <textInputTraits key="textInputTraits"/>
+                                                        <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                                     </textField>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sWJ-CF-2K8">
-                                                        <rect key="frame" x="262" y="128" width="92" height="27"/>
+                                                        <rect key="frame" x="253" y="128" width="101" height="27"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                        <state key="normal" title="Şifremi Unuttum">
+                                                        <state key="normal" title="Forgot Password?">
                                                             <color key="titleColor" red="1" green="0.64313725489999995" blue="0.35686274509999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         </state>
                                                     </button>
@@ -171,7 +171,7 @@
                                                         <rect key="frame" x="20" y="169.99999999999994" width="334" height="36"/>
                                                         <color key="backgroundColor" red="1" green="0.64313725489999995" blue="0.35686274509999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                                        <state key="normal" title="Giriş Yap">
+                                                        <state key="normal" title="Login">
                                                             <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         </state>
                                                         <userDefinedRuntimeAttributes>
@@ -179,25 +179,28 @@
                                                                 <integer key="value" value="10"/>
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <action selector="loginButtonPressed:" destination="Ghz-qv-MNd" eventType="touchUpInside" id="6Xh-fw-4hj"/>
+                                                        </connections>
                                                     </button>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Diğer Giriş Seçenekleri" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oo2-pd-AR1">
-                                                        <rect key="frame" x="109.33333333333336" y="230.99999999999994" width="155.66666666666663" height="18"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Continue with Google" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oo2-pd-AR1">
+                                                        <rect key="frame" x="113.33333333333336" y="230.99999999999994" width="147.66666666666663" height="18"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                         <color key="textColor" red="0.43921568630000002" green="0.43921568630000002" blue="0.43921568630000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="la0-wa-e6d">
-                                                        <rect key="frame" x="103.33333333333333" y="323.99999999999994" width="167.66666666666669" height="30"/>
+                                                        <rect key="frame" x="72.666666666666671" y="323.99999999999994" width="228.66666666666663" height="30"/>
                                                         <subviews>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Üye değil misin?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ttm-tI-Q8c">
-                                                                <rect key="frame" x="0.0" y="0.0" width="111.66666666666667" height="30"/>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Don't Have an Account?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ttm-tI-Q8c">
+                                                                <rect key="frame" x="0.0" y="0.0" width="164.66666666666666" height="30"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k7u-bb-sSr">
-                                                                <rect key="frame" x="121.66666666666669" y="0.0" width="46" height="30"/>
-                                                                <state key="normal" title="Üye Ol">
+                                                                <rect key="frame" x="174.66666666666663" y="0.0" width="54" height="30"/>
+                                                                <state key="normal" title="Sign Up">
                                                                     <color key="titleColor" red="1" green="0.64313725489999995" blue="0.35686274509999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                 </state>
                                                                 <connections>
@@ -289,7 +292,9 @@
                     </view>
                     <navigationItem key="navigationItem" id="kNR-Cg-Liv"/>
                     <connections>
+                        <outlet property="emailTextField" destination="riA-Gy-ttb" id="7d4-xu-58W"/>
                         <outlet property="frameView" destination="ntr-J6-vgb" id="Faj-uy-tBZ"/>
+                        <outlet property="passwordTextField" destination="5Go-B8-phC" id="x3e-iD-wIK"/>
                         <segue destination="n1Y-by-cQR" kind="presentation" identifier="loginToMain" modalPresentationStyle="fullScreen" id="FXs-qr-xx3"/>
                         <segue destination="2FP-Mc-4rh" kind="presentation" identifier="loginToSignUp" modalPresentationStyle="fullScreen" id="PCm-eQ-k4w"/>
                     </connections>
