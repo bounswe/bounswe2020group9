@@ -9,11 +9,11 @@ import UIKit
 
 class SignUpViewController: UIViewController {
     
-    @IBOutlet weak var fullNameTextField: UITextField!
+    @IBOutlet weak var firstNameTextField: UITextField!
+    @IBOutlet weak var lastNameTextField: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var frameView: UIView!
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,9 +21,42 @@ class SignUpViewController: UIViewController {
         frameView.layer.shadowColor = UIColor.black.cgColor
     }
     
-    
     @IBAction func signUpButtonPressed(_ sender: UIButton) {
+        let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
         
+        if let firstName = firstNameTextField.text{
+            if !firstName.isName {
+                alertController.message = "Your First Name is invalid. Please enter a valid First Name."
+                self.present(alertController, animated: true, completion: nil)
+            }else {
+                if let lastName = lastNameTextField.text {
+                    if !lastName.isName {
+                        alertController.message = "Your Last Name is invalid. Please enter a valid Last Name."
+                        self.present(alertController, animated: true, completion: nil)
+                    }else {
+                        if let email = emailTextField.text {
+                            if !email.isEmail {
+                                alertController.message = "Your email address is invalid. Please enter a valid address."
+                                self.present(alertController, animated: true, completion: nil)
+                            }else{
+                                if let password = passwordTextField.text{
+                                    if password.count < 8 || password.count > 20 {
+                                        alertController.message = "Password must be at least 8 , at most 20 characters in length"
+                                        self.present(alertController, animated: true, completion: nil)
+                                    }else {
+                                        performSegue(withIdentifier: "loginToMain", sender: nil)
+                                    }
+                                }else{
+                                }
+                            }
+                        }else{
+                        }
+                        
+                    }
+                }
+            }
+        }
     }
     
     @IBAction func loginHereButtonPressed(_ sender: UIButton) {

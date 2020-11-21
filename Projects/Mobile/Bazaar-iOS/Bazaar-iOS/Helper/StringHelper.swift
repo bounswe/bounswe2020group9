@@ -13,4 +13,11 @@ extension String {
         let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
         return emailTest.evaluate(with: self)
     }
+    
+    var isName: Bool {
+        guard self.count > 0, self.count < 18 else { return false }
+        
+        let predicateTest = NSPredicate(format: "SELF MATCHES %@", "^(([^ ]?)(^[a-zA-Z].*[a-zA-Z]$)([^ ]?))$")
+        return predicateTest.evaluate(with: self)
+    }
 }
