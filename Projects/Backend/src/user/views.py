@@ -5,14 +5,13 @@ from .models import User
 from .serializers import UserSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
-
-from django.contrib.auth.hashers import make_password
 from rest_framework.authtoken.models import Token
-from django.contrib.auth import authenticate
 from rest_framework.authtoken.views import ObtainAuthToken
 
 class UserListAPIView(APIView):
 
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self,request):
         customers = User.objects.all()
@@ -33,6 +32,8 @@ class UserListAPIView(APIView):
 
 class UserDetailAPIView(APIView):
 
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get_user(self,id):
         try:
@@ -48,11 +49,12 @@ class UserDetailAPIView(APIView):
 
     def put(self,request,id):
         user = self.get_user(id)
-        #request.data['password'] = make_password(request.data['password'])
+
         serializer = UserSerializer(user,data=request.data)
+
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            return Response(serializer.data,status=status.HTTP_200_OK)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self,request,id):
@@ -85,16 +87,7 @@ class UserSignupAPIView(APIView):
         serializer = UserSerializer(data=request.data)
 
         if serializer.is_valid():
-
-            user = User(
-                username=serializer.validated_data['username'],
-                email=serializer.validated_data['username'],
-                first_name=serializer.validated_data['first_name'],
-                last_name=serializer.validated_data['last_name'],
-                user_type=serializer.validated_data['user_type'],
-            )
-            user.set_password(serializer.validated_data['password'])
-            user.save()
-            return Response(user.username,status=status.HTTP_201_CREATED)
+            serializer.save()
+            return Response(status=status.HTTP_201_CREATED)
         else:
             return Response(serializer._errors, status=status.HTTP_400_BAD_REQUEST)
