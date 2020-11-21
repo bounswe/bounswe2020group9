@@ -45,14 +45,13 @@ class SignUpViewController: UIViewController {
                                         alertController.message = "Password must be at least 8 , at most 20 characters in length"
                                         self.present(alertController, animated: true, completion: nil)
                                     }else {
-                                        performSegue(withIdentifier: "loginToMain", sender: nil)
+                                        performSegue(withIdentifier: "signUpToMain", sender: nil)
                                     }
                                 }else{
                                 }
                             }
                         }else{
                         }
-                        
                     }
                 }
             }

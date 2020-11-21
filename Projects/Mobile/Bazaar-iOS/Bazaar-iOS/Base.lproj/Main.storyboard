@@ -135,7 +135,7 @@
                                 <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SRL-WQ-xqY" userLabel="Content View">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="685.66666666666663"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="725.66666666666663"/>
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="VdA-nE-iRy">
                                                 <rect key="frame" x="124.33333333333333" y="59.999999999999986" width="165.33333333333337" height="165.66666666666663"/>
@@ -146,7 +146,7 @@
                                                 </userDefinedRuntimeAttributes>
                                             </imageView>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ntr-J6-vgb">
-                                                <rect key="frame" x="20" y="265.66666666666669" width="374" height="380.00000000000006"/>
+                                                <rect key="frame" x="20" y="265.66666666666669" width="374" height="420.00000000000006"/>
                                                 <subviews>
                                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="E-Mail" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="riA-Gy-ttb">
                                                         <rect key="frame" x="20" y="30" width="334" height="34"/>
@@ -190,7 +190,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="la0-wa-e6d">
-                                                        <rect key="frame" x="72.666666666666671" y="323.99999999999994" width="228.66666666666663" height="30"/>
+                                                        <rect key="frame" x="72.666666666666671" y="313.99999999999994" width="228.66666666666663" height="30"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Don't Have an Account?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ttm-tI-Q8c">
                                                                 <rect key="frame" x="0.0" y="0.0" width="164.66666666666666" height="30"/>
@@ -217,10 +217,26 @@
                                                         </constraints>
                                                         <state key="normal" image="google_icon"/>
                                                     </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9qq-Xk-iNr">
+                                                        <rect key="frame" x="118" y="365.99999999999994" width="138" height="30"/>
+                                                        <state key="normal" title="Continue as a Guest"/>
+                                                        <connections>
+                                                            <action selector="continueAsGuestButtonPressed:" destination="Ghz-qv-MNd" eventType="touchUpInside" id="1tL-gC-Wus"/>
+                                                        </connections>
+                                                    </button>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-- OR --" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="alx-4h-hWf">
+                                                        <rect key="frame" x="167" y="348.99999999999994" width="40" height="12"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
                                                 </subviews>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
+                                                    <constraint firstItem="9qq-Xk-iNr" firstAttribute="centerX" secondItem="ntr-J6-vgb" secondAttribute="centerX" id="4sv-RP-JcY"/>
                                                     <constraint firstItem="nSX-4R-nQN" firstAttribute="top" secondItem="sWJ-CF-2K8" secondAttribute="bottom" constant="15" id="6un-1X-5Es"/>
+                                                    <constraint firstItem="alx-4h-hWf" firstAttribute="centerX" secondItem="ntr-J6-vgb" secondAttribute="centerX" id="9yg-yc-xaz"/>
+                                                    <constraint firstItem="alx-4h-hWf" firstAttribute="top" secondItem="la0-wa-e6d" secondAttribute="bottom" constant="5" id="J54-iU-Kha"/>
                                                     <constraint firstItem="5Go-B8-phC" firstAttribute="top" secondItem="riA-Gy-ttb" secondAttribute="bottom" constant="15" id="JlB-Pl-iux"/>
                                                     <constraint firstItem="5Go-B8-phC" firstAttribute="leading" secondItem="ntr-J6-vgb" secondAttribute="leading" constant="20" id="Ll3-ab-Uw5"/>
                                                     <constraint firstAttribute="trailing" secondItem="sWJ-CF-2K8" secondAttribute="trailing" constant="20" id="MoH-Fx-3dR"/>
@@ -228,8 +244,9 @@
                                                     <constraint firstAttribute="trailing" secondItem="riA-Gy-ttb" secondAttribute="trailing" constant="20" id="SFb-Yd-OG4"/>
                                                     <constraint firstItem="bUm-Vt-a68" firstAttribute="top" secondItem="oo2-pd-AR1" secondAttribute="bottom" constant="5" id="VRU-He-Gya"/>
                                                     <constraint firstAttribute="trailing" secondItem="nSX-4R-nQN" secondAttribute="trailing" constant="20" id="Zib-Ub-gqb"/>
-                                                    <constraint firstItem="la0-wa-e6d" firstAttribute="top" secondItem="bUm-Vt-a68" secondAttribute="bottom" constant="30" id="aW4-Li-rIf"/>
-                                                    <constraint firstAttribute="height" constant="380" id="fdu-U0-OT5"/>
+                                                    <constraint firstItem="la0-wa-e6d" firstAttribute="top" secondItem="bUm-Vt-a68" secondAttribute="bottom" constant="20" id="aW4-Li-rIf"/>
+                                                    <constraint firstItem="9qq-Xk-iNr" firstAttribute="top" secondItem="alx-4h-hWf" secondAttribute="bottom" constant="5" id="bDS-CX-UGI"/>
+                                                    <constraint firstAttribute="height" constant="420" id="fdu-U0-OT5"/>
                                                     <constraint firstAttribute="trailing" secondItem="5Go-B8-phC" secondAttribute="trailing" constant="20" id="gOu-wM-qrl"/>
                                                     <constraint firstItem="bUm-Vt-a68" firstAttribute="centerX" secondItem="ntr-J6-vgb" secondAttribute="centerX" id="ghe-3F-DhA"/>
                                                     <constraint firstItem="sWJ-CF-2K8" firstAttribute="top" secondItem="5Go-B8-phC" secondAttribute="bottom" constant="15" id="mHR-96-bx5"/>
@@ -632,13 +649,17 @@
                         <outlet property="frameView" destination="pus-pD-cSQ" id="31I-hC-X8Z"/>
                         <outlet property="lastNameTextField" destination="Aus-0v-s5f" id="ksL-3t-hzg"/>
                         <outlet property="passwordTextField" destination="qmb-OC-YrS" id="7P9-Qc-bcM"/>
+                        <segue destination="n1Y-by-cQR" kind="presentation" identifier="signUpToMain" modalPresentationStyle="fullScreen" id="SKc-FT-cW5"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="acR-Yu-gM9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-139.13043478260872" y="93.75"/>
+            <point key="canvasLocation" x="-139" y="49"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="FXs-qr-xx3"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <image name="cart" catalog="system" width="128" height="102"/>
         <image name="cart.fill" catalog="system" width="128" height="102"/>

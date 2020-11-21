@@ -45,4 +45,7 @@ class LoginViewController: UIViewController {
         }else{
         }
     }
+    @IBAction func continueAsGuestButtonPressed(_ sender: UIButton) {
+        performSegue(withIdentifier: "loginToMain", sender: nil)
+    }
 }
