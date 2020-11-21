@@ -4,6 +4,8 @@ from rest_framework import status
 from .models import User
 from .serializers import UserSerializer
 
+from rest_framework.authtoken.models import Token
+
 from django.contrib.auth.hashers import make_password
 
 
@@ -52,3 +54,29 @@ class UserDetailAPIView(APIView):
         user = self.get_user(id)
         user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class UserLoginAPIView(APIView):
+
+    def post(self, request):
+        username = request.data["username"]
+        password = request.data["password"]
+        #user = authenticate(username=username, password=password)
+        user = User.objects.filter(username=username)
+        
+        if len(user)==1:
+            if user[0].password==password:
+                #token, created = Token.objects.get_or_create(user=user)
+                return Response(user[0].id, status=status.HTTP_202_ACCEPTED)
+            else:
+                return Response(
+                    {
+                        'message': 'Password is wrong.'
+                    },
+                    status=status.HTTP_401_UNAUTHORIZED)
+        else:
+            return Response(
+                {
+                    'message': 'User not found.'
+                },
+                status=status.HTTP_404_NOT_FOUND)
