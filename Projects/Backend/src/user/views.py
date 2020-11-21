@@ -1,5 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from django.http import Http404
 from rest_framework import status
 from .models import User
 from .serializers import UserSerializer
@@ -7,6 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
+
 
 class UserListAPIView(APIView):
 
@@ -16,7 +18,6 @@ class UserListAPIView(APIView):
     def get(self,request):
         customers = User.objects.all()
         serializer = UserSerializer(customers,many=True)
-
         return Response(serializer.data)
 
 
@@ -38,9 +39,8 @@ class UserDetailAPIView(APIView):
     def get_user(self,id):
         try:
             return User.objects.get(id=id)
-
         except User.DoesNotExist:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            raise Http404
 
     def get(self,request,id):
         user = self.get_user(id)
@@ -49,7 +49,6 @@ class UserDetailAPIView(APIView):
 
     def put(self,request,id):
         user = self.get_user(id)
-
         serializer = UserSerializer(user,data=request.data)
 
         if serializer.is_valid():
