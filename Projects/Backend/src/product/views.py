@@ -38,7 +38,10 @@ class ProductDetailAPIView(APIView):
     def get(self, request, id):
         product = self.get_product(id)
         serializer = ProductSerializer(product)
-        return Response(serializer.data)
+        try:
+            return Response(serializer.data)
+        except:
+            return HttpResponse(status=HTTP_404_NOT_FOUND)
 
     def put(self, request, id):
         product = self.get_product(id)
