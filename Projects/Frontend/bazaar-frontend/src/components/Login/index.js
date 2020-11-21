@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import GoogleButton from 'react-google-button'
+
+import "./login.css";
 
 export default class LoginComponent extends Component {
     render() {
@@ -29,6 +32,9 @@ export default class LoginComponent extends Component {
                         Forgot <a href="#">password?</a>
                     </p>
                 </form>
+                <GoogleButton className="btn-google"
+                    onClick={() => { console.log('Google button clicked') }}
+                /> 
             </div>
 
         );

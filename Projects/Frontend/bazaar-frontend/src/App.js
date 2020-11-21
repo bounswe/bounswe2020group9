@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import './App.css';
 
 //screens
+import ProfilePage from "./screens/Profile-page";
 import SignIn from "./screens/Sign-In"
 import SignUp from "./screens/Sign-Up"
 import Home from "./screens/Home"
@@ -31,6 +32,9 @@ function App() {
           <Header />  
           <SignIn />
           <Footer />
+        </Route>
+        <Route path="/profile-page">
+          <ProfilePage />
         </Route>
       </Switch>
     </Router>
