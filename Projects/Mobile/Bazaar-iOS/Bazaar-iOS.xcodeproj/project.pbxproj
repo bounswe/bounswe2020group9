@@ -16,6 +16,7 @@
 		934993AF256580FB00438FEC /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934993AE256580FB00438FEC /* LoginViewController.swift */; };
 		934993B4256581F700438FEC /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934993B3256581F700438FEC /* SignUpViewController.swift */; };
 		939AB4F825694B76007815C8 /* StringHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939AB4F725694B76007815C8 /* StringHelper.swift */; };
+		939AB50425695BD5007815C8 /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939AB50325695BD5007815C8 /* RadioButton.swift */; };
 		93EE3CA32558822500B504DF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EE3CA22558822500B504DF /* AppDelegate.swift */; };
 		93EE3CA52558822500B504DF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EE3CA42558822500B504DF /* SceneDelegate.swift */; };
 		93EE3CA72558822500B504DF /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EE3CA62558822500B504DF /* MainViewController.swift */; };
@@ -56,6 +57,7 @@
 		934993AE256580FB00438FEC /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LoginViewController.swift; path = "Bazaar-iOS/LoginViewController.swift"; sourceTree = SOURCE_ROOT; };
 		934993B3256581F700438FEC /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SignUpViewController.swift; path = "Bazaar-iOS/SignUpViewController.swift"; sourceTree = SOURCE_ROOT; };
 		939AB4F725694B76007815C8 /* StringHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringHelper.swift; sourceTree = "<group>"; };
+		939AB50325695BD5007815C8 /* RadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RadioButton.swift; path = "Bazaar-iOS/Controller/RadioButton.swift"; sourceTree = SOURCE_ROOT; };
 		93EE3C9F2558822500B504DF /* Bazaar-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Bazaar-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		93EE3CA22558822500B504DF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		93EE3CA42558822500B504DF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 		939AB4FC25694B7E007815C8 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
+				939AB50325695BD5007815C8 /* RadioButton.swift */,
 				939AB4F725694B76007815C8 /* StringHelper.swift */,
 			);
 			path = Helper;
@@ -337,6 +340,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				93EE3CA72558822500B504DF /* MainViewController.swift in Sources */,
+				939AB50425695BD5007815C8 /* RadioButton.swift in Sources */,
 				93EE3CA32558822500B504DF /* AppDelegate.swift in Sources */,
 				6994EAD6255DBF4A00AC48F6 /* MyCartViewController.swift in Sources */,
 				6994EAD2255DB9F500AC48F6 /* SearchViewController.swift in Sources */,

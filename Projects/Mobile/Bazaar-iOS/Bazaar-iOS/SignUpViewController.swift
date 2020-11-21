@@ -61,4 +61,22 @@ class SignUpViewController: UIViewController {
     @IBAction func loginHereButtonPressed(_ sender: UIButton) {
         self.dismiss(animated: true, completion: nil)
     }
+    
+    @IBAction func isVendorButtonPressed(_ sender: RadioButton) {
+        sender.isSelected = !sender.isSelected
+        if sender.isSelected {
+           print( "Selected")
+        } else{
+           print("Not Selected")
+         }
+    }
+    
+    @IBAction func isCustomerButtonPressed(_ sender: RadioButton) {
+        sender.isSelected = !sender.isSelected
+        if sender.isSelected {
+           print( "Selected")
+        } else{
+           print("Not Selected")
+         }
+    }
 }
