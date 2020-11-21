@@ -12,7 +12,6 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var frameView: UIView!
-    let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
         
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,6 +24,7 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction func loginButtonPressed(_ sender: UIButton) {
+        let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
         
         if let email = emailTextField.text {
@@ -44,13 +44,5 @@ class LoginViewController: UIViewController {
             }
         }else{
         }
-    }
-}
-
-extension String {
-    var isEmail: Bool {
-        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}"
-        let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
-        return emailTest.evaluate(with: self)
     }
 }
