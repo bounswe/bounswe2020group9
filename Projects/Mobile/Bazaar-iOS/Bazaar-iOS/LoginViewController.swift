@@ -24,13 +24,21 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction func loginButtonPressed(_ sender: UIButton) {
+        let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+        
+        
         var loginSuccessful = false
         if let email = emailTextField.text {
             if !email.isEmail {
+                alertController.message = "Your email address is invalid. Please enter a valid address."
+                self.present(alertController, animated: true, completion: nil)
                 loginSuccessful = false
             }else{
                 if let password = passwordTextField.text{
                     if password.count < 8 || password.count > 20 {
+                        alertController.message = "Password must be at least 8 , at most 20 characters in length"
+                        self.present(alertController, animated: true, completion: nil)
                         loginSuccessful = false
                     }else {
                         loginSuccessful = true
@@ -40,8 +48,7 @@ class LoginViewController: UIViewController {
                 }
             }
         }else{
-            loginSuccessful = false
-        } 
+        }
     }
 }
 
