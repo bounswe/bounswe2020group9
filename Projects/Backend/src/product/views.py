@@ -54,7 +54,7 @@ class ProductDetailAPIView(APIView):
     def delete(self, request, id):
         product = self.get_product(id)
         product.delete()
-        return HttpResponse(status=HTTP_204_NO_CONTENT)
+        return Response(status=HTTP_204_NO_CONTENT)
 
 
 """
