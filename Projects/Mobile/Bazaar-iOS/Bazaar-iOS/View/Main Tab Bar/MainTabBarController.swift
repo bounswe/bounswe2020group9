@@ -49,8 +49,8 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
     
     // MARK: UITabBarDelegate
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
-      if viewController.isKind(of: ViewController.self) {
-         let vc =  ViewController()
+      if viewController.isKind(of: MainViewController.self) {
+         let vc =  MainViewController()
          vc.modalPresentationStyle = .overFullScreen
          self.present(vc, animated: true, completion: nil)
          return false

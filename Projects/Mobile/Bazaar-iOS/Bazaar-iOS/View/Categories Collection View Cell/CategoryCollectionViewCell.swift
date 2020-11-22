@@ -15,6 +15,7 @@ class CategoryCollectionViewCell: UICollectionViewCell {
     
     var collectionViewCell: UICollectionViewCell!
     @IBOutlet weak var categoryNameLabel: UILabel!
+    @IBOutlet weak var cellBackgroundView: UIView!
     
     var delegate: CellDelegate?
     var categoryId: Int?
@@ -45,8 +46,7 @@ class CategoryCollectionViewCell: UICollectionViewCell {
         return view
     }
     
-    func setCategory(id: Int, categoryName: String) {
-        self.categoryId = id
+    func setCategory(categoryName: String) {
         self.categoryNameLabel.text = categoryName
     }
     

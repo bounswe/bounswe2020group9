@@ -7,13 +7,12 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class MainViewController: UIViewController{
 
     @IBOutlet weak var productTableView: UITableView!
     @IBOutlet weak var searchBar: UISearchBar!
-   //@IBOutlet weak var categoriesCollectionView: UICollectionView!
-    @IBOutlet weak var categoriesScrollView: UIScrollView!
-    @IBOutlet var categoryButtons: [UIButton]!
+    @IBOutlet weak var categoryCollectionView: UICollectionView!
+    
 
     
     var selectedCategoryName: String?
@@ -38,44 +37,16 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         productTableView.dataSource = self
-        categoriesScrollView.delegate = self
+        self.categoryCollectionView.dataSource = self
+        self.categoryCollectionView.delegate = self
+        categoryCollectionView.register(CategoryCollectionViewCell.self, forCellWithReuseIdentifier:  "CategoryCollectionViewCell")
         //categoriesCollectionView.delegate = self
         //categoriesCollectionView.dataSource = self
         generateProducts()
-        let padding: CGFloat = 50
-        var currentWidth: CGFloat = padding
-        for button in categoryButtons {
-            let buttonWidth = button.frame.size.width
-            currentWidth = currentWidth + buttonWidth + padding
-        }
-        categoriesScrollView.contentSize = CGSize(width:1000,height:categoriesScrollView!.frame.size.height)
 
         productTableView.register(UINib(nibName: "ProductCell", bundle: nil), forCellReuseIdentifier: "ReusableProdcutCell")
-        //categoriesCollectionView.register(UINib.init(nibName: "CategoriesCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "CategoriesCollectionViewCell")
-        //categoriesCollectionView.contentInsetAdjustmentBehavior = .never
-        categoriesScrollView.translatesAutoresizingMaskIntoConstraints = false
-        categoryButtons[0].isSelected = true
-        selectedCategoryButton = categoryButtons[0]
     }
     
-
-    @IBAction func buttonAction(_ sender: UIButton) {
-        self.categoryButtons.forEach { (button) in
-            //Reset all attibutes of button to default state
-            if sender == button {
-                //highlight sender
-                sender.isHighlighted = true
-                sender.isSelected = true
-                sender.isEnabled = false
-                selectedCategoryButton = sender
-            } else {
-                button.isHighlighted = false
-                button.isSelected = false
-                button.isEnabled = true
-            }
-        }
-       
-    }
     
     func categorySelected () {
         self.productTableView.reloadData()
@@ -134,7 +105,7 @@ class ViewController: UIViewController {
 
 }
 
-extension ViewController: UIScrollViewDelegate {
+extension MainViewController: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.y != 0 {
             scrollView.contentOffset.y = 0
@@ -144,7 +115,7 @@ extension ViewController: UIScrollViewDelegate {
 
 }
 
-extension ViewController:UITableViewDelegate,UITableViewDataSource {
+extension MainViewController:UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 10
     }
@@ -152,7 +123,7 @@ extension ViewController:UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = productTableView.dequeueReusableCell(withIdentifier: "ReusableProdcutCell", for: indexPath) as! ProductCell
         let filteredProducts:[Product] = products.filter { $0.category == selectedCategoryName }
-        let product = filteredProducts[indexPath.row]
+        let product = products[indexPath.row]
         cell.productNameLabel.text = product.title
         cell.productNameLabel.font = UIFont.systemFont(ofSize: 15, weight: .black)
         cell.productDescriptionLabel.text = product.brand
@@ -188,3 +159,64 @@ extension UIColor {
         }
     }
 }
+
+//MARK: - Extension UICollectionViewDelegate , UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
+extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return self.categories.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CategoryCollectionViewCell", for: indexPath)
+            if let cell = cell as? CategoryCollectionViewCell {
+                //cell.delegate = self
+                let categoryName = self.categories[indexPath.row]
+                cell.setCategory(categoryName: categoryName)
+            }
+            return cell
+        }
+    
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let text = self.categories[indexPath.row]
+            let width = self.estimatedFrame(text: text, font: UIFont(name: "Poppins-Medium", size: 13.0) ?? UIFont.systemFont(ofSize: 13.0)).width
+            return CGSize(width: width+30.0, height: 35.0)
+    }
+    
+    func estimatedFrame(text: String, font: UIFont) -> CGRect {
+        let size = CGSize(width: 200, height: 1000) // temporary size
+        let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
+        return NSString(string: text).boundingRect(with: size,
+                                                   options: options,
+                                                   attributes: [NSAttributedString.Key.font: font],
+                                                   context: nil)
+    }
+    
+}
+
+////MARK: - Extension CellDelegate
+//extension MainViewController:CellDelegate {
+//    func didCellSelected(cell: UICollectionViewCell) {
+//        if let categoryCell = cell as? CategoryCollectionViewCell {
+//            if let categoryId = categoryCell.categoryId {
+//                if let category = self.categoryList.first(where: {$0.rawValue == categoryId}) {
+//                    if let poiList = DataManager.filterData(predicate: NSPredicate(format: "type == \(category.rawValue)"), type: Poi.self) as? [Poi]{
+//                        self.isCategorySearching = true
+//                        self.searchTextFieldLeftConstraint.constant += 28
+//                        self.searchCategoryNameLabel.text = category.name()
+//                        self.searchIconImageView.image = UIImage(named: "poi_type_detail_icon\(categoryId)")
+//                        self.poiList = poiList
+//                        self.searchIconBackgroundView.backgroundColor = #colorLiteral(red: 0.2539516687, green: 0.8300264478, blue: 0.8760231137, alpha: 1)
+//                        self.tableViewPoiList.reloadData()
+//                        self.textField.becomeFirstResponder()
+//                        self.layoutIfNeeded()
+//                    }
+//                }
+//            }
+//        }else if let floorCell = cell as? FloorCollectionViewCell {
+//            if let z = floorCell.floorZ {
+//                self.delegate?.didFloorSelected(z: z)
+//            }
+//        }
+//    }
+//}
