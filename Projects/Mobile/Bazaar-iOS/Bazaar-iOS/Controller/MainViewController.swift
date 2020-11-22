@@ -170,7 +170,6 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
                 cell.delegate = self
                 let categoryName = self.categories[indexPath.row]
                 cell.setCategory(categoryName: categoryName)
-                print(self.categories[indexPath.row].caseInsensitiveCompare(selectedCategoryName ?? "") == .orderedSame)
                 if self.categories[indexPath.row].caseInsensitiveCompare(selectedCategoryName ?? "") == .orderedSame {
                     cell.setAsCurrentCategory(isCurrentCategory: true)
                 }else {
