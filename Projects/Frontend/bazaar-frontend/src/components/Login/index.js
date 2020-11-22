@@ -4,6 +4,7 @@ import GoogleButton from 'react-google-button'
 import "./login.css";
 
 export default class LoginComponent extends Component {
+
     render() {
         return (
             <div className="entry-form">
