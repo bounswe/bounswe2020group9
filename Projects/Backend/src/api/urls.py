@@ -1,4 +1,5 @@
-"""The `urlpatterns` list routes URLs to views. For more information please see:
+"""
+The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.1/topics/http/urls/
 Examples:
 Function views
@@ -18,8 +19,6 @@ from django.contrib.staticfiles.storage import staticfiles_storage
 from django.urls import path, include
 from django.views.generic import RedirectView
 from rest_framework.urlpatterns import format_suffix_patterns
-
-from api import views
 
 urlpatterns = format_suffix_patterns([
     path('', views.api_root),
