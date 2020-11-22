@@ -56,24 +56,30 @@ class UserDetailAPIView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class UserLoginAPIView(APIView):
+class UserLoginAPIView(ObtainAuthToken):
 
-    def post(self, request):
-        username = request.data["username"]
-        password = request.data["password"]
-        #user = authenticate(username=username, password=password)
-        user = User.objects.filter(username=username)
-        
-        if len(user)==1:
-            if user[0].password==password:
-                #token, created = Token.objects.get_or_create(user=user)
-                return Response(user[0].id, status=status.HTTP_202_ACCEPTED)
-            else:
-                return Response(
-                    {
-                        'message': 'Password is wrong.'
-                    },
-                    status=status.HTTP_401_UNAUTHORIZED)
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data,
+                                           context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({
+            'token': token.key,
+            'user_id': user.pk,
+            'email': user.email
+        })
+
+
+class UserSignupAPIView(APIView):
+
+    def post(self,request):
+
+        serializer = UserSerializer(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=status.HTTP_201_CREATED)
         else:
             return Response(
                 {
