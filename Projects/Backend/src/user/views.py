@@ -8,6 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
+from django.contrib.auth.hashers import make_password
 
 
 class UserListAPIView(APIView):
@@ -27,8 +28,9 @@ class UserListAPIView(APIView):
 
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data,status=status.HTTP_201_CREATED)
-        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 class UserDetailAPIView(APIView):
@@ -36,18 +38,19 @@ class UserDetailAPIView(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
-    def get_user(self,id):
+    def get_user(self, id):
+      
         try:
             return User.objects.get(id=id)
         except User.DoesNotExist:
             raise Http404
 
-    def get(self,request,id):
+    def get(self, request, id):
         user = self.get_user(id)
         serializer = UserSerializer(user)
         return Response(serializer.data)
 
-    def put(self,request,id):
+    def put(self, request, id):
         user = self.get_user(id)
         serializer = UserSerializer(user,data=request.data)
 
@@ -56,14 +59,14 @@ class UserDetailAPIView(APIView):
             return Response(serializer.data,status=status.HTTP_200_OK)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self,request,id):
+    def delete(self, request, id):
         user = self.get_user(id)
         user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 
-
+"""
 class UserLoginAPIView(ObtainAuthToken):
 
     def post(self, request, *args, **kwargs):
@@ -77,7 +80,6 @@ class UserLoginAPIView(ObtainAuthToken):
             'user_id': user.pk,
             'email': user.email
         })
-
 class UserSignupAPIView(APIView):
 
 
@@ -90,3 +92,28 @@ class UserSignupAPIView(APIView):
             return Response(status=status.HTTP_201_CREATED)
         else:
             return Response(serializer._errors, status=status.HTTP_400_BAD_REQUEST)
+"""    
+class UserLoginAPIView(APIView):
+
+    def post(self, request):
+        username = request.data["username"]
+        password = request.data["password"]
+        #user = authenticate(username=username, password=password)
+        user = User.objects.filter(username=username)
+        
+        if len(user)==1:
+            if user[0].password==password:
+                #token, created = Token.objects.get_or_create(user=user)
+                return Response(user[0].id, status=status.HTTP_202_ACCEPTED)
+            else:
+                return Response(
+                    {
+                        'message': 'Password is wrong.'
+                    },
+                    status=status.HTTP_401_UNAUTHORIZED)
+        else:
+            return Response(
+                {
+                    'message': 'User not found.'
+                },
+                status=status.HTTP_404_NOT_FOUND)

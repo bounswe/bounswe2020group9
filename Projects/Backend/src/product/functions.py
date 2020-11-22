@@ -1,12 +1,13 @@
 from django.utils import timezone
 
+from message.models import Notification
 from product.models import Product, ProductList, Label, Category, Order, Comment, Payment
 from user.models import Vendor, Customer, User
 
 
 def create_product(name, brand, price, vendor_id, stock=0):
     vendor = Vendor.objects.get(pk=vendor_id)
-    vendor.products.create(name=name, brand=brand, price=price, stock=stock)
+    return vendor.products.create(name=name, brand=brand, price=price, stock=stock)
 
 
 def delete_product(product_id):
@@ -16,7 +17,7 @@ def delete_product(product_id):
 
 def create_product_list(name, owner_id):
     customer = Customer.objects.get(pk=owner_id)
-    customer.productlist_set.create(name=name)
+    return customer.productlist_set.create(name=name)
 
 
 def delete_product_list(product_id):
@@ -27,7 +28,8 @@ def delete_product_list(product_id):
 def create_label(name):
     new_label = Label()
     new_label.name = name
-    new_label.save()
+    return new_label.save()
+
 
 def add_label(product, label_name):
     product.labels.add(Label.objects.get(name=label_name))
@@ -41,12 +43,13 @@ def delete_label(name):
 def create_category(name, parent_name):
     if parent_name is not None:
         parent_category = Category.objects.get(name=parent_name)
-        parent_category.category_set.create(name=name)
+        return parent_category.category_set.create(name=name)
     else:
         # if category has no parent
         new_category = Category()
         new_category.name = name
         new_category.save()
+        return new_category
 
 
 def add_category(product, category_name):
@@ -58,7 +61,6 @@ def delete_category(name):
     Category.delete(deleting_category)
 
 
-
 def create_order(customer_id, product_id, delivery_time):
     customer = Customer.objects.get(pk=customer_id)
     product = Product.objects.get(pk=product_id)
@@ -67,6 +69,7 @@ def create_order(customer_id, product_id, delivery_time):
     new_order.timestamp = timezone.now()
     new_order.delivery_time = delivery_time
     new_order.save()
+    return new_order
 
 
 def delete_order(order_id):
@@ -80,6 +83,7 @@ def create_notification(type, user_id, body):
     new_notification.type = type
     new_notification.body = body
     new_notification.save()
+    return new_notification
 
 
 def delete_notification(notification_id):
@@ -103,6 +107,7 @@ def create_comment(body, rating, customer_id, product_id):
 
     #product.comment_set.get(new_comment)
     new_comment.save()
+    return new_comment
 
 
 def delete_comment(comment_id):
@@ -124,6 +129,7 @@ def create_payment(customer_id, card):
     new_payment.date_year = date_year
     new_payment.cvv = cvv
     new_payment.save()
+    return new_payment
 
 
 def delete_payment(payment_id):
