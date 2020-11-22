@@ -18,7 +18,7 @@ class CategoryCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var cellBackgroundView: UIView!
     
     var delegate: CellDelegate?
-    var categoryId: Int?
+    var categoryName: String?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -48,9 +48,18 @@ class CategoryCollectionViewCell: UICollectionViewCell {
     
     func setCategory(categoryName: String) {
         self.categoryNameLabel.text = categoryName
+        self.categoryName = categoryName
+    }
+    func setAsCurrentCategory(isCurrentCategory: Bool) {
+        if isCurrentCategory {
+            self.cellBackgroundView.backgroundColor = #colorLiteral(red: 0, green: 0.7545160055, blue: 0.850833118, alpha: 1)
+        }else {
+            self.cellBackgroundView.backgroundColor = #colorLiteral(red: 0.3393321633, green: 0.4168884754, blue: 0.9809423089, alpha: 1)
+        }
     }
     
     @objc func cellTapped(_ gesture: UITapGestureRecognizer) {
         delegate?.didCellSelected(cell: self)
+        
     }
 }

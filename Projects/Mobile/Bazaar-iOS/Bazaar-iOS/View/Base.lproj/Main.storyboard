@@ -34,8 +34,8 @@
                                         <textInputTraits key="textInputTraits"/>
                                     </searchBar>
                                 </subviews>
-                                <color key="backgroundColor" systemColor="systemOrangeColor"/>
-                                <color key="tintColor" red="0.96776050329999996" green="0.6416403651" blue="0.1417042017" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="87z-Hl-h1F" firstAttribute="width" secondItem="c2c-qR-Fcn" secondAttribute="width" multiplier="0.1" id="JYE-1H-9h8"/>
                                     <constraint firstItem="87z-Hl-h1F" firstAttribute="height" secondItem="c2c-qR-Fcn" secondAttribute="height" multiplier="0.8" id="Wvx-zk-MX5"/>
@@ -54,7 +54,7 @@
                                 <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </tableView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="NE8-oI-zs6">
-                                <rect key="frame" x="0.0" y="107.66666666666669" width="414" height="54"/>
+                                <rect key="frame" x="10" y="107.66666666666669" width="394" height="54"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Hb5-3h-YEy">
                                     <size key="itemSize" width="128" height="128"/>
@@ -72,7 +72,7 @@
                             <constraint firstItem="c2c-qR-Fcn" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.06" id="2Gb-z2-msC"/>
                             <constraint firstItem="KQU-Rj-dAt" firstAttribute="top" secondItem="c2c-qR-Fcn" secondAttribute="bottom" constant="53.999999999999972" id="7D8-GL-j9g"/>
                             <constraint firstItem="7YP-nJ-ocK" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="Ch6-dX-hM8"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="NE8-oI-zs6" secondAttribute="trailing" id="EA4-vs-LyH"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="NE8-oI-zs6" secondAttribute="trailing" constant="10" id="EA4-vs-LyH"/>
                             <constraint firstItem="KQU-Rj-dAt" firstAttribute="top" secondItem="NE8-oI-zs6" secondAttribute="bottom" id="Xmv-f3-wAe"/>
                             <constraint firstItem="NE8-oI-zs6" firstAttribute="top" secondItem="c2c-qR-Fcn" secondAttribute="bottom" id="ZGJ-gX-4Mt"/>
                             <constraint firstItem="KQU-Rj-dAt" firstAttribute="leading" secondItem="7YP-nJ-ocK" secondAttribute="leading" id="cng-aL-MQ5"/>
@@ -84,7 +84,7 @@
                             <constraint firstItem="c2c-qR-Fcn" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="l7A-Uf-cH8"/>
                             <constraint firstItem="7YP-nJ-ocK" firstAttribute="top" secondItem="KQU-Rj-dAt" secondAttribute="bottom" id="n9A-dR-FIe"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="7YP-nJ-ocK" secondAttribute="trailing" constant="10" id="rYp-ZP-3wH"/>
-                            <constraint firstItem="NE8-oI-zs6" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="x58-oT-C1p"/>
+                            <constraint firstItem="NE8-oI-zs6" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="x58-oT-C1p"/>
                             <constraint firstItem="KQU-Rj-dAt" firstAttribute="height" secondItem="c2c-qR-Fcn" secondAttribute="height" multiplier="1.5" id="yRw-sv-aCT"/>
                         </constraints>
                     </view>
@@ -298,9 +298,6 @@
         <image name="person.fill" catalog="system" width="128" height="120"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemOrangeColor">
-            <color red="1" green="0.58431372549019611" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="tertiarySystemFillColor">
             <color red="0.46274509803921571" green="0.46274509803921571" blue="0.50196078431372548" alpha="0.12" colorSpace="custom" customColorSpace="sRGB"/>

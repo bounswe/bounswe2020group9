@@ -40,10 +40,8 @@ class MainViewController: UIViewController{
         self.categoryCollectionView.dataSource = self
         self.categoryCollectionView.delegate = self
         categoryCollectionView.register(CategoryCollectionViewCell.self, forCellWithReuseIdentifier:  "CategoryCollectionViewCell")
-        //categoriesCollectionView.delegate = self
-        //categoriesCollectionView.dataSource = self
         generateProducts()
-
+        selectedCategoryName = "Electronics"
         productTableView.register(UINib(nibName: "ProductCell", bundle: nil), forCellReuseIdentifier: "ReusableProdcutCell")
     }
     
@@ -123,7 +121,7 @@ extension MainViewController:UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = productTableView.dequeueReusableCell(withIdentifier: "ReusableProdcutCell", for: indexPath) as! ProductCell
         let filteredProducts:[Product] = products.filter { $0.category == selectedCategoryName }
-        let product = products[indexPath.row]
+        let product = filteredProducts[indexPath.row]
         cell.productNameLabel.text = product.title
         cell.productNameLabel.font = UIFont.systemFont(ofSize: 15, weight: .black)
         cell.productDescriptionLabel.text = product.brand
@@ -169,9 +167,15 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CategoryCollectionViewCell", for: indexPath)
             if let cell = cell as? CategoryCollectionViewCell {
-                //cell.delegate = self
+                cell.delegate = self
                 let categoryName = self.categories[indexPath.row]
                 cell.setCategory(categoryName: categoryName)
+                print(self.categories[indexPath.row].caseInsensitiveCompare(selectedCategoryName ?? "") == .orderedSame)
+                if self.categories[indexPath.row].caseInsensitiveCompare(selectedCategoryName ?? "") == .orderedSame {
+                    cell.setAsCurrentCategory(isCurrentCategory: true)
+                }else {
+                    cell.setAsCurrentCategory(isCurrentCategory: false)
+                }
             }
             return cell
         }
@@ -194,29 +198,13 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
     
 }
 
-////MARK: - Extension CellDelegate
-//extension MainViewController:CellDelegate {
-//    func didCellSelected(cell: UICollectionViewCell) {
-//        if let categoryCell = cell as? CategoryCollectionViewCell {
-//            if let categoryId = categoryCell.categoryId {
-//                if let category = self.categoryList.first(where: {$0.rawValue == categoryId}) {
-//                    if let poiList = DataManager.filterData(predicate: NSPredicate(format: "type == \(category.rawValue)"), type: Poi.self) as? [Poi]{
-//                        self.isCategorySearching = true
-//                        self.searchTextFieldLeftConstraint.constant += 28
-//                        self.searchCategoryNameLabel.text = category.name()
-//                        self.searchIconImageView.image = UIImage(named: "poi_type_detail_icon\(categoryId)")
-//                        self.poiList = poiList
-//                        self.searchIconBackgroundView.backgroundColor = #colorLiteral(red: 0.2539516687, green: 0.8300264478, blue: 0.8760231137, alpha: 1)
-//                        self.tableViewPoiList.reloadData()
-//                        self.textField.becomeFirstResponder()
-//                        self.layoutIfNeeded()
-//                    }
-//                }
-//            }
-//        }else if let floorCell = cell as? FloorCollectionViewCell {
-//            if let z = floorCell.floorZ {
-//                self.delegate?.didFloorSelected(z: z)
-//            }
-//        }
-//    }
-//}
+//MARK: - Extension CellDelegate
+extension MainViewController:CellDelegate {
+    func didCellSelected(cell: UICollectionViewCell) {
+        if let categoryCell = cell as? CategoryCollectionViewCell {
+            self.selectedCategoryName=categoryCell.categoryName
+            categoryCollectionView.reloadData()
+            productTableView.reloadData()
+        }
+    }
+}
