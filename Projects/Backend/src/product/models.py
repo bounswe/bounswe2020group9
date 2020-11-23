@@ -28,9 +28,9 @@ class Product(models.Model):
         related_name="products"
     )
 
-    in_lists = models.ManyToManyField(ProductList)
-    in_carts = models.ManyToManyField(Customer, related_name="cart_list")
-    in_alerted_lists = models.ManyToManyField(Customer, related_name="in_alerted_list")
+    in_lists = models.ManyToManyField(ProductList, blank=True)
+    in_carts = models.ManyToManyField(Customer, related_name="cart_list", blank=True)
+    in_alerted_lists = models.ManyToManyField(Customer, related_name="in_alerted_list", blank=True)
 
 
 class Label(models.Model):

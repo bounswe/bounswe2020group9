@@ -10,6 +10,7 @@ from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 
 
+
 class UserListAPIView(APIView):
 
     authentication_classes = [TokenAuthentication]
@@ -27,8 +28,9 @@ class UserListAPIView(APIView):
 
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data,status=status.HTTP_201_CREATED)
-        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 class UserDetailAPIView(APIView):
@@ -36,20 +38,20 @@ class UserDetailAPIView(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
-
     def get_user(self,id):
+
         try:
             return User.objects.get(id=id)
         except User.DoesNotExist:
             raise Http404
 
-    def get(self,request,id):
-
+    def get(self, request, id):
         user = self.get_user(id)
         serializer = UserSerializer(user)
         return Response(serializer.data)
 
-    def put(self,request,id):
+
+    def put(self, request, id):
 
         user = self.get_user(id)
         serializer = UserSerializer(user,data=request.data)
@@ -59,7 +61,7 @@ class UserDetailAPIView(APIView):
             return Response(serializer.data,status=status.HTTP_200_OK)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self,request,id):
+    def delete(self, request, id):
         user = self.get_user(id)
         user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
@@ -81,7 +83,6 @@ class UserLoginAPIView(ObtainAuthToken):
             'user_id': user.pk,
             'email': user.email
         })
-
 class UserSignupAPIView(APIView):
 
 
@@ -94,6 +95,7 @@ class UserSignupAPIView(APIView):
             return Response(status=status.HTTP_201_CREATED)
         else:
             return Response(serializer._errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class UserProfileAPIView(APIView):
 
