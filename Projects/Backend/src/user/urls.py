@@ -2,6 +2,7 @@ from django.urls import path
 from .views import UserListAPIView,UserDetailAPIView,UserLoginAPIView,UserSignupAPIView,UserProfileAPIView,VerificationView
 
 
+
 urlpatterns = [
     path('',UserListAPIView.as_view(), name="user-list"),
     path('<int:id>/', UserDetailAPIView.as_view(), name="user-detail"),

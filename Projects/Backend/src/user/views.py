@@ -16,6 +16,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
 
 
+
 class UserListAPIView(APIView):
 
     #authentication_classes = [TokenAuthentication]
@@ -94,6 +95,7 @@ class UserSignupAPIView(APIView):
         serializer = UserSerializer(data=request.data)
 
         if serializer.is_valid():
+
             email = serializer.validated_data['username']
             serializer.save()
             user = User.objects.get(username = email)
@@ -115,6 +117,7 @@ class UserSignupAPIView(APIView):
             )
 
             email.send(fail_silently =False)
+
 
             return Response(status=status.HTTP_201_CREATED)
         else:
@@ -141,6 +144,7 @@ class UserProfileAPIView(APIView):
 class VerificationView(APIView):
     def get(self,request,uidb64):
         return render(request, 'myapp/index.html')
+
 """    
 class UserLoginAPIView(APIView):
 
