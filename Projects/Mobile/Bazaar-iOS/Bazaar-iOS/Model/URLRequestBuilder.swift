@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Alamofire
 
 protocol URLRequestBuilder: URLRequestConvertible {
     
@@ -36,7 +37,7 @@ extension URLRequestBuilder {
     }
     
     var mainURL: URL  {
-        return URL(string: "")!
+        return URL(string: "http://13.59.236.175:8000/")!
     }
     
     var requestURL: URL {
