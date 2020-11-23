@@ -32,10 +32,13 @@ class Product(models.Model):
     in_carts = models.ManyToManyField(Customer, related_name="cart_list", blank=True)
     in_alerted_lists = models.ManyToManyField(Customer, related_name="in_alerted_list", blank=True)
 
+    def __str__(self):
+        return self.name + " " + self.vendor.user.username
+
 
 class Label(models.Model):
     name = models.CharField(max_length=255, unique=True)
-    products = models.ManyToManyField(Product, related_name="labels")
+    products = models.ManyToManyField(Product, related_name="labels", blank=True)
 
     def __str__(self):
         return self.name
@@ -43,7 +46,7 @@ class Label(models.Model):
 class Category(models.Model):
     name = models.CharField(max_length=255, unique=True)
     parent = models.ForeignKey("self", default=0, on_delete=models.CASCADE, db_constraint=False)
-    products = models.ManyToManyField(Product, related_name="categories")
+    products = models.ManyToManyField(Product, related_name="categories", blank=True)
 
     def __str__(self):
         return self.name

@@ -1,6 +1,6 @@
+from django.http import request
 from rest_framework import serializers
-from .models import  User
-
+from .models import User, Vendor
 
 
 class UserSerializer(serializers.ModelSerializer):
