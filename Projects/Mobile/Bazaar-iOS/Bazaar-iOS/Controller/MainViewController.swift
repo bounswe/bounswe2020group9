@@ -10,8 +10,8 @@ import UIKit
 class MainViewController: UIViewController{
 
     @IBOutlet weak var productTableView: UITableView!
-    @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var categoryCollectionView: UICollectionView!
+    
     
 
     
