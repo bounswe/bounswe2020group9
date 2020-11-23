@@ -98,9 +98,9 @@ export default class ProfilePageComponent extends Component {
                             <div className="form-group row">
                                 <label className="col-lg-5 align-middle">Account</label>
                                 {isVendor ? (
-                            <div> VENDOR </div>
+                            <button type="button" class="btn btn-info">VENDOR</button>
                             ) : (
-                              <div>CUSTOMER</div>
+                              <button type="button" class="btn btn-info">CUSTOMER</button>
                             )}
                             </div>
                             <div className="form-group row">

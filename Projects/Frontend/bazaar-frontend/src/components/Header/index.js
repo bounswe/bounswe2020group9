@@ -53,10 +53,9 @@ class Header extends Component {
 
         return (
             <nav className="navbar navbar-expand-md navbar-light myNavbar">
-                <a className="navbar-brand" > 
+                <a className="navbar-brand" href="/" > 
                 <img
                 src={bazaarIMG}
-                href="/"
                 width="100"
                 height= "100"
                 /></a>
@@ -75,7 +74,7 @@ class Header extends Component {
                                 <span className="mr-1"></span>Profile
                             </a>
                             <div className="dropdown-menu" aria-labelledby="ddlProfile">
-                                <a className="dropdown-item" href="#">View Profile</a>
+                                <a className="dropdown-item" href="/profile-page">View Profile</a>
                                 <a className="dropdown-item" href="#">My Addresses</a>
                                 <a className="dropdown-item" href="#">My Orders</a>
                             </div>
