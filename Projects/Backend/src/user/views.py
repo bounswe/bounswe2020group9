@@ -35,8 +35,8 @@ class UserListAPIView(APIView):
 
 class UserDetailAPIView(APIView):
 
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    #authentication_classes = [TokenAuthentication]
+    #permission_classes = [IsAuthenticated]
 
     def get_user(self, id):
       
