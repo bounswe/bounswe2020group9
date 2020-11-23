@@ -36,6 +36,7 @@ class UserDetailAPIView(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
+
     def get_user(self,id):
         try:
             return User.objects.get(id=id)
@@ -43,11 +44,13 @@ class UserDetailAPIView(APIView):
             raise Http404
 
     def get(self,request,id):
+
         user = self.get_user(id)
         serializer = UserSerializer(user)
         return Response(serializer.data)
 
     def put(self,request,id):
+
         user = self.get_user(id)
         serializer = UserSerializer(user,data=request.data)
 
@@ -67,6 +70,7 @@ class UserDetailAPIView(APIView):
 class UserLoginAPIView(ObtainAuthToken):
 
     def post(self, request, *args, **kwargs):
+
         serializer = self.serializer_class(data=request.data,
                                            context={'request': request})
         serializer.is_valid(raise_exception=True)
@@ -90,3 +94,21 @@ class UserSignupAPIView(APIView):
             return Response(status=status.HTTP_201_CREATED)
         else:
             return Response(serializer._errors, status=status.HTTP_400_BAD_REQUEST)
+
+class UserProfileAPIView(APIView):
+
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self,request):
+        parent = UserDetailAPIView()
+        return parent.get(request,request.user.id)
+
+    def put(self,request):
+        parent = UserDetailAPIView()
+        return parent.put(request,request.user.id)
+
+    def delete(self,request):
+        parent = UserDetailAPIView()
+        return parent.delete(request,request.user.id)
+
