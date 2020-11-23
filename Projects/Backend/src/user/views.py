@@ -8,7 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
-from django.contrib.auth.hashers import make_password
+
 
 
 class UserListAPIView(APIView):
@@ -36,8 +36,8 @@ class UserDetailAPIView(APIView):
     #authentication_classes = [TokenAuthentication]
     #permission_classes = [IsAuthenticated]
 
-    def get_user(self, id):
-      
+    def get_user(self,id):
+
         try:
             return User.objects.get(id=id)
         except User.DoesNotExist:
@@ -48,7 +48,9 @@ class UserDetailAPIView(APIView):
         serializer = UserSerializer(user)
         return Response(serializer.data)
 
+
     def put(self, request, id):
+
         user = self.get_user(id)
         serializer = UserSerializer(user,data=request.data)
 
@@ -64,10 +66,11 @@ class UserDetailAPIView(APIView):
 
 
 
-"""
+
 class UserLoginAPIView(ObtainAuthToken):
 
     def post(self, request, *args, **kwargs):
+
         serializer = self.serializer_class(data=request.data,
                                            context={'request': request})
         serializer.is_valid(raise_exception=True)
@@ -90,6 +93,25 @@ class UserSignupAPIView(APIView):
             return Response(status=status.HTTP_201_CREATED)
         else:
             return Response(serializer._errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserProfileAPIView(APIView):
+
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self,request):
+        parent = UserDetailAPIView()
+        return parent.get(request,request.user.id)
+
+    def put(self,request):
+        parent = UserDetailAPIView()
+        return parent.put(request,request.user.id)
+
+    def delete(self,request):
+        parent = UserDetailAPIView()
+        return parent.delete(request,request.user.id)
+
 """    
 class UserLoginAPIView(APIView):
 
@@ -121,3 +143,4 @@ class UserSignupAPIView(APIView):
                     'message': 'User not found.'
                 },
                 status=status.HTTP_404_NOT_FOUND)
+"""
