@@ -6,6 +6,8 @@ import Image from 'react-bootstrap/Image'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Card from 'react-bootstrap/Card'
+import CardDeck from 'react-bootstrap/CardDeck'
 
 import myImage from '../../assets/productFiller.svg'
 
@@ -41,6 +43,9 @@ class Home extends React.Component {
 
     return (
       <div>
+
+        <div className='row'>
+        <Container>
         <div className='row'>
         <Pagination size="lg">{items}</Pagination>
         </div>
@@ -59,120 +64,48 @@ class Home extends React.Component {
             </p>
           </Jumbotron>
         </div>
-        <div className='row'>
-        <Container>
-          <Row className="justify-content-md-center myRow">
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-          </Row>
-          <Row className="justify-content-md-center  myRow">
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-          </Row>
-          <Row className="justify-content-md-center  myRow">
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-          </Row>
-          <Row className="justify-content-md-center  myRow">
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-          </Row>
-          <Row className="justify-content-md-center  myRow">
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-          </Row>
-          <Row className="justify-content-md-center  myRow">
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-          </Row>
-          <Row className="justify-content-md-center  myRow">
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-          </Row>
-          <Row className="justify-content-md-center  myRow">
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-          </Row>
+        <CardDeck>
+        <Card>
+          <Card.Img variant="top" src={myImage} />
+          <Card.Body>
+            <Card.Title>Card title</Card.Title>
+            <Card.Text>
+              This is a wider card with supporting text below as a natural lead-in to
+              additional content. This content is a little bit longer.
+            </Card.Text>
+          </Card.Body>
+          <Card.Footer>
+            <small className="text-muted">Last updated 3 mins ago</small>
+          </Card.Footer>
+        </Card>
+        <Card>
+          <Card.Img variant="top" src={myImage} />
+          <Card.Body>
+            <Card.Title>Card title</Card.Title>
+            <Card.Text>
+              This card has supporting text below as a natural lead-in to additional
+              content.{' '}
+            </Card.Text>
+          </Card.Body>
+          <Card.Footer>
+            <small className="text-muted">Last updated 3 mins ago</small>
+          </Card.Footer>
+        </Card>
+        <Card>
+          <Card.Img variant="top" src={myImage} />
+          <Card.Body>
+            <Card.Title>Card title</Card.Title>
+            <Card.Text>
+              This is a wider card with supporting text below as a natural lead-in to
+              additional content. This card has even longer content than the first to
+              show that equal height action.
+            </Card.Text>
+          </Card.Body>
+          <Card.Footer>
+            <small className="text-muted">Last updated 3 mins ago</small>
+          </Card.Footer>
+        </Card>
+      </CardDeck>
         </Container>
         </div>
       </div>
