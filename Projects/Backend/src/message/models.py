@@ -15,3 +15,11 @@ class Message(models.Model):
     conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE)
     body = models.CharField(max_length=255)
     is_user1 = models.BooleanField(default=True)
+
+
+class Notification(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    body = models.CharField(max_length=255)
+    timestamp = models.DateTimeField(default=timezone.now)
+    type = models.CharField(max_length=255)
+

@@ -8,4 +8,4 @@ class Location(models.Model):
     address_name = models.CharField(max_length=255)
     address = models.CharField(max_length=255)
     postal_code = models.IntegerField()
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
