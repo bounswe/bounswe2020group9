@@ -42,22 +42,22 @@ class ProductSerializer(serializers.Serializer):
     sell_counter = serializers.IntegerField()
     rating = serializers.FloatField()
     vendor = serializers.PrimaryKeyRelatedField(read_only=True)
-    picture_svg = serializers.CharField(read_only=True, max_length=511, allow_blank=True)
-
+    picture = serializers.ImageField()
 
     def create(self, validated_data):
         return Product.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
         instance.name = validated_data.get("name", instance.name)
-        instance.brand = validated_data.get("brand", instance.name)
-        instance.price = validated_data.get("price", instance.name)
-        instance.stock = validated_data.get("stock", instance.name)
-        instance.sell_counter = validated_data.get("sell_counter", instance.name)
-        instance.rating = validated_data.get("rating", instance.name)
+        instance.brand = validated_data.get("brand", instance.brand)
+        instance.price = validated_data.get("price", instance.price)
+        instance.stock = validated_data.get("stock", instance.stock)
+        instance.sell_counter = validated_data.get("sell_counter", instance.sell_counter)
+        instance.rating = validated_data.get("rating", instance.rating)
+        instance.picture = validated_data.get("picture", instance.picture)
         instance.save()
         return instance
 
     class Meta:
         model = Product
-        fields = ("id", "name", "brand", "price", "stock", "sell_counter", "rating", "vendor", "picture_url")
+        fields = ("id", "name", "brand", "price", "stock", "sell_counter", "rating", "vendor", "picture")

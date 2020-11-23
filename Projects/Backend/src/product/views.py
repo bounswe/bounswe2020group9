@@ -23,6 +23,8 @@ class ProductListAPIView(APIView):
     def post(self, request):
         serializer = ProductSerializer(data=request.data)
         if serializer.is_valid():
+            file = request.data['file']
+            image = Product.objects.create(image=file)
             serializer.save()
             return Response(serializer.data, status=HTTP_201_CREATED)
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)

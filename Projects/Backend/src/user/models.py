@@ -13,7 +13,7 @@ class User(AbstractUser):
         (2, "Vendor"),
         (3, "Admin")
     )
-    user_type = models.PositiveSmallIntegerField(choices=USER_TYPES, default=0)
+    user_type = models.PositiveSmallIntegerField(choices=USER_TYPES, default=1)
     bazaar_point = models.PositiveSmallIntegerField(default=0)
 
     def __str__(self):

@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'x50$_&l5@ui^4=9)p5^xz&1bnyctdj+9dipourzc6s$d2bu3fr'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -58,8 +58,11 @@ REST_FRAMEWORK = {
 
     ]
 }
+
 PROJECT_ROOT = os.path.normpath(os.path.dirname(__file__))
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/' # 'http://localhost:8000/media/'
 STATIC_URL = '/static/'
 
 MIDDLEWARE = [

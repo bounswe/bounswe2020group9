@@ -1,6 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from rest_framework import status
 from .models import User
 from .serializers import UserSerializer
@@ -14,6 +14,7 @@ from django.utils.encoding import force_bytes, force_text, DjangoUnicodeDecodeEr
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse
+from user.models import Customer, Admin, Vendor
 
 
 
@@ -81,11 +82,13 @@ class UserLoginAPIView(ObtainAuthToken):
                                            context={'request': request})
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
+        password = serializer.validated_data['password']
         token, created = Token.objects.get_or_create(user=user)
         return Response({
             'token': token.key,
             'user_id': user.pk,
-            'email': user.email
+            'email': user.email,
+            'password': password
         })
 class UserSignupAPIView(APIView):
 
@@ -99,6 +102,7 @@ class UserSignupAPIView(APIView):
             email = serializer.validated_data['username']
             serializer.save()
             user = User.objects.get(username = email)
+            user.is_active=False
 
             uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
 
@@ -108,18 +112,19 @@ class UserSignupAPIView(APIView):
             activate_url = 'http://'+domain+link
 
             email_subject = 'Activate'
-            email_body = 'Hi Please use this link to verify your account\n'+ activate_url
+            email_body = 'Hi,\nPlease use this link to verify your account:\n'+ activate_url
             email = EmailMessage(
                 email_subject,
                 email_body,
-                'ibrahimorhanh@gmail.com',
+                'bazaar.app451@gmail.com',
                 [email],
             )
-
-            email.send(fail_silently =False)
-
-
-            return Response(status=status.HTTP_201_CREATED)
+            try:
+                email.send(fail_silently =False)
+            except:
+                user.delete()
+                return Response({"Message":"Error: Couldn't send email"},status=status.HTTP_400_BAD_REQUEST)
+            return Response({"Message":"Success: An mail has been sent to your email, please check it"},status=status.HTTP_201_CREATED)
         else:
             return Response(serializer._errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -143,7 +148,25 @@ class UserProfileAPIView(APIView):
 
 class VerificationView(APIView):
     def get(self,request,uidb64):
-        return render(request, 'myapp/index.html')
+        user = User.objects.get(id=int(urlsafe_base64_decode(uidb64)))
+        user.is_active=True
+        if user.user_type == 2:
+            new_type = Vendor()
+        elif user.user_type == 1:
+            new_type = Customer()
+        elif user.user_type == 3:
+            new_type = Admin()
+        else:
+            print("ERROR")
+            return
+        new_type.user_id = user.id
+        try:
+            new_type.save()
+        except:
+            print("ERROR")
+            user.delete()
+            return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
+        return HttpResponse("Your Account, " +user.username+ " has been activated", status=status.HTTP_200_OK)
 
 """    
 class UserLoginAPIView(APIView):
