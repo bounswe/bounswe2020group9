@@ -41,7 +41,7 @@ class MainViewController: UIViewController{
         self.categoryCollectionView.delegate = self
         categoryCollectionView.register(CategoryCollectionViewCell.self, forCellWithReuseIdentifier:  "CategoryCollectionViewCell")
         generateProducts()
-        selectedCategoryName = "Electronics"
+        selectedCategoryName = CLOTHING
         productTableView.register(UINib(nibName: "ProductCell", bundle: nil), forCellReuseIdentifier: "ReusableProdcutCell")
     }
     
@@ -182,8 +182,8 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let text = self.categories[indexPath.row]
-            let width = self.estimatedFrame(text: text, font: UIFont(name: "Poppins-Medium", size: 13.0) ?? UIFont.systemFont(ofSize: 13.0)).width
-            return CGSize(width: width+30.0, height: 35.0)
+        let width = self.estimatedFrame(text: text, font: .systemFont(ofSize: 17.0)).width
+        return CGSize(width: width+30.0, height: 35.0)
     }
     
     func estimatedFrame(text: String, font: UIFont) -> CGRect {

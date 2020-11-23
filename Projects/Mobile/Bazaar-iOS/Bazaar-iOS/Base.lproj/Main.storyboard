@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="150" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="7YP-nJ-ocK">
-                                <rect key="frame" x="10" y="193" width="394" height="620"/>
+                                <rect key="frame" x="10" y="203" width="394" height="610"/>
                                 <color key="backgroundColor" systemColor="tertiarySystemFillColor"/>
                                 <color key="separatorColor" systemColor="tertiarySystemFillColor"/>
                                 <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -34,7 +34,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </imageView>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Search for anything" borderStyle="roundedRect" placeholder="Search" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Etl-0i-eT5">
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Search for anything" borderStyle="roundedRect" placeholder="Search for anything" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="Etl-0i-eT5">
                                         <rect key="frame" x="59.333333333333343" y="10" width="334.66666666666663" height="34"/>
                                         <color key="backgroundColor" systemColor="tertiarySystemFillColor"/>
                                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -63,7 +63,7 @@
                                 <cells/>
                             </collectionView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Products of The Day" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hJc-iA-Y4Y">
-                                <rect key="frame" x="10" y="162.66666666666666" width="394" height="20.333333333333343"/>
+                                <rect key="frame" x="10" y="172.66666666666666" width="394" height="20.333333333333343"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -74,7 +74,7 @@
                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="c2c-qR-Fcn" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.06" id="2Gb-z2-msC"/>
-                            <constraint firstItem="hJc-iA-Y4Y" firstAttribute="top" secondItem="nHk-J4-f5d" secondAttribute="bottom" constant="10" id="Bt0-Gh-VgP"/>
+                            <constraint firstItem="hJc-iA-Y4Y" firstAttribute="top" secondItem="nHk-J4-f5d" secondAttribute="bottom" constant="20" id="Bt0-Gh-VgP"/>
                             <constraint firstItem="7YP-nJ-ocK" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="Ch6-dX-hM8"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="hJc-iA-Y4Y" secondAttribute="trailing" constant="10" id="Q7a-7u-OcR"/>
                             <constraint firstItem="7YP-nJ-ocK" firstAttribute="top" secondItem="hJc-iA-Y4Y" secondAttribute="bottom" constant="10" id="QZp-Bo-0Es"/>
