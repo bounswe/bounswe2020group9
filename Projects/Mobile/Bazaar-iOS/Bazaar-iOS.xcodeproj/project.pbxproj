@@ -12,13 +12,14 @@
 		6994EAD0255DB7BC00AC48F6 /* WishlistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6994EACF255DB7BC00AC48F6 /* WishlistViewController.swift */; };
 		6994EAD2255DB9F500AC48F6 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6994EAD1255DB9F500AC48F6 /* SearchViewController.swift */; };
 		6994EAD6255DBF4A00AC48F6 /* MyCartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6994EAD5255DBF4A00AC48F6 /* MyCartViewController.swift */; };
+		6994EAE22566F8D300AC48F6 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6994EAE12566F8D300AC48F6 /* Product.swift */; };
+		930C1FA0256C08E20086E1DC /* URLRequestBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930C1F9F256C08E20086E1DC /* URLRequestBuilder.swift */; };
 		934993AF256580FB00438FEC /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934993AE256580FB00438FEC /* LoginViewController.swift */; };
 		934993B4256581F700438FEC /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 934993B3256581F700438FEC /* SignUpViewController.swift */; };
-		939AB4F825694B76007815C8 /* StringHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939AB4F725694B76007815C8 /* StringHelper.swift */; };
-		939AB50425695BD5007815C8 /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939AB50325695BD5007815C8 /* RadioButton.swift */; };
-		6994EAE22566F8D300AC48F6 /* Product.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6994EAE12566F8D300AC48F6 /* Product.swift */; };
 		938A1552256AD19100572844 /* CategoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938A1550256AD19100572844 /* CategoryCollectionViewCell.swift */; };
 		938A1553256AD19100572844 /* CategoryCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 938A1551256AD19100572844 /* CategoryCollectionViewCell.xib */; };
+		939AB4F825694B76007815C8 /* StringHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939AB4F725694B76007815C8 /* StringHelper.swift */; };
+		939AB50425695BD5007815C8 /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939AB50325695BD5007815C8 /* RadioButton.swift */; };
 		93EE3CA32558822500B504DF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EE3CA22558822500B504DF /* AppDelegate.swift */; };
 		93EE3CA52558822500B504DF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EE3CA42558822500B504DF /* SceneDelegate.swift */; };
 		93EE3CA72558822500B504DF /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EE3CA62558822500B504DF /* MainViewController.swift */; };
@@ -56,13 +57,14 @@
 		6994EACF255DB7BC00AC48F6 /* WishlistViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WishlistViewController.swift; path = "Bazaar-iOS/Controller/WishlistViewController.swift"; sourceTree = SOURCE_ROOT; };
 		6994EAD1255DB9F500AC48F6 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SearchViewController.swift; path = "Bazaar-iOS/Controller/SearchViewController.swift"; sourceTree = SOURCE_ROOT; };
 		6994EAD5255DBF4A00AC48F6 /* MyCartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MyCartViewController.swift; path = "Bazaar-iOS/Controller/MyCartViewController.swift"; sourceTree = SOURCE_ROOT; };
+		6994EAE12566F8D300AC48F6 /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
+		930C1F9F256C08E20086E1DC /* URLRequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLRequestBuilder.swift; sourceTree = "<group>"; };
 		934993AE256580FB00438FEC /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LoginViewController.swift; path = "Bazaar-iOS/LoginViewController.swift"; sourceTree = SOURCE_ROOT; };
 		934993B3256581F700438FEC /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SignUpViewController.swift; path = "Bazaar-iOS/SignUpViewController.swift"; sourceTree = SOURCE_ROOT; };
-		939AB4F725694B76007815C8 /* StringHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringHelper.swift; sourceTree = "<group>"; };
-		939AB50325695BD5007815C8 /* RadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RadioButton.swift; path = "Bazaar-iOS/Controller/RadioButton.swift"; sourceTree = SOURCE_ROOT; };
-		6994EAE12566F8D300AC48F6 /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
 		938A1550256AD19100572844 /* CategoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		938A1551256AD19100572844 /* CategoryCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CategoryCollectionViewCell.xib; sourceTree = "<group>"; };
+		939AB4F725694B76007815C8 /* StringHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringHelper.swift; sourceTree = "<group>"; };
+		939AB50325695BD5007815C8 /* RadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RadioButton.swift; path = "Bazaar-iOS/Controller/RadioButton.swift"; sourceTree = SOURCE_ROOT; };
 		93EE3C9F2558822500B504DF /* Bazaar-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Bazaar-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		93EE3CA22558822500B504DF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		93EE3CA42558822500B504DF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -126,15 +128,6 @@
 			path = "Product Cell";
 			sourceTree = "<group>";
 		};
-		939AB4FC25694B7E007815C8 /* Helper */ = {
-			isa = PBXGroup;
-			children = (
-				939AB50325695BD5007815C8 /* RadioButton.swift */,
-				939AB4F725694B76007815C8 /* StringHelper.swift */,
-			);
-			path = Helper;
-			sourceTree = "<group>";
-		};
 		6994EAD72566996700AC48F6 /* Categories Collection View Cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -150,6 +143,23 @@
 				6994EAE12566F8D300AC48F6 /* Product.swift */,
 			);
 			path = Product;
+			sourceTree = "<group>";
+		};
+		930C1FA4256C08E80086E1DC /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				930C1F9F256C08E20086E1DC /* URLRequestBuilder.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		939AB4FC25694B7E007815C8 /* Helper */ = {
+			isa = PBXGroup;
+			children = (
+				939AB50325695BD5007815C8 /* RadioButton.swift */,
+				939AB4F725694B76007815C8 /* StringHelper.swift */,
+			);
+			path = Helper;
 			sourceTree = "<group>";
 		};
 		93EE3C962558822500B504DF = {
@@ -179,6 +189,7 @@
 				6994EAE02566F8BF00AC48F6 /* Product */,
 				93EE3CA22558822500B504DF /* AppDelegate.swift */,
 				93EE3CA42558822500B504DF /* SceneDelegate.swift */,
+				930C1FA4256C08E80086E1DC /* Model */,
 				93EE3CDF25594A9400B504DF /* View */,
 				93EE3CE325594A9D00B504DF /* Controller */,
 				93EE3CA82558822500B504DF /* Main.storyboard */,
@@ -377,6 +388,7 @@
 				6994EACD255DA3D400AC48F6 /* MainTabBarController.swift in Sources */,
 				934993B4256581F700438FEC /* SignUpViewController.swift in Sources */,
 				93EE3CDA25594A6800B504DF /* ProductCell.swift in Sources */,
+				930C1FA0256C08E20086E1DC /* URLRequestBuilder.swift in Sources */,
 				93EE3CAD2558822500B504DF /* Bazaar_iOS.xcdatamodeld in Sources */,
 				93EE3CA52558822500B504DF /* SceneDelegate.swift in Sources */,
 				934993AF256580FB00438FEC /* LoginViewController.swift in Sources */,
