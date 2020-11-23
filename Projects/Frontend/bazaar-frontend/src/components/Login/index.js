@@ -24,7 +24,6 @@ export default class LoginComponent extends Component {
 
   handleSubmit = event => {
 
-    const cookies = new Cookies();
     event.preventDefault();
 
     // const data = { "username": "omerBenzer61@bazaar.com", "password": "mypw" }
@@ -34,7 +33,7 @@ export default class LoginComponent extends Component {
       .then(res => {
 
         const cookie_key = 'user';
-        bake_cookie(cookie_key, res);
+        bake_cookie(cookie_key, res.data);
 
         console.log(res);
         console.log(res.data);
