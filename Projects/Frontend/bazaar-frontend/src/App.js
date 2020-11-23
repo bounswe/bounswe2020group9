@@ -29,9 +29,7 @@ function App() {
           <Footer />
         </Route>
         <Route path="/signIn">
-          <Header />  
           <SignIn />
-          <Footer />
         </Route>
         <Route path="/profile-page">
           <ProfilePage />
