@@ -33,7 +33,7 @@ class Product(models.Model):
     in_alerted_lists = models.ManyToManyField(Customer, related_name="in_alerted_list", blank=True)
 
     def __str__(self):
-        return self.name + ", " + self.vendor.user.username
+        return self.name + " " + self.vendor.user.username
 
 
 class Label(models.Model):

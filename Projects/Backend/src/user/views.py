@@ -13,14 +13,13 @@ from django.contrib.auth.hashers import make_password
 
 class UserListAPIView(APIView):
 
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    #authentication_classes = [TokenAuthentication]
+    #permission_classes = [IsAuthenticated]
 
     def get(self,request):
         customers = User.objects.all()
         serializer = UserSerializer(customers,many=True)
         return Response(serializer.data)
-
 
     def post(self,request):
 
@@ -30,7 +29,6 @@ class UserListAPIView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
 
 
 class UserDetailAPIView(APIView):
