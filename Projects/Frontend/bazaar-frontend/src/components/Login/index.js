@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import GoogleButton from 'react-google-button'
 import axios from 'axios'
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
+import { Redirect } from "react-router-dom";
 
 import "./login.css";
 
@@ -12,6 +13,7 @@ export default class LoginComponent extends Component {
     this.state = {
       username: '',
       password: '',
+      redirect: null,
     }
   }
 
@@ -37,14 +39,16 @@ export default class LoginComponent extends Component {
 
         console.log(res);
         console.log(res.data);
+        this.setState({ redirect: "/" });
       })
-
-
 
   }
 
 
   render() {
+    if (this.state.redirect) {
+      return <Redirect to={this.state.redirect} />
+    }
     return (
       <div className="entry-form">
         <form onSubmit={this.handleSubmit}>
@@ -58,7 +62,7 @@ export default class LoginComponent extends Component {
 
           <div className="form-group">
             <label>Password</label>
-            <input type="text" name="password" className="form-control" placeholder="Enter password"
+            <input type="password" name="password" className="form-control" placeholder="Enter password"
               onChange={this.handleChange} />
           </div>
 

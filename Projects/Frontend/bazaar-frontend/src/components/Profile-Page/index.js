@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from 'axios'
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
+import Cookies from 'js-cookie';
 
 
 import "./profilepage.css";
@@ -16,7 +17,9 @@ export default class ProfilePageComponent extends Component {
           confpw: '',
           fname: '',
           lname: '',
-          redirect: null
+          redirect: null,
+          isVendor: false
+        //   user_id: Cookies.get("user_id")
         }
       }
     
@@ -50,10 +53,27 @@ export default class ProfilePageComponent extends Component {
             console.log(res.data);
 
           })
-        
       }
 
+      componentDidMount() {
+        // let cookie_key = "user_id" 
+        // let myUserId = read_cookie(cookie_key)
+        // console.log(myUserId, 'MYUSEID')
+        // console.log(Cookies.get('user_id'), 'USERRRRRIDDDD')
+        axios.get(`http://13.59.236.175:8000/api/user/8/`)
+          .then(res => {
+              console.log(res.data)
+              this.setState({fname : "Firat"})
+              console.log(this.state.fname, 'FNAME')
+              this.setState({lname : "Bulut"})
+
+          })
+
+      }
+
+
     render() {
+      const isVendor = this.state.isVendor
         return (
             <div className="profile-form">
                 <div className="profile-container justify-content-center" id="header3">
@@ -66,35 +86,22 @@ export default class ProfilePageComponent extends Component {
                             <form onSubmit={this.handleSubmit}>
                             <div className="form-group row">
                                 <label className="col-lg-5 align-middle">First Name</label>
-                                <input type="text" name="fname"className="form-control col" placeholder="{name}" 
+                                <input type="text" name="fname"className="form-control col" value = {this.state.fname}
                                 onChange={this.handleChange}/>
                             </div>
                             <div className="form-group row">
                                 <label className="col-lg-5 align-middle">Last Name</label>
-                                <input type="text" name="lname"className="form-control col" placeholder="{surname}" 
+                                <input type="text" name="lname"className="form-control col" value = {this.state.lname}
                                 onChange={this.handleChange}/>
                             </div>
-                            <div className="form-group row">
-                                <label className="col-lg-5 align-middle">Gender</label>
-                                <div class="form-check form-check-inline">
-                                <input class="form-check-input align-middle" type="radio" name="isMale" id="maleBox" value="option1"/>
-                                <label class="form-check-label" for="isMale">Male</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input align-middle" type="radio" name="isFemaile" id="femaleBox" value="option2"/>
-                                <label class="form-check-label" for="isFemale">Female</label>
-                                </div>
-                            </div>
+
                             <div className="form-group row">
                                 <label className="col-lg-5 align-middle">Account</label>
-                                <div class="form-check form-check-inline">
-                                <input class="form-check-input align-middle" type="radio" name="isVendor" id="vendorBox" value="option1"/>
-                                <label class="form-check-label" for="isVendor">Vendor</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input align-middle" type="radio" name="isCustomer" id="customerBox" value="option2"/>
-                                <label class="form-check-label" for="isCustomer">Customer</label>
-                                </div>
+                                {isVendor ? (
+                            <div> VENDOR </div>
+                            ) : (
+                              <div>CUSTOMER</div>
+                            )}
                             </div>
                             <div className="form-group row">
                                 <label className="col-lg-5 align-middle">Password</label>

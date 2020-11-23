@@ -20,9 +20,7 @@ export default class SignUpComponent extends Component {
       }
     
       handleChange = event => {
-    
         this.setState({ [event.target.name]: event.target.value });
-    
       }
 
     
@@ -42,7 +40,6 @@ export default class SignUpComponent extends Component {
             console.log(res);
             console.log(res.data);
             this.setState({ redirect: "/signin" });
-
           })
     
     
@@ -84,7 +81,7 @@ export default class SignUpComponent extends Component {
                     <button id="submit" type="submit" className="btn btn-block">Sign Up</button>
 
                     <p className="forgot-password">
-                        Already registered <a href="#">sign in?</a>
+                        Already registered <a href="/signin">sign in?</a>
                     </p>
                 </form>
                 <GoogleButton className="btn-google"
