@@ -42,6 +42,8 @@ class ProductSerializer(serializers.Serializer):
     sell_counter = serializers.IntegerField()
     rating = serializers.FloatField()
     vendor = serializers.PrimaryKeyRelatedField(read_only=True)
+    picture_svg = serializers.CharField(read_only=True, max_length=511, allow_blank=True)
+
 
     def create(self, validated_data):
         return Product.objects.create(**validated_data)
@@ -58,4 +60,4 @@ class ProductSerializer(serializers.Serializer):
 
     class Meta:
         model = Product
-        fields = ("id", "name", "brand", "price", "stock", "sell_counter", "rating", "vendor")
+        fields = ("id", "name", "brand", "price", "stock", "sell_counter", "rating", "vendor", "picture_url")

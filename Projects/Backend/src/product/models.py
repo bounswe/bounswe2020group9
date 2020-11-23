@@ -21,6 +21,7 @@ class Product(models.Model):
     rating = models.FloatField(default=0)
     sell_counter = models.IntegerField(default=0)
     release_date = models.DateTimeField(default=timezone.now)
+    picture_svg = models.CharField(max_length=511, default="")
 
     vendor = models.ForeignKey(
         Vendor,
