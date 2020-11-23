@@ -7,6 +7,7 @@
 
 import UIKit
 
+
 class LoginViewController: UIViewController {
     
     @IBOutlet weak var emailTextField: UITextField!
@@ -33,11 +34,19 @@ class LoginViewController: UIViewController {
                 self.present(alertController, animated: true, completion: nil)
             }else{
                 if let password = passwordTextField.text{
-                    if password.count < 8 || password.count > 20 {
+                    if password.count < 3 || password.count > 20 {
                         alertController.message = "Password must be at least 8 , at most 20 characters in length"
                         self.present(alertController, animated: true, completion: nil)
                     }else {
-                        performSegue(withIdentifier: "loginToMain", sender: nil)
+                        APIManager().authenticate(username: email, password: password) { (result) in
+                            switch result {
+                            case .success(_):
+                                self.performSegue(withIdentifier: "loginToMain", sender: nil)
+                            case .failure(_):
+                                alertController.message = "Invalid username or password"
+                                self.present(alertController, animated: true, completion: nil)
+                            }
+                        }
                     }
                 }else{
                 }

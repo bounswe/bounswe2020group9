@@ -10,13 +10,12 @@ import Alamofire
 
 enum ApiRouter: URLRequestBuilder {
     
-    case authenticate(appKey: String, appSecret: String)
-
+    case authenticate(username: String, password: String)
     // MARK: - Path
     internal var path: String {
         switch self {
         case .authenticate:
-            return "authenticate"
+            return "api/user/login/"
         }
     }
 
@@ -24,9 +23,9 @@ enum ApiRouter: URLRequestBuilder {
     internal var parameters: Parameters? {
         var params = Parameters.init()
         switch self {
-        case .authenticate(let appKey, let appSecret):
-            params["appkey"] = appKey
-            params["appsecret"] = appSecret
+        case .authenticate(let username, let password):
+            params["username"] = username
+            params["password"] = password
         }
         return params
     }

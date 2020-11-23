@@ -52,9 +52,9 @@ class CategoryCollectionViewCell: UICollectionViewCell {
     }
     func setAsCurrentCategory(isCurrentCategory: Bool) {
         if isCurrentCategory {
-            self.cellBackgroundView.backgroundColor = #colorLiteral(red: 0, green: 0.7545160055, blue: 0.850833118, alpha: 1)
+            self.cellBackgroundView.backgroundColor = #colorLiteral(red: 0.9664689898, green: 0.6368434429, blue: 0.1475634575, alpha: 1)
         }else {
-            self.cellBackgroundView.backgroundColor = #colorLiteral(red: 0.3393321633, green: 0.4168884754, blue: 0.9809423089, alpha: 1)
+            self.cellBackgroundView.backgroundColor = #colorLiteral(red: 0.5568061471, green: 0.5569032431, blue: 0.5782801509, alpha: 0.5684128853)
         }
     }
     

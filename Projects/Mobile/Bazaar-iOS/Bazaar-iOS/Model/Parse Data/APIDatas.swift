@@ -15,6 +15,14 @@ struct LoginData : Codable{
     let email:String
     
 }
+
+struct AuthData:Codable {
+    let token:String
+    let user_id:Int
+    let email:String
+}
+
+
 //{
 //    "id": 1,
 //    "last_login": "2020-11-23T07:51:49Z",
