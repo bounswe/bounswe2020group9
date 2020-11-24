@@ -6,25 +6,34 @@ import Image from 'react-bootstrap/Image'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import Card from 'react-bootstrap/Card'
 import CardDeck from 'react-bootstrap/CardDeck'
+import axios from 'axios'
+import Card from "../../components/Card"
 
 import myImage from '../../assets/productFiller.svg'
 
 import './home.css'
 
 class Home extends React.Component {
-
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {date: new active(2)};
-  //   let items = [];
-  // }
+  
+  constructor() {
+    super();
+    this.state = {
+      isLogged: 'yes',
+      redirect: null,
+      products: []
+    }
+  }
 
 
 
   componentDidMount() {
-
+    axios.get(`http://13.59.236.175:8000/api/product/`)
+    .then(res => {
+        console.log(res.data[1].brand)
+        this.setState({products : res.data})
+        console.log(this.state.products[0])
+    })
 
   }
 
@@ -41,9 +50,19 @@ class Home extends React.Component {
       );
     }
 
-    return (
-      <div>
 
+
+    let productCards = this.state.products.map(product => {
+      return (
+        <Col sm="3">
+          <Card product={product}></Card>
+        </Col>
+      )
+    })
+
+    return (
+
+      <div>
         <div className='row'>
         <Container>
         <div className='row'>
@@ -64,48 +83,11 @@ class Home extends React.Component {
             </p>
           </Jumbotron>
         </div>
-        <CardDeck>
-        <Card>
-          <Card.Img variant="top" src={myImage} />
-          <Card.Body>
-            <Card.Title>Card title</Card.Title>
-            <Card.Text>
-              This is a wider card with supporting text below as a natural lead-in to
-              additional content. This content is a little bit longer.
-            </Card.Text>
-          </Card.Body>
-          <Card.Footer>
-            <small className="text-muted">Last updated 3 mins ago</small>
-          </Card.Footer>
-        </Card>
-        <Card>
-          <Card.Img variant="top" src={myImage} />
-          <Card.Body>
-            <Card.Title>Card title</Card.Title>
-            <Card.Text>
-              This card has supporting text below as a natural lead-in to additional
-              content.{' '}
-            </Card.Text>
-          </Card.Body>
-          <Card.Footer>
-            <small className="text-muted">Last updated 3 mins ago</small>
-          </Card.Footer>
-        </Card>
-        <Card>
-          <Card.Img variant="top" src={myImage} />
-          <Card.Body>
-            <Card.Title>Card title</Card.Title>
-            <Card.Text>
-              This is a wider card with supporting text below as a natural lead-in to
-              additional content. This card has even longer content than the first to
-              show that equal height action.
-            </Card.Text>
-          </Card.Body>
-          <Card.Footer>
-            <small className="text-muted">Last updated 3 mins ago</small>
-          </Card.Footer>
-        </Card>
-      </CardDeck>
+        <Container fluid>
+          <Row>
+          {productCards}
+          </Row>
+        </Container>
         </Container>
         </div>
       </div>
