@@ -18,7 +18,8 @@ export default class ProfilePageComponent extends Component {
           fname: '',
           lname: '',
           redirect: null,
-          isVendor: false
+          isVendor: false,
+          hasError: false
         //   user_id: Cookies.get("user_id")
         }
       }
@@ -36,14 +37,20 @@ export default class ProfilePageComponent extends Component {
         const data = new FormData();
         data.append("first_name", this.state.fname);
         data.append("last_name", this.state.lname);
+        data.append("password", this.state.newpw)
 
         if (this.state.newpw == this.state.confpw) {
             
-            // cookieden passworde bak, this.state.oldpw'yle eşitse put request at. 
-            // Eşit değilse password yanlış error'ü ver.
+            axios.put(`http://13.59.236.175:8000/api/user/`, data)
+            .then(res => {
+      
+              console.log(res);
+              console.log(res.data);
+  
+            })
 
         } else {
-            // newpw ile confpw eşit değil errorü ver.
+            this.setState({ [this.state.hasError]: true });
         }
     
         axios.put(`http://13.59.236.175:8000/api/user/`, data)
@@ -63,9 +70,9 @@ export default class ProfilePageComponent extends Component {
         axios.get(`http://13.59.236.175:8000/api/user/8/`)
           .then(res => {
               console.log(res.data)
-              this.setState({fname : "Firat"})
+              this.setState({fname : ""})
               console.log(this.state.fname, 'FNAME')
-              this.setState({lname : "Bulut"})
+              this.setState({lname : ""})
 
           })
 
@@ -74,6 +81,10 @@ export default class ProfilePageComponent extends Component {
 
     render() {
       const isVendor = this.state.isVendor
+      if (this.state.hasError) {
+        // You can render any custom fallback UI
+        return <h1>Something went wrong.</h1>;
+      }
         return (
             <div className="profile-form">
                 <div className="profile-container justify-content-center" id="header3">
@@ -86,21 +97,21 @@ export default class ProfilePageComponent extends Component {
                             <form onSubmit={this.handleSubmit}>
                             <div className="form-group row">
                                 <label className="col-lg-5 align-middle">First Name</label>
-                                <input type="text" name="fname"className="form-control col" value = {this.state.fname}
+                                <input type="text" name="fname"className="form-control col" placeholder = "enter first name"
                                 onChange={this.handleChange}/>
                             </div>
                             <div className="form-group row">
                                 <label className="col-lg-5 align-middle">Last Name</label>
-                                <input type="text" name="lname"className="form-control col" value = {this.state.lname}
+                                <input type="text" name="lname"className="form-control col" placeholder = "enter last name"
                                 onChange={this.handleChange}/>
                             </div>
 
                             <div className="form-group row">
                                 <label className="col-lg-5 align-middle">Account</label>
                                 {isVendor ? (
-                            <button type="button" class="btn btn-info">VENDOR</button>
+                            <button id="isvendor" type="button" class="btn btn-info">VENDOR</button>
                             ) : (
-                              <button type="button" class="btn btn-info">CUSTOMER</button>
+                              <button id="isvendor" type="button" class="btn btn-info">CUSTOMER</button>
                             )}
                             </div>
                             <div className="form-group row">
@@ -118,7 +129,10 @@ export default class ProfilePageComponent extends Component {
                                 <input type="text" name="confpw" className="form-control col" placeholder="New password(again)" 
                                 onChange={this.handleChange}/>
                             </div>
-                            <button id="save-changes" type="submit" className="btn btn-block">Confirm changes</button>
+                            <div id="save-changes-div">
+                                <button id="save-changes" type="submit" className="btn btn-block">Confirm changes</button>
+
+                            </div>
 
                             </form>
                         </div>

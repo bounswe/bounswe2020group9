@@ -56,12 +56,12 @@ export default class SignUpComponent extends Component {
                     <h3>Sign Up</h3>
                     <div className="row">
                         <div className="form-group col">
-                            <label>First Name</label>
+                            <label>First Name (Optional)</label>
                             <input type="text" name="fname" className="form-control" placeholder="Enter first name"  
                             onChange={this.handleChange}/>
                         </div>
                         <div className="form-group col">
-                            <label>Last name</label>
+                            <label>Last name (Optional)</label>
                             <input type="text" name="lname" className="form-control" placeholder="Enter last name"  
                             onChange={this.handleChange}/>
                         </div>

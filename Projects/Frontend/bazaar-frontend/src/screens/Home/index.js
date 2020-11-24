@@ -26,7 +26,6 @@ class Home extends React.Component {
   }
 
 
-
   componentDidMount() {
     axios.get(`http://13.59.236.175:8000/api/product/`)
     .then(res => {
@@ -49,7 +48,7 @@ class Home extends React.Component {
         </Pagination.Item>,
       );
     }
-
+    
 
 
     let productCards = this.state.products.map(product => {
