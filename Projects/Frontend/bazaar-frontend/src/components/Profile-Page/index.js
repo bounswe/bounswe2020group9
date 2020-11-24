@@ -63,7 +63,6 @@ export default class ProfilePageComponent extends Component {
       }
 
       componentDidMount() {
-        let cookie_key = "user_id" 
         let myCookie = read_cookie('user')
         axios.get(`http://13.59.236.175:8000/api/user/${myCookie.user_id}/`)
           .then(res => {

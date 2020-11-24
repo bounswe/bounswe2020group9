@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom'
+import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 
 
 import "bootstrap/dist/css/bootstrap.min.css"
@@ -31,8 +32,24 @@ class Header extends Component {
         }
 
     }
-   
+
+
+    componentDidMount() {
+        let myCookie = read_cookie('user')
+        console.log(myCookie, "COOOOOOK")
+
+        if(Object.keys(myCookie).length === 0){
+            this.setState({isSignedIn : false})
+            console.log('EMPPTY')
+        }
+        else{
+            this.setState({isSignedIn : true})
+            console.log('NOT EMPTY')
+            
+        }
+      }
     render() {
+
 
         let SignPart 
         
