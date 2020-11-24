@@ -19,7 +19,7 @@ render(){
     return(
         <div>
             <Card>
-            <Card.Img variant="top" src={myImage} />
+            <Card.Img variant="top" src={this.props.myImage} />
             <Card.Body>
                 <Card.Title>{this.props.product.name}</Card.Title>
                 <Card.Text>
