@@ -61,7 +61,7 @@ class Header extends Component {
                                  <span className="mr-1"></span>Profile
                                 </a>
                                  <div className="dropdown-menu" aria-labelledby="ddlProfile">
-                                          <a className="dropdown-item" href="#">View Profile</a>
+                                          <a className="dropdown-item" href="/profile-page">View Profile</a>
                                           <a className="dropdown-item" href="#">My Addresses</a>
                                           <a className="dropdown-item" href="#">My Orders</a>
                                  </div>
@@ -94,7 +94,7 @@ class Header extends Component {
                                 </div>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="#">
+                                <a className="nav-link" href="/" onClick={delete_cookie("user")}>
                                         <FontAwesomeIcon icon = {faSignOutAlt}/>
                                         <span className="mr-1"></span>Sign Out
                                 </a>
