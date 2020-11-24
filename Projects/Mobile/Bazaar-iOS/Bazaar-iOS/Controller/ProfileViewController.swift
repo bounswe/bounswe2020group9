@@ -13,6 +13,11 @@ import UIKit
 class ProfileViewController: UIViewController{
     
     @IBOutlet weak var profileMenu: UITableView!
+    @IBOutlet weak var userEmailLabel: UILabel!
+    @IBOutlet weak var userAddressLabel: UILabel!
+    @IBOutlet weak var userNameLabel: UILabel!
+    @IBOutlet weak var loginButton: UIButton!
+    @IBOutlet weak var logoutButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,6 +26,23 @@ class ProfileViewController: UIViewController{
         profileMenu.layer.cornerRadius = 10
         profileMenu.layer.borderColor = UIColor.orange.cgColor
         profileMenu.layer.borderWidth = 0.5
+        if (UserSingleton.shared.didLogin) {
+            userEmailLabel.text = UserSingleton.shared.username
+            userNameLabel.text = "Bazaar"
+            userAddressLabel.text = "Bogazici University North Campus, Etiler/Istanbul"
+            loginButton.isHidden = true
+            loginButton.isEnabled = false
+            logoutButton.isHidden = false
+            logoutButton.isEnabled = true
+        } else {
+            userEmailLabel.text = "You haven't logged in yet."
+            userAddressLabel.isHidden = true
+            userAddressLabel.text = "Bogazici University North Campus, Etiler/Istanbul"
+            loginButton.isHidden = false
+            loginButton.isEnabled = true
+            logoutButton.isHidden = true
+            logoutButton.isEnabled = false
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -40,6 +62,26 @@ class ProfileViewController: UIViewController{
         super.viewDidLayoutSubviews()
         let topInset = max((profileMenu.frame.height - profileMenu.contentSize.height) / 2.0, 0.0)
         profileMenu.contentInset = UIEdgeInsets(top: topInset, left: 0.0, bottom: 0.0, right: 0.0)
+    }
+    
+    @IBAction func loginButtonPressed(_ sender: Any) {
+        if UserSingleton.shared.didLogin {
+            performSegue(withIdentifier: "ProfileToLoginSegue", sender: self)
+            UserSingleton.shared.didLogin = false
+            UserSingleton.shared.username = "You haven't logged in yet."
+        } else {
+            performSegue(withIdentifier: "ProfileToLoginSegue", sender: self)
+        }
+    }
+    
+    @IBAction func logoutButtonPressed(_ sender: Any) {
+        if UserSingleton.shared.didLogin {
+            performSegue(withIdentifier: "ProfileToLoginSegue", sender: self)
+            UserSingleton.shared.didLogin = false
+            UserSingleton.shared.username = "You haven't logged in yet."
+        } else {
+            performSegue(withIdentifier: "ProfileToLoginSegue", sender: self)
+        }
     }
     
 }
@@ -66,4 +108,10 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 
-
+class UserSingleton {
+    
+    static let shared = UserSingleton()
+    var username = "You haven't logged in yet."
+    var didLogin = false
+    
+}
