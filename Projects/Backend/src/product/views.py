@@ -1,7 +1,4 @@
 from django.http import HttpResponse
-from rest_framework import request
-from rest_framework.decorators import api_view
-from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_204_NO_CONTENT
 from rest_framework.views import APIView
@@ -17,7 +14,7 @@ class ProductListAPIView(APIView):
 
     def get(self, request):
         products = Product.objects.all()
-        serializer = ProductSerializer(products, many=True, context = {'request': request})
+        serializer = ProductSerializer(products, many=True, context={'request': request})
         return Response(serializer.data)
 
     def post(self, request):

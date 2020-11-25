@@ -1,9 +1,10 @@
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.conf import settings
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
+
 
 # Create your models here.
 
@@ -17,7 +18,7 @@ class User(AbstractUser):
     bazaar_point = models.PositiveSmallIntegerField(default=0)
 
     def __str__(self):
-        return self.email + ", (" + str(self.USER_TYPES[self.user_type-1][1]) + ")"
+        return self.email + ", (" + str(self.USER_TYPES[self.user_type - 1][1]) + ")"
 
 
 class Vendor(models.Model):

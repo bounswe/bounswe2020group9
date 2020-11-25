@@ -11,8 +11,10 @@ class ProductList(models.Model):
     name = models.CharField(max_length=255)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
 
+
 def productImage(instance, filename):
     return '/'.join(['images', str(instance.name), filename])
+
 
 class Product(models.Model):
     name = models.CharField(max_length=255)
@@ -45,6 +47,7 @@ class Label(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class Category(models.Model):
     name = models.CharField(max_length=255, unique=True)

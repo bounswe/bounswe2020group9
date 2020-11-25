@@ -10,6 +10,8 @@ practice-app/.DS_Store
 
 
 # Backend ignore files
+Projects/Backend/src/api/static/
+
 Projects/Backend/venv
 Projects/Backend/src/venv
 Projects/Backend/.vscode

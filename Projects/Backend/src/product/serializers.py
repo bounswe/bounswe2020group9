@@ -1,11 +1,8 @@
-from django.http import request
-from rest_framework import serializers
-from rest_framework.reverse import reverse
-
-from .models import Product, Label, Category
 from pygments.lexers import get_all_lexers
 from pygments.styles import get_all_styles
-from user.serializers import UserSerializer
+from rest_framework import serializers
+
+from .models import Product, Label, Category
 
 LEXERS = [item for item in get_all_lexers() if item[1]]
 LANGUAGE_CHOICES = sorted([(item[1][0], item[0]) for item in LEXERS])
@@ -13,7 +10,7 @@ STYLE_CHOICES = sorted([(item, item) for item in get_all_styles()])
 
 
 class LabelSerializer(serializers.ModelSerializer):
-    #id = serializers.IntegerField(read_only=True)
+    # id = serializers.IntegerField(read_only=True)
     name = serializers.CharField(required=True, allow_blank=False, max_length=255)
 
     class Meta:
@@ -22,7 +19,7 @@ class LabelSerializer(serializers.ModelSerializer):
 
 
 class CategorySerializer(serializers.ModelSerializer):
-    #id = serializers.IntegerField(read_only=True)
+    # id = serializers.IntegerField(read_only=True)
     name = serializers.CharField(required=True, allow_blank=False, max_length=255)
     parent = serializers.StringRelatedField(read_only=True)
 

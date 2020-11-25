@@ -13,17 +13,14 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.conf import settings
-from django.conf.urls import url
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.urls import path, include
 from django.views.generic import RedirectView
-from django.views.static import serve
 from rest_framework.urlpatterns import format_suffix_patterns
 
 from api import views
-from product.views import ProductDetailAPIView
 
 urlpatterns = format_suffix_patterns([
     path('', views.api_root),
@@ -34,7 +31,7 @@ urlpatterns = format_suffix_patterns([
     path('api/location/', include("location.urls")),
     path('favicon.ico', RedirectView.as_view(url=staticfiles_storage.url('images/favicon.ico'))),
     path('static/images/favicon.ico', RedirectView.as_view(url=staticfiles_storage.url('images/favicon.ico'))),
-    #path('api/user/suzan_uskudarli', ProductDetailAPIView.as_view(), id=17), # vendor (databasede bulunsun ama kullanılmayacak)
-    #path('api/user/1', ProductDetailAPIView.as_view(), pk=1), # customer (login olacak)
-    #TODO name, surname, adres, puan(int), email, date_joined, last_login
+    # path('api/user/suzan_uskudarli', ProductDetailAPIView.as_view(), id=17), # vendor (databasede bulunsun ama kullanılmayacak)
+    # path('api/user/1', ProductDetailAPIView.as_view(), pk=1), # customer (login olacak)
+    # TODO name, surname, adres, puan(int), email, date_joined, last_login
 ]) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

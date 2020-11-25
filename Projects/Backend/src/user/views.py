@@ -1,20 +1,20 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import EmailMessage
 from django.http import Http404, HttpResponse
+from django.urls import reverse
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from rest_framework import status
-from .models import User
-from .serializers import UserSerializer
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
-from django.core.mail import EmailMessage
-from django.shortcuts import render, redirect
-from django.utils.encoding import force_bytes, force_text, DjangoUnicodeDecodeError
-from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
-from django.contrib.sites.shortcuts import get_current_site
-from django.urls import reverse
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
 from user.models import Customer, Admin, Vendor
+from .models import User
+from .serializers import UserSerializer
 
 
 class UserListAPIView(APIView):
