@@ -1,4 +1,4 @@
-from django.http import request
+from django.http import request, HttpResponse
 from rest_framework import serializers
 from .models import User, Vendor
 

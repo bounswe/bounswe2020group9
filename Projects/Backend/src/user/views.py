@@ -17,19 +17,17 @@ from django.urls import reverse
 from user.models import Customer, Admin, Vendor
 
 
-
 class UserListAPIView(APIView):
 
-    #authentication_classes = [TokenAuthentication]
-    #permission_classes = [IsAuthenticated]
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
 
-    def get(self,request):
+    def get(self, request):
         customers = User.objects.all()
-        serializer = UserSerializer(customers,many=True)
+        serializer = UserSerializer(customers, many=True)
         return Response(serializer.data)
 
-    def post(self,request):
-
+    def post(self, request):
         serializer = UserSerializer(data=request.data)
 
         if serializer.is_valid():
@@ -40,10 +38,10 @@ class UserListAPIView(APIView):
 
 class UserDetailAPIView(APIView):
 
-    #authentication_classes = [TokenAuthentication]
-    #permission_classes = [IsAuthenticated]
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
 
-    def get_user(self,id):
+    def get_user(self, id):
 
         try:
             return User.objects.get(id=id)
@@ -55,16 +53,15 @@ class UserDetailAPIView(APIView):
         serializer = UserSerializer(user)
         return Response(serializer.data)
 
-
     def put(self, request, id):
 
         user = self.get_user(id)
-        serializer = UserSerializer(user,data=request.data)
+        serializer = UserSerializer(user, data=request.data)
 
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data,status=status.HTTP_200_OK)
-        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, id):
         user = self.get_user(id)
@@ -72,12 +69,9 @@ class UserDetailAPIView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-
-
 class UserLoginAPIView(ObtainAuthToken):
 
     def post(self, request, *args, **kwargs):
-
         serializer = self.serializer_class(data=request.data,
                                            context={'request': request})
         serializer.is_valid(raise_exception=True)
@@ -90,29 +84,31 @@ class UserLoginAPIView(ObtainAuthToken):
             'email': user.email,
             'password': password
         })
+
+
 class UserSignupAPIView(APIView):
 
-
-    def post(self,request):
+    def post(self, request):
 
         serializer = UserSerializer(data=request.data)
 
         if serializer.is_valid():
-
+            if not "user_type" in serializer.validated_data.keys():
+                return Response({"user_type": ["This field is required."]}, status=status.HTTP_400_BAD_REQUEST)
             email = serializer.validated_data['username']
             serializer.save()
-            user = User.objects.get(username = email)
-            user.is_active=False
+            user = User.objects.get(username=email)
+            user.is_active = False
 
             uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
 
             domain = get_current_site(request).domain
-            link = reverse('activate',kwargs={'uidb64':uidb64})
-            
-            activate_url = 'http://'+domain+link
+            link = reverse('activate', kwargs={'uidb64': uidb64})
+
+            activate_url = 'http://' + domain + link + '/'
 
             email_subject = 'Activate'
-            email_body = 'Hi,\nPlease use this link to verify your account:\n'+ activate_url
+            email_body = 'Hi,\nPlease use this link to verify your account:\n' + activate_url
             email = EmailMessage(
                 email_subject,
                 email_body,
@@ -120,36 +116,37 @@ class UserSignupAPIView(APIView):
                 [email],
             )
             try:
-                email.send(fail_silently =False)
-            except:
+                email.send(fail_silently=False)
+            except Exception:
                 user.delete()
-                return Response({"Message":"Error: Couldn't send email"},status=status.HTTP_400_BAD_REQUEST)
-            return Response({"Message":"Success: An mail has been sent to your email, please check it"},status=status.HTTP_201_CREATED)
+                return Response({"username": ["Couldn't send email"]}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": "Success: An mail has been sent to your email, please check it"},
+                            status=status.HTTP_201_CREATED)
         else:
             return Response(serializer._errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserProfileAPIView(APIView):
-
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
-    def get(self,request):
+    def get(self, request):
         parent = UserDetailAPIView()
-        return parent.get(request,request.user.id)
+        return parent.get(request, request.user.id)
 
-    def put(self,request):
+    def put(self, request):
         parent = UserDetailAPIView()
-        return parent.put(request,request.user.id)
+        return parent.put(request, request.user.id)
 
-    def delete(self,request):
+    def delete(self, request):
         parent = UserDetailAPIView()
-        return parent.delete(request,request.user.id)
+        return parent.delete(request, request.user.id)
+
 
 class VerificationView(APIView):
-    def get(self,request,uidb64):
+    def get(self, request, uidb64):
         user = User.objects.get(id=int(urlsafe_base64_decode(uidb64)))
-        user.is_active=True
+        user.is_active = True
         if user.user_type == 2:
             new_type = Vendor()
         elif user.user_type == 1:
@@ -166,7 +163,8 @@ class VerificationView(APIView):
             print("ERROR")
             user.delete()
             return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
-        return HttpResponse("Your Account, " +user.username+ " has been activated", status=status.HTTP_200_OK)
+        return HttpResponse("Your Account, " + user.username + " has been activated", status=status.HTTP_200_OK)
+
 
 """    
 class UserLoginAPIView(APIView):

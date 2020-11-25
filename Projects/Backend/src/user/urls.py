@@ -10,5 +10,5 @@ urlpatterns = [
     path('login/',UserLoginAPIView.as_view()),
     path('signup/',UserSignupAPIView.as_view()),
     path('profile/',UserProfileAPIView.as_view()),
-    path('activate/<uidb64>',VerificationView.as_view(),name="activate")
+    path('activate/<uidb64>/',VerificationView.as_view(),name="activate")
 ]
