@@ -46,8 +46,6 @@ render(){
     return(
         <div>
             <Card>
-                {}
-            <Card.Img variant="top" src={image} />
             <Card.Body>
                 <Card.Title>{this.props.product.name}</Card.Title>
                 <Card.Text>
