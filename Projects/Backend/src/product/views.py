@@ -33,7 +33,7 @@ class ProductDetailAPIView(APIView):
         try:
             return Product.objects.get(id=id)
         except Product.DoesNotExist:
-            return HttpResponse(status=HTTP_404_NOT_FOUND)
+            return HttpResponse("product id "+ str(id) + " not found", status=HTTP_404_NOT_FOUND)
 
     def get(self, request, id):
         product = self.get_product(id)
@@ -41,7 +41,7 @@ class ProductDetailAPIView(APIView):
         try:
             return Response(serializer.data)
         except:
-            return HttpResponse(status=HTTP_404_NOT_FOUND)
+            return HttpResponse("product id "+ str(id) + " not found", status=HTTP_404_NOT_FOUND)
 
     def put(self, request, id):
         product = self.get_product(id)
@@ -54,47 +54,5 @@ class ProductDetailAPIView(APIView):
     def delete(self, request, id):
         product = self.get_product(id)
         product.delete()
-        return Response(status=HTTP_204_NO_CONTENT)
+        return Response("product id "+ str(id) + " deleted", status=HTTP_204_NO_CONTENT)
 
-
-"""
-@api_view(['GET', 'POST'])
-def product_list(request):
-    if request.method == "GET":
-        products = Product.objects.all()
-        serializer = ProductSerializer(products, many=True)
-        return Response(serializer.data, safe=False)
-
-    elif request.method == "POST":
-        data = JSONParser().parse(request)
-        serializer = ProductSerializer(data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=201)
-        return  Response(serializer.errors, status=400)
-
-
-@api_view(['GET', 'PUT', 'DELETE'])
-def product_detail(request, pk):
-    try:
-        product = Product.objects.get(pk=pk)
-    except Product.DoesNotExist:
-        return HttpResponse(status=404)
-
-    if request.method == "GET":
-        serializer = ProductSerializer(product)
-        return Response(serializer.data)
-
-    elif request.method == "PUT":
-        data = JSONParser().parse(request)
-        serializer = ProductSerializer(product,data=data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=400)
-
-    elif request.method == "DELETE":
-        product.delete()
-        return HttpResponse(status=204)
-        
-"""

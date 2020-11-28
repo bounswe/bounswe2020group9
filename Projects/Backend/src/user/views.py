@@ -2,6 +2,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
 from django.http import Http404, HttpResponse
 from django.urls import reverse
+from django.utils import timezone
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from rest_framework import status
@@ -76,6 +77,9 @@ class UserLoginAPIView(ObtainAuthToken):
                                            context={'request': request})
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
+        u = User.objects.get(id=user.pk)
+        u.last_login = timezone.now()
+        u.save()
         password = serializer.validated_data['password']
         token, created = Token.objects.get_or_create(user=user)
         return Response({
@@ -93,19 +97,25 @@ class UserSignupAPIView(APIView):
         serializer = UserSerializer(data=request.data)
 
         if serializer.is_valid():
+            # There error handling part might not be required, additional test is needed
             if not "user_type" in serializer.validated_data.keys():
                 return Response({"user_type": ["This field is required."]}, status=status.HTTP_400_BAD_REQUEST)
+            if not "username" in serializer.validated_data.keys():
+                return Response({"username": ["This field is required."]}, status=status.HTTP_400_BAD_REQUEST)
+            if not "password" in serializer.validated_data.keys():
+                return Response({"password": ["This field is required."]}, status=status.HTTP_400_BAD_REQUEST)
             email = serializer.validated_data['username']
             serializer.save()
             user = User.objects.get(username=email)
             user.is_active = False
+            user.save()
 
             uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
 
             domain = get_current_site(request).domain
             link = reverse('activate', kwargs={'uidb64': uidb64})
 
-            activate_url = 'http://' + domain + link + '/'
+            activate_url = 'http://' + domain + link
 
             email_subject = 'Activate'
             email_body = 'Hi,\nPlease use this link to verify your account:\n' + activate_url
@@ -117,10 +127,10 @@ class UserSignupAPIView(APIView):
             )
             try:
                 email.send(fail_silently=False)
-            except Exception:
+            except:
                 user.delete()
-                return Response({"username": ["Couldn't send email"]}, status=status.HTTP_400_BAD_REQUEST)
-            return Response({"message": "Success: An mail has been sent to your email, please check it"},
+                return Response({"email": ["Couldn't send email"]}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": "An mail has been sent to your email, please check it"},
                             status=status.HTTP_201_CREATED)
         else:
             return Response(serializer._errors, status=status.HTTP_400_BAD_REQUEST)
@@ -145,8 +155,12 @@ class UserProfileAPIView(APIView):
 
 class VerificationView(APIView):
     def get(self, request, uidb64):
-        user = User.objects.get(id=int(urlsafe_base64_decode(uidb64)))
-        user.is_active = True
+        try:
+            user = User.objects.get(id=int(urlsafe_base64_decode(uidb64)))
+        except:
+            return Response({"url": ["bad verification url"]}, status=status.HTTP_400_BAD_REQUEST)
+        if user.is_active:
+            return Response({"user": ["user is already verified"]}, status=status.HTTP_400_BAD_REQUEST)
         if user.user_type == 2:
             new_type = Vendor()
         elif user.user_type == 1:
@@ -154,47 +168,15 @@ class VerificationView(APIView):
         elif user.user_type == 3:
             new_type = Admin()
         else:
-            print("ERROR")
-            return
+            user.delete()
+            return Response({"user_type": ["out of range"]}, status=status.HTTP_400_BAD_REQUEST)
         new_type.user_id = user.id
         try:
             new_type.save()
         except:
-            print("ERROR")
             user.delete()
-            return HttpResponse(status=status.HTTP_400_BAD_REQUEST)
-        return HttpResponse("Your Account, " + user.username + " has been activated", status=status.HTTP_200_OK)
-
-
-"""    
-class UserLoginAPIView(APIView):
-
-    def post(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data,
-                                           context={'request': request})
-        serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data['user']
-        token, created = Token.objects.get_or_create(user=user)
-        return Response({
-            'token': token.key,
-            'user_id': user.pk,
-            'email': user.email
-        })
-
-
-class UserSignupAPIView(APIView):
-
-    def post(self,request):
-
-        serializer = UserSerializer(data=request.data)
-
-        if serializer.is_valid():
-            serializer.save()
-            return Response(status=status.HTTP_201_CREATED)
-        else:
-            return Response(
-                {
-                    'message': 'User not found.'
-                },
-                status=status.HTTP_404_NOT_FOUND)
-"""
+            return Response({"user_type": ["cannot verify user_type"]}, status=status.HTTP_400_BAD_REQUEST)
+        user.is_active = True
+        user.save()
+        return Response({"message": "Your Account, " + user.email + " has been activated"},
+                            status=status.HTTP_200_OK)
