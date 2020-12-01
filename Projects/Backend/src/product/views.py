@@ -1,9 +1,12 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
+from rest_framework import status
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_204_NO_CONTENT
 from rest_framework.views import APIView
 
-from product.models import Product
+from product.models import Product, ProductList
 from product.serializers import ProductSerializer
 
 
@@ -56,3 +59,24 @@ class ProductDetailAPIView(APIView):
         product.delete()
         return Response("product id "+ str(id) + " deleted", status=HTTP_204_NO_CONTENT)
 
+
+class ListListAPIView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get_list_list(self, user_id):
+        try:
+            return ProductList.objects.filter()
+        except:
+            raise Http404
+
+    def check_id_valid(self, id, user_id):
+
+        return id is user_id
+
+    def get(self, request, id):
+        if self.check_id_valid(id, request.user.id):
+            return Response({"message":"unauthorized"}, status=status.HTTP_401_UNAUTHORIZED)
+        products = self.get_list_list(id)
+        serializer = ProductSerializer(products, many=True, context={'request': request})
+        return Response(serializer.data)
