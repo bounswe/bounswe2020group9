@@ -182,18 +182,18 @@ class ResetPasswordView(APIView):
         #if not user_temp.check_password(request.data["old_password"]):
             #return Response({"old_password": ["Wrong password."]}, status=status.HTTP_400_BAD_REQUEST)
             # set_password also hashes the password that the user will get
-        user_temp.set_password(request.data["new_password"])
-        user_temp.save()
-        response = {
-            'status': 'success',
-            'code': status.HTTP_200_OK,
-            'message': 'Password updated successfully',
-            'data': []
-        }
-
+        try:
+            user_temp.set_password(request.data["new_password"])
+            user_temp.save()
+            response = {
+                'status': 'success',
+                'code': status.HTTP_200_OK,
+                'message': 'Password updated successfully',
+                'data': []
+            }
+        except:
+            return Response({"message":"Couldn't reset password"}, status=status.HTTP_400_BAD_REQUEST)
         return Response(response)
-
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 class VerificationView(APIView):
     def get(self, request, uidb64):
         try:
