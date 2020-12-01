@@ -2,11 +2,17 @@ from pygments.lexers import get_all_lexers
 from pygments.styles import get_all_styles
 from rest_framework import serializers
 
-from .models import Product, Label, Category
+from .models import Product, Label, Category, ProductList
 
 LEXERS = [item for item in get_all_lexers() if item[1]]
 LANGUAGE_CHOICES = sorted([(item[1][0], item[0]) for item in LEXERS])
 STYLE_CHOICES = sorted([(item, item) for item in get_all_styles()])
+
+class ProductListSerializer(serializers.ModelSerializer):
+    customer = serializers.StringRelatedField(read_only=True)
+    class Meta:
+        model = ProductList
+        fields = ("name", "customer")
 
 
 class LabelSerializer(serializers.ModelSerializer):

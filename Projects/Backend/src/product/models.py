@@ -10,6 +10,11 @@ from user.models import Vendor, Customer, User
 class ProductList(models.Model):
     name = models.CharField(max_length=255)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    is_private = models.BooleanField(default=True) # private can only seen by owner
+    is_special = models.BooleanField(default=False) # special means it is either cart or an alerted list
+
+    def __str__(self):
+        return self.customer.user.username + " - " + self.name
 
 
 def productImage(instance, filename):

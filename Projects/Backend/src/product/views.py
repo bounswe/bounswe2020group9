@@ -7,10 +7,11 @@ from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_4
 from rest_framework.views import APIView
 
 from product.models import Product, ProductList
-from product.serializers import ProductSerializer
+from product.serializers import ProductSerializer, ProductListSerializer
 
 
 # Create your views here.
+from user.models import User, Customer
 
 
 class ProductListAPIView(APIView):
@@ -61,22 +62,25 @@ class ProductDetailAPIView(APIView):
 
 
 class ListListAPIView(APIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
 
-    def get_list_list(self, user_id):
+    def list_owned(self, request, id):
+        return request.user.id is id
+
+    def get_list_list(self, request, id):
         try:
-            return ProductList.objects.filter()
+            if self.list_owned(request, id):
+                products = ProductList.objects.filter(customer_id=id, is_special=False)
+            else:
+                products = ProductList.objects.filter(customer_id=id, is_private=False, is_special=False)
+            return products
         except:
             raise Http404
 
-    def check_id_valid(self, id, user_id):
-
-        return id is user_id
-
     def get(self, request, id):
-        if self.check_id_valid(id, request.user.id):
-            return Response({"message":"unauthorized"}, status=status.HTTP_401_UNAUTHORIZED)
-        products = self.get_list_list(id)
-        serializer = ProductSerializer(products, many=True, context={'request': request})
+        if len(Customer.objects.filter(pk=id)) == 0: # is user does not exist
+            raise Http404
+        products = self.get_list_list(request, id)
+        serializer = ProductListSerializer(products, many=True, context={'request': request})
         return Response(serializer.data)
