@@ -1,34 +1,34 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from django.http import Http404
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import EmailMessage
+from django.http import Http404, HttpResponse
+from django.urls import reverse
+from django.utils import timezone
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from rest_framework import status
-from .models import User
-from .serializers import UserSerializer
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
-from django.core.mail import EmailMessage
-from django.shortcuts import render, redirect
-from django.utils.encoding import force_bytes, force_text, DjangoUnicodeDecodeError
-from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
-from django.contrib.sites.shortcuts import get_current_site
-from django.urls import reverse
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
+from user.models import Customer, Admin, Vendor
+from .models import User
+from .serializers import UserSerializer
 
 
 class UserListAPIView(APIView):
 
-    #authentication_classes = [TokenAuthentication]
-    #permission_classes = [IsAuthenticated]
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
 
-    def get(self,request):
+    def get(self, request):
         customers = User.objects.all()
-        serializer = UserSerializer(customers,many=True)
+        serializer = UserSerializer(customers, many=True)
         return Response(serializer.data)
 
-    def post(self,request):
-
+    def post(self, request):
         serializer = UserSerializer(data=request.data)
 
         if serializer.is_valid():
@@ -39,10 +39,10 @@ class UserListAPIView(APIView):
 
 class UserDetailAPIView(APIView):
 
-    #authentication_classes = [TokenAuthentication]
-    #permission_classes = [IsAuthenticated]
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
 
-    def get_user(self,id):
+    def get_user(self, id):
 
         try:
             return User.objects.get(id=id)
@@ -54,16 +54,15 @@ class UserDetailAPIView(APIView):
         serializer = UserSerializer(user)
         return Response(serializer.data)
 
-
     def put(self, request, id):
 
         user = self.get_user(id)
-        serializer = UserSerializer(user,data=request.data)
+        serializer = UserSerializer(user, data=request.data)
 
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data,status=status.HTTP_200_OK)
-        return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, id):
         user = self.get_user(id)
@@ -71,109 +70,113 @@ class UserDetailAPIView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-
-
 class UserLoginAPIView(ObtainAuthToken):
 
     def post(self, request, *args, **kwargs):
-
         serializer = self.serializer_class(data=request.data,
                                            context={'request': request})
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
+        u = User.objects.get(id=user.pk)
+        u.last_login = timezone.now()
+        u.save()
+        password = serializer.validated_data['password']
         token, created = Token.objects.get_or_create(user=user)
         return Response({
             'token': token.key,
             'user_id': user.pk,
-            'email': user.email
+            'email': user.email,
+            'password': password
         })
+
+
 class UserSignupAPIView(APIView):
 
-
-    def post(self,request):
+    def post(self, request):
 
         serializer = UserSerializer(data=request.data)
 
         if serializer.is_valid():
-
+            # There error handling part might not be required, additional test is needed
+            if not "user_type" in serializer.validated_data.keys():
+                return Response({"user_type": ["This field is required."]}, status=status.HTTP_400_BAD_REQUEST)
+            if not "username" in serializer.validated_data.keys():
+                return Response({"username": ["This field is required."]}, status=status.HTTP_400_BAD_REQUEST)
+            if not "password" in serializer.validated_data.keys():
+                return Response({"password": ["This field is required."]}, status=status.HTTP_400_BAD_REQUEST)
             email = serializer.validated_data['username']
             serializer.save()
-            user = User.objects.get(username = email)
+            user = User.objects.get(username=email)
+            user.is_active = False
+            user.save()
 
             uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
 
             domain = get_current_site(request).domain
-            link = reverse('activate',kwargs={'uidb64':uidb64})
-            
-            activate_url = 'http://'+domain+link
+            link = reverse('activate', kwargs={'uidb64': uidb64})
+
+            activate_url = 'http://' + domain + link
 
             email_subject = 'Activate'
-            email_body = 'Hi Please use this link to verify your account\n'+ activate_url
+            email_body = 'Hi,\nPlease use this link to verify your account:\n' + activate_url
             email = EmailMessage(
                 email_subject,
                 email_body,
-                'ibrahimorhanh@gmail.com',
+                'bazaar.app451@gmail.com',
                 [email],
             )
-
-            email.send(fail_silently =False)
-
-
-            return Response(status=status.HTTP_201_CREATED)
+            try:
+                email.send(fail_silently=False)
+            except:
+                user.delete()
+                return Response({"email": ["Couldn't send email"]}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": "An mail has been sent to your email, please check it"},
+                            status=status.HTTP_201_CREATED)
         else:
             return Response(serializer._errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserProfileAPIView(APIView):
-
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
-    def get(self,request):
+    def get(self, request):
         parent = UserDetailAPIView()
-        return parent.get(request,request.user.id)
+        return parent.get(request, request.user.id)
 
-    def put(self,request):
+    def put(self, request):
         parent = UserDetailAPIView()
-        return parent.put(request,request.user.id)
+        return parent.put(request, request.user.id)
 
-    def delete(self,request):
+    def delete(self, request):
         parent = UserDetailAPIView()
-        return parent.delete(request,request.user.id)
+        return parent.delete(request, request.user.id)
+
 
 class VerificationView(APIView):
-    def get(self,request,uidb64):
-        return render(request, 'myapp/index.html')
-
-"""    
-class UserLoginAPIView(APIView):
-
-    def post(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data,
-                                           context={'request': request})
-        serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data['user']
-        token, created = Token.objects.get_or_create(user=user)
-        return Response({
-            'token': token.key,
-            'user_id': user.pk,
-            'email': user.email
-        })
-
-
-class UserSignupAPIView(APIView):
-
-    def post(self,request):
-
-        serializer = UserSerializer(data=request.data)
-
-        if serializer.is_valid():
-            serializer.save()
-            return Response(status=status.HTTP_201_CREATED)
+    def get(self, request, uidb64):
+        try:
+            user = User.objects.get(id=int(urlsafe_base64_decode(uidb64)))
+        except:
+            return Response({"url": ["bad verification url"]}, status=status.HTTP_400_BAD_REQUEST)
+        if user.is_active:
+            return Response({"user": ["user is already verified"]}, status=status.HTTP_400_BAD_REQUEST)
+        if user.user_type == 2:
+            new_type = Vendor()
+        elif user.user_type == 1:
+            new_type = Customer()
+        elif user.user_type == 3:
+            new_type = Admin()
         else:
-            return Response(
-                {
-                    'message': 'User not found.'
-                },
-                status=status.HTTP_404_NOT_FOUND)
-"""
+            user.delete()
+            return Response({"user_type": ["out of range"]}, status=status.HTTP_400_BAD_REQUEST)
+        new_type.user_id = user.id
+        try:
+            new_type.save()
+        except:
+            user.delete()
+            return Response({"user_type": ["cannot verify user_type"]}, status=status.HTTP_400_BAD_REQUEST)
+        user.is_active = True
+        user.save()
+        return Response({"message": "Your Account, " + user.email + " has been activated"},
+                            status=status.HTTP_200_OK)
