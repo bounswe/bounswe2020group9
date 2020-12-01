@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom'
-import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
-
 
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap/dist/js/bootstrap.bundle"
@@ -32,93 +30,23 @@ class Header extends Component {
         }
 
     }
-
-
-    componentDidMount() {
-        let myCookie = read_cookie('user')
-        console.log(myCookie, "COOOOOOK")
-
-        if(Object.keys(myCookie).length === 0){
-            this.setState({isSignedIn : false})
-            console.log('EMPPTY')
-        }
-        else{
-            this.setState({isSignedIn : true})
-            console.log('NOT EMPTY')
-            
-        }
-      }
+   
     render() {
-
 
         let SignPart 
         
         if (this.state.isSignedIn){
-            SignPart =  <ul className="navbar-nav navbar-right">
-                            <li className="nav-item dropdown">
-                              <a className="nav-link dropdown-toggle" href="#" id="ddlProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                               <FontAwesomeIcon icon = {faUser}/>
-                                 <span className="mr-1"></span>Profile
-                                </a>
-                                 <div className="dropdown-menu" aria-labelledby="ddlProfile">
-                                          <a className="dropdown-item" href="/profile-page">View Profile</a>
-                                          <a className="dropdown-item" href="#">My Addresses</a>
-                                          <a className="dropdown-item" href="#">My Orders</a>
-                                 </div>
-                           </li>
-                            <li className="nav-item dropdown">
-                                <a className="nav-link dropdown-toggle" href="#" id="ddlCart" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <FontAwesomeIcon icon = {faShoppingCart}/>
-                                    <span className="mr-1"></span>Cart
-                                    <span className="badge badge-secondary badge-pill">3</span>
-                                </a>
-                                <div className="dropdown-menu" aria-labelledby="ddlCart">
-                                    <a className="dropdown-item" href="#">Product 1</a>
-                                    <a className="dropdown-item" href="#">Product 2</a>
-                                    <a className="dropdown-item" href="#">Prodoct 3</a>
-                                    <div className="dropdown-divider"></div>
-                                    <a className="dropdown-item" href="#">Go to Cart</a>
-                                </div>
-                            </li>
-                            <li className="nav-item dropdown">
-                                <a className="nav-link dropdown-toggle" href="#" id="ddlMessages" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <FontAwesomeIcon icon = {faEnvelope}/>
-                                    <span className="mr-1"></span>Massages
-                                    <span className="badge badge-secondary badge-pill">2</span>
-                                </a>
-                                <div className="dropdown-menu" aria-labelledby="ddlMessages">
-                                    <a className="dropdown-item" href="#">Massage 1</a>
-                                    <a className="dropdown-item" href="#">Massage 2</a>
-                                    <div className="dropdown-divider"></div>
-                                    <a className="dropdown-item" href="#">Go to Massages</a>
-                                </div>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="/" onClick={delete_cookie("user")}>
-                                        <FontAwesomeIcon icon = {faSignOutAlt}/>
-                                        <span className="mr-1"></span>Sign Out
-                                </a>
-
-                            </li>
-                
-                         </ul>
+            SignPart = <a className="nav-link" href="#">
+                             <FontAwesomeIcon icon = {faSignOutAlt}/>
+                            <span className="mr-1"></span>Sign Out
+                      </a>
 
         }
         else {
-            SignPart =  <ul className="navbar-nav navbar-right">
-                          <li className="nav-item">
-                             <a className="nav-link" href="/signUp">
-                                <FontAwesomeIcon icon = {faUserPlus}/>
-                                <span className="mr-1"></span>Sign Up
-                             </a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="/signIn">
-                                 <FontAwesomeIcon icon = {faSignInAlt}/>
-                                 <span className="mr-1"></span>Sign In
-                                </a>
-                            </li> 
-                        </ul>
+            SignPart = <a className="nav-link" href="/signIn">
+                             <FontAwesomeIcon icon = {faSignInAlt}/>
+                            <span className="mr-1"></span>Sign In
+                      </a>
             
         }
        
@@ -131,13 +59,63 @@ class Header extends Component {
                 width="100"
                 height= "100"
                 /></a>
-                
+                <button className="navbar-toggler hidden-lg-up" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
+                    aria-expanded="false" aria-label="Menü">
+                        
+                    </button>
                 <div className="collapse navbar-collapse" id="collapsibleNavId">
                     <ul className="navbar-nav  mr-auto mt-2 mt-lg-0">
-
-                    </ul>
-                    {SignPart}
                     
+                    </ul>
+                    <ul className="navbar-nav navbar-right">
+                        <li className="nav-item dropdown">
+                            <a className="nav-link dropdown-toggle" href="#" id="ddlProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <FontAwesomeIcon icon = {faUser}/>
+                                <span className="mr-1"></span>Profile
+                            </a>
+                            <div className="dropdown-menu" aria-labelledby="ddlProfile">
+                                <a className="dropdown-item" href="/profile-page">View Profile</a>
+                                <a className="dropdown-item" href="#">My Addresses</a>
+                                <a className="dropdown-item" href="#">My Orders</a>
+                            </div>
+                        </li>
+                        <li className="nav-item dropdown">
+                            <a className="nav-link dropdown-toggle" href="#" id="ddlCart" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <FontAwesomeIcon icon = {faShoppingCart}/>
+                                <span className="mr-1"></span>Cart
+                                <span className="badge badge-secondary badge-pill">3</span>
+                            </a>
+                            <div className="dropdown-menu" aria-labelledby="ddlCart">
+                                <a className="dropdown-item" href="#">Product 1</a>
+                                <a className="dropdown-item" href="#">Product 2</a>
+                                <a className="dropdown-item" href="#">Prodoct 3</a>
+                                <div className="dropdown-divider"></div>
+                                <a className="dropdown-item" href="#">Go to Cart</a>
+                            </div>
+                        </li>
+                        <li className="nav-item dropdown">
+                            <a className="nav-link dropdown-toggle" href="#" id="ddlMessages" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <FontAwesomeIcon icon = {faEnvelope}/>
+                                <span className="mr-1"></span>Massages
+                                <span className="badge badge-secondary badge-pill">2</span>
+                            </a>
+                            <div className="dropdown-menu" aria-labelledby="ddlMessages">
+                                <a className="dropdown-item" href="#">Massage 1</a>
+                                <a className="dropdown-item" href="#">Massage 2</a>
+                                <div className="dropdown-divider"></div>
+                                <a className="dropdown-item" href="#">Go to Massages</a>
+                            </div>
+                        </li>
+                        <li className="nav-item">
+                            <a className="nav-link" href="/signUp">
+                                <FontAwesomeIcon icon = {faUserPlus}/>
+                                <span className="mr-1"></span>Sign Up
+                            </a>
+                        </li>
+                        <li className="nav-item">
+                            {SignPart}
+                        </li> 
+                    </ul>
                 </div>
             </nav>
         );
