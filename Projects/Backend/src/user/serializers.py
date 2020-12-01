@@ -1,20 +1,19 @@
-from django.http import request
 from rest_framework import serializers
-from .models import User, Vendor
+
+from .models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = User
-        fields = '__all__'
-        extra_kwargs = {'password': {'write_only': True}}
-
+        fields = ('id',  'username', 'password', 'email', 'first_name', 'last_name', 'date_joined', 'last_login', 'user_type', 'bazaar_point')
+        extra_kwargs = {'password': {'write_only': True}, 'username': {'write_only': True}}
 
     def create(self, validated_data):
         user = User(
             email=validated_data['username'],
-            username=validated_data['username']
+            username=validated_data['username'],
+            user_type=validated_data['user_type']
         )
         user.set_password(validated_data['password'])
         user.save()
@@ -33,3 +32,7 @@ class UserSerializer(serializers.ModelSerializer):
         instance.save()
 
         return instance
+class ResetPasswordSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(required=True)
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)

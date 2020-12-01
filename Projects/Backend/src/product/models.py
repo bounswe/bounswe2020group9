@@ -12,6 +12,10 @@ class ProductList(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
 
 
+def productImage(instance, filename):
+    return '/'.join(['images', str(instance.name), filename])
+
+
 class Product(models.Model):
     name = models.CharField(max_length=255)
     # image = models.ImageField(upload_to ='pics')#option is to select media directory TODO need to implement
@@ -21,6 +25,7 @@ class Product(models.Model):
     rating = models.FloatField(default=0)
     sell_counter = models.IntegerField(default=0)
     release_date = models.DateTimeField(default=timezone.now)
+    picture = models.ImageField(upload_to=productImage, null=True, blank=True)
 
     vendor = models.ForeignKey(
         Vendor,
@@ -42,6 +47,7 @@ class Label(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class Category(models.Model):
     name = models.CharField(max_length=255, unique=True)
@@ -87,3 +93,7 @@ class Payment(models.Model):
     date_month = models.CharField(max_length=2)
     date_year = models.CharField(max_length=2)
     cvv = models.CharField(max_length=3)
+
+class SearchHistory(models.Model):
+    user =  models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)

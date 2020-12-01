@@ -102,10 +102,10 @@ def create_comment(body, rating, customer_id, product_id):
     rating_types = {v: k for k, v in dict(new_comment.RATES).items()}
     new_comment.rating = rating_types[rating]
 
-    #exit()
+    # exit()
     # customer.comment_set.add(new_comment)
 
-    #product.comment_set.get(new_comment)
+    # product.comment_set.get(new_comment)
     new_comment.save()
     return new_comment
 
