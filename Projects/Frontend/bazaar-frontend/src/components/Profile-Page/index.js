@@ -63,16 +63,11 @@ export default class ProfilePageComponent extends Component {
       }
 
       componentDidMount() {
-        // let cookie_key = "user_id" 
-        // let myUserId = read_cookie(cookie_key)
-        // console.log(myUserId, 'MYUSEID')
-        // console.log(Cookies.get('user_id'), 'USERRRRRIDDDD')
-        axios.get(`http://13.59.236.175:8000/api/user/8/`)
+        let myCookie = read_cookie('user')
+        axios.get(`http://13.59.236.175:8000/api/user/${myCookie.user_id}/`)
           .then(res => {
-              console.log(res.data)
-              this.setState({fname : ""})
-              console.log(this.state.fname, 'FNAME')
-              this.setState({lname : ""})
+              this.setState({fname : res.data.first_name})
+              this.setState({lname : res.data.last_name})
 
           })
 
@@ -97,12 +92,12 @@ export default class ProfilePageComponent extends Component {
                             <form onSubmit={this.handleSubmit}>
                             <div className="form-group row">
                                 <label className="col-lg-5 align-middle">First Name</label>
-                                <input type="text" name="fname"className="form-control col" placeholder = "enter first name"
+                                <input type="text" name="fname"className="form-control col" value = {this.state.fname}
                                 onChange={this.handleChange}/>
                             </div>
                             <div className="form-group row">
                                 <label className="col-lg-5 align-middle">Last Name</label>
-                                <input type="text" name="lname"className="form-control col" placeholder = "enter last name"
+                                <input type="text" name="lname"className="form-control col" value = {this.state.lname}
                                 onChange={this.handleChange}/>
                             </div>
 
