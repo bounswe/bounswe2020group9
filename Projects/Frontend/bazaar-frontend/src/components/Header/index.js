@@ -33,6 +33,13 @@ class Header extends Component {
 
     }
 
+    handleClick() {
+        delete_cookie("user")
+        this.preventDefault();
+        console.log('The link was clicked.');
+        
+      }
+
 
     componentDidMount() {
         let myCookie = read_cookie('user')
@@ -94,7 +101,7 @@ class Header extends Component {
                                 </div>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="/" onClick={delete_cookie("user")}>
+                                <a className="nav-link" href="/" onClick={this.handleClick}>
                                         <FontAwesomeIcon icon = {faSignOutAlt}/>
                                         <span className="mr-1"></span>Sign Out
                                 </a>

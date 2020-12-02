@@ -17,26 +17,26 @@ import Footer from "./components/Footer"
 function App() {
   return (
     <Router>
+      
+      <Header />
+
       <Switch>
         <Route exact path="/">
-          <Header />
           <Home />
-          <Footer />
         </Route>
         <Route path="/signUp">
-          <Header />
           <SignUp />
-          <Footer />
         </Route>
         <Route path="/signIn">
-          <Header />
           <SignIn />
-          <Footer />
         </Route>
         <Route path="/profile-page">
           <ProfilePage />
         </Route>
       </Switch>
+
+      <Footer />
+
     </Router>
   );
 }

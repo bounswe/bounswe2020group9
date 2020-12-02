@@ -25,12 +25,7 @@ import image20 from '../../assets/images/20.png'
 import "./card.css";
 
 export default class CardComponent extends Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            imagenum = 0
-        }
-    }
+
 render(){
 
     let num = this.props.product.id;
@@ -46,6 +41,8 @@ render(){
     return(
         <div>
             <Card>
+                {}
+            <Card.Img variant="top" src={image} />
             <Card.Body>
                 <Card.Title>{this.props.product.name}</Card.Title>
                 <Card.Text>
