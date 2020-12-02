@@ -17,20 +17,22 @@ import Footer from "./components/Footer"
 function App() {
   return (
     <Router>
-      
-      <Header />
 
       <Switch>
         <Route exact path="/">
+          <Header />
           <Home />
         </Route>
         <Route path="/signUp">
+          <Header />
           <SignUp />
         </Route>
         <Route path="/signIn">
+          <Header />
           <SignIn />
         </Route>
         <Route path="/profile-page">
+          <Header />
           <ProfilePage />
         </Route>
       </Switch>

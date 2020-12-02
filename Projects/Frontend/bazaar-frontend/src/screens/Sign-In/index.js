@@ -39,6 +39,7 @@ export default class SignIn extends Component {
 
         console.log(res);
         console.log(res.data);
+
         this.setState({ redirect: "/" });
       })
 
@@ -49,9 +50,10 @@ export default class SignIn extends Component {
     if (this.state.redirect) {
       return <Redirect to={this.state.redirect} />
     }
+    
     return (
       <div className="entry-form">
-        <form onSubmit={this.handleSubmit}>
+        <form>
           <h3>Sign In</h3>
 
           <div className="form-group">
@@ -73,7 +75,8 @@ export default class SignIn extends Component {
             </div>
           </div>
 
-          <button id="submit" type="submit" className="btn btn-block">Sign in</button>
+          <button id="submit" type="submit" className="btn btn-block" onClick={this.handleSubmit}>Sign in</button>
+
           <p className="forgot-password">
             Forgot <a href="#">password?</a>
           </p>
