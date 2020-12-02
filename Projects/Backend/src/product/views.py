@@ -65,22 +65,91 @@ class ListListAPIView(APIView):
     # authentication_classes = [TokenAuthentication]
     # permission_classes = [IsAuthenticated]
 
-    def list_owned(self, request, id):
+    def is_user(self, request, id):
         return request.user.id is id
 
     def get_list_list(self, request, id):
         try:
-            if self.list_owned(request, id):
-                products = ProductList.objects.filter(customer_id=id, is_special=False)
+            if self.is_user(request, id):
+                product_lists = ProductList.objects.filter(customer_id=id, is_special=False)
             else:
-                products = ProductList.objects.filter(customer_id=id, is_private=False, is_special=False)
-            return products
+                product_lists = ProductList.objects.filter(customer_id=id, is_private=False, is_special=False)
+            return product_lists
         except:
             raise Http404
 
     def get(self, request, id):
         if len(Customer.objects.filter(pk=id)) == 0: # is user does not exist
             raise Http404
-        products = self.get_list_list(request, id)
-        serializer = ProductListSerializer(products, many=True, context={'request': request})
+        product_lists = self.get_list_list(request, id)
+        serializer = ProductListSerializer(product_lists, many=True, context={'request': request})
         return Response(serializer.data)
+
+class ListDetailAPIView(APIView):
+
+    def check_user(self, request, id, list_id):
+        # checks if given input is valid, user_id is owner of the list_id
+        try:
+            list = ProductList.objects.get(id=list_id)
+        except:
+            raise Http404
+        return list.customer_id is id
+
+    def is_owner(self, request, id, list_id):
+        # checks if token is owner of the list_id
+        try:
+            list = ProductList.objects.get(id=list_id)
+        except:
+            raise Http404
+        return list.customer_id is request.user.id
+
+    def get_list(self, request, list_id):
+        try:
+            return ProductList.objects.get(id=list_id)
+        except:
+            raise Http404
+
+    def get(self, request, id, list_id):
+        if not self.check_user(request, id, list_id):
+            return Response({"message": "bad request"}, status=status.HTTP_400_BAD_REQUEST)
+        list = self.get_list(request, list_id)
+        if not self.is_owner(request, id, list_id) and list.is_private:
+            return Response({"message": "not allowed to access"}, status=status.HTTP_401_UNAUTHORIZED)
+        # error handling done above
+        serializer = ProductListSerializer(list, context={'request': request})
+        return Response(serializer.data)
+
+    def post(self, request, id, list_id):
+        if not self.check_user(request, id, list_id):
+            return Response({"message": "bad request"}, status=status.HTTP_400_BAD_REQUEST)
+        if not self.is_owner(request, id, list_id):
+            return Response({"message": "not allowed to access"}, status=status.HTTP_401_UNAUTHORIZED)
+        # error handling done above
+        serializer = ProductListSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=HTTP_201_CREATED)
+        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+
+    def put(self, request, id, list_id):
+        if not self.check_user(request, id, list_id):
+            return Response({"message": "bad request"}, status=status.HTTP_400_BAD_REQUEST)
+        list = self.get_list(request, list_id)
+        if not self.is_owner(request, id, list_id):
+            return Response({"message": "not allowed to access"}, status=status.HTTP_401_UNAUTHORIZED)
+        # error handling done above
+        serializer = ProductListSerializer(list, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, id, list_id):
+        if not self.check_user(request, id, list_id):
+            return Response({"message": "bad request"}, status=status.HTTP_400_BAD_REQUEST)
+        list = self.get_list(request, list_id)
+        if not self.is_owner(request, id, list_id):
+            return Response({"message": "not allowed to access"}, status=status.HTTP_401_UNAUTHORIZED)
+        # error handling done above
+        list.delete()
+        return Response({"message":"list, id: "+ str(list_id) + ", is deleted"}, status=HTTP_204_NO_CONTENT)
