@@ -3,7 +3,8 @@ from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_204_NO_CONTENT
+from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_204_NO_CONTENT, \
+    HTTP_200_OK, HTTP_202_ACCEPTED
 from rest_framework.views import APIView
 
 from product.models import Product, ProductList
@@ -190,3 +191,67 @@ class AlertListAPIView(APIView):
         a_list = self.get_alerted_list(id)
         serializer = ProductListSerializer(a_list, context={'request': request})
         return Response(serializer.data)
+
+class AddProductAPIView(APIView):
+    def get_list(self, id):
+        try:
+            user = Customer.objects.get(user_id=id)
+            return user.productlist_set.get_or_create()[0]
+        except:
+            raise Http404
+
+    def check_authorization(self, request, id, list_id):
+        return id == request.user.id and id == request.data[""]
+
+    def post(self, request, id, list_id):
+        try:
+            product = Product.objects.get(id=request.data["product_id"])
+        except:
+            return Response({"message": "bad request: product"}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            customer = Customer.objects.get(user=id)
+        except:
+            return Response({"message": "bad request: customer"}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            list = ProductList.objects.get(id=list_id)
+        except:
+            return Response({"message": "bad request: list"}, status=status.HTTP_400_BAD_REQUEST)
+        if request.user.id != id:
+            return Response({"message": "bad token"}, status=status.HTTP_400_BAD_REQUEST)
+        if list.customer_id != customer.user_id:
+            return Response({"message": "not allowed to access"}, status=status.HTTP_401_UNAUTHORIZED)
+        # Error handling done
+        if product not in list.product_set.all():
+            list.product_set.add(product)
+            serializer = ProductListSerializer(list, context={'request': request})
+            return Response(serializer.data, status= HTTP_202_ACCEPTED)
+        else:
+            serializer = ProductListSerializer(list, context={'request': request})
+            return Response(serializer.data, status= HTTP_204_NO_CONTENT)
+
+    def delete(self, request, id, list_id):
+        try:
+            product = Product.objects.get(id=request.data["product_id"])
+        except:
+            return Response({"message": "bad request: product"}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            customer = Customer.objects.get(user=id)
+        except:
+            return Response({"message": "bad request: customer"}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            list = ProductList.objects.get(id=list_id)
+        except:
+            return Response({"message": "bad request: list"}, status=status.HTTP_400_BAD_REQUEST)
+        if request.user.id != id:
+            return Response({"message": "bad token"}, status=status.HTTP_400_BAD_REQUEST)
+        if list.customer_id != customer.user_id:
+            return Response({"message": "not allowed to access"}, status=status.HTTP_401_UNAUTHORIZED)
+        # Error handling done
+        if product in list.product_set.all():
+            list.product_set.remove(product)
+            serializer = ProductListSerializer(list, context={'request': request})
+            return Response(serializer.data, status= HTTP_202_ACCEPTED)
+        else:
+            serializer = ProductListSerializer(list, context={'request': request})
+            return Response(serializer.data, status= HTTP_204_NO_CONTENT)
+
