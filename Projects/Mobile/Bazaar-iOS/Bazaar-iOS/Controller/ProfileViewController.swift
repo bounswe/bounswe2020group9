@@ -16,7 +16,16 @@ class ProfileViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if let isLoggedIn =  UserDefaults.standard.value(forKey: "jkhkj") as? Bool {
+        profileMenu.delegate = self
+        profileMenu.dataSource = self
+        profileMenu.layer.cornerRadius = 10
+        profileMenu.layer.borderColor = UIColor.orange.cgColor
+        profileMenu.layer.borderWidth = 0.5
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if let isLoggedIn =  UserDefaults.standard.value(forKey: K.isLoggedinKey) as? Bool {
             if !isLoggedIn {
                 self.view.isHidden = true
                 performSegue(withIdentifier: "ProfileToLoginSegue", sender: self)
@@ -27,15 +36,6 @@ class ProfileViewController: UIViewController{
             self.view.isHidden = true
             performSegue(withIdentifier: "ProfileToLoginSegue", sender: self)
         }
-        profileMenu.delegate = self
-        profileMenu.dataSource = self
-        profileMenu.layer.cornerRadius = 10
-        profileMenu.layer.borderColor = UIColor.orange.cgColor
-        profileMenu.layer.borderWidth = 0.5
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         self.navigationController?.setNavigationBarHidden(true, animated: animated)
         if let selectionIndexPath = profileMenu.indexPathForSelectedRow {
                 profileMenu.deselectRow(at: selectionIndexPath, animated: false)
@@ -53,6 +53,12 @@ class ProfileViewController: UIViewController{
         profileMenu.contentInset = UIEdgeInsets(top: topInset, left: 0.0, bottom: 0.0, right: 0.0)
     }
     
+    @IBAction func temporaryLogoutButton(_ sender: UIButton) {
+        UserDefaults.standard.set(false, forKey: K.isLoggedinKey)
+        performSegue(withIdentifier:"ProfileToLoginSegue" , sender: nil)
+        
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ProfileToLoginSegue" {
             if let destinationVC = segue.destination as? LoginViewController {
@@ -66,6 +72,7 @@ class ProfileViewController: UIViewController{
     }
 }
 
+//MARK: - UITableViewDelegate,UITableViewDataSource
 extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -88,8 +95,18 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
 }
 //MARK: - LoginViewControllerDelegate
 extension ProfileViewController: LoginViewControllerDelegate{
-    func loginViewControllerDidPressSignUp() {
-        performSegue(withIdentifier:"ProfileToSignUpSegue" , sender: nil)
+    func loginViewControllerDidPressSignUp(isPressed: Bool) {
+        print("not \(isPressed)")
+        if isPressed {
+            performSegue(withIdentifier:"ProfileToSignUpSegue" , sender: nil)
+        }
+    }
+    
+    func loginViewControllerDidPressContinueAsGuest(isPressed: Bool) {
+        print("guest \(isPressed)")
+        if isPressed {
+            self.tabBarController?.selectedViewController = self.tabBarController?.children[0]
+        }
     }
 }
 
@@ -98,4 +115,3 @@ extension ProfileViewController: SignUpViewControllerDelegate{
         performSegue(withIdentifier:"ProfileToLoginSegue" , sender: nil)
     }
 }
-

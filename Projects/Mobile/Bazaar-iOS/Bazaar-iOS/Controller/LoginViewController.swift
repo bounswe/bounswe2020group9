@@ -8,7 +8,8 @@
 import UIKit
 
 protocol LoginViewControllerDelegate {
-    func loginViewControllerDidPressSignUp()
+    func loginViewControllerDidPressSignUp(isPressed:Bool)
+    func loginViewControllerDidPressContinueAsGuest(isPressed:Bool)
 }
 
 class LoginViewController: UIViewController {
@@ -17,7 +18,8 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var frameView: UIView!
     var delegate:LoginViewControllerDelegate?
-        
+    var isSignUpPressed = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         frameView.layer.borderColor = #colorLiteral(red: 1, green: 0.6431372549, blue: 0.3568627451, alpha: 1)
@@ -26,11 +28,17 @@ class LoginViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        delegate?.loginViewControllerDidPressSignUp()
+        delegate?.loginViewControllerDidPressSignUp(isPressed: isSignUpPressed)
+        delegate?.loginViewControllerDidPressContinueAsGuest(isPressed: !isSignUpPressed)
     }
     
     @IBAction func signUpButtonPressed(_ sender: UIButton) {
+        isSignUpPressed=true
         self.dismiss(animated: true, completion: nil)
+    }
+    @IBAction func continueAsGuestButtonPressed(_ sender: UIButton) {
+        isSignUpPressed=false
+        self.dismiss(animated: false, completion: nil)
     }
     
     @IBAction func loginButtonPressed(_ sender: UIButton) {
@@ -63,11 +71,5 @@ class LoginViewController: UIViewController {
             }
         }else{
         }
-    }
-    
-    @IBAction func continueAsGuestButtonPressed(_ sender: UIButton) {
-        //TODO
-        
-        //performSegue(withIdentifier: "loginToMain", sender: nil)
     }
 }
