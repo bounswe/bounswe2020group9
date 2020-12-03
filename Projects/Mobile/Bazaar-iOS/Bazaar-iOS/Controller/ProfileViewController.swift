@@ -93,23 +93,21 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
 }
-//MARK: - LoginViewControllerDelegate
+//MARK: - Extension LoginViewControllerDelegate
 extension ProfileViewController: LoginViewControllerDelegate{
     func loginViewControllerDidPressSignUp(isPressed: Bool) {
-        print("not \(isPressed)")
         if isPressed {
             performSegue(withIdentifier:"ProfileToSignUpSegue" , sender: nil)
         }
     }
     
     func loginViewControllerDidPressContinueAsGuest(isPressed: Bool) {
-        print("guest \(isPressed)")
         if isPressed {
             self.tabBarController?.selectedViewController = self.tabBarController?.children[0]
         }
     }
 }
-
+//MARK: - Extension SignUpViewControllerDelegate
 extension ProfileViewController: SignUpViewControllerDelegate{
     func signUpViewControllerDidPressLoginHere() {
         performSegue(withIdentifier:"ProfileToLoginSegue" , sender: nil)
