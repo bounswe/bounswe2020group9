@@ -23,6 +23,7 @@ class LoginViewController: UIViewController {
         frameView.layer.borderColor = #colorLiteral(red: 1, green: 0.6431372549, blue: 0.3568627451, alpha: 1)
         frameView.layer.shadowColor = UIColor.black.cgColor
     }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         delegate?.loginViewControllerDidPressSignUp()
@@ -49,9 +50,8 @@ class LoginViewController: UIViewController {
                         APIManager().authenticate(username: email, password: password) { (result) in
                             switch result {
                             case .success(_):
-                                UserSingleton.shared.didLogin = true
-                                UserSingleton.shared.username = email
-                                self.performSegue(withIdentifier: "loginToMain", sender: nil)
+                                UserDefaults.standard.set(true, forKey: K.isLoggedinKey)
+                                self.dismiss(animated: true, completion: nil)
                             case .failure(_):
                                 alertController.message = "Invalid username or password"
                                 self.present(alertController, animated: true, completion: nil)
@@ -66,6 +66,8 @@ class LoginViewController: UIViewController {
     }
     
     @IBAction func continueAsGuestButtonPressed(_ sender: UIButton) {
-        performSegue(withIdentifier: "loginToMain", sender: nil)
+        //TODO
+        
+        //performSegue(withIdentifier: "loginToMain", sender: nil)
     }
 }

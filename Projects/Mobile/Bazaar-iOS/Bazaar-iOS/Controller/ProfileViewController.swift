@@ -16,8 +16,16 @@ class ProfileViewController: UIViewController{
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var logoutButton: UIButton!
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        if let isLoggedIn =  UserDefaults.standard.value(forKey: K.isLoggedinKey) as? Bool {
+            if !isLoggedIn {
+                performSegue(withIdentifier: "ProfileToLoginSegue", sender: self)
+            }
+        }else {
+            performSegue(withIdentifier: "ProfileToLoginSegue", sender: self)
+        }
         profileMenu.delegate = self
         profileMenu.dataSource = self
         profileMenu.layer.cornerRadius = 10
@@ -119,9 +127,10 @@ class UserSingleton {
     var didLogin = false
     
 }
-
-extension ProfileViewController:LoginViewControllerDelegate{
+//MARK: - LoginViewControllerDelegate
+extension ProfileViewController: LoginViewControllerDelegate{
     func loginViewControllerDidPressSignUp() {
         performSegue(withIdentifier:"ProfileToSignUpSegue" , sender: nil)
     }
 }
+

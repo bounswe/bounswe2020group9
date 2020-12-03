@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol SignUpViewControllerDelegate {
+    func signUpViewControllerDidPressLoginHere()
+}
+
 enum UserType:Int {
     case Vendor , Customer
 }
@@ -21,6 +25,7 @@ class SignUpViewController: UIViewController {
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var frameView: UIView!
     var signUpUserType: UserType?
+    var delegate:SignUpViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,7 +58,7 @@ class SignUpViewController: UIViewController {
                                         self.present(alertController, animated: true, completion: nil)
                                     }else {
                                         if let userType = self.signUpUserType{
-                                            performSegue(withIdentifier: "signUpToMain", sender: nil)
+                                            UserDefaults.standard.set(true, forKey: K.isLoggedinKey)
                                         }else {
                                             alertController.message = "Choose one, Vendor or Customer"
                                             self.present(alertController, animated: true, completion: nil)
