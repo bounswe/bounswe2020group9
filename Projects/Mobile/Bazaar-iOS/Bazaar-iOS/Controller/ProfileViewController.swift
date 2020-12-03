@@ -13,9 +13,6 @@ class ProfileViewController: UIViewController{
     @IBOutlet weak var userEmailLabel: UILabel!
     @IBOutlet weak var userAddressLabel: UILabel!
     @IBOutlet weak var userNameLabel: UILabel!
-    @IBOutlet weak var loginButton: UIButton!
-    @IBOutlet weak var logoutButton: UIButton!
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,15 +53,6 @@ class ProfileViewController: UIViewController{
         profileMenu.contentInset = UIEdgeInsets(top: topInset, left: 0.0, bottom: 0.0, right: 0.0)
     }
     
-    @IBAction func loginButtonPressed(_ sender: Any) {
-        if UserSingleton.shared.didLogin {
-            performSegue(withIdentifier: "ProfileToLoginSegue", sender: self)
-            UserSingleton.shared.didLogin = false
-            UserSingleton.shared.username = "You haven't logged in yet."
-        } else {
-            performSegue(withIdentifier: "ProfileToLoginSegue", sender: self)
-        }
-    }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ProfileToLoginSegue" {
             if let destinationVC = segue.destination as? LoginViewController {
@@ -76,17 +64,6 @@ class ProfileViewController: UIViewController{
             }
         }
     }
-    
-    @IBAction func logoutButtonPressed(_ sender: Any) {
-        if UserSingleton.shared.didLogin {
-            performSegue(withIdentifier: "ProfileToLoginSegue", sender: self)
-            UserSingleton.shared.didLogin = false
-            UserSingleton.shared.username = "You haven't logged in yet."
-        } else {
-            performSegue(withIdentifier: "ProfileToLoginSegue", sender: self)
-        }
-    }
-    
 }
 
 extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {

@@ -961,7 +961,7 @@
                                 <sections/>
                             </tableView>
                             <stackView opaque="NO" contentMode="scaleAspectFit" axis="vertical" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="iCY-wh-jut" userLabel="Info View">
-                                <rect key="frame" x="185.66666666666669" y="270" width="213.66666666666669" height="361"/>
+                                <rect key="frame" x="185.66666666666669" y="330" width="213.66666666666669" height="241"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="profilepic" translatesAutoresizingMaskIntoConstraints="NO" id="C18-TH-fVQ" userLabel="Picture">
                                         <rect key="frame" x="44.666666666666679" y="0.0" width="124.33333333333331" height="123.33333333333333"/>
@@ -977,43 +977,15 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Apartment 3-D, 344 Clinton Street, Metropolis" lineBreakMode="tailTruncation" numberOfLines="6" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="xbe-Oy-s7Q" userLabel="Address">
-                                        <rect key="frame" x="10" y="200.33333333333331" width="193.66666666666666" height="40.666666666666657"/>
+                                        <rect key="frame" x="10" y="200.33333333333337" width="193.66666666666666" height="40.666666666666657"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pe4-rd-3N7">
-                                        <rect key="frame" x="10" y="271" width="193.66666666666666" height="30"/>
-                                        <color key="backgroundColor" red="0.96776050329999996" green="0.6416403651" blue="0.1417042017" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <state key="normal" title="Log In">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            <color key="titleShadowColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="loginButtonPressed:" destination="q6p-hj-l31" eventType="touchUpInside" id="Mqf-NL-gM5"/>
-                                        </connections>
-                                    </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S9S-4d-nFr">
-                                        <rect key="frame" x="10" y="331" width="193.66666666666666" height="30"/>
-                                        <color key="backgroundColor" red="0.96776050329999996" green="0.6416403651" blue="0.1417042017" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <state key="normal" title="Log Out">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            <color key="titleShadowColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        </state>
-                                        <connections>
-                                            <action selector="logoutButtonPressed:" destination="q6p-hj-l31" eventType="touchUpInside" id="mBo-Xt-hdU"/>
-                                        </connections>
-                                    </button>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="xbe-Oy-s7Q" firstAttribute="leading" secondItem="iCY-wh-jut" secondAttribute="leading" constant="10" id="RPb-bC-Rgx"/>
-                                    <constraint firstItem="pe4-rd-3N7" firstAttribute="leading" secondItem="xbe-Oy-s7Q" secondAttribute="leading" id="XkX-ra-HAZ"/>
-                                    <constraint firstItem="S9S-4d-nFr" firstAttribute="trailing" secondItem="pe4-rd-3N7" secondAttribute="trailing" id="YVW-Z7-5yR"/>
-                                    <constraint firstItem="pe4-rd-3N7" firstAttribute="trailing" secondItem="xbe-Oy-s7Q" secondAttribute="trailing" id="a4F-wz-s8H"/>
                                     <constraint firstItem="Yf4-y2-3zC" firstAttribute="top" relation="greaterThanOrEqual" secondItem="C18-TH-fVQ" secondAttribute="bottom" constant="5" id="ahK-8L-jZh"/>
-                                    <constraint firstItem="S9S-4d-nFr" firstAttribute="leading" secondItem="pe4-rd-3N7" secondAttribute="leading" id="crJ-Vm-qaV"/>
                                 </constraints>
                             </stackView>
                         </subviews>
@@ -1036,8 +1008,6 @@
                     </view>
                     <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="xCx-q1-bJu"/>
                     <connections>
-                        <outlet property="loginButton" destination="pe4-rd-3N7" id="hkb-nf-dT8"/>
-                        <outlet property="logoutButton" destination="S9S-4d-nFr" id="v9r-rT-9PF"/>
                         <outlet property="profileMenu" destination="E7I-rF-9RZ" id="sAh-aN-T1u"/>
                         <outlet property="userAddressLabel" destination="xbe-Oy-s7Q" id="Xvz-gD-EG4"/>
                         <outlet property="userEmailLabel" destination="Yf4-y2-3zC" id="kOh-WD-RZp"/>
