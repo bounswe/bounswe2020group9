@@ -153,3 +153,40 @@ class ListDetailAPIView(APIView):
         # error handling done above
         list.delete()
         return Response({"message":"list, id: "+ str(list_id) + ", is deleted"}, status=HTTP_204_NO_CONTENT)
+
+
+class CartAPIView(APIView):
+    def get_cart(self, id):
+        try:
+            user = Customer.objects.get(user_id=id)
+            return user.productlist_set.get_or_create(is_special=True, name="cart")[0]
+        except:
+            raise Http404
+
+    def check_private_access(self, request, id):
+        return id == request.user.id
+
+    def get(self, request, id):
+        if not self.check_private_access(request, id):
+            return Response({"message": "not allowed to access"}, status=status.HTTP_401_UNAUTHORIZED)
+        cart = self.get_cart(id)
+        serializer = ProductListSerializer(cart, context={'request': request})
+        return Response(serializer.data)
+
+class AlertListAPIView(APIView):
+    def get_alerted_list(self, id):
+        try:
+            user = Customer.objects.get(user_id=id)
+            return user.productlist_set.get_or_create(is_special=True, name="alert_list")[0]
+        except:
+            raise Http404
+
+    def check_private_access(self, request, id):
+        return id == request.user.id
+
+    def get(self, request, id):
+        if not self.check_private_access(request, id):
+            return Response({"message": "not allowed to access"}, status=status.HTTP_401_UNAUTHORIZED)
+        a_list = self.get_alerted_list(id)
+        serializer = ProductListSerializer(a_list, context={'request': request})
+        return Response(serializer.data)

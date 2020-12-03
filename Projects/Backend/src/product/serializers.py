@@ -9,12 +9,6 @@ LANGUAGE_CHOICES = sorted([(item[1][0], item[0]) for item in LEXERS])
 STYLE_CHOICES = sorted([(item, item) for item in get_all_styles()])
 
 
-class ProductListSerializer(serializers.ModelSerializer):
-    # for some reason, this causes POST requests to not work, commenting out for now
-    # customer = serializers.StringRelatedField(read_only=True)
-    class Meta:
-        model = ProductList
-        fields = ("id", "name", "customer")
 
 
 class LabelSerializer(serializers.ModelSerializer):
@@ -66,3 +60,12 @@ class ProductSerializer(serializers.Serializer):
     class Meta:
         model = Product
         fields = ("id", "name", "brand", "price", "stock", "sell_counter", "rating", "vendor", "picture")
+
+
+class ProductListSerializer(serializers.ModelSerializer):
+    # for some reason, this causes POST requests to not work, commenting out for now
+    # customer = serializers.StringRelatedField(read_only=True)
+    products = ProductSerializer(many=True, source="product_set")
+    class Meta:
+        model = ProductList
+        fields = ("id", "name", "customer", "products")

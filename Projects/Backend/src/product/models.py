@@ -39,6 +39,8 @@ class Product(models.Model):
     )
 
     in_lists = models.ManyToManyField(ProductList, blank=True)
+
+    # TODO delete these two if not needed
     in_carts = models.ManyToManyField(Customer, related_name="cart_list", blank=True)
     in_alerted_lists = models.ManyToManyField(Customer, related_name="in_alerted_list", blank=True)
 
