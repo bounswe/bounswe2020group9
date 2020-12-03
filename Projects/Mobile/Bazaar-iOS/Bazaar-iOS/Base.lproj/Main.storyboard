@@ -159,7 +159,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rKZ-Cf-yGq">
-                                <rect key="frame" x="0.0" y="88" width="414" height="725"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SRL-WQ-xqY" userLabel="Content View">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="725.66666666666663"/>
@@ -195,7 +195,7 @@
                                                         </state>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nSX-4R-nQN">
-                                                        <rect key="frame" x="20" y="169.99999999999994" width="334" height="36"/>
+                                                        <rect key="frame" x="20" y="170" width="334" height="36"/>
                                                         <color key="backgroundColor" red="1" green="0.64313725489999995" blue="0.35686274509999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                         <state key="normal" title="Login">
@@ -339,13 +339,11 @@
                         <outlet property="emailTextField" destination="riA-Gy-ttb" id="7d4-xu-58W"/>
                         <outlet property="frameView" destination="ntr-J6-vgb" id="Faj-uy-tBZ"/>
                         <outlet property="passwordTextField" destination="5Go-B8-phC" id="x3e-iD-wIK"/>
-                        <segue destination="n1Y-by-cQR" kind="presentation" identifier="loginToMain" modalPresentationStyle="fullScreen" id="FXs-qr-xx3"/>
-                        <segue destination="w39-Ll-aUk" kind="presentation" identifier="loginToSignUp" modalPresentationStyle="fullScreen" id="2OI-4D-cb9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="to7-4r-ib9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1391.304347826087" y="529.6875"/>
+            <point key="canvasLocation" x="-1517" y="2373"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="xjD-73-zFp">
@@ -747,12 +745,11 @@
                         <outlet property="isVendorButton" destination="Dpb-Nw-seZ" id="Elc-Al-B1K"/>
                         <outlet property="lastNameTextField" destination="Aus-0v-s5f" id="ksL-3t-hzg"/>
                         <outlet property="passwordTextField" destination="qmb-OC-YrS" id="7P9-Qc-bcM"/>
-                        <segue destination="n1Y-by-cQR" kind="presentation" identifier="signUpToMain" modalPresentationStyle="fullScreen" id="SKc-FT-cW5"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="acR-Yu-gM9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-139.13043478260872" y="48.883928571428569"/>
+            <point key="canvasLocation" x="-490" y="2373"/>
         </scene>
         <!--Profile View Controller-->
         <scene sceneID="bQZ-RS-C3K">
@@ -1045,7 +1042,8 @@
                         <outlet property="userAddressLabel" destination="xbe-Oy-s7Q" id="Xvz-gD-EG4"/>
                         <outlet property="userEmailLabel" destination="Yf4-y2-3zC" id="kOh-WD-RZp"/>
                         <outlet property="userNameLabel" destination="SWM-bn-i9o" id="L0X-MK-qnz"/>
-                        <segue destination="Ghz-qv-MNd" kind="show" identifier="ProfileToLoginSegue" id="Jgp-et-rMS"/>
+                        <segue destination="Ghz-qv-MNd" kind="presentation" identifier="ProfileToLoginSegue" modalPresentationStyle="fullScreen" id="Jgp-et-rMS"/>
+                        <segue destination="w39-Ll-aUk" kind="presentation" identifier="ProfileToSignUpSegue" modalPresentationStyle="fullScreen" id="owD-sP-YtY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fee-SH-Ygg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1146,9 +1144,6 @@
             <size key="intrinsicContentSize" width="30" height="30"/>
         </designable>
     </designables>
-    <inferredMetricsTieBreakers>
-        <segue reference="SKc-FT-cW5"/>
-    </inferredMetricsTieBreakers>
     <resources>
         <image name="archivebox" catalog="system" width="128" height="106"/>
         <image name="bell" catalog="system" width="128" height="124"/>

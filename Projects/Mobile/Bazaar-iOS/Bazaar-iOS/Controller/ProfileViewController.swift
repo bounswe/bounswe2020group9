@@ -5,9 +5,6 @@
 //  Created by Beste Goger on 22.11.2020.
 //
 
-import Foundation
-
-
 import UIKit
 
 class ProfileViewController: UIViewController{
@@ -73,6 +70,13 @@ class ProfileViewController: UIViewController{
             performSegue(withIdentifier: "ProfileToLoginSegue", sender: self)
         }
     }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ProfileToLoginSegue" {
+            if let destinationVC = segue.destination as? LoginViewController {
+                destinationVC.delegate = self
+            }
+        }
+    }
     
     @IBAction func logoutButtonPressed(_ sender: Any) {
         if UserSingleton.shared.didLogin {
@@ -114,4 +118,10 @@ class UserSingleton {
     var username = "You haven't logged in yet."
     var didLogin = false
     
+}
+
+extension ProfileViewController:LoginViewControllerDelegate{
+    func loginViewControllerDidPressSignUp() {
+        performSegue(withIdentifier:"ProfileToSignUpSegue" , sender: nil)
+    }
 }

@@ -7,6 +7,10 @@
 
 import UIKit
 
+enum UserType:Int {
+    case Vendor , Customer
+}
+
 class SignUpViewController: UIViewController {
     
     @IBOutlet weak var isCustomerButton: RadioButton!
@@ -16,9 +20,6 @@ class SignUpViewController: UIViewController {
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var frameView: UIView!
-    enum UserType:Int {
-        case Vendor , Customer
-    }
     var signUpUserType: UserType?
     
     override func viewDidLoad() {

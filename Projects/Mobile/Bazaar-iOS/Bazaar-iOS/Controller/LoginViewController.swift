@@ -7,21 +7,29 @@
 
 import UIKit
 
+protocol LoginViewControllerDelegate {
+    func loginViewControllerDidPressSignUp()
+}
 
 class LoginViewController: UIViewController {
     
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var frameView: UIView!
+    var delegate:LoginViewControllerDelegate?
         
     override func viewDidLoad() {
         super.viewDidLoad()
         frameView.layer.borderColor = #colorLiteral(red: 1, green: 0.6431372549, blue: 0.3568627451, alpha: 1)
         frameView.layer.shadowColor = UIColor.black.cgColor
     }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        delegate?.loginViewControllerDidPressSignUp()
+    }
     
     @IBAction func signUpButtonPressed(_ sender: UIButton) {
-        performSegue(withIdentifier: "loginToSignUp", sender: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
     @IBAction func loginButtonPressed(_ sender: UIButton) {
