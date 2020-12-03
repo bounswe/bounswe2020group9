@@ -19,11 +19,15 @@ class ProfileViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if let isLoggedIn =  UserDefaults.standard.value(forKey: K.isLoggedinKey) as? Bool {
+        if let isLoggedIn =  UserDefaults.standard.value(forKey: "jkhkj") as? Bool {
             if !isLoggedIn {
+                self.view.isHidden = true
                 performSegue(withIdentifier: "ProfileToLoginSegue", sender: self)
+            }else {
+                self.view.isHidden = false
             }
         }else {
+            self.view.isHidden = true
             performSegue(withIdentifier: "ProfileToLoginSegue", sender: self)
         }
         profileMenu.delegate = self
@@ -31,23 +35,6 @@ class ProfileViewController: UIViewController{
         profileMenu.layer.cornerRadius = 10
         profileMenu.layer.borderColor = UIColor.orange.cgColor
         profileMenu.layer.borderWidth = 0.5
-        if (UserSingleton.shared.didLogin) {
-            userEmailLabel.text = UserSingleton.shared.username
-            userNameLabel.text = "Bazaar"
-            userAddressLabel.text = "Bogazici University North Campus, Etiler/Istanbul"
-            loginButton.isHidden = true
-            loginButton.isEnabled = false
-            logoutButton.isHidden = false
-            logoutButton.isEnabled = true
-        } else {
-            userEmailLabel.text = "You haven't logged in yet."
-            userAddressLabel.isHidden = true
-            userAddressLabel.text = "Bogazici University North Campus, Etiler/Istanbul"
-            loginButton.isHidden = false
-            loginButton.isEnabled = true
-            logoutButton.isHidden = true
-            logoutButton.isEnabled = false
-        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -81,6 +68,10 @@ class ProfileViewController: UIViewController{
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ProfileToLoginSegue" {
             if let destinationVC = segue.destination as? LoginViewController {
+                destinationVC.delegate = self
+            }
+        }else if segue.identifier == "ProfileToSignUpSegue" {
+            if let destinationVC = segue.destination as? SignUpViewController {
                 destinationVC.delegate = self
             }
         }
@@ -118,19 +109,16 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
 }
-
-
-class UserSingleton {
-    
-    static let shared = UserSingleton()
-    var username = "You haven't logged in yet."
-    var didLogin = false
-    
-}
 //MARK: - LoginViewControllerDelegate
 extension ProfileViewController: LoginViewControllerDelegate{
     func loginViewControllerDidPressSignUp() {
         performSegue(withIdentifier:"ProfileToSignUpSegue" , sender: nil)
+    }
+}
+
+extension ProfileViewController: SignUpViewControllerDelegate{
+    func signUpViewControllerDidPressLoginHere() {
+        performSegue(withIdentifier:"ProfileToLoginSegue" , sender: nil)
     }
 }
 

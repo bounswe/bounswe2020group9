@@ -51,7 +51,7 @@ class LoginViewController: UIViewController {
                             switch result {
                             case .success(_):
                                 UserDefaults.standard.set(true, forKey: K.isLoggedinKey)
-                                self.dismiss(animated: true, completion: nil)
+                                self.dismiss(animated: false, completion: nil)
                             case .failure(_):
                                 alertController.message = "Invalid username or password"
                                 self.present(alertController, animated: true, completion: nil)

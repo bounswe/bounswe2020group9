@@ -33,6 +33,11 @@ class SignUpViewController: UIViewController {
         frameView.layer.shadowColor = UIColor.black.cgColor
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        delegate?.signUpViewControllerDidPressLoginHere()
+    }
+    
     @IBAction func signUpButtonPressed(_ sender: UIButton) {
         let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
