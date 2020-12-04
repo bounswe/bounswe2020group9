@@ -11,6 +11,7 @@ class ProductList(models.Model):
     name = models.CharField(max_length=255)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     is_private = models.BooleanField(default=True) # private can only seen by owner
+    # TODO rename is_special to is_alerted_list if you decide to rework cart system. Then is_special would only be True when it is an alerted_list
     is_special = models.BooleanField(default=False) # special means it is either cart or an alerted list
 
     def __str__(self):
@@ -41,11 +42,21 @@ class Product(models.Model):
     in_lists = models.ManyToManyField(ProductList, blank=True)
 
     # TODO delete these two if not needed
+    #  Plan is to never create an independent cart table, instead create the SubOrder table, merge it with cart system.
+    #  as for alert_product_list, it will be lazy-created when needed. It is defined as a ProductList that is unique for a user, defined witha  boolean inside ProductList
+
     in_carts = models.ManyToManyField(Customer, related_name="cart_list", blank=True)
     in_alerted_lists = models.ManyToManyField(Customer, related_name="in_alerted_list", blank=True)
 
     def __str__(self):
         return self.name + " " + self.vendor.user.username
+
+
+class SubOrder(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    amount = models.IntegerField(default=1)
+    purchased = models.BooleanField(default=False)
 
 
 class Label(models.Model):
@@ -73,6 +84,7 @@ class Order(models.Model):
     )
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    sub_order = models.ForeignKey(SubOrder, on_delete=models.CASCADE)
     timestamp = models.DateTimeField()
     delivery_time = models.DateTimeField()
     current_status = models.PositiveSmallIntegerField(choices=STATUS_TYPES, default=1)
