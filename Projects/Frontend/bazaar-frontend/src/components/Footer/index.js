@@ -9,6 +9,7 @@ function Footer() {
 				<div class="col-xs-12 col-sm-6 col-md-6">
 					<h5>Categories</h5>
 					<ul class="list-unstyled quick-links">
+<<<<<<< HEAD
 						<li><a href=""><i class="fa fa-angle-double-right"></i>Books</a></li>
 						<li><a href=""><i class="fa fa-angle-double-right"></i>Petshop</a></li>
 						<li><a href=""><i class="fa fa-angle-double-right"></i>Clothing</a></li>
@@ -16,6 +17,19 @@ function Footer() {
 						<li><a href=""><i class="fa fa-angle-double-right"></i>Home</a></li>
 						<li><a href=""><i class="fa fa-angle-double-right"></i>Electronics</a></li>
 						<li><a href=""><i class="fa fa-angle-double-right"></i>Consumables</a></li>
+=======
+						<li><a href="/electronics"><i class="fa fa-angle-double-right"></i>Electronics</a></li>
+						<li><a href="/house"><i class="fa fa-angle-double-right"></i>House</a></li>
+						<li><a href="/kitchen"><i class="fa fa-angle-double-right"></i>Kitchen</a></li>
+						<li><a href="/sport"><i class="fa fa-angle-double-right"></i>Sport</a></li>
+						<li><a href="/food"><i class="fa fa-angle-double-right"></i>Food</a></li>
+						<li><a href="/laundry"><i class="fa fa-angle-double-right"></i>Laundry</a></li>
+						<li><a href="/garden"><i class="fa fa-angle-double-right"></i>Garden</a></li>
+						<li><a href="/fitness"><i class="fa fa-angle-double-right"></i>Fitness</a></li>
+						<li><a href="/books"><i class="fa fa-angle-double-right"></i>Books</a></li>
+						<li><a href="/cosmetics"><i class="fa fa-angle-double-right"></i>Cosmetics</a></li>
+						<li><a href="/fashion"><i class="fa fa-angle-double-right"></i>Fashion</a></li>
+>>>>>>> 51c84b30276c1580c51d299404e036b2073549cc
 					</ul>
 				</div>
 				<div class="col-xs-12 col-sm-6 col-md-6">
