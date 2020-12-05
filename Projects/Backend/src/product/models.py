@@ -21,6 +21,10 @@ def productImage(instance, filename):
     return '/'.join(['images', str(instance.name), filename])
 
 
+def productImage(instance, filename):
+    return '/'.join(['images', str(instance.name), filename])
+
+
 class Product(models.Model):
     name = models.CharField(max_length=255)
     detail = models.CharField(max_length=511, blank=True)
@@ -105,3 +109,7 @@ class Payment(models.Model):
     date_month = models.CharField(max_length=2)
     date_year = models.CharField(max_length=2)
     cvv = models.CharField(max_length=3)
+
+class SearchHistory(models.Model):
+    user =  models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)

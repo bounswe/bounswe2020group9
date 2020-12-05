@@ -18,6 +18,10 @@ from .models import User
 from .serializers import UserSerializer
 
 
+from user.models import Customer, Admin, Vendor
+from .models import User
+from .serializers import UserSerializer, ResetPasswordSerializer
+
 class UserListAPIView(APIView):
 
     # authentication_classes = [TokenAuthentication]
@@ -169,6 +173,50 @@ class UserProfileAPIView(APIView):
         parent = UserDetailAPIView()
         return parent.delete(request, request.user.id)
 
+
+class ResetPasswordMailView(APIView):
+    def post(self,request):
+        user = User.objects.get(username=request.data["username"])
+        email = request.data["username"]
+        uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
+        domain = get_current_site(request).domain
+        link = reverse('resetpw', kwargs={'uidb64': uidb64})
+        reset_url = 'http://' + domain + link
+        email_subject = 'Reset Your Password'
+        email_body = 'Hi,\nPlease use this link to reset your password:\n' + reset_url
+        email = EmailMessage(
+            email_subject,
+            email_body,
+            'bazaar.app451@gmail.com',
+            [email],
+        )
+        email.send(fail_silently=False)
+        return Response({"message": "An mail has been sent to your email, please check it"},
+                    status=status.HTTP_201_CREATED)
+class ResetPasswordView(APIView):
+    def get_object(self,request,uidb64,queryset=None):
+        obj = User.objects.get(id=int(urlsafe_base64_decode(uidb64)))
+        return obj
+    def get(self, request, uidb64):
+        return Response({"message":"true"})
+    def post(self, request, uidb64):
+        user_temp = self.get_object(request,uidb64)
+        # Check old password
+        #if not user_temp.check_password(request.data["old_password"]):
+            #return Response({"old_password": ["Wrong password."]}, status=status.HTTP_400_BAD_REQUEST)
+            # set_password also hashes the password that the user will get
+        try:
+            user_temp.set_password(request.data["new_password"])
+            user_temp.save()
+            response = {
+                'status': 'success',
+                'code': status.HTTP_200_OK,
+                'message': 'Password updated successfully',
+                'data': []
+            }
+        except:
+            return Response({"message":"Couldn't reset password"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(response)
 
 class VerificationView(APIView):
     def get(self, request, uidb64):

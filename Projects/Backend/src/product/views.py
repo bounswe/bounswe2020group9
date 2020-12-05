@@ -2,6 +2,7 @@ from django.http import HttpResponse, Http404
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+
 from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_204_NO_CONTENT, \
     HTTP_200_OK, HTTP_202_ACCEPTED
@@ -295,3 +296,4 @@ class ManageCartAPIView(APIView):
         cart = SubOrder.objects.filter(customer=request.user.id)
         serializer = ProductListSerializer(cart, context={'request': request})
         return Response(serializer.data)
+
