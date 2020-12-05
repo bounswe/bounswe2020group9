@@ -24,8 +24,8 @@ class UserListAPIView(APIView):
     # permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        customers = User.objects.all()
-        serializer = UserSerializer(customers, many=True)
+        users = User.objects.all()
+        serializer = UserSerializer(users, many=True)
         return Response(serializer.data)
 
     def post(self, request):
@@ -35,6 +35,23 @@ class UserListAPIView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CustomerListAPIView(APIView):
+
+    def get(self, request):
+        customers = User.objects.filter(user_type=1)
+        serializer = UserSerializer(customers, many=True)
+        return Response(serializer.data)
+
+
+class VendorListAPIView(APIView):
+
+    def get(self, request):
+        vendors = User.objects.filter(user_type=2)
+        serializer = UserSerializer(vendors, many=True)
+        return Response(serializer.data)
+
 
 
 class UserDetailAPIView(APIView):
