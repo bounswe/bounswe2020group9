@@ -7,7 +7,7 @@ from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_4
     HTTP_200_OK, HTTP_202_ACCEPTED
 from rest_framework.views import APIView
 
-from product.models import Product, ProductList
+from product.models import Product, ProductList, SubOrder
 from product.serializers import ProductSerializer, ProductListSerializer
 
 
@@ -255,5 +255,43 @@ class AddProductToListAPIView(APIView):
             serializer = ProductListSerializer(list, context={'request': request})
             return Response(serializer.data, status= HTTP_204_NO_CONTENT)
 
-class AddProductToCartAPIView(APIView):
-    True
+class ManageCartAPIView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get_product(self, product_id):
+        try:
+            product = Product.objects.get(id=product_id)
+            return product
+        except:
+            raise Http404
+
+    def create_sub_order(self, user_id, product_id, amount):
+        subOrder = SubOrder.objects.get(customer_id=user_id, product_id=product_id)
+        if subOrder:
+            subOrder.amount += amount
+            subOrder.save()
+            return subOrder
+        else:
+            return SubOrder.objects.create(product_id=product_id, customer_id=user_id, amount=amount, purchased=False)
+
+    def post(self, request, id):
+        self.create_sub_order(request.user.id, id, request.data["amount"])
+        cart = SubOrder.objects.filter(customer=request.user.id)
+        serializer = ProductListSerializer(cart, context={'request': request})
+        return Response(serializer.data)
+
+    def put(self, request, id):
+        subOrder = SubOrder.objects.get(customer_id=request.user.id, product_id=id)
+        subOrder.amount = request.data["amount"]
+        subOrder.save()
+        cart = SubOrder.objects.filter(customer=request.user.id)
+        serializer = ProductListSerializer(cart, context={'request': request})
+        return Response(serializer.data)
+
+
+    def delete(self, request, id):
+        SubOrder.objects.get(customer_id=request.user.id, product_id=id).delete()
+        cart = SubOrder.objects.filter(customer=request.user.id)
+        serializer = ProductListSerializer(cart, context={'request': request})
+        return Response(serializer.data)
