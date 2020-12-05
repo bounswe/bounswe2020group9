@@ -2,7 +2,7 @@ from pygments.lexers import get_all_lexers
 from pygments.styles import get_all_styles
 from rest_framework import serializers
 
-from .models import Product, Label, Category, ProductList
+from .models import Product, Label, Category, ProductList, Order
 
 LEXERS = [item for item in get_all_lexers() if item[1]]
 LANGUAGE_CHOICES = sorted([(item[1][0], item[0]) for item in LEXERS])
@@ -69,3 +69,20 @@ class ProductListSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductList
         fields = ("id", "name", "customer", "products")
+
+
+class OrderSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Order
+        fields = "__all__"
+        extra_kwargs = {'sub_order': {'write_only': True}}
+
+    def update(self, instance, validated_data):
+
+        for (key, value) in validated_data.items():
+            setattr(instance, key, value)
+
+        instance.save()
+
+        return instance

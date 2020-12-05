@@ -1,4 +1,5 @@
 from django.contrib.sites.shortcuts import get_current_site
+from django.contrib.auth.hashers import check_password
 from django.core.mail import EmailMessage
 from django.http import Http404, HttpResponse
 from django.urls import reverse
@@ -142,15 +143,29 @@ class UserProfileAPIView(APIView):
 
     def get(self, request):
         parent = UserDetailAPIView()
+        request.data['username'] = request.data['email']
         return parent.get(request, request.user.id)
 
     def put(self, request):
         parent = UserDetailAPIView()
-        return parent.put(request, request.user.id)
+        if check_password(request.data['password'],request.user.password):
+            if 'repassword' in request.data:
+                request.data['username'] = request.data['email']
+                request.data['password'] = request.data['repassword']
+                return parent.put(request, request.user.id)
+            else:
+                request.data['username'] = request.data['email']
+                return parent.put(request, request.user.id)
+        else:
+            return Response({"password": ["Not correct"]}, status=status.HTTP_401_UNAUTHORIZED)
 
     def delete(self, request):
         parent = UserDetailAPIView()
-        return parent.delete(request, request.user.id)
+        if check_password(request.data['password'], request.user.password):
+            return parent.delete(request, request.user.id)
+        else:
+            return Response({"password": ["Not correct"]}, status=status.HTTP_401_UNAUTHORIZED)
+
 
 
 class VerificationView(APIView):

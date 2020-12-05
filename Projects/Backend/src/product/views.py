@@ -4,11 +4,11 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_204_NO_CONTENT, \
-    HTTP_200_OK, HTTP_202_ACCEPTED
+    HTTP_200_OK, HTTP_202_ACCEPTED,HTTP_401_UNAUTHORIZED
 from rest_framework.views import APIView
 
-from product.models import Product, ProductList
-from product.serializers import ProductSerializer, ProductListSerializer
+from product.models import Product, ProductList, Order
+from product.serializers import ProductSerializer, ProductListSerializer, OrderSerializer
 
 
 # Create your views here.
@@ -254,4 +254,68 @@ class AddProductAPIView(APIView):
         else:
             serializer = ProductListSerializer(list, context={'request': request})
             return Response(serializer.data, status= HTTP_204_NO_CONTENT)
+
+
+class OrderDetailAPIView(APIView):
+
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get_order(self,request, id):
+        try:
+            return Order.objects.get(id=id)
+
+        except Order.DoesNotExist:
+            raise Http404
+
+    def get(self, request, id):
+        order = self.get_order(request,id)
+        serializer = OrderSerializer(order)
+
+        if request.user.id == order.customer.id or request.user.id == order.product.vendor.user.id:
+            return Response(serializer.data)
+        else:
+            return HttpResponse("Unauthorized request", status=HTTP_401_UNAUTHORIZED)
+
+
+    def put(self, request, id):
+        order = self.get_order(request,id)
+        serializer = OrderSerializer(order, data=request.data)
+        if serializer.is_valid():
+            if request.user.id == order.customer.id or request.user.id == order.product.vendor.user.id:
+                serializer.save()
+                return Response(serializer.data)
+            else:
+                return HttpResponse("Unauthorized request", status=HTTP_401_UNAUTHORIZED)
+        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, id):
+        order = self.get_order(request,id)
+        if request.user.id == order.customer.id or request.user.id == order.product.vendor.user.id:
+            order.delete()
+            return Response("order id " + str(id) + " deleted", status=HTTP_204_NO_CONTENT)
+        else:
+            return HttpResponse("Unauthorized request", status=HTTP_401_UNAUTHORIZED)
+
+
+class OrderListAPIView(APIView):
+
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        if(request.user.user_type == 1):
+            orders = Order.objects.filter(customer_id=request.user.id)
+        else:
+            orders = Order.objects.filter(product__vendor__user__id=request.user.id)
+
+        serializer = OrderSerializer(orders, many=True, context={'request': request})
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = OrderSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=HTTP_201_CREATED)
+        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 

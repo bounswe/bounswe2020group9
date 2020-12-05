@@ -1,6 +1,8 @@
-from django.db import models
 from django.utils import timezone
-
+from django.conf import settings
+from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from user.models import Vendor, Customer, User
 
 
@@ -65,14 +67,22 @@ class Category(models.Model):
         return self.name
 
 
+
+class SubOrder(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=1)
+    purchased = models.BooleanField(default=False)
+
 class Order(models.Model):
     STATUS_TYPES = (
         (1, "Preparing"),
         (2, "On the Way"),
         (3, "Delivered"),
     )
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    customer = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    sub_order = models.OneToOneField(SubOrder, on_delete=models.CASCADE)
     timestamp = models.DateTimeField()
     delivery_time = models.DateTimeField()
     current_status = models.PositiveSmallIntegerField(choices=STATUS_TYPES, default=1)
@@ -100,3 +110,17 @@ class Payment(models.Model):
     date_month = models.CharField(max_length=2)
     date_year = models.CharField(max_length=2)
     cvv = models.CharField(max_length=3)
+
+
+
+@receiver(post_save, sender=Order)
+def make_purchase_true(sender, instance=None, created=False, **kwargs):
+    if created:
+
+        sub_order = SubOrder.objects.get(id=instance.sub_order.id)
+        sub_order.purchased = True
+        sub_order.save()
+
+        product = Product.objects.get(id=instance.product.id)
+        product.stock -= sub_order.quantity
+        product.save()
