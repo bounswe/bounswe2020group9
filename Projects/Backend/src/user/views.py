@@ -15,6 +15,11 @@ from rest_framework.views import APIView
 
 from user.models import Customer, Admin, Vendor
 from .models import User
+from .serializers import UserSerializer
+
+
+from user.models import Customer, Admin, Vendor
+from .models import User
 from .serializers import UserSerializer, ResetPasswordSerializer
 
 class UserListAPIView(APIView):
@@ -23,8 +28,8 @@ class UserListAPIView(APIView):
     # permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        customers = User.objects.all()
-        serializer = UserSerializer(customers, many=True)
+        users = User.objects.all()
+        serializer = UserSerializer(users, many=True)
         return Response(serializer.data)
 
     def post(self, request):
@@ -34,6 +39,23 @@ class UserListAPIView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CustomerListAPIView(APIView):
+
+    def get(self, request):
+        customers = User.objects.filter(user_type=1)
+        serializer = UserSerializer(customers, many=True)
+        return Response(serializer.data)
+
+
+class VendorListAPIView(APIView):
+
+    def get(self, request):
+        vendors = User.objects.filter(user_type=2)
+        serializer = UserSerializer(vendors, many=True)
+        return Response(serializer.data)
+
 
 
 class UserDetailAPIView(APIView):
@@ -151,6 +173,7 @@ class UserProfileAPIView(APIView):
         parent = UserDetailAPIView()
         return parent.delete(request, request.user.id)
 
+
 class ResetPasswordMailView(APIView):
     def post(self,request):
         user = User.objects.get(username=request.data["username"])
@@ -194,6 +217,7 @@ class ResetPasswordView(APIView):
         except:
             return Response({"message":"Couldn't reset password"}, status=status.HTTP_400_BAD_REQUEST)
         return Response(response)
+
 class VerificationView(APIView):
     def get(self, request, uidb64):
         try:

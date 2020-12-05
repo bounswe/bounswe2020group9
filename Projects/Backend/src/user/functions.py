@@ -32,7 +32,6 @@ def create_user(user_type, email, password, name="", surname=""):
     except:
         print("ERROR")
         return
-    # TODO create "cart" and "alert_product_list"
     return new_user
 
 
