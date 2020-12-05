@@ -72,9 +72,9 @@ class ListListAPIView(APIView):
     def get_list_list(self, request, id):
         try:
             if self.is_user(request, id):
-                product_lists = ProductList.objects.filter(customer_id=id, is_special=False)
+                product_lists = ProductList.objects.filter(customer_id=id, is_alert_list=False)
             else:
-                product_lists = ProductList.objects.filter(customer_id=id, is_private=False, is_special=False)
+                product_lists = ProductList.objects.filter(customer_id=id, is_private=False, is_alert_list=False)
             return product_lists
         except:
             raise Http404
@@ -160,7 +160,7 @@ class CartAPIView(APIView):
     def get_cart(self, id):
         try:
             user = Customer.objects.get(user_id=id)
-            return user.productlist_set.get_or_create(is_special=True, name="cart")[0]
+            return user.suborder_set.filter(is_alert_list=True)[0]
         except:
             raise Http404
 
@@ -175,10 +175,10 @@ class CartAPIView(APIView):
         return Response(serializer.data)
 
 class AlertListAPIView(APIView):
-    def get_alerted_list(self, id):
+    def get_alert_list(self, id):
         try:
             user = Customer.objects.get(user_id=id)
-            return user.productlist_set.get_or_create(is_special=True, name="alert_list")[0]
+            return user.productlist_set.get_or_create(is_alert_list=True)[0]
         except:
             raise Http404
 
@@ -188,11 +188,11 @@ class AlertListAPIView(APIView):
     def get(self, request, id):
         if not self.check_private_access(request, id):
             return Response({"message": "not allowed to access"}, status=status.HTTP_401_UNAUTHORIZED)
-        a_list = self.get_alerted_list(id)
+        a_list = self.get_alert_list(id)
         serializer = ProductListSerializer(a_list, context={'request': request})
         return Response(serializer.data)
 
-class AddProductAPIView(APIView):
+class AddProductToListAPIView(APIView):
     def get_list(self, id):
         try:
             user = Customer.objects.get(user_id=id)
@@ -255,3 +255,5 @@ class AddProductAPIView(APIView):
             serializer = ProductListSerializer(list, context={'request': request})
             return Response(serializer.data, status= HTTP_204_NO_CONTENT)
 
+class AddProductToCartAPIView(APIView):
+    True
