@@ -1,8 +1,8 @@
-# BOUN CMPE352 GROUP 9
+# BOUN CMPE451 GROUP 9
 
 Hello World!
 
-This is the repository of group 9 in course CMPE352 Fundamentals of Software Engineering 2020 Fall Boğaziçi University.  
+This is the repository of group 9 in course CMPE451 PROJECT DEVELOPMENT IN SOFTWARE ENG. 2020 Fall Boğaziçi University.  
 
 ![IMG_3052](https://user-images.githubusercontent.com/43812957/75096739-865d7480-55b3-11ea-9543-3db7871ae01f.jpg)
 
