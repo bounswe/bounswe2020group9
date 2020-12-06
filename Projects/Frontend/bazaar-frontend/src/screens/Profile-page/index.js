@@ -128,17 +128,17 @@ export default class ProfilePage extends Component {
                             </div>
                             <div className="form-group row">
                                 <label className="col-lg-5 align-middle">Password</label>
-                                <input type="text" name="oldpw" className="form-control col" placeholder="Password" 
+                                <input type="password" name="oldpw" className="form-control col" placeholder="Password" 
                                 onChange={this.handleChange}/>
                             </div>                    
                             <div className="form-group row">
                                 <label className="col-lg-5 align-middle">New Password</label>
-                                <input type="text" name="newpw" className="form-control col" placeholder="New password" 
+                                <input type="password" name="newpw" className="form-control col" placeholder="New password" 
                                 onChange={this.handleChange}/>
                             </div>
                             <div className="form-group row">
                                 <label className="col-lg-5 align-middle">New Password(again)</label>
-                                <input type="text" name="confpw" className="form-control col" placeholder="New password(again)" 
+                                <input type="password" name="confpw" className="form-control col" placeholder="New password(again)" 
                                 onChange={this.handleChange}/>
                             </div>
                             <div id="save-changes-div">
