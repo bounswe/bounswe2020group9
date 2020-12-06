@@ -15,6 +15,7 @@ export default class SignUp extends Component {
           password: '',
           fname: '',
           lname: '',
+          utype: 'Customer',
           redirect: null
         }
       }
@@ -23,7 +24,6 @@ export default class SignUp extends Component {
         this.setState({ [event.target.name]: event.target.value });
       }
 
-    
       handleSubmit = event => {
     
         event.preventDefault();
@@ -32,8 +32,12 @@ export default class SignUp extends Component {
         data.append("password", this.state.password);
         data.append("first_name", this.state.fname);
         data.append("last_name", this.state.lname);
-    
-    
+        if (this.state.utype === 'Customer') {
+            data.append("user_type", "1");
+        } else {
+            data.append("user_type", "2");
+        }
+        console.log(this.state.username);
         axios.post(`http://13.59.236.175:8000/api/user/signup/`, data)
           .then(res => {
     
@@ -76,6 +80,23 @@ export default class SignUp extends Component {
                         <label>Password</label>
                         <input type="text" name="password" className="form-control" placeholder="Enter password"  
                         onChange={this.handleChange}/>
+                    </div>
+                    
+                    <div className="form-group row">
+                        <label className="col-6 align-middle">User type</label>
+                            <div className="form-check form-check-inline">
+                                <input className="form-check-input align-middle" type="radio" name="utype" id="gridRadios1" value="Customer" checked></input>
+                                <label className="form-check-label" for="gridRadios1">
+                                    Customer
+                                </label>
+                            </div>
+                            <div className="form-check form-check-inline">
+                                <input className="form-check-input align-middle" type="radio" name="utype" id="gridRadios2" value="Vendor"></input>
+                                <label className="form-check-label" for="gridRadios2">
+                                    Vendor
+                                </label>
+                            </div>
+                        
                     </div>
 
                     <button id="submit" type="submit" className="btn btn-block">Sign Up</button>

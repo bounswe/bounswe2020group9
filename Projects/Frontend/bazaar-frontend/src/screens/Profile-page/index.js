@@ -29,22 +29,14 @@ export default class ProfilePage extends Component {
       handleChange = event => {
     
         this.setState({ [event.target.name]: event.target.value });
+        console.log("value  :  "+event.target.value)
 
-        if(event.target.name === "newpw" | event.target.name === "confpw"){
-          if(this.state.newpw === this.state.confpw){
-            this.setState({isEnabled: true});
-          }
-          else{
-            this.setState({isEnabled: false});
-          }
+        if(this.state.newpw === this.state.confpw) {
+          this.setState({isEnabled: true});
+        } else {
+          this.setState({isEnabled: false});
         }
-        else{
-          if(event.target.name !== "oldpw"){
-            this.setState({isEnabled: true});
-          }
-        }
-
-    
+        
       }
 
     
@@ -85,6 +77,11 @@ export default class ProfilePage extends Component {
           .then(res => {
               this.setState({fname : res.data.first_name})
               this.setState({lname : res.data.last_name})
+              if (res.data.user_type === "1"){
+                this.setState({isVendor: false});
+              } else {
+                this.setState({isVendor: true});
+              }
 
           })
 
@@ -117,14 +114,10 @@ export default class ProfilePage extends Component {
                                 <input type="text" name="lname"className="form-control col" value = {this.state.lname}
                                 onChange={this.handleChange}/>
                             </div>
-
                             <div className="form-group row">
-                                <label className="col-lg-5 align-middle">Account</label>
-                                {isVendor ? (
-                            <button id="isvendor" type="button" class="btn btn-info">VENDOR</button>
-                            ) : (
-                              <button id="isvendor" type="button" class="btn btn-info">CUSTOMER</button>
-                            )}
+                                <label className="col-lg-5 align-middle">User Type</label>
+                                <input type="text" name="lname"className="form-control col" value = {this.state}
+                                onChange={this.handleChange}/>
                             </div>
                             <div className="form-group row">
                                 <label className="col-lg-5 align-middle">Password</label>
