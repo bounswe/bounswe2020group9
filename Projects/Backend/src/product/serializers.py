@@ -11,7 +11,6 @@ STYLE_CHOICES = sorted([(item, item) for item in get_all_styles()])
 
 
 
-
 class LabelSerializer(serializers.ModelSerializer):
     # id = serializers.IntegerField(read_only=True)
     name = serializers.CharField(required=True, allow_blank=False, max_length=255)
@@ -24,11 +23,19 @@ class LabelSerializer(serializers.ModelSerializer):
 class CategorySerializer(serializers.ModelSerializer):
     # id = serializers.IntegerField(read_only=True)
     name = serializers.CharField(required=True, allow_blank=False, max_length=255)
-    parent = serializers.StringRelatedField(read_only=True)
 
     class Meta:
         model = Category
         fields = ("name", "parent")
+    def get_fields(self):
+        fields = super(CategorySerializer, self).get_fields()
+        fields['parent'] = CategorySerializer()
+        return fields
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        if not data['parent']:
+            data['parent'] = ""
+        return data
 
 
 class ProductSerializer(serializers.Serializer):
@@ -36,7 +43,8 @@ class ProductSerializer(serializers.Serializer):
     name = serializers.CharField(required=True, allow_blank=False, max_length=255)
     brand = serializers.CharField(required=True, allow_blank=False, max_length=255)
     labels = serializers.StringRelatedField(read_only=True, many=True)
-    category = serializers.StringRelatedField(read_only=True)
+    detail = serializers.CharField(max_length=511)
+    category = CategorySerializer(read_only=True)
     price = serializers.FloatField()
     stock = serializers.IntegerField()
     sell_counter = serializers.IntegerField()
@@ -60,7 +68,7 @@ class ProductSerializer(serializers.Serializer):
 
     class Meta:
         model = Product
-        fields = ("id", "name", "brand", "price", "stock", "sell_counter", "rating", "vendor", "picture")
+        fields = ("id", "name", "brand", "price", "stock", "sell_counter", "rating", "vendor", "picture", "detail")
 
 
 class ProductListSerializer(serializers.ModelSerializer):

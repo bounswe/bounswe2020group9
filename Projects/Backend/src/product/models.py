@@ -45,7 +45,7 @@ class Product(models.Model):
     sell_counter = models.IntegerField(default=0)
     release_date = models.DateTimeField(default=timezone.now)
     picture = models.ImageField(upload_to=productImage, null=True, blank=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, default=1)
 
     vendor = models.ForeignKey(
         Vendor,
