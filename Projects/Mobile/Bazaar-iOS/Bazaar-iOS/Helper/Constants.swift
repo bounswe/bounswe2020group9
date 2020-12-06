@@ -9,4 +9,5 @@ import Foundation
 
 struct K {
     static let isLoggedinKey = "isLoggedIn"
+    static let searchHistoryKey = "searchHistory"
 }
