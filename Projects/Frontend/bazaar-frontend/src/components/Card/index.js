@@ -29,7 +29,7 @@ export default class CardComponent extends Component {
 render(){
 
     let num = this.props.product.id;
-    let image = "image"+num;
+    let image = this.props.myImage
     console.log(image);
 
     let categories = this.props.product.categories.map(category => {
@@ -40,8 +40,7 @@ render(){
 
     return(
         <div>
-            <Card>
-                {}
+            <Card style={{height: '26rem' }}>
             <Card.Img variant="top" src={image} />
             <Card.Body>
                 <Card.Title>{this.props.product.name}</Card.Title>

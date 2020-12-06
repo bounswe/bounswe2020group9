@@ -1,0 +1,33 @@
+.myRow{
+    margin-bottom: 3rem;
+}
+
+.myPagination{
+    margin: auto;
+    align-items: center;
+    align-self: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.homeWrapper{
+    background-color: #e8ffff;
+    & .homeJumbotron{
+        
+    }
+}
+
+.myPagination{
+    padding-top: 1rem;
+    & a{
+        background: transparent;
+        color: #41aea9;
+        border: none;
+        &:hover{
+            background-color: #41aea9;
+            color:#e8ffff;
+            border-radius: 5px;
+
+        }
+    }
+}
