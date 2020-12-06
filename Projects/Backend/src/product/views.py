@@ -268,7 +268,7 @@ class ManageCartAPIView(APIView):
             raise Http404
 
     def create_sub_order(self, user_id, product_id, amount):
-        subOrder = SubOrder.objects.get(customer_id=user_id, product_id=product_id)
+        subOrder = SubOrder.objects.get(customer_id=user_id, product_id=product_id, purchased=False)
         if subOrder:
             subOrder.amount += amount
             subOrder.save()
