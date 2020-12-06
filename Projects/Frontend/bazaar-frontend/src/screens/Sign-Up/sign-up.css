@@ -15,6 +15,10 @@
     background-color: #F4A133;
     font-weight: 650;
   }
+ 
+.error {
+  color: red;
+}
   
   .forgot-password{
     text-align: right;
