@@ -7,21 +7,38 @@
 
 import UIKit
 
+protocol LoginViewControllerDelegate {
+    func loginViewControllerDidPressSignUp(isPressed:Bool)
+    func loginViewControllerDidPressContinueAsGuest(isPressed:Bool)
+}
 
 class LoginViewController: UIViewController {
     
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var frameView: UIView!
-        
+    var delegate:LoginViewControllerDelegate?
+    var isSignUpPressed = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         frameView.layer.borderColor = #colorLiteral(red: 1, green: 0.6431372549, blue: 0.3568627451, alpha: 1)
         frameView.layer.shadowColor = UIColor.black.cgColor
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        delegate?.loginViewControllerDidPressSignUp(isPressed: isSignUpPressed)
+        delegate?.loginViewControllerDidPressContinueAsGuest(isPressed: !isSignUpPressed)
+    }
+    
     @IBAction func signUpButtonPressed(_ sender: UIButton) {
-        performSegue(withIdentifier: "loginToSignUp", sender: nil)
+        isSignUpPressed=true
+        self.dismiss(animated: true, completion: nil)
+    }
+    @IBAction func continueAsGuestButtonPressed(_ sender: UIButton) {
+        isSignUpPressed=false
+        self.dismiss(animated: false, completion: nil)
     }
     
     @IBAction func loginButtonPressed(_ sender: UIButton) {
@@ -41,9 +58,8 @@ class LoginViewController: UIViewController {
                         APIManager().authenticate(username: email, password: password) { (result) in
                             switch result {
                             case .success(_):
-                                UserSingleton.shared.didLogin = true
-                                UserSingleton.shared.username = email
-                                self.performSegue(withIdentifier: "loginToMain", sender: nil)
+                                UserDefaults.standard.set(true, forKey: K.isLoggedinKey)
+                                self.dismiss(animated: false, completion: nil)
                             case .failure(_):
                                 alertController.message = "Invalid username or password"
                                 self.present(alertController, animated: true, completion: nil)
@@ -55,9 +71,5 @@ class LoginViewController: UIViewController {
             }
         }else{
         }
-    }
-    
-    @IBAction func continueAsGuestButtonPressed(_ sender: UIButton) {
-        performSegue(withIdentifier: "loginToMain", sender: nil)
     }
 }

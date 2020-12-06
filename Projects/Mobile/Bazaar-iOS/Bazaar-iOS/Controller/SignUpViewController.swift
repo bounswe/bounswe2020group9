@@ -7,6 +7,14 @@
 
 import UIKit
 
+protocol SignUpViewControllerDelegate {
+    func signUpViewControllerDidPressLoginHere()
+}
+
+enum UserType:Int {
+    case Vendor , Customer
+}
+
 class SignUpViewController: UIViewController {
     
     @IBOutlet weak var isCustomerButton: RadioButton!
@@ -16,15 +24,18 @@ class SignUpViewController: UIViewController {
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var frameView: UIView!
-    enum UserType:Int {
-        case Vendor , Customer
-    }
     var signUpUserType: UserType?
+    var delegate:SignUpViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         frameView.layer.borderColor = #colorLiteral(red: 1, green: 0.6431372549, blue: 0.3568627451, alpha: 1)
         frameView.layer.shadowColor = UIColor.black.cgColor
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        delegate?.signUpViewControllerDidPressLoginHere()
     }
     
     @IBAction func signUpButtonPressed(_ sender: UIButton) {
@@ -52,7 +63,7 @@ class SignUpViewController: UIViewController {
                                         self.present(alertController, animated: true, completion: nil)
                                     }else {
                                         if let userType = self.signUpUserType{
-                                            performSegue(withIdentifier: "signUpToMain", sender: nil)
+                                            UserDefaults.standard.set(true, forKey: K.isLoggedinKey)
                                         }else {
                                             alertController.message = "Choose one, Vendor or Customer"
                                             self.present(alertController, animated: true, completion: nil)

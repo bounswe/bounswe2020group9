@@ -5,9 +5,6 @@
 //  Created by Beste Goger on 22.11.2020.
 //
 
-import Foundation
-
-
 import UIKit
 
 class ProfileViewController: UIViewController{
@@ -16,8 +13,6 @@ class ProfileViewController: UIViewController{
     @IBOutlet weak var userEmailLabel: UILabel!
     @IBOutlet weak var userAddressLabel: UILabel!
     @IBOutlet weak var userNameLabel: UILabel!
-    @IBOutlet weak var loginButton: UIButton!
-    @IBOutlet weak var logoutButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,27 +21,21 @@ class ProfileViewController: UIViewController{
         profileMenu.layer.cornerRadius = 10
         profileMenu.layer.borderColor = UIColor.orange.cgColor
         profileMenu.layer.borderWidth = 0.5
-        if (UserSingleton.shared.didLogin) {
-            userEmailLabel.text = UserSingleton.shared.username
-            userNameLabel.text = "Bazaar"
-            userAddressLabel.text = "Bogazici University North Campus, Etiler/Istanbul"
-            loginButton.isHidden = true
-            loginButton.isEnabled = false
-            logoutButton.isHidden = false
-            logoutButton.isEnabled = true
-        } else {
-            userEmailLabel.text = "You haven't logged in yet."
-            userAddressLabel.isHidden = true
-            userAddressLabel.text = "Bogazici University North Campus, Etiler/Istanbul"
-            loginButton.isHidden = false
-            loginButton.isEnabled = true
-            logoutButton.isHidden = true
-            logoutButton.isEnabled = false
-        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        if let isLoggedIn =  UserDefaults.standard.value(forKey: K.isLoggedinKey) as? Bool {
+            if !isLoggedIn {
+                self.view.isHidden = true
+                performSegue(withIdentifier: "ProfileToLoginSegue", sender: self)
+            }else {
+                self.view.isHidden = false
+            }
+        }else {
+            self.view.isHidden = true
+            performSegue(withIdentifier: "ProfileToLoginSegue", sender: self)
+        }
         self.navigationController?.setNavigationBarHidden(true, animated: animated)
         if let selectionIndexPath = profileMenu.indexPathForSelectedRow {
                 profileMenu.deselectRow(at: selectionIndexPath, animated: false)
@@ -64,28 +53,26 @@ class ProfileViewController: UIViewController{
         profileMenu.contentInset = UIEdgeInsets(top: topInset, left: 0.0, bottom: 0.0, right: 0.0)
     }
     
-    @IBAction func loginButtonPressed(_ sender: Any) {
-        if UserSingleton.shared.didLogin {
-            performSegue(withIdentifier: "ProfileToLoginSegue", sender: self)
-            UserSingleton.shared.didLogin = false
-            UserSingleton.shared.username = "You haven't logged in yet."
-        } else {
-            performSegue(withIdentifier: "ProfileToLoginSegue", sender: self)
-        }
+    @IBAction func temporaryLogoutButton(_ sender: UIButton) {
+        UserDefaults.standard.set(false, forKey: K.isLoggedinKey)
+        performSegue(withIdentifier:"ProfileToLoginSegue" , sender: nil)
+        
     }
     
-    @IBAction func logoutButtonPressed(_ sender: Any) {
-        if UserSingleton.shared.didLogin {
-            performSegue(withIdentifier: "ProfileToLoginSegue", sender: self)
-            UserSingleton.shared.didLogin = false
-            UserSingleton.shared.username = "You haven't logged in yet."
-        } else {
-            performSegue(withIdentifier: "ProfileToLoginSegue", sender: self)
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "ProfileToLoginSegue" {
+            if let destinationVC = segue.destination as? LoginViewController {
+                destinationVC.delegate = self
+            }
+        }else if segue.identifier == "ProfileToSignUpSegue" {
+            if let destinationVC = segue.destination as? SignUpViewController {
+                destinationVC.delegate = self
+            }
         }
     }
-    
 }
 
+//MARK: - UITableViewDelegate,UITableViewDataSource
 extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -106,12 +93,23 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
 }
-
-
-class UserSingleton {
+//MARK: - Extension LoginViewControllerDelegate
+extension ProfileViewController: LoginViewControllerDelegate{
+    func loginViewControllerDidPressSignUp(isPressed: Bool) {
+        if isPressed {
+            performSegue(withIdentifier:"ProfileToSignUpSegue" , sender: nil)
+        }
+    }
     
-    static let shared = UserSingleton()
-    var username = "You haven't logged in yet."
-    var didLogin = false
-    
+    func loginViewControllerDidPressContinueAsGuest(isPressed: Bool) {
+        if isPressed {
+            self.tabBarController?.selectedViewController = self.tabBarController?.children[0]
+        }
+    }
+}
+//MARK: - Extension SignUpViewControllerDelegate
+extension ProfileViewController: SignUpViewControllerDelegate{
+    func signUpViewControllerDidPressLoginHere() {
+        performSegue(withIdentifier:"ProfileToLoginSegue" , sender: nil)
+    }
 }
