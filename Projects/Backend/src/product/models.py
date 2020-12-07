@@ -86,7 +86,6 @@ class Comment(models.Model):
         (4, "Good"),
         (5, "Excellent"),
     )
-    timestamp = models.DateTimeField()
     timestamp = models.DateTimeField(auto_now_add=True)
     body = models.CharField(max_length=255)
     rating = models.PositiveSmallIntegerField(choices=RATES, default=5)
