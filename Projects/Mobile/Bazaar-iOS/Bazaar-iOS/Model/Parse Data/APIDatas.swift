@@ -22,7 +22,20 @@ struct AuthData:Codable {
     let email:String
 }
 
-
+struct ProductData: Codable {
+    let id: Int
+    let name: String
+    let brand:  String
+    let labels: [String]
+    let categories: [String]
+    //let subcategory: String
+    let price: Double
+    let stock: Int
+    let sell_counter: Int
+    let rating: Double
+    let vendor: Int
+    let picture: String?
+}
 //{
 //    "id": 1,
 //    "last_login": "2020-11-23T07:51:49Z",

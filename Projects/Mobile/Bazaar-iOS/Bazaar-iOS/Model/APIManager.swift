@@ -35,4 +35,39 @@ struct APIManager {
             completionHandler(.failure(err))
         }
     }
+    
+    func getAllProducts(completionHandler: @escaping ([ProductData]?) -> Void) {
+        let callURL = "http://13.59.236.175:8000/api/product/"
+        if let url = URL(string: callURL){
+            AF.request(url).responseJSON(completionHandler: {
+                response in
+                if response.data != nil {
+                    do {
+                        let allProducts = try JSONDecoder().decode([ProductData].self, from: response.data!)
+                        AllProducts.shared.jsonParseError = false
+                        AllProducts.shared.apiFetchError = false
+                        AllProducts.shared.dataFetched = true
+                        completionHandler(allProducts)
+                    } catch {
+                        print("error while decoding JSON for all products")
+                        AllProducts.shared.jsonParseError = true
+                        AllProducts.shared.dataFetched = false
+                        completionHandler(nil)
+                    }
+                } else {
+                    print("error while decoding JSON for all products")
+                    AllProducts.shared.apiFetchError = true
+                    AllProducts.shared.dataFetched = false
+                    completionHandler(nil)
+                }
+                
+            })
+        } else {
+            print("invalid url for getting all products")
+            AllProducts.shared.apiFetchError = true
+            AllProducts.shared.dataFetched = false
+            completionHandler(nil)
+        }
+            
+    }
 }
