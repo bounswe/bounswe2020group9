@@ -18,6 +18,7 @@ export default class ProfilePage extends Component {
           fname: '',
           lname: '',
           utype: '',
+          token: '',
           redirect: null,
           hasError: false,
           isEnabled: true,
@@ -68,13 +69,17 @@ export default class ProfilePage extends Component {
 
     
         event.preventDefault();
-        const data = new FormData();
-        data.append("first_name", this.state.fname);
-        data.append("last_name", this.state.lname);
-        data.append("password", this.state.newpw)
+        const body = new FormData();
+        body.append("first_name", this.state.fname);
+        body.append("last_name", this.state.lname);
+        body.append("password", this.state.newpw);
+
+        let myCookie = read_cookie('user');
+        const header = {Authorization: "Token "+myCookie.token};
+        
 
         if (this.handleValidation()) {
-            axios.post(`http://13.59.236.175:8000/api/user/`, data)
+            axios.post(`http://13.59.236.175:8000/api/user/`, body, header)
             .then(res => {
       
               console.log(res);
@@ -93,6 +98,7 @@ export default class ProfilePage extends Component {
           .then(res => {
               this.setState({fname : res.data.first_name})
               this.setState({lname : res.data.last_name})
+              
               if (res.data.user_type === 1){
                 this.setState({utype: "Customer"});
               } else {
