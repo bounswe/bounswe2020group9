@@ -66,6 +66,8 @@ class MainViewController: UIViewController{
         self.categoryCollectionView.delegate = self
         allProductsInstance.delegate = self
         searchHistoryTableView.isHidden = true
+        self.view.sendSubviewToBack(searchHistoryTableView)
+        self.view.sendSubviewToBack(searchHistoryTableView)
         categoryCollectionView.register(CategoryCollectionViewCell.self, forCellWithReuseIdentifier:  "CategoryCollectionViewCell")
         //generateProducts()
         createIndicatorView()
@@ -73,7 +75,6 @@ class MainViewController: UIViewController{
             // fetch products
             self.allProductsInstance.fetchAllProducts()
         })
-        
         networkFailedAlert.addAction(okButton)
         selectedCategoryName = CLOTHING
         productTableView.register(UINib(nibName: "ProductCell", bundle: nil), forCellReuseIdentifier: "ReusableProdcutCell")
@@ -101,17 +102,13 @@ class MainViewController: UIViewController{
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let searchResultsVC = segue.destination as? SearchResultsViewController {
             searchResultsVC.searchWord = searchBar.searchTextField.text
-            print("here10")
         }
-        print("here11")
     }
     
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
         if identifier == "mainToSearchResultsSegue" {
-            print("here12")
             return !(searchBar.searchTextField.text == "")
         } else {
-            print("no segue")
             return false
         }
     }
@@ -119,15 +116,16 @@ class MainViewController: UIViewController{
 
 }
 
-extension MainViewController: UIScrollViewDelegate {
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y != 0 {
-            scrollView.contentOffset.y = 0
-        }
-    }
+//extension MainViewController: UIScrollViewDelegate {
+//  func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//        if scrollView.contentOffset.y != 0 {
+//            scrollView.contentOffset.y = 0
+//            scrollView.
+//        }
+//    }
     
 
-}
+//}
 
 extension MainViewController:UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -138,7 +136,7 @@ extension MainViewController:UITableViewDelegate,UITableViewDataSource {
         if tableView == searchHistoryTableView {
             return searchResults.count
         }
-        return 1
+        return 10
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -168,8 +166,12 @@ extension MainViewController:UITableViewDelegate,UITableViewDataSource {
             searchBar.text = searchResults[indexPath.row]
             performSegue(withIdentifier: "mainToSearchResultsSegue", sender: nil)
             print("f")
+        } else {
+            let filteredProducts:[ProductData] = allProductsInstance.allProducts.filter{$0.categories.contains(selectedCategoryName!)}
+            let product = filteredProducts[indexPath.row]
+            print(product.name)
         }
-        print("g")
+        
     }
 }
 
@@ -266,7 +268,6 @@ extension MainViewController: AllProductsFetchDelegate {
 extension MainViewController: UISearchBarDelegate, UISearchControllerDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        self.searchHistoryTableView.isHidden = false
         searchResults = searchText.isEmpty ? searchHistory : searchHistory.filter{(query:String) -> (Bool) in
             return query.range(of:searchText, options: .caseInsensitive, range:nil, locale: nil) != nil
         }
@@ -277,6 +278,8 @@ extension MainViewController: UISearchBarDelegate, UISearchControllerDelegate {
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         self.searchBar.showsCancelButton = true
         self.searchHistoryTableView.isHidden = false
+        self.view.bringSubviewToFront(searchHistoryTableView)
+        self.view.bringSubviewToFront(searchHistoryTableView)
         self.searchHistoryTableView.setValue(1, forKeyPath: "alpha")
     }
     
@@ -300,6 +303,8 @@ extension MainViewController: UISearchBarDelegate, UISearchControllerDelegate {
         searchHistoryTableView.isHidden = true
         searchBar.resignFirstResponder()
         dismiss(animated: true, completion: nil)
+        self.view.sendSubviewToBack(searchHistoryTableView)
+        self.view.sendSubviewToBack(searchHistoryTableView)
     }
     
     
@@ -310,6 +315,7 @@ extension MainViewController: UISearchBarDelegate, UISearchControllerDelegate {
 // MARK: - IndicatorView
 extension MainViewController {
     func startIndicator() {
+        self.view.bringSubviewToFront(loadingView)
         loadingView.isHidden = false
         activityIndicator.isHidden = false
         activityIndicator.startAnimating()
@@ -328,7 +334,9 @@ extension MainViewController {
             self.loadingView.isHidden = true
             self.activityIndicator.isHidden = true
             self.activityIndicator.stopAnimating()
+            self.view.sendSubviewToBack(self.loadingView)
             self.productTableView.isHidden = false
+            self.productTableView.isUserInteractionEnabled = true
             self.productTableView.reloadData()
         }
     }

@@ -16,17 +16,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="150" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="7YP-nJ-ocK">
-                                <rect key="frame" x="10" y="203" width="394" height="610"/>
-                                <color key="backgroundColor" systemColor="tertiarySystemFillColor" red="0.46274509800000002" green="0.46274509800000002" blue="0.50196078430000002" alpha="0.12" colorSpace="custom" customColorSpace="sRGB"/>
-                                <color key="separatorColor" systemColor="tertiarySystemFillColor" red="0.46274509800000002" green="0.46274509800000002" blue="0.50196078430000002" alpha="0.12" colorSpace="custom" customColorSpace="sRGB"/>
-                                <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            </tableView>
                             <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dhL-Ey-KZT" userLabel="loadingView">
-                                <rect key="frame" x="10" y="203" width="394" height="610"/>
+                                <rect key="frame" x="10" y="117.66666666666669" width="394" height="695.33333333333326"/>
                                 <subviews>
                                     <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="RcP-yv-AYF">
-                                        <rect key="frame" x="187" y="295" width="20" height="20"/>
+                                        <rect key="frame" x="187" y="337.66666666666663" width="20" height="20"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="color" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </activityIndicatorView>
@@ -49,7 +43,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </imageView>
                                     <searchBar contentMode="redraw" searchBarStyle="minimal" placeholder="Search for anything..." translatesAutoresizingMaskIntoConstraints="NO" id="8Jt-0n-6Z6">
-                                        <rect key="frame" x="59" y="0.0" width="335" height="54"/>
+                                        <rect key="frame" x="59.333333333333343" y="0.0" width="334.66666666666663" height="53.666666666666664"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="tintColor" red="0.96776050329999996" green="0.6416403651" blue="0.1417042017" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <textInputTraits key="textInputTraits"/>
@@ -76,6 +70,7 @@
                             </collectionView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Products of The Day" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hJc-iA-Y4Y">
                                 <rect key="frame" x="10" y="172.66666666666666" width="394" height="20.333333333333343"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -102,12 +97,17 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" directionalLockEnabled="YES" alwaysBounceVertical="YES" pagingEnabled="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="150" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="7YP-nJ-ocK">
+                                <rect key="frame" x="10" y="203" width="394" height="610"/>
+                                <color key="backgroundColor" systemColor="tertiarySystemFillColor" red="0.46274509800000002" green="0.46274509800000002" blue="0.50196078430000002" alpha="0.12" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="separatorColor" systemColor="tertiarySystemFillColor" red="0.46274509800000002" green="0.46274509800000002" blue="0.50196078430000002" alpha="0.12" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="c2c-qR-Fcn" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.06" id="2Gb-z2-msC"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="Igs-5V-SRe" secondAttribute="bottom" id="6B7-Vo-b2B"/>
                             <constraint firstItem="hJc-iA-Y4Y" firstAttribute="top" secondItem="nHk-J4-f5d" secondAttribute="bottom" constant="20" id="Bt0-Gh-VgP"/>
                             <constraint firstItem="7YP-nJ-ocK" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="Ch6-dX-hM8"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Igs-5V-SRe" secondAttribute="trailing" id="Hvb-XA-soC"/>
@@ -115,17 +115,18 @@
                             <constraint firstItem="dhL-Ey-KZT" firstAttribute="trailing" secondItem="7YP-nJ-ocK" secondAttribute="trailing" id="L8b-3H-7gH"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="hJc-iA-Y4Y" secondAttribute="trailing" constant="10" id="Q7a-7u-OcR"/>
                             <constraint firstItem="7YP-nJ-ocK" firstAttribute="top" secondItem="hJc-iA-Y4Y" secondAttribute="bottom" constant="10" id="QZp-Bo-0Es"/>
-                            <constraint firstItem="dhL-Ey-KZT" firstAttribute="bottom" secondItem="7YP-nJ-ocK" secondAttribute="bottom" id="WQp-lc-3Vt"/>
+                            <constraint firstItem="dhL-Ey-KZT" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="WQp-lc-3Vt"/>
                             <constraint firstItem="c2c-qR-Fcn" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="d1Y-nS-xnK"/>
                             <constraint firstItem="nHk-J4-f5d" firstAttribute="top" secondItem="c2c-qR-Fcn" secondAttribute="bottom" constant="10" id="fAB-A0-YZY"/>
                             <constraint firstItem="nHk-J4-f5d" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="fh0-vZ-udb"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="c2c-qR-Fcn" secondAttribute="trailing" constant="10" id="iPm-vc-3cZ"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="7YP-nJ-ocK" secondAttribute="bottom" id="j2W-ps-y55"/>
-                            <constraint firstItem="dhL-Ey-KZT" firstAttribute="top" secondItem="7YP-nJ-ocK" secondAttribute="top" id="j2p-FR-SkI"/>
+                            <constraint firstItem="dhL-Ey-KZT" firstAttribute="top" secondItem="c2c-qR-Fcn" secondAttribute="bottom" constant="10" id="j2p-FR-SkI"/>
                             <constraint firstItem="hJc-iA-Y4Y" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="ktf-pH-ANx"/>
                             <constraint firstItem="c2c-qR-Fcn" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="l7A-Uf-cH8"/>
                             <constraint firstItem="Igs-5V-SRe" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="oxV-Al-JWu"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="7YP-nJ-ocK" secondAttribute="trailing" constant="10" id="rYp-ZP-3wH"/>
+                            <constraint firstItem="Igs-5V-SRe" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="vfq-sa-mkJ"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="nHk-J4-f5d" secondAttribute="trailing" constant="10" id="yda-a9-Wef"/>
                             <constraint firstItem="dhL-Ey-KZT" firstAttribute="leading" secondItem="7YP-nJ-ocK" secondAttribute="leading" id="zP2-cv-CvO"/>
                         </constraints>
