@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import GoogleSignIn
 
 protocol LoginViewControllerDelegate {
     func loginViewControllerDidPressSignUp(isPressed:Bool)
@@ -22,6 +23,12 @@ class LoginViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        GIDSignIn.sharedInstance()?.presentingViewController = self
+
+        // Automatically sign in the user.
+        GIDSignIn.sharedInstance()?.restorePreviousSignIn()
+
+        // ...
         frameView.layer.borderColor = #colorLiteral(red: 1, green: 0.6431372549, blue: 0.3568627451, alpha: 1)
         frameView.layer.shadowColor = UIColor.black.cgColor
     }

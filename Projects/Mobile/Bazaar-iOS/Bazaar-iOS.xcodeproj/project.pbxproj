@@ -24,6 +24,7 @@
 		938A1552256AD19100572844 /* CategoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938A1550256AD19100572844 /* CategoryCollectionViewCell.swift */; };
 		938A1553256AD19100572844 /* CategoryCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 938A1551256AD19100572844 /* CategoryCollectionViewCell.xib */; };
 		939AB4F825694B76007815C8 /* StringHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939AB4F725694B76007815C8 /* StringHelper.swift */; };
+		93C2D069257FE419007C5750 /* credentials.plist in Resources */ = {isa = PBXBuildFile; fileRef = 93C2D068257FE419007C5750 /* credentials.plist */; };
 		93E99DD92577E8CD00BCFDAD /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E99DD72577E8CC00BCFDAD /* LoginViewController.swift */; };
 		93E99DDA2577E8CD00BCFDAD /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E99DD82577E8CC00BCFDAD /* SignUpViewController.swift */; };
 		93E99DDF2577E91B00BCFDAD /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E99DDE2577E91B00BCFDAD /* RadioButton.swift */; };
@@ -82,6 +83,7 @@
 		938A1550256AD19100572844 /* CategoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		938A1551256AD19100572844 /* CategoryCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CategoryCollectionViewCell.xib; sourceTree = "<group>"; };
 		939AB4F725694B76007815C8 /* StringHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringHelper.swift; sourceTree = "<group>"; };
+		93C2D068257FE419007C5750 /* credentials.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = credentials.plist; sourceTree = "<group>"; };
 		93E99DD72577E8CC00BCFDAD /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		93E99DD82577E8CC00BCFDAD /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		93E99DDE2577E91B00BCFDAD /* RadioButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadioButton.swift; sourceTree = "<group>"; };
@@ -272,6 +274,7 @@
 				93EE3CA82558822500B504DF /* Main.storyboard */,
 				93EE3CAE2558822700B504DF /* Assets.xcassets */,
 				93EE3CB02558822700B504DF /* LaunchScreen.storyboard */,
+				93C2D068257FE419007C5750 /* credentials.plist */,
 				93EE3CB32558822700B504DF /* Info.plist */,
 				93EE3CAB2558822500B504DF /* Bazaar_iOS.xcdatamodeld */,
 			);
@@ -443,6 +446,7 @@
 				93EE3CDB25594A6800B504DF /* ProductCell.xib in Resources */,
 				93EE3CAF2558822700B504DF /* Assets.xcassets in Resources */,
 				93EE3CAA2558822500B504DF /* Main.storyboard in Resources */,
+				93C2D069257FE419007C5750 /* credentials.plist in Resources */,
 				6994EACE255DA3D400AC48F6 /* MainTabBarController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
