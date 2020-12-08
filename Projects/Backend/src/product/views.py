@@ -86,6 +86,16 @@ class ListListAPIView(APIView):
         serializer = ProductListSerializer(product_lists, many=True, context={'request': request})
         return Response(serializer.data)
 
+    def post(self, request, id):
+        if not self.is_user(request, id):
+            return Response({"message": "bad request"}, status=status.HTTP_400_BAD_REQUEST)
+        # error handling done above
+        serializer = ProductListSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=HTTP_201_CREATED)
+        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+
 class ListDetailAPIView(APIView):
 
     def check_user(self, request, id, list_id):
@@ -120,18 +130,6 @@ class ListDetailAPIView(APIView):
         serializer = ProductListSerializer(list, context={'request': request})
         return Response(serializer.data)
 
-    def post(self, request, id, list_id):
-        if not self.check_user(request, id, list_id):
-            return Response({"message": "bad request"}, status=status.HTTP_400_BAD_REQUEST)
-        if not self.is_owner(request, id, list_id):
-            return Response({"message": "not allowed to access"}, status=status.HTTP_401_UNAUTHORIZED)
-        # error handling done above
-        serializer = ProductListSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=HTTP_201_CREATED)
-        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
-
     def put(self, request, id, list_id):
         if not self.check_user(request, id, list_id):
             return Response({"message": "bad request"}, status=status.HTTP_400_BAD_REQUEST)
@@ -139,11 +137,13 @@ class ListDetailAPIView(APIView):
         if not self.is_owner(request, id, list_id):
             return Response({"message": "not allowed to access"}, status=status.HTTP_401_UNAUTHORIZED)
         # error handling done above
-        serializer = ProductListSerializer(list, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
+        try:
+            list.name = request.data["name"]
+            list.save()
+            serializer = ProductListSerializer(list)
             return Response(serializer.data)
-        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+        except:
+            return Response({"message":"bad request"}, status=HTTP_400_BAD_REQUEST)
 
     def delete(self, request, id, list_id):
         if not self.check_user(request, id, list_id):
