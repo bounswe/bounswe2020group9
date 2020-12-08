@@ -19,6 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         GIDSignIn.sharedInstance().clientID = "1037825271400-apm33ju1kr4uiejj11pnv13hc5gugrhg.apps.googleusercontent.com"
         return true
     }
+    
 
     // MARK: UISceneSession Lifecycle
 

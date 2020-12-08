@@ -401,6 +401,7 @@
                         <outlet property="emailTextField" destination="riA-Gy-ttb" id="7d4-xu-58W"/>
                         <outlet property="frameView" destination="ntr-J6-vgb" id="Faj-uy-tBZ"/>
                         <outlet property="passwordTextField" destination="5Go-B8-phC" id="x3e-iD-wIK"/>
+                        <outlet property="signInButton" destination="G6R-PD-p89" id="dzK-0e-goW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="to7-4r-ib9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -839,6 +840,7 @@
                         <outlet property="isVendorButton" destination="Dpb-Nw-seZ" id="Elc-Al-B1K"/>
                         <outlet property="lastNameTextField" destination="Aus-0v-s5f" id="ksL-3t-hzg"/>
                         <outlet property="passwordTextField" destination="qmb-OC-YrS" id="7P9-Qc-bcM"/>
+                        <outlet property="signInButton" destination="cN2-ET-nNT" id="D2k-Ij-mdv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="acR-Yu-gM9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
