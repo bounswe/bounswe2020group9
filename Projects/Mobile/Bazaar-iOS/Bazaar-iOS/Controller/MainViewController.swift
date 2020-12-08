@@ -137,15 +137,22 @@ class MainViewController: UIViewController{
             }
             
             searchBar.text = ""
+        } else if let productDetailVC = segue.destination as? ProductDetailViewController {
+            let indexPath = self.productTableView.indexPathForSelectedRow
+            if indexPath != nil {
+                let products = allProductsInstance.allProducts.filter{$0.categories.contains(selectedCategoryName!)}
+                productDetailVC.product = products[indexPath!.row]
+            }
         }
     }
     
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
         if identifier == "mainToSearchResultsSegue" {
             return !(searchBar.searchTextField.text == "")
-        } else {
-            return false
+        } else if identifier == "mainToProductDetailSegue" {
+             return self.productTableView.indexPathForSelectedRow != nil
         }
+        return false
     }
 
 
@@ -184,9 +191,21 @@ extension MainViewController:UITableViewDelegate,UITableViewDataSource {
             cell.productNameLabel.font = UIFont.systemFont(ofSize: 15, weight: .black)
             cell.productDescriptionLabel.text = product.brand
             cell.productDescriptionLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
-            cell.productPriceLabel.text = String(product.price)
+            cell.productPriceLabel.text = "₺"+String(product.price) 
             cell.productPriceLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
-            cell.productImageView.image = UIImage(named: "iphone12")
+            if let url = product.picture {
+                do{
+                    try cell.productImageView.loadImageUsingCache(withUrl: url)
+                } catch let error {
+                    print(error)
+                    cell.productImageView.image = UIImage(named:"xmark.circle")
+                    cell.productImageView.tintColor = UIColor.lightGray
+                }
+            } else {
+                cell.productImageView.image = UIImage(named:"xmark.circle")
+                cell.productImageView.tintColor = UIColor.lightGray
+                cell.productImageView.contentMode = .center
+            }
             return cell
         } else {
             let cell = searchHistoryTableView.dequeueReusableCell(withIdentifier: "searchHistoryCell", for: indexPath) as! SearchHistoryTableViewCell
@@ -217,6 +236,7 @@ extension MainViewController:UITableViewDelegate,UITableViewDataSource {
             let filteredProducts:[ProductData] = allProductsInstance.allProducts.filter{$0.categories.contains(selectedCategoryName!)}
             let product = filteredProducts[indexPath.row]
             print(product.name)
+            performSegue(withIdentifier: "mainToProductDetailSegue", sender: nil)
         }
         
     }
