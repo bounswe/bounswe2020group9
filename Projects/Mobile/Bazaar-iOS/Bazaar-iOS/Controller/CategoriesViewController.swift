@@ -8,9 +8,13 @@
 import UIKit
 
 class CategoriesViewController:UIViewController  {
+    @IBOutlet weak var searchTextField: UITextField!
     override func viewDidLoad() {
         super.viewDidLoad()
         
     }
     
+    @IBAction func buttonPressed(_ sender: UIButton) {
+        print(searchTextField.text)
+    }
 }
