@@ -2,8 +2,7 @@ from pygments.lexers import get_all_lexers
 from pygments.styles import get_all_styles
 from rest_framework import serializers
 
-from .models import Product, Label, Category, ProductList, Order, Payment
-from user.serializers import UserSerializer
+from .models import Product, Label, Category, ProductList, Order, Payment, SubOrder
 
 LEXERS = [item for item in get_all_lexers() if item[1]]
 LANGUAGE_CHOICES = sorted([(item[1][0], item[0]) for item in LEXERS])
@@ -72,22 +71,43 @@ class ProductListSerializer(serializers.ModelSerializer):
         fields = ("id", "name", "customer", "products")
 
 
+class SubOrderSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = SubOrder
+        fields = "__all__"
+        extra_kwargs = {'customer': {'write_only': True}}
+
+
 class OrderSerializer(serializers.ModelSerializer):
-    #customer = UserSerializer()
-    #product = ProductSerializer()
+
+
     class Meta:
         model = Order
         fields = "__all__"
-        #extra_kwargs = {'sub_order': {'write_only': True}}
+        extra_kwargs = {'sub_order': {'write_only': True}}
 
     def update(self, instance, validated_data):
 
-        for (key, value) in validated_data.items():
-            setattr(instance, key, value)
+        if ('current_status' in validated_data):
+            setattr(instance, 'current_status', validated_data['current_status'])
+        #if ('current_status' in validated_data) and ('delivery_time' in validated_data):
+        #    setattr(instance, 'current_status', validated_data['current_status'])
+        #    setattr(instance, 'delivery_time', validated_data['delivery_time'])
+        #elif 'delivery_time' in validated_data:
+        #    setattr(instance, 'delivery_time', validated_data['delivery_time'])
+        #elif 'current_status' in validated_data:
+        #    setattr(instance, 'current_status', validated_data['current_status'])
+        else:
+            print("now allow")
 
         instance.save()
 
         return instance
+
+
+
+
 
 class PaymentSerializer(serializers.ModelSerializer):
 

@@ -80,10 +80,10 @@ class Order(models.Model):
         (2, "On the Way"),
         (3, "Delivered"),
     )
-    customer = models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     sub_order = models.OneToOneField(SubOrder, on_delete=models.CASCADE)
-    timestamp = models.DateTimeField()
+    timestamp = models.DateTimeField(default=timezone.now())
     delivery_time = models.DateTimeField()
     current_status = models.PositiveSmallIntegerField(choices=STATUS_TYPES, default=1)
 
@@ -121,7 +121,7 @@ def make_purchase_true(sender, instance=None, created=False, **kwargs):
         sub_order.purchased = True
         sub_order.save()
 
-        product = Product.objects.get(id=instance.product.id)
+        product = Product.objects.get(id=instance.sub_order.product.id)
         product.stock -= sub_order.quantity
         product.sell_counter += sub_order.quantity
         product.save()

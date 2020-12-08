@@ -272,7 +272,7 @@ class OrderDetailAPIView(APIView):
         order = self.get_order(request,id)
         serializer = OrderSerializer(order)
 
-        if request.user.id == order.customer.id or request.user.id == order.product.vendor.user.id:
+        if request.user.id == order.sub_order.customer.user.id or request.user.id == order.sub_order.product.vendor.user.id:
             return Response(serializer.data)
         else:
             return HttpResponse("Unauthorized request", status=HTTP_401_UNAUTHORIZED)
@@ -282,7 +282,7 @@ class OrderDetailAPIView(APIView):
         order = self.get_order(request,id)
         serializer = OrderSerializer(order, data=request.data,partial=True)
         if serializer.is_valid():
-            if request.user.id == order.customer.id or request.user.id == order.product.vendor.user.id:
+            if request.user.id == order.sub_order.product.vendor.user.id:
                 serializer.save()
                 return Response(serializer.data)
             else:
@@ -291,7 +291,7 @@ class OrderDetailAPIView(APIView):
 
     def delete(self, request, id):
         order = self.get_order(request,id)
-        if request.user.id == order.customer.id or request.user.id == order.product.vendor.user.id:
+        if request.user.id == order.sub_order.customer.user.id:
             order.delete()
             return Response("order id " + str(id) + " deleted", status=HTTP_204_NO_CONTENT)
         else:
@@ -305,19 +305,24 @@ class OrderListAPIView(APIView):
 
     def get(self, request):
         if(request.user.user_type == 1):
-            orders = Order.objects.filter(customer_id=request.user.id)
+            orders = Order.objects.filter(sub_order__customer_id=request.user.id)
         else:
             orders = Order.objects.filter(product__vendor__user__id=request.user.id)
 
         serializer = OrderSerializer(orders, many=True, context={'request': request})
+
+
         return Response(serializer.data)
 
     def post(self, request):
-        serializer = OrderSerializer(data=request.data,many=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=HTTP_201_CREATED)
-        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+        if request.user.user_type == 1:
+            serializer = OrderSerializer(data=request.data,many=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=HTTP_201_CREATED)
+            return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+        else:
+            return HttpResponse("Unauthorized request", status=HTTP_401_UNAUTHORIZED)
 
 
 
