@@ -41,6 +41,8 @@ class MainViewController: UIViewController{
     var searchResults:[String] = []
     var historyEndIndex:Int = 0
     var categoriesEndIndex: Int = 0
+    
+    
     override func viewWillAppear(_ animated: Bool) {
         searchHistoryTableView.reloadData()
         productTableView.reloadData()
@@ -54,6 +56,9 @@ class MainViewController: UIViewController{
             }
         }
         searchTextField?.alpha = 1.0
+        searchResults = searchHistory
+        historyEndIndex = searchHistory.count
+        categoriesEndIndex = searchHistory.count
             
     }
     override func viewDidLoad() {
@@ -98,12 +103,40 @@ class MainViewController: UIViewController{
     }
     
     
-    
-    
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        self.searchBar.showsCancelButton = false
+        
+        searchHistoryTableView.isHidden = true
+        searchBar.resignFirstResponder()
+        dismiss(animated: true, completion: nil)
+        self.view.sendSubviewToBack(searchHistoryTableView)
+        self.view.sendSubviewToBack(searchHistoryTableView)
+        searchResults = searchHistory
         if let searchResultsVC = segue.destination as? SearchResultsViewController {
             searchResultsVC.searchWord = searchBar.searchTextField.text
+            let indexpath = searchHistoryTableView.indexPathForSelectedRow
+            if indexpath != nil {
+                if indexpath!.row < historyEndIndex {
+                    searchResultsVC.isSearchWord = true
+                    searchResultsVC.isBrand = false
+                    searchResultsVC.isCategory = false
+                } else if indexpath!.row < categoriesEndIndex {
+                    searchResultsVC.isSearchWord = false
+                    searchResultsVC.isBrand = false
+                    searchResultsVC.isCategory = true
+                } else {
+                    searchResultsVC.isSearchWord = false
+                    searchResultsVC.isBrand = true
+                    searchResultsVC.isCategory = false
+                }
+            } else {
+                searchResultsVC.isSearchWord = true
+                searchResultsVC.isBrand = false
+                searchResultsVC.isCategory = false
+            }
+            
+            searchBar.text = ""
         }
     }
     
@@ -308,7 +341,8 @@ extension MainViewController: UISearchBarDelegate, UISearchControllerDelegate {
             return query.range(of:searchText, options: .caseInsensitive, range:nil, locale: nil) != nil})
         categoriesEndIndex = searchResults.count
         let brands = Array(Set(allProductsInstance.allProducts.map{$0.brand}))
-        searchResults.append(contentsOf: brands)
+        searchResults.append(contentsOf: brands.filter{(query:String) -> (Bool) in
+        return query.range(of:searchText, options: .caseInsensitive, range:nil, locale: nil) != nil})
         searchHistoryTableView.reloadData()
     }
     
