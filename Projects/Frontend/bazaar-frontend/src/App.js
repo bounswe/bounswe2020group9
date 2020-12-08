@@ -8,6 +8,8 @@ import ProfilePage from "./screens/Profile-page";
 import SignIn from "./screens/Sign-In"
 import SignUp from "./screens/Sign-Up"
 import Home from "./screens/Home"
+import ForgotPassword from "./screens/Sign-In/forgot-password"
+
 
 //components
 import Header from "./components/Header"
@@ -30,6 +32,10 @@ function App() {
         <Route path="/signIn">
           <Header />
           <SignIn />
+        </Route>
+        <Route path="/forgot-password">
+          <Header />
+          <ForgotPassword />
         </Route>
         <Route path="/profile-page">
           <Header />

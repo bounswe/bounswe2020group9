@@ -6,13 +6,12 @@ import { Redirect } from "react-router-dom";
 
 import "./sign-in.css";
 
-export default class SignIn extends Component {
+export default class ForgotPassword extends Component {
 
   constructor() {
     super();
     this.state = {
       username: '',
-      password: '',
       redirect: null,
     }
   }
@@ -34,13 +33,6 @@ export default class SignIn extends Component {
     axios.post(`http://13.59.236.175:8000/api/user/login/`, { "username": this.state.username, "password": this.state.password })
       .then(res => {
 
-        const cookie_key = 'user';
-        bake_cookie(cookie_key, res.data);
-
-        console.log(res);
-        console.log(res.data);
-
-        this.setState({ redirect: "/" });
       })
 
   }
@@ -54,7 +46,7 @@ export default class SignIn extends Component {
     return (
       <div className="entry-form">
         <form>
-          <h3>Sign In</h3>
+          <h3>Forgot Password</h3>
 
           <div className="form-group">
             <label>Email address</label>
@@ -62,24 +54,8 @@ export default class SignIn extends Component {
               onChange={this.handleChange} />
           </div>
 
-          <div className="form-group">
-            <label>Password</label>
-            <input type="password" name="password" className="form-control" placeholder="Enter password"
-              onChange={this.handleChange} />
-          </div>
+          <button id="submit" type="submit" className="btn btn-block" onClick={this.handleSubmit}>Send email</button>
 
-          <div className="form-group">
-            <div className="custom-control custom-checkbox">
-              <input type="checkbox" className="custom-control-input" id="customCheck1" />
-              <label className="custom-control-label" htmlFor="customCheck1">Remember me</label>
-            </div>
-          </div>
-
-          <button id="submit" type="submit" className="btn btn-block" onClick={this.handleSubmit}>Sign in</button>
-
-          <p className="forgot-password">
-            Forgot <a href="/forgot-password">password?</a>
-          </p>
         </form>
         <GoogleButton className="btn-google"
           onClick={() => { console.log('Google button clicked') }}
