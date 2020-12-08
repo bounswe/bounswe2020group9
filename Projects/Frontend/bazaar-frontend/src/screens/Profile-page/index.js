@@ -3,7 +3,6 @@ import axios from 'axios'
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 import Cookies from 'js-cookie';
 
-
 import "./profilepage.css";
 import { faGlassWhiskey } from "@fortawesome/free-solid-svg-icons";
 
@@ -13,42 +12,60 @@ export default class ProfilePage extends Component {
         super();
         this.state = {
           username: '',
-          oldpw: '',
+          currpw: '',
           newpw: '',
           confpw: '',
           fname: '',
           lname: '',
+          utype: '',
           redirect: null,
-          isVendor: false,
           hasError: false,
-          isEnabled: false
+          isEnabled: true,
+          errors: {}
         //   user_id: Cookies.get("user_id")
         }
       }
     
       handleChange = event => {
     
+        event.preventDefault();
         this.setState({ [event.target.name]: event.target.value });
+        console.log("value  :  "+event.target.value)
+        
+      }
 
-        if(event.target.name === "newpw" | event.target.name === "confpw"){
-          if(this.state.newpw === this.state.confpw){
-            this.setState({isEnabled: true});
-          }
-          else{
-            this.setState({isEnabled: false});
-          }
+      handleValidation(){
+        let formIsValid = true;
+        let new_errors = {newpw: '', confpw: '', currpw: ''};
+        //Name
+        if(this.state.newpw.length !== 0 && this.state.newpw.length < 8){
+          formIsValid = false;
+          new_errors["newpw"] = "New password must be at least 8 characters.";
         }
-        else{
-          if(event.target.name !== "oldpw"){
-            this.setState({isEnabled: true});
-          }
+  
+        if(this.state.confpw !== this.state.newpw){
+          formIsValid = false;
+          new_errors["confpw"] = "New passwords do not match.";      
+        }
+   
+        //Email
+        if(this.state.currpw.length === 0 && this.state.newpw.length !== 0){
+          formIsValid = false;
+          new_errors["currpw"] = "Please give your current password.";
         }
 
-    
+        if (this.state.currpw.length !== 0 && this.state.newpw.length === 0){
+          formIsValid = false;
+          new_errors["newpw"] = "Please provide new password.";
+        }
+
+        this.setState({errors: new_errors});
+        return formIsValid;
       }
 
     
-      handleSubmit = event => {
+      handleSubmit = event => {  
+
     
         event.preventDefault();
         const data = new FormData();
@@ -56,9 +73,8 @@ export default class ProfilePage extends Component {
         data.append("last_name", this.state.lname);
         data.append("password", this.state.newpw)
 
-        if (this.state.newpw == this.state.confpw) {
-            
-            axios.put(`http://13.59.236.175:8000/api/user/`, data)
+        if (this.handleValidation()) {
+            axios.post(`http://13.59.236.175:8000/api/user/`, data)
             .then(res => {
       
               console.log(res);
@@ -69,14 +85,6 @@ export default class ProfilePage extends Component {
         } else {
             this.setState({ [this.state.hasError]: true });
         }
-    
-        axios.put(`http://13.59.236.175:8000/api/user/`, data)
-          .then(res => {
-    
-            console.log(res);
-            console.log(res.data);
-
-          })
       }
 
       componentDidMount() {
@@ -85,6 +93,11 @@ export default class ProfilePage extends Component {
           .then(res => {
               this.setState({fname : res.data.first_name})
               this.setState({lname : res.data.last_name})
+              if (res.data.user_type === 1){
+                this.setState({utype: "Customer"});
+              } else {
+                this.setState({utype: "Vendor"});
+              }
 
           })
 
@@ -92,10 +105,9 @@ export default class ProfilePage extends Component {
 
 
     render() {
-      const isVendor = this.state.isVendor
       if (this.state.hasError) {
         // You can render any custom fallback UI
-        return <h1>Something went wrong.</h1>;
+        return <h1>{this.validate.message}</h1>;
       }
         return (
             <div className="profile-form">
@@ -106,57 +118,70 @@ export default class ProfilePage extends Component {
 
                     <div className="col-lg-12 col-md-12 col-sm-12 no-padding-left ">
                         <div className="account-update">
-                            <form onSubmit={this.handleSubmit}>
-                            <div className="form-group row">
-                                <label className="col-lg-5 align-middle">First Name</label>
-                                <input type="text" name="fname"className="form-control col" value = {this.state.fname}
-                                onChange={this.handleChange}/>
-                            </div>
-                            <div className="form-group row">
-                                <label className="col-lg-5 align-middle">Last Name</label>
-                                <input type="text" name="lname"className="form-control col" value = {this.state.lname}
-                                onChange={this.handleChange}/>
-                            </div>
+                            <form className='needs-validation' onSubmit={this.handleSubmit} noValidate>
+                              <div className="form-group row">
+                                  <label className="col-5 align-middle">First Name</label>
+                                  <div className="col">
+                                    <input type="text" name="fname"className="form-control col" value = {this.state.fname}
+                                    onChange={this.handleChange} required/>
+                                  </div>
+                              </div>
+                              <div className="form-group row">
+                                  <label className="col-5 align-middle">Last Name</label>
+                                  <div className="col">
+                                    <input type="text" name="lname"className="form-control col" value = {this.state.lname}
+                                    onChange={this.handleChange} required/>
+                                  </div>
+                              </div>
+                              <div className="form-group row">
+                                  <label className="col-5 align-middle">User Type</label>
+                                  <div className="col">
+                                    <input type="text" name="lname"className="form-control col" value = {this.state.utype}
+                                    onChange={this.handleChange} disabled/>
+                                  </div>
+                              </div>
+                              <div className="form-group row">
+                                  <label className="col-5 align-middle">Password</label>
+                                  <div className="col">
+                                    <input type="password" name="currpw" className="form-control col" placeholder="Password" 
+                                    onChange={this.handleChange}/>
+                                    <div className="error">{this.state.errors["currpw"]}</div>
+                                  </div>
+                              </div>                    
+                              <div className="form-group row">
+                                  <label className="col-5 align-middle">New Password</label>
+                                  <div className="col">
+                                    <input type="password" name="newpw" className="form-control col" placeholder="New password" 
+                                    onChange={this.handleChange}/>
+                                    <div style={{color: "red"}}>{this.state.errors["newpw"]}</div>
+                                  </div>
+                              </div>
+                              <div className="form-group row">
+                                  <label className="col-5 align-middle">New Password(again)</label>
+                                  <div className="col">
+                                    <input type="password" name="confpw" className="form-control col" placeholder="New password(again)" 
+                                    onChange={this.handleChange}/>
+                                    <div style={{color: "red"}}>{this.state.errors["confpw"]}</div>
 
-                            <div className="form-group row">
-                                <label className="col-lg-5 align-middle">Account</label>
-                                {isVendor ? (
-                            <button id="isvendor" type="button" class="btn btn-info">VENDOR</button>
-                            ) : (
-                              <button id="isvendor" type="button" class="btn btn-info">CUSTOMER</button>
-                            )}
-                            </div>
-                            <div className="form-group row">
-                                <label className="col-lg-5 align-middle">Password</label>
-                                <input type="password" name="oldpw" className="form-control col" placeholder="Password" 
-                                onChange={this.handleChange}/>
-                            </div>                    
-                            <div className="form-group row">
-                                <label className="col-lg-5 align-middle">New Password</label>
-                                <input type="password" name="newpw" className="form-control col" placeholder="New password" 
-                                onChange={this.handleChange}/>
-                            </div>
-                            <div className="form-group row">
-                                <label className="col-lg-5 align-middle">New Password(again)</label>
-                                <input type="password" name="confpw" className="form-control col" placeholder="New password(again)" 
-                                onChange={this.handleChange}/>
-                            </div>
-                            <div id="save-changes-div">
-                              {this.state.isEnabled
-                              ? 
-                              <button id="save-changes" type="submit" className="btn btn-block">Confirm changes</button>
-                              :
-                              <button id="save-changes" type="submit" className="btn btn-block" disabled>Confirm changes</button>
-                            }
-                            </div>
+                                  </div>
+                              </div>
+                              <div id="save-changes-div">
+                                {this.state.isEnabled
+                                ? 
+                                <button id="save-changes" type="submit" className="btn btn-block">Confirm changes</button>
+                                :
+                                <button id="save-changes" type="submit" className="btn btn-block" disabled>Confirm changes</button>
+                              }
+                              </div>
 
                             </form>
                         </div>
                     </div>
 
                 </div>
-  
+                  
             </div>
+            
 
         );
     }

@@ -36,6 +36,10 @@
     margin: auto;
 }
 
+.error {
+    color: red;
+}
+
 .form-group label{
     margin-bottom: 0;
 }

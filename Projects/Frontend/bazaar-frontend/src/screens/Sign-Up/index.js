@@ -15,15 +15,39 @@ export default class SignUp extends Component {
           password: '',
           fname: '',
           lname: '',
-          redirect: null
+          utype: 'Customer',
+          redirect: null,
+          errors: {}
         }
+      }
+      validateEmail(email) {
+            const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(String(email).toLowerCase());
+        }
+
+      handleValidation(){
+        let formIsValid = true;
+        let new_errors = {passwprd: '', username: ''};
+
+        if(this.state.password.length < 8){
+          formIsValid = false;
+          new_errors["password"] = "Password must be at least 8 characters.";
+        }
+  
+        if(this.validateEmail(this.state.username) === false){
+            console.log(this.validateEmail(this.state.username));
+          formIsValid = false;
+          new_errors["username"] = "Please give a valid email.";      
+        }
+
+        this.setState({errors: new_errors});
+        return formIsValid;
       }
     
       handleChange = event => {
         this.setState({ [event.target.name]: event.target.value });
       }
 
-    
       handleSubmit = event => {
     
         event.preventDefault();
@@ -32,15 +56,22 @@ export default class SignUp extends Component {
         data.append("password", this.state.password);
         data.append("first_name", this.state.fname);
         data.append("last_name", this.state.lname);
-    
-    
-        axios.post(`http://13.59.236.175:8000/api/user/signup/`, data)
-          .then(res => {
-    
-            console.log(res);
-            console.log(res.data);
-            this.setState({ redirect: "/signin" });
-          })
+        if (this.state.utype === 'Customer') {
+            data.append("user_type", 1);
+        } else {
+            data.append("user_type", 2);
+        }
+        if (this.handleValidation()){
+            console.log(this.state.username);
+            axios.post(`http://13.59.236.175:8000/api/user/signup/`, data)
+              .then(res => {
+        
+                console.log(res);
+                console.log(res.data);
+                this.setState({ redirect: "/signin" });
+              })
+
+        } 
     
     
     
@@ -70,12 +101,31 @@ export default class SignUp extends Component {
                         <label>Email address</label>
                         <input type="text" name="username" className="form-control" placeholder="Enter email"  
                         onChange={this.handleChange}/>
+                        <div className="error">{this.state.errors["username"]}</div>
                     </div>
 
                     <div className="form-group">
                         <label>Password</label>
                         <input type="text" name="password" className="form-control" placeholder="Enter password"  
                         onChange={this.handleChange}/>
+                        <div className="error">{this.state.errors["password"]}</div>
+                    </div>
+                    
+                    <div className="form-group row">
+                        <label className="col-6 align-middle">User type</label>
+                            <div className="form-check form-check-inline">
+                                <input className="form-check-input align-middle" type="radio" name="utype" id="gridRadios1" value="Customer" checked></input>
+                                <label className="form-check-label" for="gridRadios1">
+                                    Customer
+                                </label>
+                            </div>
+                            <div className="form-check form-check-inline">
+                                <input className="form-check-input align-middle" type="radio" name="utype" id="gridRadios2" value="Vendor"></input>
+                                <label className="form-check-label" for="gridRadios2">
+                                    Vendor
+                                </label>
+                            </div>
+                        
                     </div>
 
                     <button id="submit" type="submit" className="btn btn-block">Sign Up</button>
