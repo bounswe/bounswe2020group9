@@ -63,7 +63,7 @@ class Header extends Component {
           </a>
           <div className="dropdown-menu" aria-labelledby="ddlProfile">
             <a className="dropdown-item" href="/profile-page">View Profile</a>
-            <a className="dropdown-item" href="#">My Addresses</a>
+            <a className="dropdown-item" href="/my-list">My List</a>
             <a className="dropdown-item" href="#">My Orders</a>
           </div>
         </li>

@@ -9,7 +9,7 @@ import SignIn from "./screens/Sign-In"
 import SignUp from "./screens/Sign-Up"
 import Home from "./screens/Home"
 import ForgotPassword from "./screens/Sign-In/forgot-password"
-
+import MyList from "./screens/MyList/MyList"
 
 //components
 import Header from "./components/Header"
@@ -40,6 +40,10 @@ function App() {
         <Route path="/profile-page">
           <Header />
           <ProfilePage />
+        </Route>
+        <Route path="/my-list">
+          <Header />
+          <MyList />
         </Route>
       </Switch>
 
