@@ -78,22 +78,54 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Igs-5V-SRe" userLabel="searchHistoryTableView">
                                 <rect key="frame" x="0.0" y="107.66666666666669" width="414" height="705.33333333333326"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="searchHistoryCell" id="L0Z-9g-B5M">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="searchHistoryCell" id="L0Z-9g-B5M" customClass="SearchHistoryTableViewCell" customModule="Bazaar_iOS" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="414" height="43.666667938232422"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="L0Z-9g-B5M" id="dTT-Tb-fPT">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.666667938232422"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hak-eK-yP2" userLabel="searchCellLabel">
-                                                    <rect key="frame" x="186" y="11.333333333333314" width="42" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="ZzO-YB-Xvi">
+                                                    <rect key="frame" x="20" y="0.0" width="374" height="43.666666666666664"/>
+                                                    <subviews>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="clock" catalog="system" adjustsImageSizeForAccessibilityContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="vgt-30-i9G">
+                                                            <rect key="frame" x="0.0" y="12.666666666666664" width="20.333333333333332" height="18.999999999999986"/>
+                                                            <color key="tintColor" systemColor="systemGrayColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <accessibility key="accessibilityConfiguration" identifier="searchImageView"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" secondItem="vgt-30-i9G" secondAttribute="height" multiplier="1:1" id="2qn-9W-Ogu"/>
+                                                            </constraints>
+                                                        </imageView>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hak-eK-yP2" userLabel="searchCellLabel">
+                                                            <rect key="frame" x="30.333333333333343" y="11.666666666666666" width="290" height="20.333333333333336"/>
+                                                            <accessibility key="accessibilityConfiguration" identifier="searchWordLabel"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <color key="textColor" red="0.26605003240000002" green="0.26605003240000002" blue="0.26605003240000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QSg-5L-QuQ" userLabel="categoryLabel">
+                                                            <rect key="frame" x="330.33333333333331" y="11.666666666666666" width="43.666666666666686" height="20.333333333333336"/>
+                                                            <accessibility key="accessibilityConfiguration" identifier="searchResultTypeLabel"/>
+                                                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
+                                                            <color key="textColor" systemColor="systemGrayColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </stackView>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <accessibility key="accessibilityConfiguration" identifier="searchHistoryCell"/>
+                                        <constraints>
+                                            <constraint firstAttribute="bottom" secondItem="ZzO-YB-Xvi" secondAttribute="bottom" id="MHt-H2-xvJ"/>
+                                            <constraint firstItem="ZzO-YB-Xvi" firstAttribute="top" secondItem="L0Z-9g-B5M" secondAttribute="top" id="cUn-YN-1pV"/>
+                                            <constraint firstItem="ZzO-YB-Xvi" firstAttribute="leading" secondItem="L0Z-9g-B5M" secondAttribute="leading" constant="20" id="sE6-mR-gT7"/>
+                                            <constraint firstAttribute="trailing" secondItem="ZzO-YB-Xvi" secondAttribute="trailing" constant="20" id="xtF-RR-3OB"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="clockImage" destination="vgt-30-i9G" id="cG5-CW-SUp"/>
+                                            <outlet property="resultLabel" destination="hak-eK-yP2" id="TzO-np-Qab"/>
+                                            <outlet property="typeLabel" destination="QSg-5L-QuQ" id="0gl-0S-PRa"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
@@ -1213,6 +1245,7 @@
         <image name="bell" catalog="system" width="64" height="62"/>
         <image name="cart" catalog="system" width="64" height="50"/>
         <image name="cart.fill" catalog="system" width="64" height="50"/>
+        <image name="clock" catalog="system" width="64" height="60"/>
         <image name="gear" catalog="system" width="64" height="58"/>
         <image name="gift" catalog="system" width="64" height="60"/>
         <image name="google_icon" width="300" height="300"/>

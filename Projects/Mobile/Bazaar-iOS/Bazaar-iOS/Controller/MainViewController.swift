@@ -39,7 +39,7 @@ class MainViewController: UIViewController{
     var networkFailedAlert:UIAlertController = UIAlertController(title: "Error while retrieving products", message: "We encountered a problem while retrieving the products, please check your internet connection.", preferredStyle: .alert)
     var searchHistory:[String] = (UserDefaults.standard.value(forKey: K.searchHistoryKey) as? [String] ?? [])
     var searchResults:[String] = []
-    
+    var historyEndIndex:Int = 0
     override func viewWillAppear(_ animated: Bool) {
         searchHistoryTableView.reloadData()
         productTableView.reloadData()
@@ -78,7 +78,7 @@ class MainViewController: UIViewController{
         networkFailedAlert.addAction(okButton)
         selectedCategoryName = CLOTHING
         productTableView.register(UINib(nibName: "ProductCell", bundle: nil), forCellReuseIdentifier: "ReusableProdcutCell")
-        searchHistoryTableView.register(UITableViewCell.self, forCellReuseIdentifier: "searchHistoryCell")
+        //searchHistoryTableView.register(SearchHistoryTableViewCell.self, forCellReuseIdentifier: "searchHistoryCell")
         if !(allProductsInstance.dataFetched) {
             print("here")
             self.searchBar.resignFirstResponder()
@@ -87,6 +87,7 @@ class MainViewController: UIViewController{
             self.allProductsInstance.fetchAllProducts()
         }
         searchResults = searchHistory
+        historyEndIndex = searchHistory.count
         
     }
     
@@ -154,8 +155,15 @@ extension MainViewController:UITableViewDelegate,UITableViewDataSource {
             cell.productImageView.image = UIImage(named: "iphone12")
             return cell
         } else {
-            let cell = searchHistoryTableView.dequeueReusableCell(withIdentifier: "searchHistoryCell", for: indexPath)
-            cell.textLabel?.text = searchResults[indexPath.row]
+            let cell = searchHistoryTableView.dequeueReusableCell(withIdentifier: "searchHistoryCell", for: indexPath) as! SearchHistoryTableViewCell
+            cell.resultLabel.text = searchResults[indexPath.row]
+            if indexPath.row < historyEndIndex {
+                cell.showClock()
+                cell.hideType()
+            } else {
+                cell.hideClock()
+                cell.showType()
+            }
             return cell
         }
     }
@@ -172,6 +180,24 @@ extension MainViewController:UITableViewDelegate,UITableViewDataSource {
             print(product.name)
         }
         
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if tableView == searchHistoryTableView {
+            if indexPath.row < historyEndIndex {
+                return true
+            }
+        }
+        return false
+    }
+
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if (editingStyle == .delete) {
+            searchResults.remove(at: indexPath.row)
+            searchHistory.remove(at: indexPath.row)
+            UserDefaults.standard.set(searchHistory, forKey: K.searchHistoryKey)
+            searchHistoryTableView.reloadData()
+        }
     }
 }
 
@@ -271,6 +297,9 @@ extension MainViewController: UISearchBarDelegate, UISearchControllerDelegate {
         searchResults = searchText.isEmpty ? searchHistory : searchHistory.filter{(query:String) -> (Bool) in
             return query.range(of:searchText, options: .caseInsensitive, range:nil, locale: nil) != nil
         }
+        historyEndIndex = searchResults.count
+        searchResults.append(contentsOf: categories.filter{(query:String) -> (Bool) in
+            return query.range(of:searchText, options: .caseInsensitive, range:nil, locale: nil) != nil})
         searchHistoryTableView.reloadData()
     }
     
@@ -285,7 +314,7 @@ extension MainViewController: UISearchBarDelegate, UISearchControllerDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if searchBar.searchTextField.text != "" {
-            if !searchHistory.contains(searchBar.searchTextField.text!) {
+            if !searchHistory.contains(searchBar.searchTextField.text!) && !categories.contains(searchBar.searchTextField.text!){
                 searchHistory.append(searchBar.text!)
             }
             UserDefaults.standard.set(searchHistory, forKey: K.searchHistoryKey)
