@@ -123,4 +123,5 @@ def make_purchase_true(sender, instance=None, created=False, **kwargs):
 
         product = Product.objects.get(id=instance.product.id)
         product.stock -= sub_order.quantity
+        product.sell_counter += sub_order.quantity
         product.save()

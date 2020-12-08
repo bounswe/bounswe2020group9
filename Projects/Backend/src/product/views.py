@@ -280,7 +280,7 @@ class OrderDetailAPIView(APIView):
 
     def put(self, request, id):
         order = self.get_order(request,id)
-        serializer = OrderSerializer(order, data=request.data)
+        serializer = OrderSerializer(order, data=request.data,partial=True)
         if serializer.is_valid():
             if request.user.id == order.customer.id or request.user.id == order.product.vendor.user.id:
                 serializer.save()
@@ -313,9 +313,11 @@ class OrderListAPIView(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        serializer = OrderSerializer(data=request.data)
+        serializer = OrderSerializer(data=request.data,many=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=HTTP_201_CREATED)
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+
+
 
