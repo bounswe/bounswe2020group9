@@ -40,6 +40,7 @@ class MainViewController: UIViewController{
     var searchHistory:[String] = (UserDefaults.standard.value(forKey: K.searchHistoryKey) as? [String] ?? [])
     var searchResults:[String] = []
     var historyEndIndex:Int = 0
+    var categoriesEndIndex: Int = 0
     override func viewWillAppear(_ animated: Bool) {
         searchHistoryTableView.reloadData()
         productTableView.reloadData()
@@ -160,9 +161,14 @@ extension MainViewController:UITableViewDelegate,UITableViewDataSource {
             if indexPath.row < historyEndIndex {
                 cell.showClock()
                 cell.hideType()
+            } else if indexPath.row < categoriesEndIndex {
+                cell.hideClock()
+                cell.showType()
+                cell.typeLabel.text = "Category"
             } else {
                 cell.hideClock()
                 cell.showType()
+                cell.typeLabel.text = "Brand"
             }
             return cell
         }
@@ -300,11 +306,15 @@ extension MainViewController: UISearchBarDelegate, UISearchControllerDelegate {
         historyEndIndex = searchResults.count
         searchResults.append(contentsOf: categories.filter{(query:String) -> (Bool) in
             return query.range(of:searchText, options: .caseInsensitive, range:nil, locale: nil) != nil})
+        categoriesEndIndex = searchResults.count
+        let brands = Array(Set(allProductsInstance.allProducts.map{$0.brand}))
+        searchResults.append(contentsOf: brands)
         searchHistoryTableView.reloadData()
     }
     
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchResults = searchHistory
         self.searchBar.showsCancelButton = true
         self.searchHistoryTableView.isHidden = false
         self.view.bringSubviewToFront(searchHistoryTableView)
@@ -314,7 +324,8 @@ extension MainViewController: UISearchBarDelegate, UISearchControllerDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if searchBar.searchTextField.text != "" {
-            if !searchHistory.contains(searchBar.searchTextField.text!) && !categories.contains(searchBar.searchTextField.text!){
+            let brands = allProductsInstance.allProducts.map{$0.brand}
+            if !searchHistory.contains(searchBar.searchTextField.text!) &&  !categories.contains(searchBar.searchTextField.text!) && !brands.contains(searchBar.searchTextField.text!){
                 searchHistory.append(searchBar.text!)
             }
             UserDefaults.standard.set(searchHistory, forKey: K.searchHistoryKey)
