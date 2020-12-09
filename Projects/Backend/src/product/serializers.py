@@ -34,7 +34,7 @@ class CategorySerializer(serializers.ModelSerializer):
         return fields
     def to_representation(self, instance):
         data = super().to_representation(instance)
-        if not data['parent']:
+        if not data['parent'] or data["parent"]['name'] == "Categories":
             data['parent'] = ""
         return data
 
@@ -44,11 +44,11 @@ class ProductSerializer(serializers.Serializer):
     name = serializers.CharField(required=True, allow_blank=False, max_length=255)
     brand = serializers.CharField(required=True, allow_blank=False, max_length=255)
     labels = serializers.StringRelatedField(read_only=True, many=True)
-    detail = serializers.CharField(max_length=511)
+    detail = serializers.CharField(max_length=511, required=False)
     category = CategorySerializer(read_only=True)
     price = serializers.FloatField()
     stock = serializers.IntegerField()
-    sell_counter = serializers.IntegerField()
+    sell_counter = serializers.IntegerField(read_only=True)
     rating = serializers.FloatField(read_only=True)
     vendor = serializers.PrimaryKeyRelatedField(read_only=True, default=serializers.CurrentUserDefault())
     picture = serializers.ImageField(required=False)
@@ -78,7 +78,7 @@ class ProductListSerializer(serializers.ModelSerializer):
     products = ProductSerializer(many=True, source="product_set", required=False)
     class Meta:
         model = ProductList
-        fields = ("id", "name", "customer", "products")
+        fields = ("id", "name", "customer", "products", "is_private")
 
 
 class CommentSerializer(serializers.ModelSerializer):

@@ -145,12 +145,17 @@ class ListDetailAPIView(APIView):
     def put(self, request, id, list_id):
         if not self.check_user(request, id, list_id):
             return Response({"message": "bad request"}, status=status.HTTP_400_BAD_REQUEST)
+        if "is_private" in request.data and request.data["is_private"] not in ["true","false"]:
+            return Response({"is_private": ["return either 'true' or 'false'."]}, status=status.HTTP_400_BAD_REQUEST)
         list = self.get_list(request, list_id)
         if not self.is_owner(request, id, list_id):
             return Response({"message": "not allowed to access"}, status=status.HTTP_401_UNAUTHORIZED)
         # error handling done above
         try:
-            list.name = request.data["name"]
+            if "name" in request.data:
+                list.name = request.data["name"]
+            if "is_private" in request.data:
+                list.is_private = (request.data["is_private"] == "true")
             list.save()
             serializer = ProductListSerializer(list)
             return Response(serializer.data)
