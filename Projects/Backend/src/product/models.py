@@ -30,7 +30,7 @@ class Product(models.Model):
     rating = models.FloatField(default=0)
     sell_counter = models.IntegerField(default=0)
     release_date = models.DateTimeField(default=timezone.now)
-    picture = models.ImageField(upload_to=productImage, null=True, blank=True)
+    picture = models.ImageField(upload_to=productImage, null=True, blank=True, default=None)
 
     vendor = models.ForeignKey(
         Vendor,

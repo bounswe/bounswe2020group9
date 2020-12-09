@@ -1,6 +1,7 @@
 from django.http import HttpResponse, Http404
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
+from rest_framework.parsers import FileUploadParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_204_NO_CONTENT, \
@@ -12,7 +13,7 @@ from product.serializers import ProductSerializer, ProductListSerializer
 
 
 # Create your views here.
-from user.models import User, Customer
+from user.models import User, Customer, Vendor
 
 
 class ProductListAPIView(APIView):
@@ -23,11 +24,16 @@ class ProductListAPIView(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        serializer = ProductSerializer(data=request.data)
-        if serializer.is_valid():
+        if not Vendor.objects.filter(user_id=request.user.id).exists():
+            return Response({"message":"you must be logged in as a Vendor to add product"}, status=HTTP_400_BAD_REQUEST)
+        serializer = ProductSerializer(data=request.data, context={'request': request})
+        try:
             file = request.data['file']
             image = Product.objects.create(image=file)
-            serializer.save()
+        except:
+            None
+        if serializer.is_valid():
+            serializer.save(vendor_id=self.request.user.id)
             return Response(serializer.data, status=HTTP_201_CREATED)
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
