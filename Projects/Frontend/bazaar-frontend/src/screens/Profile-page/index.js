@@ -159,7 +159,7 @@ export default class ProfilePage extends Component {
                                   <div className="col">
                                     <input type="password" name="newpw" className="form-control col" placeholder="New password" 
                                     onChange={this.handleChange}/>
-                                    <div style={{color: "red"}}>{this.state.errors["newpw"]}</div>
+                                    <div className="error">{this.state.errors["newpw"]}</div>
                                   </div>
                               </div>
                               <div className="form-group row">
@@ -167,7 +167,7 @@ export default class ProfilePage extends Component {
                                   <div className="col">
                                     <input type="password" name="confpw" className="form-control col" placeholder="New password(again)" 
                                     onChange={this.handleChange}/>
-                                    <div style={{color: "red"}}>{this.state.errors["confpw"]}</div>
+                                    <div className="error">{this.state.errors["confpw"]}</div>
 
                                   </div>
                               </div>
