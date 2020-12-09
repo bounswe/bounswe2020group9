@@ -40,6 +40,8 @@
 		93EE3CDA25594A6800B504DF /* ProductCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EE3CD825594A6800B504DF /* ProductCell.swift */; };
 		93EE3CDB25594A6800B504DF /* ProductCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 93EE3CD925594A6800B504DF /* ProductCell.xib */; };
 		99F3379D256ADD460095105F /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F3379C256ADD460095105F /* ProfileViewController.swift */; };
+		99F6E84D257EBDBB0045C7BD /* ListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F6E848257EBDBB0045C7BD /* ListCell.swift */; };
+		99F6E84E257EBDBB0045C7BD /* ListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 99F6E849257EBDBB0045C7BD /* ListCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -98,6 +100,8 @@
 		93EE3CD825594A6800B504DF /* ProductCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCell.swift; sourceTree = "<group>"; };
 		93EE3CD925594A6800B504DF /* ProductCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProductCell.xib; sourceTree = "<group>"; };
 		99F3379C256ADD460095105F /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		99F6E848257EBDBB0045C7BD /* ListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListCell.swift; sourceTree = "<group>"; };
+		99F6E849257EBDBB0045C7BD /* ListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -259,6 +263,7 @@
 		93EE3CDF25594A9400B504DF /* View */ = {
 			isa = PBXGroup;
 			children = (
+				99F6E847257EBDBB0045C7BD /* List Cell */,
 				6994EAD72566996700AC48F6 /* Categories Collection View Cell */,
 				6994EAC9255DA38000AC48F6 /* Main Tab Bar */,
 				6994EACA255DA3A200AC48F6 /* Product Cell */,
@@ -280,6 +285,15 @@
 				6949C90F257D8F5B00175AC5 /* SearchResultsViewController.swift */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		99F6E847257EBDBB0045C7BD /* List Cell */ = {
+			isa = PBXGroup;
+			children = (
+				99F6E848257EBDBB0045C7BD /* ListCell.swift */,
+				99F6E849257EBDBB0045C7BD /* ListCell.xib */,
+			);
+			path = "List Cell";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -397,6 +411,7 @@
 				93EE3CAF2558822700B504DF /* Assets.xcassets in Resources */,
 				93EE3CAA2558822500B504DF /* Main.storyboard in Resources */,
 				6994EACE255DA3D400AC48F6 /* MainTabBarController.xib in Resources */,
+				99F6E84E257EBDBB0045C7BD /* ListCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -439,6 +454,7 @@
 				93EE3CDA25594A6800B504DF /* ProductCell.swift in Sources */,
 				930C1FA0256C08E20086E1DC /* URLRequestBuilder.swift in Sources */,
 				93E99DDA2577E8CD00BCFDAD /* SignUpViewController.swift in Sources */,
+				99F6E84D257EBDBB0045C7BD /* ListCell.swift in Sources */,
 				93E99DDF2577E91B00BCFDAD /* RadioButton.swift in Sources */,
 				930C1FB4256C12A00086E1DC /* APIParse.swift in Sources */,
 				93EE3CAD2558822500B504DF /* Bazaar_iOS.xcdatamodeld in Sources */,
@@ -623,12 +639,12 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 6Q43VZR6X5;
 				INFOPLIST_FILE = "Bazaar-iOS/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.muhsinetki.Bazaar-iOS";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.bazaar.Bazaar-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -643,12 +659,12 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 6Q43VZR6X5;
 				INFOPLIST_FILE = "Bazaar-iOS/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.muhsinetki.Bazaar-iOS";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.bazaar.Bazaar-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

@@ -26,6 +26,7 @@ struct APIManager {
                     }
                     if let decodedData:AuthData = APIParse().parseJSON(safeData: safeData){
                         completionHandler(.success(decodedData.token))
+                        UserDefaults.standard.setValue(String(decodedData.user_id), forKey: K.user_id)
                     }else {
                         completionHandler(.failure(MyError.runtimeError("Error")))
                     }
@@ -35,6 +36,7 @@ struct APIManager {
             completionHandler(.failure(err))
         }
     }
+    
     
     func getAllProducts(completionHandler: @escaping ([ProductData]?) -> Void) {
         let callURL = "http://13.59.236.175:8000/api/product/"
@@ -69,5 +71,44 @@ struct APIManager {
             completionHandler(nil)
         }
             
+    }
+    
+    func getCustomerLists(completionHandler: @escaping ([CustomerListData]?) -> Void) {
+        if let user_id =  UserDefaults.standard.value(forKey: K.user_id) as? String {
+            let callURL = "http://13.59.236.175:8000/api/user/" + user_id + "/lists"
+            if let url = URL(string: callURL){
+                AF.request(url).responseJSON(completionHandler: {
+                    response in
+                    if response.data != nil {
+                        do {
+                            let lists = try JSONDecoder().decode([CustomerListData].self, from: response.data!)
+                            CustomerLists.shared.jsonParseError = false
+                            CustomerLists.shared.apiFetchError = false
+                            CustomerLists.shared.dataFetched = true
+                            completionHandler(lists)
+                        } catch {
+                            print("error while decoding JSON for all lists")
+                            CustomerLists.shared.jsonParseError = true
+                            CustomerLists.shared.dataFetched = false
+                            completionHandler(nil)
+                        }
+                    } else {
+                        print("error while decoding JSON for all lists")
+                        CustomerLists.shared.apiFetchError = true
+                        CustomerLists.shared.dataFetched = false
+                        completionHandler(nil)
+                    }
+                    
+                })
+            } else {
+                print("invalid url for getting all lists")
+                CustomerLists.shared.apiFetchError = true
+                CustomerLists.shared.dataFetched = false
+                completionHandler(nil)
+            }
+        }else {
+            print("invalid user")
+            return
+        }
     }
 }

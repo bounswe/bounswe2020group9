@@ -36,6 +36,13 @@ struct ProductData: Codable {
     let vendor: Int
     let picture: String?
 }
+
+struct CustomerListData: Codable {
+    let id: Int
+    let name: String
+    let customer: Int
+    let products: [ProductData]
+}
 //{
 //    "id": 1,
 //    "last_login": "2020-11-23T07:51:49Z",
