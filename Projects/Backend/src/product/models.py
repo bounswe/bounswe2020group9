@@ -57,7 +57,7 @@ class Product(models.Model):
 class SubOrder(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    amount = models.IntegerField(default=1)
+    amount = models.IntegerField(default=0)
     purchased = models.BooleanField(default=False)
 
 

@@ -2,8 +2,7 @@ from pygments.lexers import get_all_lexers
 from pygments.styles import get_all_styles
 from rest_framework import serializers
 
-from .models import Product, Label, Category, ProductList, Comment
-
+from .models import Product, Label, Category, ProductList, Comment, SubOrder
 
 LEXERS = [item for item in get_all_lexers() if item[1]]
 LANGUAGE_CHOICES = sorted([(item[1][0], item[0]) for item in LEXERS])
@@ -86,3 +85,9 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = '__all__'
+
+class SubOrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SubOrder
+        fields = '__all__'
+        extra_kwargs = {'purchased': {'write_only': True}}
