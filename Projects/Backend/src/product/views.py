@@ -71,7 +71,7 @@ class ProductDetailAPIView(APIView):
             return Response({"message":"you must be the owner to delete product"}, status=HTTP_400_BAD_REQUEST)
         product = self.get_product(id)
         product.delete()
-        return Response("product id "+ str(id) + " deleted", status=HTTP_204_NO_CONTENT)
+        return Response({"message":"product id "+ str(id) + " deleted"}, status=HTTP_204_NO_CONTENT)
 
 
 class ListListAPIView(APIView):
