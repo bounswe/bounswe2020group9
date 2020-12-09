@@ -28,7 +28,7 @@ def productImage(instance, filename):
 
 class Category(models.Model):
     name = models.CharField(max_length=255, unique=True)
-    parent = models.ForeignKey("self", default=0, on_delete=models.CASCADE, db_constraint=False)
+    parent = models.ForeignKey("self", default=0, null=True, on_delete=models.CASCADE, db_constraint=False)
     # products = models.ManyToManyField(Product, related_name="categories", blank=True)
 
     def __str__(self):
