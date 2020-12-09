@@ -1,4 +1,54 @@
-from django.db import models
+\section{API Documentation}
+\subsection{/api/}\label{api}
+list of all other requests, useful for exploration:
+
+\begin{verbatim}
+> GET {{url}}/api/
+
+->
+{
+    "user": "{{url}}/api/product/",
+    "product": "{{url}}/api/user/",
+    "location": "{{url}}/api/location/"
+}
+\end{verbatim}
+\subsection{/api/product/}\label{apiproduct}
+general information of all products :
+
+\begin{verbatim}
+> GET {{url}}/api/product/
+
+->
+[
+    {
+        "id": 3,
+        "name": "Iphone XS 64GB",
+        "brand": "Apple",
+        "labels": [
+            "10% off"
+        ],
+        "categories": [
+            "Electronics"
+        ],
+        "price": 11211.52,
+        "stock": 48,
+        "sell_counter": 0,
+        "rating": 0.0,
+        "vendor": 2
+    },
+    ...
+]
+\end{verbatim}
+\subsection{/api/product/$<id>$/}\label{apiproduct-1}
+detailed information of the specified product:
+
+\begin{verbatim}
+> GET {{url}}/api/product/3/
+
+->
+{
+    "id": 3,
+    "name": "Iphone XS 64GB",from django.db import models
 from django.utils import timezone
 
 from user.models import Vendor, Customer, User
@@ -44,7 +94,7 @@ class Product(models.Model):
     rating = models.FloatField(default=0)
     sell_counter = models.IntegerField(default=0)
     release_date = models.DateTimeField(default=timezone.now)
-    picture = models.ImageField(upload_to=productImage, null=True, blank=True)
+    picture = models.ImageField(upload_to=productImage, null=True, blank=True, default=None)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, default=1)
 
     vendor = models.ForeignKey(
@@ -116,3 +166,135 @@ class Payment(models.Model):
 class SearchHistory(models.Model):
     user =  models.ForeignKey(User, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    "brand": "Apple",
+    "labels": [
+        "10% off"
+    ],
+    "categories": [
+        "Electronics"
+    ],
+    "price": 11211.52,
+    "stock": 48,
+    "sell_counter": 0,
+    "rating": 0.0,
+    "vendor": 2
+}
+\end{verbatim}
+\subsection{/api/user/}\label{apiuser}
+list of all users:
+
+\begin{verbatim}
+> GET {{url}}/api/user/
+
+-> [
+    ...,
+    {
+        "id": 28,
+        "email": "rajah.faolan@extraale.com",
+        "first_name": "",
+        "last_name": "",
+        "date_joined": "2020-11-26T14:36:15.093169Z",
+        "last_login": "2020-11-26T14:45:13.455166Z",
+        "user_type": 1,
+        "bazaar_point": 0
+    },
+    ...
+]
+\end{verbatim}
+\subsection{/api/user/$<id>$/}\label{apiuser-1}
+detailed description of the specified user:
+
+\begin{verbatim}
+> GET {{url}}/api/user/28/
+
+-> {
+        "id": 61,
+        "email": "rajah.faolan@extraale.com",
+        "first_name": "",
+        "last_name": "",
+        "date_joined": "2020-11-26T14:36:15.093169Z",
+        "last_login": "2020-11-26T14:45:13.455166Z",
+        "user_type": 1,
+        "bazaar_point": 0
+}
+\end{verbatim}
+\subsection{/api/user/profile/}\label{apiuserprofile}
+detailed description of the specified user(token):
+
+\begin{verbatim}
+> GET {{url}}/api/user/profile/
+> HEADER {
+"Authorization": "Token f0653a57e1e4686f9e56425f5660b00baa942657"
+}
+
+-> {
+        "id": 61,
+        "email": "rajah.faolan@extraale.com",
+        "first_name": "",
+        "last_name": "",
+        "date_joined": "2020-11-26T14:36:15.093169Z",
+        "last_login": "2020-11-26T14:45:13.455166Z",
+        "user_type": 1,
+        "bazaar_point": 0
+}
+\end{verbatim}
+\subsection{/api/user/login/}\label{apiuserlogin}
+login request that returns the user and the token
+
+requires `username'',`password'' to authenticate
+
+returns 400 if failed
+
+returns 200 and `token'',`user\_id'' as JSON:
+
+\begin{verbatim}
+> POST {{url}}/api/user/login/
+> BODY {
+    "username": "rajah.faolan@extraale.com",
+    "password": "password"
+}
+
+-> {
+    "token": "f0653a57e1e4686f9e56425f5660b00baa942657",
+    "user_id": 61,
+    "email": "rajah.faolan@extraale.com",
+    "password": "password"
+}
+\end{verbatim}
+\subsection{/api/user/signup/}\label{apiusersignup}
+signup request which sends an email to activate the user later
+
+requires `username'',`password'', \`\`user\_type''
+
+returns 400 if requirements not satisfied
+
+returns 201 if succesful, sends mail to the given email:
+
+\begin{verbatim}
+> POST {{url}}/api/user/signup/
+> BODY {
+    "username": "rajah.faolan@extraale.com,
+    "password": "password",
+    "user_type": "1"
+}
+
+-> {
+    "message": "An mail has been sent to your email, please check it"
+}
+\end{verbatim}
+\subsection{/api/user/activate/$<uidb64>$/}\label{apiuseractivate}
+account activation link for the specified user
+
+returns 200 if verification complete
+
+returns 400 if there has been a problem with a json body explaining the
+problem, ie: \texttt{\{"message": "user is already verified"\}}:
+
+\begin{verbatim}
+> GET /api/user/activate/MjU/
+
+-> {
+    "message": "Your Account, rajah.faolan@extraale.com has been activated"
+}
+\end{verbatim}
+
