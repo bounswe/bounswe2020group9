@@ -23,6 +23,7 @@ class LabelSerializer(serializers.ModelSerializer):
 class CategorySerializer(serializers.ModelSerializer):
     # id = serializers.IntegerField(read_only=True)
     name = serializers.CharField(required=True, allow_blank=False, max_length=255)
+    parent = serializers.StringRelatedField(read_only=True)
 
     class Meta:
         model = Category
@@ -48,9 +49,9 @@ class ProductSerializer(serializers.Serializer):
     price = serializers.FloatField()
     stock = serializers.IntegerField()
     sell_counter = serializers.IntegerField()
-    rating = serializers.FloatField()
-    vendor = serializers.PrimaryKeyRelatedField(read_only=True)
-    picture = serializers.ImageField()
+    rating = serializers.FloatField(read_only=True)
+    vendor = serializers.PrimaryKeyRelatedField(read_only=True, default=serializers.CurrentUserDefault())
+    picture = serializers.ImageField(required=False)
 
     def create(self, validated_data):
         return Product.objects.create(**validated_data)

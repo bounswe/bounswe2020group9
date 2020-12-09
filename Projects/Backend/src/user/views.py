@@ -18,10 +18,6 @@ from .models import User
 from .serializers import UserSerializer
 
 
-from user.models import Customer, Admin, Vendor
-from .models import User
-from .serializers import UserSerializer
-
 class UserListAPIView(APIView):
 
     # authentication_classes = [TokenAuthentication]
@@ -106,8 +102,9 @@ class UserLoginAPIView(ObtainAuthToken):
         return Response({
             'token': token.key,
             'user_id': user.pk,
-            'email': user.email,
-            'password': password
+            # 'email': user.email,
+            # 'password': password,
+            'user_type': user.user_type
         })
 
 

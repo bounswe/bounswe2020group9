@@ -21,18 +21,13 @@ def productImage(instance, filename):
     return '/'.join(['images', str(instance.name), filename])
 
 
-def productImage(instance, filename):
-    return '/'.join(['images', str(instance.name), filename])
-
-
-
 class Category(models.Model):
     name = models.CharField(max_length=255, unique=True)
-    parent = models.ForeignKey("self", default=0, null=True, on_delete=models.CASCADE, db_constraint=False)
-    # products = models.ManyToManyField(Product, related_name="categories", blank=True)
+    parent = models.ForeignKey("self", default=0, on_delete=models.CASCADE, db_constraint=False)
 
     def __str__(self):
         return self.name
+
 
 class Product(models.Model):
     name = models.CharField(max_length=255)
@@ -44,7 +39,7 @@ class Product(models.Model):
     rating = models.FloatField(default=0)
     sell_counter = models.IntegerField(default=0)
     release_date = models.DateTimeField(default=timezone.now)
-    picture = models.ImageField(upload_to=productImage, null=True, blank=True)
+    picture = models.ImageField(upload_to=productImage, null=True, blank=True, default=None)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, default=1)
 
     vendor = models.ForeignKey(
@@ -72,7 +67,6 @@ class Label(models.Model):
 
     def __str__(self):
         return self.name
-
 
 
 class Order(models.Model):
