@@ -2,8 +2,7 @@ from pygments.lexers import get_all_lexers
 from pygments.styles import get_all_styles
 from rest_framework import serializers
 
-from .models import Product, Label, Category, ProductList, Comment
-
+from .models import Product, Label, Category, ProductList, Comment, SubOrder
 
 LEXERS = [item for item in get_all_lexers() if item[1]]
 LANGUAGE_CHOICES = sorted([(item[1][0], item[0]) for item in LEXERS])
@@ -30,7 +29,7 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ("name", "parent")
     def get_fields(self):
         fields = super(CategorySerializer, self).get_fields()
-        fields['parent'] = CategorySerializer()
+        fields['parent'] = serializers.StringRelatedField()
         return fields
     def to_representation(self, instance):
         data = super().to_representation(instance)
@@ -44,11 +43,11 @@ class ProductSerializer(serializers.Serializer):
     name = serializers.CharField(required=True, allow_blank=False, max_length=255)
     brand = serializers.CharField(required=True, allow_blank=False, max_length=255)
     labels = serializers.StringRelatedField(read_only=True, many=True)
-    detail = serializers.CharField(max_length=511)
+    detail = serializers.CharField(max_length=511, required=False)
     category = CategorySerializer(read_only=True)
     price = serializers.FloatField()
     stock = serializers.IntegerField()
-    sell_counter = serializers.IntegerField()
+    sell_counter = serializers.IntegerField(read_only=True)
     rating = serializers.FloatField(read_only=True)
     vendor = serializers.PrimaryKeyRelatedField(read_only=True, default=serializers.CurrentUserDefault())
     picture = serializers.ImageField(required=False)
@@ -78,7 +77,7 @@ class ProductListSerializer(serializers.ModelSerializer):
     products = ProductSerializer(many=True, source="product_set", required=False)
     class Meta:
         model = ProductList
-        fields = ("id", "name", "customer", "products")
+        fields = ("id", "name", "customer", "products", "is_private")
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -86,3 +85,9 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = '__all__'
+
+class SubOrderSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SubOrder
+        fields = '__all__'
+        extra_kwargs = {'purchased': {'write_only': True}}
