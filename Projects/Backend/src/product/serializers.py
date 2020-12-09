@@ -74,7 +74,7 @@ class ProductSerializer(serializers.Serializer):
 class ProductListSerializer(serializers.ModelSerializer):
     # for some reason, this causes POST requests to not work, commenting out for now
     # customer = serializers.StringRelatedField(read_only=True)
-    products = ProductSerializer(many=True, source="product_set")
+    products = ProductSerializer(many=True, source="product_set", required=False)
     class Meta:
         model = ProductList
         fields = ("id", "name", "customer", "products")
