@@ -40,7 +40,7 @@ class ProductSerializer(serializers.Serializer):
     price = serializers.FloatField()
     stock = serializers.IntegerField()
     sell_counter = serializers.IntegerField()
-    rating = serializers.FloatField()
+    rating = serializers.FloatField(read_only=True)
     vendor = serializers.PrimaryKeyRelatedField(read_only=True, default=serializers.CurrentUserDefault())
     picture = serializers.ImageField(required=False)
 
