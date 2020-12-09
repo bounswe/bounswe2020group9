@@ -30,11 +30,11 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ("name", "parent")
     def get_fields(self):
         fields = super(CategorySerializer, self).get_fields()
-        fields['parent'] = CategorySerializer()
+        fields['parent'] = serializers.StringRelatedField()
         return fields
     def to_representation(self, instance):
         data = super().to_representation(instance)
-        if not data['parent'] or data["parent"]['name'] == "Categories":
+        if not data['parent']:
             data['parent'] = ""
         return data
 
