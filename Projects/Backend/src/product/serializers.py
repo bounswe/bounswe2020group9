@@ -1,7 +1,6 @@
 from pygments.lexers import get_all_lexers
 from pygments.styles import get_all_styles
 from rest_framework import serializers
-from rest_framework.fields import CurrentUserDefault
 
 from .models import Product, Label, Category, ProductList, Comment
 
@@ -49,12 +48,9 @@ class ProductSerializer(serializers.Serializer):
     price = serializers.FloatField()
     stock = serializers.IntegerField()
     sell_counter = serializers.IntegerField()
-    rating = serializers.FloatField(read_only=True)
-    vendor = serializers.PrimaryKeyRelatedField(read_only=True, default=serializers.CurrentUserDefault())
-    picture = serializers.ImageField(required=False)
-
-    class Meta:
-        model = Product
+    rating = serializers.FloatField()
+    vendor = serializers.PrimaryKeyRelatedField(read_only=True)
+    picture = serializers.ImageField()
 
     def create(self, validated_data):
         return Product.objects.create(**validated_data)

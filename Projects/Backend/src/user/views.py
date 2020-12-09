@@ -106,9 +106,8 @@ class UserLoginAPIView(ObtainAuthToken):
         return Response({
             'token': token.key,
             'user_id': user.pk,
-            # 'email': user.email,
-            # 'password': password,
-            'user_type': user.user_type
+            'email': user.email,
+            'password': password
         })
 
 
