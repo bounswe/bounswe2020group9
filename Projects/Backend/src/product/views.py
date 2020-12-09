@@ -3,18 +3,19 @@ from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.parsers import FileUploadParser
 from rest_framework.permissions import IsAuthenticated
+
 from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_204_NO_CONTENT, \
     HTTP_200_OK, HTTP_202_ACCEPTED
 from rest_framework.views import APIView
+from django.utils import timezone
 
-from product.models import Product, ProductList, SubOrder
-from product.serializers import ProductSerializer, ProductListSerializer
-
+from product.models import Product, ProductList, SubOrder, Comment
+from product.serializers import ProductSerializer, ProductListSerializer, CommentSerializer
 
 # Create your views here.
 from user.models import User, Customer, Vendor
-
+from user.serializers import UserSerializer
 
 class ProductListAPIView(APIView):
 
@@ -267,6 +268,7 @@ class AddProductToListAPIView(APIView):
             serializer = ProductListSerializer(list, context={'request': request})
             return Response(serializer.data, status= HTTP_204_NO_CONTENT)
 
+
 class ManageCartAPIView(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
@@ -279,7 +281,7 @@ class ManageCartAPIView(APIView):
             raise Http404
 
     def create_sub_order(self, user_id, product_id, amount):
-        subOrder = SubOrder.objects.get(customer_id=user_id, product_id=product_id)
+        subOrder = SubOrder.objects.get(customer_id=user_id, product_id=product_id, purchased=False)
         if subOrder:
             subOrder.amount += amount
             subOrder.save()
@@ -307,3 +309,114 @@ class ManageCartAPIView(APIView):
         cart = SubOrder.objects.filter(customer=request.user.id)
         serializer = ProductListSerializer(cart, context={'request': request})
         return Response(serializer.data)
+
+
+class AddCommentAPIView(APIView):
+
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        try:
+            user_id = request.user.id
+        except:
+            return Response({"message": "Token is not valid."}, status=status.HTTP_401_UNAUTHORIZED)
+        serializer = CommentSerializer(data=request.data)
+        if serializer.is_valid():
+            comment = Comment.objects.filter(product_id=serializer.validated_data['product'].id, customer_id=serializer.validated_data['customer'].user_id)
+            if comment:
+                return Response({"message": "A comment of you already exists"}, status=status.HTTP_400_BAD_REQUEST)
+            if serializer.validated_data['customer'].user_id == user_id:
+                # update the rating of the product
+                product = serializer.validated_data['product']
+                rating = request.data['rating']
+                rateCounter =len(Comment.objects.filter(product_id=product.id))
+                if rateCounter:
+                    product.rating = (rating + product.rating*rateCounter)/(rateCounter+1)
+                else:
+                    product.rating = rating
+                product.save()
+                
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            else:
+                return Response({"message": "Token and user id didn't match"}, status=status.HTTP_401_UNAUTHORIZED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class UserCommentAPIView(APIView):
+
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, pid, uid):
+        try:
+            user_id = request.user.id
+        except:
+            return Response({"message": "Token is not valid."}, status=status.HTTP_401_UNAUTHORIZED)
+        if uid == user_id:
+            comment = Comment.objects.filter(product_id=pid, customer_id=uid)
+            serializer = CommentSerializer(comment, many=True)
+            return Response(serializer.data)
+        return Response({"message": "Token and user id didn't match"}, status=status.HTTP_401_UNAUTHORIZED)
+
+class UpdateCommentAPIView(APIView):
+
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def put(self, request, id):
+        try:
+            user_id = request.user.id
+        except:
+            return Response({"message": "Token is not valid."}, status=status.HTTP_401_UNAUTHORIZED)
+        serializer = CommentSerializer(data=request.data)
+        if serializer.is_valid():
+            if serializer.validated_data['customer'].user_id == user_id:
+                oldComment = Comment.objects.get(id=id)
+                serializer = CommentSerializer(oldComment, data=request.data)
+                if serializer.is_valid():
+                    # update the rating of the product
+                    product = serializer.validated_data['product']
+                    rating = request.data['rating']
+                    rateCounter =len(Comment.objects.filter(product_id=product.id))
+                    if rateCounter:
+                        product.rating = (rating - oldComment.rating + product.rating*(rateCounter))/rateCounter
+                    else:
+                        product.rating = rating
+                    product.save()
+
+                    serializer.save()
+                    return Response(serializer.data)
+            else:
+                return Response({"message": "Token and user id didn't match"}, status=status.HTTP_401_UNAUTHORIZED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, id):
+        try:
+            user_id = request.user.id
+        except:
+            return Response({"message": "Token is not valid."}, status=status.HTTP_401_UNAUTHORIZED)
+        try:
+            comment = Comment.objects.get(id=id)
+
+        except Comment.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        if comment.customer.user_id == user_id:
+            comment.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response({"message": "Token and user id didn't match"}, status=status.HTTP_401_UNAUTHORIZED) 
+
+
+class CommentsOfProductAPIView(APIView):
+    def get(self, request, pid):
+        comments = Comment.objects.filter(product_id=pid)
+        serializers = []
+        for comment in comments:
+            if comment.is_anonymous:
+                comment.customer = None
+                serializers.append(CommentSerializer(comment).data)
+            else:
+                serializer = {**CommentSerializer(comment).data, **UserSerializer(User.objects.get(id = comment.customer.user_id)).data}
+                serializers.append(serializer)
+        return Response(serializers)
+

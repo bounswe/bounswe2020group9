@@ -3,12 +3,12 @@ from pygments.styles import get_all_styles
 from rest_framework import serializers
 from rest_framework.fields import CurrentUserDefault
 
-from .models import Product, Label, Category, ProductList
+from .models import Product, Label, Category, ProductList, Comment
+
 
 LEXERS = [item for item in get_all_lexers() if item[1]]
 LANGUAGE_CHOICES = sorted([(item[1][0], item[0]) for item in LEXERS])
 STYLE_CHOICES = sorted([(item, item) for item in get_all_styles()])
-
 
 
 
@@ -24,11 +24,19 @@ class LabelSerializer(serializers.ModelSerializer):
 class CategorySerializer(serializers.ModelSerializer):
     # id = serializers.IntegerField(read_only=True)
     name = serializers.CharField(required=True, allow_blank=False, max_length=255)
-    parent = serializers.StringRelatedField(read_only=True)
 
     class Meta:
         model = Category
         fields = ("name", "parent")
+    def get_fields(self):
+        fields = super(CategorySerializer, self).get_fields()
+        fields['parent'] = CategorySerializer()
+        return fields
+    def to_representation(self, instance):
+        data = super().to_representation(instance)
+        if not data['parent']:
+            data['parent'] = ""
+        return data
 
 
 class ProductSerializer(serializers.Serializer):
@@ -36,7 +44,8 @@ class ProductSerializer(serializers.Serializer):
     name = serializers.CharField(required=True, allow_blank=False, max_length=255)
     brand = serializers.CharField(required=True, allow_blank=False, max_length=255)
     labels = serializers.StringRelatedField(read_only=True, many=True)
-    categories = serializers.StringRelatedField(read_only=True, many=True)
+    detail = serializers.CharField(max_length=511)
+    category = CategorySerializer(read_only=True)
     price = serializers.FloatField()
     stock = serializers.IntegerField()
     sell_counter = serializers.IntegerField()
@@ -63,7 +72,7 @@ class ProductSerializer(serializers.Serializer):
 
     class Meta:
         model = Product
-        fields = ("id", "name", "brand", "price", "stock", "sell_counter", "rating", "vendor", "picture")
+        fields = ("id", "name", "brand", "price", "stock", "sell_counter", "rating", "vendor", "picture", "detail")
 
 
 class ProductListSerializer(serializers.ModelSerializer):
@@ -73,3 +82,10 @@ class ProductListSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductList
         fields = ("id", "name", "customer", "products")
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    customer_name = serializers.RelatedField(source='user', read_only=True)
+    class Meta:
+        model = Comment
+        fields = '__all__'
