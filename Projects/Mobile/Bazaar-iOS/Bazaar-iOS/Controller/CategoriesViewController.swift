@@ -10,7 +10,7 @@ import UIKit
 class CategoriesViewController: UIViewController {
 
     
-    //@IBOutlet weak var productTableView: UITableView!
+    @IBOutlet weak var subCategoriesTableView: UITableView!
     @IBOutlet weak var searchHistoryTableView: UITableView!
     @IBOutlet weak var categoryCollectionView: UICollectionView!
     @IBOutlet weak var searchBar: UISearchBar!
@@ -139,13 +139,22 @@ class CategoriesViewController: UIViewController {
              }
              
              searchBar.text = ""
-         }
+         }/*
+         else if let productDetailVC = segue.destination as? ProductDetailViewController {
+                     let indexPath = self.productTableView.indexPathForSelectedRow
+                     if indexPath != nil {
+                         let products = allProductsInstance.allProducts.filter{$0.category.parent!.contains(selectedCategoryName!) || $0.category.name.contains(selectedCategoryName!)}
+                         productDetailVC.product = products[indexPath!.row]
+                     }
+                 }*/
      }
      
      override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
          if identifier == "categoriesToSearchResultsSegue" {
              return !(searchBar.searchTextField.text == "")
-         }
+         }/* else if identifier == "categoriesToProductDetailSegue" {
+            return self.productTableView.indexPathForSelectedRow != nil
+       }*/
          return false
      }
 
