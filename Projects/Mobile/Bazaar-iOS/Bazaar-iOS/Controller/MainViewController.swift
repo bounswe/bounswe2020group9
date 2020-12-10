@@ -33,7 +33,7 @@ class MainViewController: UIViewController{
     let ELECTRONICS = "Electronics"
     let LIVING = "Living"
     
-    let categories = ["Clothing", "Home", "Selfcare", "Electronics", "Living"]
+    let categories = ["Categories", "Clothing", "Home", "Selfcare", "Electronics", "Living"]
     var products: [Product] = []
     let categoriesReuseIdentifier = "CategoriesCollectionViewCell"
     var networkFailedAlert:UIAlertController = UIAlertController(title: "Error while retrieving products", message: "We encountered a problem while retrieving the products, please check your internet connection.", preferredStyle: .alert)
@@ -133,7 +133,10 @@ extension MainViewController:UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //return 10
         if tableView == productTableView {
+            /*
             return allProductsInstance.allProducts.filter{$0.categories.contains(selectedCategoryName!)}.count
+            */
+            return allProductsInstance.allProducts.filter{$0.category.name == selectedCategoryName!}.count
         }
         if tableView == searchHistoryTableView {
             return searchResults.count
@@ -145,7 +148,10 @@ extension MainViewController:UITableViewDelegate,UITableViewDataSource {
         if tableView == productTableView {
             let cell = productTableView.dequeueReusableCell(withIdentifier: "ReusableProdcutCell", for: indexPath) as! ProductCell
             //let filteredProducts:[Product] = products.filter { $0.category == selectedCategoryName }
+            /*
             let filteredProducts:[ProductData] = allProductsInstance.allProducts.filter{$0.categories.contains(selectedCategoryName!)}
+            */
+            let filteredProducts:[ProductData] = allProductsInstance.allProducts.filter{$0.category.name == selectedCategoryName!}
             let product = filteredProducts[indexPath.row]
             cell.productNameLabel.text = product.name
             cell.productNameLabel.font = UIFont.systemFont(ofSize: 15, weight: .black)

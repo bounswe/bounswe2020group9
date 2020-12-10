@@ -11,4 +11,5 @@ struct K {
     static let isLoggedinKey = "isLoggedIn"
     static let searchHistoryKey = "searchHistory"
     static let user_id = " "
+    static let token = "token"
 }

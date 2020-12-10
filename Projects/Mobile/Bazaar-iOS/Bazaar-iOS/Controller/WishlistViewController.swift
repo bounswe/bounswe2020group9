@@ -10,6 +10,7 @@ import UIKit
 class WishlistViewController: UIViewController {
 
     @IBOutlet var listsTableView: UITableView!
+    @IBOutlet var addListButton: UIButton!
     
     var customerListsInstance = CustomerLists.shared
     
@@ -17,6 +18,7 @@ class WishlistViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        listsTableView.reloadData()
         /*
         if let isLoggedIn =  UserDefaults.standard.value(forKey: K.isLoggedinKey) as? Bool {
             if !isLoggedIn {
@@ -60,7 +62,6 @@ extension WishlistViewController:UITableViewDelegate,UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
         let list = CustomerLists.shared.customerLists[indexPath.row]
         let cell = listsTableView.dequeueReusableCell(withIdentifier: "ReusableListCell", for: indexPath) as! ListCell
         
@@ -86,14 +87,28 @@ extension WishlistViewController:UITableViewDelegate,UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: "listsToListDetailSegue", sender: nil)
+        //performSegue(withIdentifier: "listsToListDetailSegue", sender: nil)
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let list = CustomerLists.shared.customerLists[indexPath.row]
+        let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
         let delete = UIContextualAction(style: .destructive, title: "Delete") { (action, sourceView, completionHandler) in
                 print("index path of delete: \(indexPath)")
-                completionHandler(true)
+            completionHandler(true)
+            APIManager().deleteList(customer: UserDefaults.standard.value(forKey: K.user_id) as! String, id: String(list.id)) { (result) in
+                switch result {
+                case .success(_):
+                    alertController.message = "\(list.name) is successfully deleted"
+                    self.present(alertController, animated: true, completion: nil)
+                case .failure(_):
+                    alertController.message = "\(list.name) cannot be deleted"
+                    self.present(alertController, animated: true, completion: nil)
+                }
             }
+        }
+            
         delete.backgroundColor = #colorLiteral(red: 1, green: 0.6431372549, blue: 0.3568627451, alpha: 1)
         let swipeActionConfig = UISwipeActionsConfiguration(actions: [delete])
         swipeActionConfig.performsFirstActionWithFullSwipe = false
@@ -154,19 +169,22 @@ class CustomerLists {
     
     func fetchCustomerLists() {
         dispatchGroup.enter()
-        APIManager().getCustomerLists(completionHandler: { lists in
-            if lists != nil {
-                self.dataFetched = true
-                self.customerLists = lists!
-                self.delegate?.allListsAreFetched()
-            } else {
-                self.dataFetched = false
-                self.customerLists = []
-                self.delegate?.listsCannotBeFetched()
-            }
-        })
+        if let customer = UserDefaults.standard.value(forKey: K.user_id) as? String {
+            APIManager().getCustomerLists(customer: customer, isCustomerLoggedIn: true, completionHandler: { result in
+                switch result {
+                    case .success(let lists):
+                        self.dataFetched = true
+                        self.customerLists = lists
+                        self.delegate?.allListsAreFetched()
+                    case .failure(_):
+                        self.dataFetched = false
+                        self.customerLists = []
+                        self.delegate?.listsCannotBeFetched()
+                }
+            })
+        }
+        
         dispatchGroup.leave()
         dispatchGroup.wait()
     }
-        
 }
