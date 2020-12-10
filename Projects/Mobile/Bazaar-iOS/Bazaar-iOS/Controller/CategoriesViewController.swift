@@ -30,11 +30,16 @@ class CategoriesViewController: UIViewController {
          
      let CLOTHING = "Clothing"
      let HOME = "Home"
-     let BEAUTY = "Beauty"
+     let SELFCARE = "Selfcare"
      let ELECTRONICS = "Electronics"
      let LIVING = "Living"
-     
-     let categories = ["Clothing", "Home", "Selfcare", "Electronics", "Living"]
+    
+     var subCategoryDict: [String: [String]] = ["Clothing":["Top", "Bottom", "Outerwear", "Shoes", "Bags", "Accesories", "Activewear"],
+                                                "Home":["Home Textile", "Kitchen", "Bedroom", "Bathroom", "Furniture", "Lighting", "Other"],
+                                                "Selfcare":["Perfumes", "Makeup", "Skincare", "Hair", "Body Care", "Other"],
+                                                "Electronics":["Smartphone", "Tablet", "Computer", "Photography", "Home Appliances", "TV", "Gaming", "Other"],
+                                                "Living":["Books", "Art Supplies", "Musical Devices", "Sports", "Other"] ]
+     var categories = ["Clothing", "Home", "Selfcare", "Electronics", "Living"]
      var products: [Product] = []
      let categoriesReuseIdentifier = "CategoriesCollectionViewCell"
      var networkFailedAlert:UIAlertController = UIAlertController(title: "Error while retrieving products", message: "We encountered a problem while retrieving the products, please check your internet connection.", preferredStyle: .alert)
@@ -46,7 +51,7 @@ class CategoriesViewController: UIViewController {
      
      override func viewWillAppear(_ animated: Bool) {
          searchHistoryTableView.reloadData()
-         //productTableView.reloadData()
+         subCategoriesTableView.reloadData()
          var searchTextField: UITextField?
          if #available(iOS 13.0, *) {
              searchTextField = searchBar.searchTextField
@@ -65,8 +70,8 @@ class CategoriesViewController: UIViewController {
      override func viewDidLoad() {
          super.viewDidLoad()
          searchBar.delegate = self
-         //productTableView.dataSource = self
-         //productTableView.delegate = self
+         subCategoriesTableView.dataSource = self
+         subCategoriesTableView.delegate = self
          searchHistoryTableView.dataSource = self
          searchHistoryTableView.delegate = self
          self.categoryCollectionView.dataSource = self
@@ -84,8 +89,8 @@ class CategoriesViewController: UIViewController {
          })
          networkFailedAlert.addAction(okButton)
          selectedCategoryName = CLOTHING
-         //productTableView.register(UINib(nibName: "ProductCell", bundle: nil), forCellReuseIdentifier: "ReusableProdcutCell")
-         //searchHistoryTableView.register(SearchHistoryTableViewCell.self, forCellReuseIdentifier: "searchHistoryCell")
+        subCategoriesTableView.register(SubCategoryCell.self, forCellReuseIdentifier: "ReusableSubCategoryCell")
+         searchHistoryTableView.register(SearchHistoryTableViewCell.self, forCellReuseIdentifier: "searchHistoryCell")
          if !(allProductsInstance.dataFetched) {
              print("here")
              self.searchBar.resignFirstResponder()
@@ -101,7 +106,7 @@ class CategoriesViewController: UIViewController {
      
      func categorySelected () {
         // DO SOMETHING
-         //self.productTableView.reloadData()
+         self.subCategoriesTableView.reloadData()
      }
      
      
@@ -115,7 +120,8 @@ class CategoriesViewController: UIViewController {
          self.view.sendSubviewToBack(searchHistoryTableView)
          self.view.sendSubviewToBack(searchHistoryTableView)
          searchResults = searchHistory
-         if let searchResultsVC = segue.destination as? SearchResultsViewController {
+        if segue.identifier=="categoriesToSearchResultsSegue" {
+             let searchResultsVC = segue.destination as! SearchResultsViewController
              searchResultsVC.searchWord = searchBar.searchTextField.text
              let indexpath = searchHistoryTableView.indexPathForSelectedRow
              if indexpath != nil {
@@ -139,9 +145,21 @@ class CategoriesViewController: UIViewController {
              }
              
              searchBar.text = ""
-         }/*
+        } else if segue.identifier=="categoriesToResultsSegue" {
+            
+            let searchResultsVC = segue.destination as! SearchResultsViewController
+            searchResultsVC.searchWord = selectedCategoryName
+            let indexpath = subCategoriesTableView.indexPathForSelectedRow
+            if indexpath != nil {
+                searchResultsVC.isSearchWord = false
+                searchResultsVC.isBrand = false
+                searchResultsVC.isCategory = true
+            }
+            //************  Look again to check *********
+        }
+        /*
          else if let productDetailVC = segue.destination as? ProductDetailViewController {
-                     let indexPath = self.productTableView.indexPathForSelectedRow
+                     let indexPath = self.subCategoriesTableView.indexPathForSelectedRow
                      if indexPath != nil {
                          let products = allProductsInstance.allProducts.filter{$0.category.parent!.contains(selectedCategoryName!) || $0.category.name.contains(selectedCategoryName!)}
                          productDetailVC.product = products[indexPath!.row]
@@ -152,9 +170,9 @@ class CategoriesViewController: UIViewController {
      override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
          if identifier == "categoriesToSearchResultsSegue" {
              return !(searchBar.searchTextField.text == "")
-         }/* else if identifier == "categoriesToProductDetailSegue" {
-            return self.productTableView.indexPathForSelectedRow != nil
-       }*/
+         } else if identifier == "categoriesToResultsSegue" {
+            return self.subCategoriesTableView.indexPathForSelectedRow != nil
+       }
          return false
      }
 
@@ -166,10 +184,13 @@ class CategoriesViewController: UIViewController {
  extension CategoriesViewController:UITableViewDelegate,UITableViewDataSource {
      func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
          //return 10
-        /*
-         if tableView == productTableView {
-             return allProductsInstance.allProducts.filter{$0.category.parent!.contains(selectedCategoryName!) || $0.category.name.contains(selectedCategoryName!)}.count
-         }*/
+        
+         if tableView == subCategoriesTableView {
+            return subCategoryDict[selectedCategoryName!]!.count
+            // ***look again to check
+            
+            //return allProductsInstance.allProducts.filter{$0.category.parent!.contains(selectedCategoryName!) || $0.category.name.contains(selectedCategoryName!)}.count
+         }
          if tableView == searchHistoryTableView {
              return searchResults.count
          }
@@ -177,13 +198,22 @@ class CategoriesViewController: UIViewController {
      }
      
      func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    /*
-         if tableView == productTableView {
-             let cell = productTableView.dequeueReusableCell(withIdentifier: "ReusableProdcutCell", for: indexPath) as! ProductCell
+    
+         if tableView == subCategoriesTableView {
+            let cell = subCategoriesTableView.dequeueReusableCell(withIdentifier: "ReusableSubCategoryCell", for: indexPath) as! SubCategoryCell
+            let subCategories=subCategoryDict[selectedCategoryName!]!
+            print(indexPath.row)
+            cell.nameLabel.text = subCategories[indexPath.row]
+            
+            
+            
              //let filteredProducts:[Product] = products.filter { $0.category == selectedCategoryName }
-             let filteredProducts:[ProductData] = allProductsInstance.allProducts.filter{$0.category.parent!.contains(selectedCategoryName!) || $0.category.name.contains(selectedCategoryName!)}
-             let product = filteredProducts[indexPath.row]
-             cell.productNameLabel.text = product.name
+             //let filteredProducts:[ProductData] = allProductsInstance.allProducts.filter{$0.category.parent!.contains(selectedCategoryName!) || $0.category.name.contains(selectedCategoryName!)}
+             //let product = filteredProducts[indexPath.row]
+             //cell.productNameLabel.text = product.name
+            
+            
+            /*
              cell.productNameLabel.font = UIFont.systemFont(ofSize: 15, weight: .black)
              cell.productDescriptionLabel.text = product.brand
              cell.productDescriptionLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
@@ -201,24 +231,27 @@ class CategoriesViewController: UIViewController {
                  cell.productImageView.image = UIImage(named:"xmark.circle")
                  cell.productImageView.tintColor = UIColor.lightGray
                  cell.productImageView.contentMode = .center
-             }
+             }*/
+ 
              return cell
-         } else*/
-         let cell = searchHistoryTableView.dequeueReusableCell(withIdentifier: "searchHistoryCell", for: indexPath) as! SearchHistoryTableViewCell
-         cell.resultLabel.text = searchResults[indexPath.row]
-         if indexPath.row < historyEndIndex {
-             cell.showClock()
-             cell.hideType()
-         } else if indexPath.row < categoriesEndIndex {
-             cell.hideClock()
-             cell.showType()
-             cell.typeLabel.text = "Category"
          } else {
-             cell.hideClock()
-             cell.showType()
-             cell.typeLabel.text = "Brand"
+            let cell = searchHistoryTableView.dequeueReusableCell(withIdentifier: "searchHistoryCell", for: indexPath) as! SearchHistoryTableViewCell
+            cell.resultLabel.text = searchResults[indexPath.row]
+            if indexPath.row < historyEndIndex {
+                cell.showClock()
+                cell.hideType()
+            } else if indexPath.row < categoriesEndIndex {
+                cell.hideClock()
+                cell.showType()
+                cell.typeLabel.text = "Category"
+            } else {
+                cell.hideClock()
+                cell.showType()
+                cell.typeLabel.text = "Brand"
+            }
+            return cell
          }
-         return cell
+
      
      }
      
@@ -228,12 +261,19 @@ class CategoriesViewController: UIViewController {
              searchBar.text = searchResults[indexPath.row]
              performSegue(withIdentifier: "categoriesToSearchResultsSegue", sender: nil)
              print("f")
-         }/* else {
+         } else {
+            let subCategories=subCategoryDict[selectedCategoryName!]!
+            searchBar.searchTextField.text = subCategories[indexPath.row]
+            searchBar.text = searchResults[indexPath.row]
+            performSegue(withIdentifier: "categoriesToResultsSegue", sender: nil)
+            //   *******  TODO check again *****************
+            
+            /*
              let filteredProducts:[ProductData] = allProductsInstance.allProducts.filter{$0.category.parent!.contains(selectedCategoryName!) || $0.category.name.contains(selectedCategoryName!)}
              let product = filteredProducts[indexPath.row]
              print(product.name)
-             performSegue(withIdentifier: "categoriesToProductDetailSegue", sender: nil)
-         }*/
+             performSegue(withIdentifier: "categoriesToProductDetailSegue", sender: nil)*/
+         }
          
      }
      
@@ -302,7 +342,7 @@ class CategoriesViewController: UIViewController {
          if let categoryCell = cell as? CategoryCollectionViewCell {
              self.selectedCategoryName=categoryCell.categoryName
              categoryCollectionView.reloadData()
-             //productTableView.reloadData()
+             subCategoriesTableView.reloadData()
          }
      }
  }
@@ -311,10 +351,10 @@ class CategoriesViewController: UIViewController {
      
      func allProductsAreFetched_temp() {
          stopIndicator()
-         //self.productTableView.reloadData()
+         self.subCategoriesTableView.reloadData()
          self.searchBar.isUserInteractionEnabled = true
          //DispatchQueue.main.async {
-           //  self.productTableView.reloadData()
+           //  self.subCategoriesTableView.reloadData()
             // self.searchBar.isUserInteractionEnabled = true
          //}
      }
@@ -402,14 +442,14 @@ class CategoriesViewController: UIViewController {
          loadingView.isHidden = false
          activityIndicator.isHidden = false
          activityIndicator.startAnimating()
-         //productTableView.isHidden = true
+         subCategoriesTableView.isHidden = true
      }
 
      func createIndicatorView() {
          loadingView.isHidden = false
          activityIndicator.isHidden = false
          activityIndicator.startAnimating()
-         //productTableView.isHidden = true
+         subCategoriesTableView.isHidden = true
      }
      
      func stopIndicator() {
@@ -418,9 +458,9 @@ class CategoriesViewController: UIViewController {
              self.activityIndicator.isHidden = true
              self.activityIndicator.stopAnimating()
              self.view.sendSubviewToBack(self.loadingView)
-             //self.productTableView.isHidden = false
-             //self.productTableView.isUserInteractionEnabled = true
-             //self.productTableView.reloadData()
+             self.subCategoriesTableView.isHidden = false
+             self.subCategoriesTableView.isUserInteractionEnabled = true
+             self.subCategoriesTableView.reloadData()
          }
      }
  }
