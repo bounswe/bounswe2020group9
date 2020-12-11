@@ -12,12 +12,12 @@ export default class Inventory extends Component {
   componentDidMount() {
 
     let myCookie = read_cookie('user')
-    
+
 
   }
 
 
   render(){
-    return <Datatable tableHeaders={header} tableBody={body} />;
+    return ;
   }
 }
