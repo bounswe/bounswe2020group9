@@ -20,11 +20,11 @@ enum ApiRouter: URLRequestBuilder {
         case .authenticate:
             return "api/user/login/"
         case .getCustomerLists(let customer, _):
-            return "api/user/" + customer + "/lists"
+            return "api/user/"+customer+"/lists/"
         case .addList(_, let customer, _):
             return "api/user/" + customer + "/lists/"
         case .deleteList(let customer, let id):
-            return "api/user/" + customer + "/list/" + id + "/"
+            return "api/user/" + customer + "/list/"+id+"/"
         }
     }
 
@@ -55,9 +55,9 @@ enum ApiRouter: URLRequestBuilder {
                 headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
             }
         case .addList:
-            headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String) 
+            headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
         case .deleteList:
-            break
+            headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
         }
         return headers
     }

@@ -59,7 +59,7 @@ class AddListViewController: UIViewController {
         sender.isSelected = !sender.isSelected
         if sender.isSelected {
             if (self.isPrivate != nil) {
-                self.isPrivateRadioButton.sendActions(for: .touchUpInside)
+                self.isPublicRadioButton.sendActions(for: .touchUpInside)
             }
             self.isPrivate = true
         } else{
@@ -71,7 +71,7 @@ class AddListViewController: UIViewController {
         sender.isSelected = !sender.isSelected
         if sender.isSelected {
             if (self.isPrivate != nil) {
-                self.isPublicRadioButton.sendActions(for: .touchUpInside)
+                self.isPrivateRadioButton.sendActions(for: .touchUpInside)
             }
             self.isPrivate = false
         } else{

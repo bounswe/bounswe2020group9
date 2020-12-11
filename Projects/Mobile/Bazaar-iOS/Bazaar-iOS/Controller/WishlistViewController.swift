@@ -42,6 +42,7 @@ class WishlistViewController: UIViewController {
         if !(customerListsInstance.dataFetched) {
             self.customerListsInstance.fetchCustomerLists()
         }
+        self.view.bringSubviewToFront(listsTableView)
     }
     
     
@@ -86,6 +87,11 @@ extension WishlistViewController:UITableViewDelegate,UITableViewDataSource {
         return cell
     }
     
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return tableView.frame.height / 3.5
+    }
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //performSegue(withIdentifier: "listsToListDetailSegue", sender: nil)
     }
@@ -102,6 +108,7 @@ extension WishlistViewController:UITableViewDelegate,UITableViewDataSource {
                 case .success(_):
                     alertController.message = "\(list.name) is successfully deleted"
                     self.present(alertController, animated: true, completion: nil)
+                    self.listsTableView.reloadData()
                 case .failure(_):
                     alertController.message = "\(list.name) cannot be deleted"
                     self.present(alertController, animated: true, completion: nil)
@@ -169,21 +176,18 @@ class CustomerLists {
     
     func fetchCustomerLists() {
         dispatchGroup.enter()
-        if let customer = UserDefaults.standard.value(forKey: K.user_id) as? String {
-            APIManager().getCustomerLists(customer: customer, isCustomerLoggedIn: true, completionHandler: { result in
-                switch result {
-                    case .success(let lists):
-                        self.dataFetched = true
-                        self.customerLists = lists
-                        self.delegate?.allListsAreFetched()
-                    case .failure(_):
-                        self.dataFetched = false
-                        self.customerLists = []
-                        self.delegate?.listsCannotBeFetched()
-                }
-            })
-        }
-        
+        APIManager().getCustomerLists(customer: UserDefaults.standard.value(forKey: K.user_id) as! String, isCustomerLoggedIn: true, completionHandler: { result in
+            switch result {
+                case .success(let lists):
+                    self.dataFetched = true
+                    self.customerLists = lists
+                    self.delegate?.allListsAreFetched()
+                case .failure(_):
+                    self.dataFetched = false
+                    self.customerLists = []
+                    self.delegate?.listsCannotBeFetched()
+            }
+        })
         dispatchGroup.leave()
         dispatchGroup.wait()
     }

@@ -156,9 +156,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="bUz-nq-7de" userLabel="Lists Table View">
-                                <rect key="frame" x="10" y="127.66666666666669" width="394" height="675.33333333333326"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="bUz-nq-7de" userLabel="Lists Table View">
+                                <rect key="frame" x="10" y="127.66666666666669" width="394" height="685.33333333333326"/>
+                                <color key="backgroundColor" systemColor="opaqueSeparatorColor"/>
+                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <color key="sectionIndexBackgroundColor" systemColor="opaqueSeparatorColor"/>
                                 <connections>
                                     <outlet property="dataSource" destination="SBA-Vi-5Ha" id="RHO-aY-Kk2"/>
                                     <outlet property="delegate" destination="SBA-Vi-5Ha" id="Ml2-sC-J6D"/>
@@ -206,7 +208,7 @@
                         <viewLayoutGuide key="safeArea" id="oVp-Pa-f2j"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="oVp-Pa-f2j" firstAttribute="bottom" secondItem="bUz-nq-7de" secondAttribute="bottom" constant="10" id="7cV-so-wsK"/>
+                            <constraint firstItem="oVp-Pa-f2j" firstAttribute="bottom" secondItem="bUz-nq-7de" secondAttribute="bottom" id="7cV-so-wsK"/>
                             <constraint firstAttribute="trailing" secondItem="bUz-nq-7de" secondAttribute="trailing" constant="10" id="V66-Zw-nxL"/>
                             <constraint firstItem="bUz-nq-7de" firstAttribute="top" secondItem="N6U-qu-2Sn" secondAttribute="bottom" constant="20" id="ffw-SI-5JC"/>
                             <constraint firstItem="N6U-qu-2Sn" firstAttribute="height" secondItem="EZk-OK-YPA" secondAttribute="height" multiplier="0.06" id="imt-F1-9yf"/>
@@ -237,29 +239,34 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MV9-bx-bRe">
                                 <rect key="frame" x="41.333333333333343" y="248.66666666666669" width="331.33333333333326" height="210.66666666666669"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleAspectFit" axis="vertical" distribution="equalSpacing" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="YqM-Ty-esZ">
+                                    <stackView opaque="NO" contentMode="scaleAspectFit" axis="vertical" distribution="fillProportionally" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="YqM-Ty-esZ">
                                         <rect key="frame" x="20" y="20.000000000000028" width="291.33333333333331" height="170.66666666666666"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add List" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3DJ-Lr-s6X">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Add List" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3DJ-Lr-s6X">
                                                 <rect key="frame" x="109.66666666666666" y="0.0" width="72.333333333333343" height="23"/>
                                                 <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="19"/>
                                                 <color key="textColor" red="0.99958151579999999" green="0.64487946029999998" blue="0.3569172323" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="List Name..." minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="CJs-bg-QYS" userLabel="List Name Text Field">
-                                                <rect key="frame" x="0.0" y="43.333333333333314" width="291.33333333333331" height="34"/>
+                                                <rect key="frame" x="0.0" y="43" width="291.33333333333331" height="33.666666666666657"/>
                                                 <color key="backgroundColor" red="0.95686274510000002" green="0.95686274510000002" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="sXj-d8-VYo" userLabel="List Type Stack View">
-                                                <rect key="frame" x="43.666666666666657" y="97.333333333333314" width="204" height="17"/>
+                                                <rect key="frame" x="43.666666666666657" y="96.666666666666629" width="204" height="20.666666666666671"/>
                                                 <subviews>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="uWV-bO-0Dv" userLabel="Is Private Stack View">
-                                                        <rect key="frame" x="0.0" y="0.0" width="92.666666666666671" height="17"/>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uWV-bO-0Dv" userLabel="Is Private Stack View">
+                                                        <rect key="frame" x="0.0" y="0.0" width="82.666666666666671" height="20.666666666666668"/>
                                                         <subviews>
                                                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vn7-FE-yjg" customClass="RadioButton" customModule="Bazaar_iOS" customModuleProvider="target">
-                                                                <rect key="frame" x="0.0" y="0.0" width="30" height="17"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="30" height="20.666666666666668"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="7"/>
+                                                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <state key="normal">
+                                                                    <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                </state>
                                                                 <userDefinedRuntimeAttributes>
                                                                     <userDefinedRuntimeAttribute type="color" keyPath="outerCircleColor">
                                                                         <color key="value" red="1" green="0.64313725489999995" blue="0.35686274509999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -279,7 +286,7 @@
                                                                 </connections>
                                                             </button>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Private" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W85-Zc-9kD" userLabel="Private">
-                                                                <rect key="frame" x="40" y="0.0" width="52.666666666666657" height="17"/>
+                                                                <rect key="frame" x="29.999999999999996" y="0.0" width="52.666666666666657" height="20.666666666666668"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -287,10 +294,15 @@
                                                         </subviews>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OLX-5y-G5h" userLabel="Is Public Stack View">
-                                                        <rect key="frame" x="127.33333333333334" y="0.0" width="76.666666666666657" height="17"/>
+                                                        <rect key="frame" x="127.33333333333334" y="0.0" width="76.666666666666657" height="20.666666666666668"/>
                                                         <subviews>
                                                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q7i-mX-RTp" customClass="RadioButton" customModule="Bazaar_iOS" customModuleProvider="target">
-                                                                <rect key="frame" x="0.0" y="0.0" width="30" height="17"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="30" height="20.666666666666668"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="7"/>
+                                                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <state key="normal">
+                                                                    <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                </state>
                                                                 <userDefinedRuntimeAttributes>
                                                                     <userDefinedRuntimeAttribute type="color" keyPath="outerCircleColor">
                                                                         <color key="value" red="1" green="0.64313725489999995" blue="0.35686274509999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -310,7 +322,7 @@
                                                                 </connections>
                                                             </button>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Public" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BMq-Fs-Y6E" userLabel="Public">
-                                                                <rect key="frame" x="29.999999999999968" y="0.0" width="46.666666666666657" height="17"/>
+                                                                <rect key="frame" x="29.999999999999968" y="0.0" width="46.666666666666657" height="20.666666666666668"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                 <nil key="textColor"/>
                                                                 <nil key="highlightedColor"/>
@@ -320,12 +332,17 @@
                                                 </subviews>
                                             </stackView>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zrF-Sd-6lC" userLabel="Add Button">
-                                                <rect key="frame" x="109.33333333333331" y="134.66666666666663" width="72.666666666666686" height="36"/>
+                                                <rect key="frame" x="109.33333333333331" y="137.33333333333331" width="72.666666666666686" height="33.333333333333343"/>
                                                 <color key="backgroundColor" red="0.99958151579999999" green="0.64487946029999998" blue="0.3569172323" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                                 <state key="normal" title="Add">
                                                     <color key="titleColor" systemColor="systemBackgroundColor"/>
                                                 </state>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                        <integer key="value" value="5"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
                                                 <connections>
                                                     <action selector="addListButtonPressed:" destination="5H4-eo-fZs" eventType="touchUpInside" id="07Z-g9-IPW"/>
                                                 </connections>
@@ -333,7 +350,6 @@
                                         </subviews>
                                         <constraints>
                                             <constraint firstItem="sXj-d8-VYo" firstAttribute="width" secondItem="YqM-Ty-esZ" secondAttribute="width" multiplier="0.7" id="9LO-Ie-df1"/>
-                                            <constraint firstItem="sXj-d8-VYo" firstAttribute="height" secondItem="YqM-Ty-esZ" secondAttribute="height" multiplier="0.1" id="ict-I7-F46"/>
                                             <constraint firstItem="CJs-bg-QYS" firstAttribute="width" secondItem="YqM-Ty-esZ" secondAttribute="width" id="p1Y-jJ-B3I"/>
                                             <constraint firstItem="zrF-Sd-6lC" firstAttribute="width" secondItem="YqM-Ty-esZ" secondAttribute="width" multiplier="0.25" id="w85-mW-FyZ"/>
                                         </constraints>
@@ -396,9 +412,9 @@
                     <modalPageSheetSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <connections>
                         <outlet property="addListButton" destination="zrF-Sd-6lC" id="hgX-qG-LIV"/>
-                        <outlet property="frameView" destination="MV9-bx-bRe" id="jVs-mT-yv0"/>
-                        <outlet property="isPrivateRadioButton" destination="Vn7-FE-yjg" id="Jbr-Bi-IcP"/>
-                        <outlet property="isPublicRadioButton" destination="q7i-mX-RTp" id="ahD-no-TAt"/>
+                        <outlet property="frameView" destination="MV9-bx-bRe" id="5Ag-Zw-CJX"/>
+                        <outlet property="isPrivateRadioButton" destination="Vn7-FE-yjg" id="Ah7-wb-uPW"/>
+                        <outlet property="isPublicRadioButton" destination="q7i-mX-RTp" id="yfJ-9G-snN"/>
                         <outlet property="listNameTextField" destination="CJs-bg-QYS" id="NQQ-Za-z3C"/>
                     </connections>
                 </viewController>
@@ -1459,10 +1475,10 @@
             <size key="intrinsicContentSize" width="30" height="30"/>
         </designable>
         <designable name="Vn7-FE-yjg">
-            <size key="intrinsicContentSize" width="30" height="30"/>
+            <size key="intrinsicContentSize" width="30" height="21"/>
         </designable>
         <designable name="q7i-mX-RTp">
-            <size key="intrinsicContentSize" width="30" height="30"/>
+            <size key="intrinsicContentSize" width="30" height="21"/>
         </designable>
     </designables>
     <resources>
@@ -1485,6 +1501,9 @@
         <image name="profilepic" width="652" height="649"/>
         <image name="questionmark.square" catalog="system" width="128" height="114"/>
         <image name="xmark.circle" catalog="system" width="128" height="121"/>
+        <systemColor name="opaqueSeparatorColor">
+            <color red="0.77647058823529413" green="0.77647058823529413" blue="0.78431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

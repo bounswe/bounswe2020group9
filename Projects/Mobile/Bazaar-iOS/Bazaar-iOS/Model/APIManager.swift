@@ -18,7 +18,7 @@ struct APIManager {
     func authenticate(username:String,password:String,completionHandler: @escaping (Result<String ,Error>) -> Void) {
         do {
             let request = try ApiRouter.authenticate(username: username, password: password).asURLRequest()
-            AF.request(request).responseJSON { (response) in
+            AF.request(request).responseJSON {(response) in
                 if (response.response?.statusCode != nil){
                     guard let safeData = response.data else  {
                         completionHandler(.failure(response.error!))
@@ -26,8 +26,8 @@ struct APIManager {
                     }
                     if let decodedData:AuthData = APIParse().parseJSON(safeData: safeData){
                         completionHandler(.success(decodedData.token))
-                        UserDefaults.standard.setValue(String(decodedData.user_id), forKey: K.user_id)
-                        UserDefaults.standard.setValue(String(decodedData.token), forKey: K.token)
+                        UserDefaults.standard.set(String(decodedData.user_id), forKey: K.user_id)
+                        UserDefaults.standard.set(String(decodedData.token), forKey: K.token)
                     }else {
                         completionHandler(.failure(MyError.runtimeError("Error")))
                     }
@@ -73,8 +73,7 @@ struct APIManager {
         }
             
     }
-    
-    
+
     func getCustomerLists(customer:String, isCustomerLoggedIn:Bool, completionHandler: @escaping (Result<[CustomerListData] , Error>) -> Void) {
         do {
             let request = try ApiRouter.getCustomerLists(customer: customer, isCustomerLoggedIn: isCustomerLoggedIn).asURLRequest()
@@ -123,12 +122,12 @@ struct APIManager {
             AF.request(request).responseJSON { (response) in
                 if (response.response?.statusCode != nil){
                     guard let safeData = response.data else  {
+                        print("hey")
                         completionHandler(.failure(response.error!))
                         return
                     }
                     if let decodedData:[String:String] = APIParse().parseJSON(safeData: safeData), decodedData.values.first != "not allowed to access"{
                         completionHandler(.success("success"))
-                        print("hey")
                     }else {
                         completionHandler(.failure(MyError.runtimeError("Error")))
                     }
