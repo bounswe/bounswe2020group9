@@ -10,12 +10,6 @@ render(){
     let image = this.props.myImage
     console.log(image);
 
-    let categories = this.props.product.categories.map(category => {
-        return (
-          <span>'{category}' </span>
-        )
-      })
-
     return(
         <div>
             <Card style={{height: '26rem' }}>
@@ -23,7 +17,7 @@ render(){
             <Card.Body>
                 <Card.Title>{this.props.product.name}</Card.Title>
                 <Card.Text>
-                {categories}
+                    {this.props.product.category["name"]}
                 </Card.Text>
             </Card.Body>
             <Card.Footer>

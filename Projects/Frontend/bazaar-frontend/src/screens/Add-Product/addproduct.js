@@ -17,6 +17,9 @@ export default class AddProduct extends Component {
           price: '',
           stock: '',
           image: null,
+          category: '',
+          subcategory: '',
+          labels: [],
           utype: '',
           token: '',
           redirect: null,
@@ -41,23 +44,27 @@ export default class AddProduct extends Component {
 
       handleValidation(){
         let formIsValid = true;
-        let new_errors = {newpw: '', confpw: '', currpw: ''};
+        let new_errors = {};
         //Name
         if (this.state.name === ''){
-            formIsValid = false;
-            new_errors["name"] = "Name can not be empty.";
+          formIsValid = false;
+          new_errors["name"] = "Name can not be empty.";
         }
         if (this.state.brand === ''){
-            formIsValid = false;
-            new_errors["brand"] = "Brand can not be empty.";
+          formIsValid = false;
+          new_errors["brand"] = "Brand can not be empty.";
         }
         if (this.state.price === ''){
-            formIsValid = false;
-            new_errors["price"] = "Price can not be empty.";
+          formIsValid = false;
+          new_errors["price"] = "Price can not be empty.";
         }
         if (this.state.stock === ''){
-            formIsValid = false;
-            new_errors["stock"] = "Stock can not be empty.";
+          formIsValid = false;
+          new_errors["stock"] = "Stock can not be empty.";
+        }
+        if (this.state.category === ''){
+          formIsValid = false;
+          new_errors["category"] = "Category can not be empty.";
         }
 
 
@@ -68,7 +75,6 @@ export default class AddProduct extends Component {
 
     
       handleSubmit = event => {  
-
     
         event.preventDefault();
         const body = new FormData();
@@ -77,13 +83,19 @@ export default class AddProduct extends Component {
         body.append("brand", this.state.brand);
         body.append("price", this.state.price);
         body.append("stock", this.state.stock);
-        body.append("image", this.state.image);
+        body.append("picture", this.state.image);
+        if (this.state.subcategory !== ""){
+          body.append("category", {"name": this.state.subcategory, "parent": this.state.category})
+        } else {
+          body.append("category", {"name": this.state.category, "parent": "Categories"})
+        }
 
 
         let myCookie = read_cookie('user');
-        const header = {Authorization: "Token "+myCookie.token};
-        
+        const header = {headers: {Authorization: "Token "+myCookie.token}};
 
+
+        console.log(header["Authorization"])
         if (this.handleValidation()) {
             axios.post(`http://13.59.236.175:8000/api/product/`, body, header)
             .then(res => {
@@ -106,6 +118,29 @@ export default class AddProduct extends Component {
 
 
     render() {
+      let categoryList = {"Home": ["Home Textile", "Bedroom", "Bathroom", "Kitchen", "Lighting", "Furniture", "Home/Other"],
+                          "Electronics": ["Tablets", "Smartphones", "Computers", "TV", "Gaming", "Home Appliances", "Electronics/Other"], 
+                          "Clothing": ["Top", "Bottom", "Outerwear", "Shoes", "Bags", "Accessories", "Activewear", "Clothing/Other"], 
+                          "Living": ["Art Supplies", "Musical Devices", "Sports", "Living/Other", "Living/Other"], 
+                          "Selfcare": ["Perfumes", "Makeup", "Skincare", "Hair", "Body Care", "Selfcare/Other"],
+                          "Books": ["Books/Other"],
+                          "": []
+                        }
+
+      let categories = Object.keys(categoryList).map(category => {
+        if (category !== ""){
+          return (
+            <option value={category}>{category}</option>
+          )
+        }
+      })
+
+      let subcategories = categoryList[this.state.category].map(subcategory => {
+        return (
+          <option value={subcategory}>{subcategory}</option>
+        )
+      })
+
       if (this.state.hasError) {
         // You can render any custom fallback UI
         return <h1>{this.validate.message}</h1>;
@@ -121,51 +156,74 @@ export default class AddProduct extends Component {
                         <div className="account-update">
                             <form className='needs-validation' onSubmit={this.handleSubmit} noValidate>
                               <div className="form-group row">
-                                  <label className="col-5 align-middle">Name</label>
-                                  <div className="col">
+                                  <label className="col-4 align-middle">Name:</label>
+                                  <div className="col-6">
                                     <input type="text" name="name"className="form-control col" placeholder="e.g. 'Samsung Galaxy S, White'"
                                     onChange={this.handleChange} required/>
                                     <div className="error">{this.state.errors["name"]}</div>
                                   </div>
                               </div>
                               <div className="form-group row">
-                                  <label className="col-5 align-middle">Detail</label>
-                                  <div className="col">
-                                    <input type="text" name="detail"className="form-control col" placeholder="e.g. 'best phone, much cheap.'"
+                                  <label className="col-4 align-middle">Detail:</label>
+                                  <div className="col-6">
+                                    <input type="text" name="detail" className="form-control col" placeholder="e.g. 'best phone, much cheap.'"
                                     onChange={this.handleChange}/>
                                   </div>
                               </div>
                               <div className="form-group row">
-                                  <label className="col-5 align-middle deneme">Brand</label>
-                                  <div className="col">
-                                    <input type="text" name="brand"className="form-control col" placeholder="e.g. 'Samsung'"
+                                  <label className="col-4 align-middle">Brand:</label>
+                                  <div className="col-4">
+                                    <input type="text" name="brand" className="form-control col" placeholder="e.g. 'Samsung'"
                                     onChange={this.handleChange} required/>
                                     <div className="error">{this.state.errors["brand"]}</div>
 
                                   </div>
                               </div>
                               <div className="form-group row">
-                                  <label className="col-5 align-middle">Price</label>
-                                  <div className="col">
+                                  <label className="col-4 align-middle">Category:</label>
+                                  <div className="col-4">
+                                    <select className="form-control col" name="category" id="category1"
+                                    onChange={this.handleChange} required>
+                                      <option selected disabled>Please Select</option>
+                                      {categories}
+                                    </select>
+                                    <div className="error">{this.state.errors["category"]}</div>
+                                  </div>
+                              </div>
+                              <div className="form-group row">
+                                  <label className="col-4 align-middle">Subcategory:</label>
+                                  <div className="col-4">
+                                    <select className="form-control col" name="subcategory" id="category2"
+                                    onChange={this.handleChange}>
+                                      <option selected disabled>Please Select</option>
+                                      {subcategories}
+                                    </select>
+                                    <div className="error">{this.state.errors["subcategory"]}</div>
+                                  </div>
+                              </div>
+                              <div className="form-group row">
+                                  <label className="col-4 align-middle">Price:</label>
+                                  <div className="col-3">
                                     <input type="text" name="price" className="form-control col" placeholder="e.g. '1000 {₺}'"
                                     onChange={this.handleChange} required/>
                                     <div className="error">{this.state.errors["price"]}</div>
                                   </div>
                               </div>                    
                               <div className="form-group row">
-                                  <label className="col-5 align-middle">Stock</label>
-                                  <div className="col">
+                                  <label className="col-4 align-middle">Stock:</label>
+                                  <div className="col-3">
                                     <input type="text" name="stock" className="form-control col" placeholder="e.g. '200'" 
                                     onChange={this.handleChange} required/>
                                     <div className="error">{this.state.errors["stock"]}</div>
                                   </div>
                               </div>
+
                               <div className="form-group row">
-                                  <label className="col-5 align-middle">Image</label>
+                                  <label className="col-4 align-middle">Image:</label>
                                   <div className="col">
-                                    <input type="file" name="image" className="form-control col" accept="image/jpeg image/png" 
+                                    <input type="file" name="image" className="" accept="image/jpeg image/png" 
                                     onChange={this.handleImageChange}/>
-                                    <div className="error">{this.state.errors["confpw"]}</div>
+                                    <div className="error">{this.state.errors["image"]}</div>
 
                                   </div>
                               </div>

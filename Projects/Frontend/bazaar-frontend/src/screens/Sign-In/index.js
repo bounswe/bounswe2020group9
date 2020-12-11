@@ -37,7 +37,6 @@ export default class SignIn extends Component {
         
         const cookie_key = 'user';
         const cookie_data = res.data;
-        cookie_data["user_type"] = 1;
         bake_cookie(cookie_key, cookie_data);
 
         console.log(res);
