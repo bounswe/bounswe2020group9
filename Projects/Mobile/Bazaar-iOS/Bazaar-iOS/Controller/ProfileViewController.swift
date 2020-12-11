@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import GoogleSignIn
 
 class ProfileViewController: UIViewController{
     
@@ -55,8 +56,8 @@ class ProfileViewController: UIViewController{
     
     @IBAction func temporaryLogoutButton(_ sender: UIButton) {
         UserDefaults.standard.set(false, forKey: K.isLoggedinKey)
+        GIDSignIn.sharedInstance().signOut()
         performSegue(withIdentifier:"ProfileToLoginSegue" , sender: nil)
-        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
