@@ -38,3 +38,5 @@ def create_user(user_type, email, password, name="", surname=""):
 def delete_user(email):
     deleing_user = User.objects.get(email=email)
     User.delete(deleing_user)
+
+

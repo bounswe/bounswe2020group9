@@ -2,7 +2,7 @@ from pygments.lexers import get_all_lexers
 from pygments.styles import get_all_styles
 from rest_framework import serializers
 
-from .models import Product, Label, Category, ProductList
+from .models import Product, Label, Category, ProductList,SearchHistory
 
 
 LEXERS = [item for item in get_all_lexers() if item[1]]
@@ -78,4 +78,15 @@ class ProductListSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductList
         fields = ("id", "name", "customer", "products")
+
+class SearchHistory(serializers.ModelSerializer):
+    user = serializers.IntegerField(read_only=True)
+    searched = serializers.CharField(required=True, allow_blank=False, max_length=255)
+
+    class Meta:
+        model = SearchHistory
+        fields = ("user", "searched")
+    def create(self,validated_data):
+        return SearchHistory.objects.create(**validated_data)
+
 

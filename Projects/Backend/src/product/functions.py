@@ -3,6 +3,7 @@ from django.utils import timezone
 from message.models import Notification
 from product.models import Product, ProductList, Label, Category, Order, Comment, Payment
 from user.models import Vendor, Customer, User
+import requests
 
 
 def create_product(name, brand, price, vendor_id, stock=0):
@@ -135,3 +136,37 @@ def create_payment(customer_id, card):
 def delete_payment(payment_id):
     deleting_payment = Payment.objects.get(pk=payment_id)
     Payment.delete(deleting_payment)
+
+    
+def search_product_db(word_array,word_searched):
+    results = []
+    results = results + list(Product.objects.filter(name__icontains = word_searched).values())
+    results = results + list(Product.objects.filter(detail__icontains = word_searched).values())
+    print(results)
+    for words in word_array:
+        results = results + list(Product.objects.filter(name__icontains = words).values())
+        results = results + list(Product.objects.filter(detail__icontains = words).values())
+    res_set = set(results)
+    results = list(res_set)
+    return results
+
+def datamuse_call(word):
+    result = []
+    word_array = word.split()
+    max_word = int(60/len(word_array))
+    words_string = ""
+    for i in range(len(word_array)):
+        words_string+=word_array[i]
+        if i != len(word_array)-1:
+            words_string+="+"
+    response = requests.get('https://api.datamuse.com/words?ml='+words_string+"&max="+str(max_word))
+    response = response.json()
+    for element in response:
+        result.append(element["word"])
+    for words in word_array:
+        response = requests.get('https://api.datamuse.com/words?ml='+words+"&max="+str(max_word))
+        response = response.json()
+        for element in response:
+            result.append(element["word"])
+    res = set(result)
+    return list(res)

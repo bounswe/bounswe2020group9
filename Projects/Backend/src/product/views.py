@@ -10,6 +10,7 @@ from rest_framework.views import APIView
 
 from product.models import Product, ProductList, SubOrder
 from product.serializers import ProductSerializer, ProductListSerializer
+from product.functions import search_product_db,datamuse_call
 
 
 # Create your views here.
@@ -297,3 +298,9 @@ class ManageCartAPIView(APIView):
         serializer = ProductListSerializer(cart, context={'request': request})
         return Response(serializer.data)
 
+class SearchAPIView(APIView):
+    #authenticate and serialize search history
+    def get(self,request):
+        word_list = datamuse_call(request.data["word"])
+        product_list = search_product_db(word_list,request.data["word"])
+        return Response(product_list, status=status.HTTP_200_OK)

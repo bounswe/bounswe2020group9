@@ -212,11 +212,10 @@ class ResetPasswordView(APIView):
                 'status': 'success',
                 'code': status.HTTP_200_OK,
                 'message': 'Password updated successfully',
-                'data': []
             }
         except:
             return Response({"message":"Couldn't reset password"}, status=status.HTTP_400_BAD_REQUEST)
-        return Response(response)
+        return Response(response,status=status.HTTP_201_CREATED)
 
 class VerificationView(APIView):
     def get(self, request, uidb64):
