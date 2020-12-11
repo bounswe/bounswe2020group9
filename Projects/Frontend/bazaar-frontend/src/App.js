@@ -11,6 +11,8 @@ import Home from "./screens/Home"
 import ForgotPassword from "./screens/Sign-In/forgot-password"
 import MyList from "./screens/MyList/MyList"
 import AddProduct from "./screens/Add-Product/addproduct"
+import Inventory from "./screens/Inventory/inventory"
+
 
 
 //components
@@ -50,6 +52,10 @@ function App() {
         <Route path="/add-product">
           <Header />
           <AddProduct />
+        </Route>
+        <Route path="/inventory">
+          <Header />
+          <Inventory />
         </Route>
       </Switch>
 

@@ -6,14 +6,10 @@ export default class CardComponent extends Component {
 
 render(){
 
-    let num = this.props.product.id;
-    let image = this.props.myImage
-    console.log(image);
-
     return(
         <div>
             <Card style={{height: '26rem' }}>
-            <Card.Img variant="top" src={image} />
+            <Card.Img variant="top" src={this.props.product.picture} />
             <Card.Body>
                 <Card.Title>{this.props.product.name}</Card.Title>
                 <Card.Text>
