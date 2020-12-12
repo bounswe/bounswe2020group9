@@ -21,6 +21,7 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var frameView: UIView!
     var delegate:LoginViewControllerDelegate?
     var isSignUpPressed = false
+    var isContinueAsGuestPressed = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,22 +30,24 @@ class LoginViewController: UIViewController {
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        isContinueAsGuestPressed = false
+        isSignUpPressed = false
         GIDSignIn.sharedInstance()?.delegate = self
         GIDSignIn.sharedInstance()?.presentingViewController = self
         // Automatically sign in the user.
         GIDSignIn.sharedInstance()?.restorePreviousSignIn()
+        if let isloggedin = UserDefaults.standard.value(forKey: K.isLoggedinKey){
+            if isloggedin as! Bool{
+                self.dismiss(animated: true, completion: nil)
+            }
+        }
     }
 
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        if UserDefaults.standard.value(forKey: K.isLoggedinKey) as! Bool {
-            self.dismiss(animated: true, completion: nil)
-        }else {
-            delegate?.loginViewControllerDidPressSignUp(isPressed: isSignUpPressed)
-            delegate?.loginViewControllerDidPressContinueAsGuest(isPressed: !isSignUpPressed)
-        }
-
+        delegate?.loginViewControllerDidPressSignUp(isPressed: isSignUpPressed)
+        delegate?.loginViewControllerDidPressContinueAsGuest(isPressed: isContinueAsGuestPressed)
     }
     
     @IBAction func signUpButtonPressed(_ sender: UIButton) {
@@ -52,7 +55,7 @@ class LoginViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     @IBAction func continueAsGuestButtonPressed(_ sender: UIButton) {
-        isSignUpPressed=false
+        isContinueAsGuestPressed=true
         self.dismiss(animated: false, completion: nil)
     }
     
