@@ -28,6 +28,7 @@ class SignUpViewController: UIViewController {
     @IBOutlet weak var frameView: UIView!
     var signUpUserType: UserType?
     var delegate:SignUpViewControllerDelegate?
+    var isPressedLoginHere = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,17 +37,21 @@ class SignUpViewController: UIViewController {
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        isPressedLoginHere = false
         GIDSignIn.sharedInstance()?.delegate = self
         GIDSignIn.sharedInstance()?.presentingViewController = self
         // Automatically sign in the user.
         GIDSignIn.sharedInstance()?.restorePreviousSignIn()
+        if let isloggedin = UserDefaults.standard.value(forKey: K.isLoggedinKey){
+            if isloggedin as! Bool{
+                self.dismiss(animated: true, completion: nil)
+            }
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        if UserDefaults.standard.value(forKey: K.isLoggedinKey) as! Bool {
-            self.dismiss(animated: true, completion: nil)
-        }else {
+        if isPressedLoginHere{
             delegate?.signUpViewControllerDidPressLoginHere()
         }
     }
@@ -92,6 +97,7 @@ class SignUpViewController: UIViewController {
     }
     
     @IBAction func loginHereButtonPressed(_ sender: UIButton) {
+        isPressedLoginHere=true
         self.dismiss(animated: true, completion: nil)
     }
     
