@@ -33,7 +33,7 @@ class MainViewController: UIViewController{
     let ELECTRONICS = "Electronics"
     let LIVING = "Living"
     
-    let categories = ["Clothing", "Home", "Selfcare", "Electronics", "Living"]
+    let categories = ["Categories", "Clothing", "Home", "Selfcare", "Electronics", "Living"]
     var products: [Product] = []
     let categoriesReuseIdentifier = "CategoriesCollectionViewCell"
     var networkFailedAlert:UIAlertController = UIAlertController(title: "Error while retrieving products", message: "We encountered a problem while retrieving the products, please check your internet connection.", preferredStyle: .alert)
@@ -41,12 +41,11 @@ class MainViewController: UIViewController{
     var searchResults:[String] = []
     var historyEndIndex:Int = 0
     var categoriesEndIndex: Int = 0
-    
+    var searchTextField: UITextField?
     
     override func viewWillAppear(_ animated: Bool) {
         searchHistoryTableView.reloadData()
         productTableView.reloadData()
-        var searchTextField: UITextField?
         if #available(iOS 13.0, *) {
             searchTextField = searchBar.searchTextField
         } else {
@@ -114,7 +113,7 @@ class MainViewController: UIViewController{
         self.view.sendSubviewToBack(searchHistoryTableView)
         searchResults = searchHistory
         if let searchResultsVC = segue.destination as? SearchResultsViewController {
-            searchResultsVC.searchWord = searchBar.searchTextField.text
+            searchResultsVC.searchWord = searchTextField?.text
             let indexpath = searchHistoryTableView.indexPathForSelectedRow
             if indexpath != nil {
                 if indexpath!.row < historyEndIndex {
@@ -140,7 +139,7 @@ class MainViewController: UIViewController{
         } else if let productDetailVC = segue.destination as? ProductDetailViewController {
             let indexPath = self.productTableView.indexPathForSelectedRow
             if indexPath != nil {
-                let products = allProductsInstance.allProducts.filter{$0.categories.contains(selectedCategoryName!)}
+                let products = allProductsInstance.allProducts.filter{$0.category.parent!.contains(selectedCategoryName!) || $0.category.name.contains(selectedCategoryName!)}
                 productDetailVC.product = products[indexPath!.row]
             }
         }
@@ -148,7 +147,7 @@ class MainViewController: UIViewController{
     
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
         if identifier == "mainToSearchResultsSegue" {
-            return !(searchBar.searchTextField.text == "")
+            return !(searchTextField?.text == "")
         } else if identifier == "mainToProductDetailSegue" {
              return self.productTableView.indexPathForSelectedRow != nil
         }
@@ -173,7 +172,7 @@ extension MainViewController:UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //return 10
         if tableView == productTableView {
-            return allProductsInstance.allProducts.filter{$0.categories.contains(selectedCategoryName!)}.count
+            return allProductsInstance.allProducts.filter{($0.category.parent?.contains(selectedCategoryName!))! || $0.category.name.contains(selectedCategoryName!)}.count
         }
         if tableView == searchHistoryTableView {
             return searchResults.count
@@ -185,7 +184,7 @@ extension MainViewController:UITableViewDelegate,UITableViewDataSource {
         if tableView == productTableView {
             let cell = productTableView.dequeueReusableCell(withIdentifier: "ReusableProdcutCell", for: indexPath) as! ProductCell
             //let filteredProducts:[Product] = products.filter { $0.category == selectedCategoryName }
-            let filteredProducts:[ProductData] = allProductsInstance.allProducts.filter{$0.categories.contains(selectedCategoryName!)}
+            let filteredProducts:[ProductData] = allProductsInstance.allProducts.filter{($0.category.parent?.contains(selectedCategoryName!))! || $0.category.name.contains(selectedCategoryName!)}
             let product = filteredProducts[indexPath.row]
             cell.productNameLabel.text = product.name
             cell.productNameLabel.font = UIFont.systemFont(ofSize: 15, weight: .black)
@@ -228,12 +227,12 @@ extension MainViewController:UITableViewDelegate,UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView == searchHistoryTableView {
-            searchBar.searchTextField.text = searchResults[indexPath.row]
+            searchTextField?.text = searchResults[indexPath.row]
             searchBar.text = searchResults[indexPath.row]
             performSegue(withIdentifier: "mainToSearchResultsSegue", sender: nil)
             print("f")
         } else {
-            let filteredProducts:[ProductData] = allProductsInstance.allProducts.filter{$0.categories.contains(selectedCategoryName!)}
+            let filteredProducts:[ProductData] = allProductsInstance.allProducts.filter{($0.category.parent?.contains(selectedCategoryName!))! || $0.category.name.contains(selectedCategoryName!)}
             let product = filteredProducts[indexPath.row]
             print(product.name)
             performSegue(withIdentifier: "mainToProductDetailSegue", sender: nil)
@@ -377,9 +376,9 @@ extension MainViewController: UISearchBarDelegate, UISearchControllerDelegate {
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        if searchBar.searchTextField.text != "" {
+        if searchTextField?.text != "" {
             let brands = allProductsInstance.allProducts.map{$0.brand}
-            if !searchHistory.contains(searchBar.searchTextField.text!) &&  !categories.contains(searchBar.searchTextField.text!) && !brands.contains(searchBar.searchTextField.text!){
+            if !searchHistory.contains(searchTextField!.text!) &&  !categories.contains(searchTextField!.text!) && !brands.contains(searchTextField!.text!){
                 searchHistory.append(searchBar.text!)
             }
             UserDefaults.standard.set(searchHistory, forKey: K.searchHistoryKey)
