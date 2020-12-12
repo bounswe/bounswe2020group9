@@ -120,9 +120,11 @@ struct APIManager {
         do {
             let request = try ApiRouter.deleteList(customer: customer, id: id).asURLRequest()
             AF.request(request).responseJSON { (response) in
-                if (response.response?.statusCode != nil){
+                if response.response?.statusCode == 204 {
+                    completionHandler(.success("success"))
+                }
+                else if (response.response?.statusCode != nil){
                     guard let safeData = response.data else  {
-                        print("hey")
                         completionHandler(.failure(response.error!))
                         return
                     }

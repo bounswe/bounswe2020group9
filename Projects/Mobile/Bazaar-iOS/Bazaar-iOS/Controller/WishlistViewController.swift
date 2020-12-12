@@ -32,6 +32,11 @@ class WishlistViewController: UIViewController {
         */
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        self.customerListsInstance.fetchCustomerLists()
+        listsTableView.reloadData()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         listsTableView.dataSource = self
@@ -43,46 +48,67 @@ class WishlistViewController: UIViewController {
             self.customerListsInstance.fetchCustomerLists()
         }
         self.view.bringSubviewToFront(listsTableView)
+        listsTableView.reloadData()
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+            dismiss(animated: true, completion: nil)
+        //segue after add list !!
+        if let listDetailVC = segue.destination as? ListDetailViewController {
+            let indexPath = self.listsTableView.indexPathForSelectedRow
+            if indexPath != nil {
+                listDetailVC.list = customerListsInstance.customerLists[indexPath!.row]
+            }
+        }
+    }
     
+    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+        if identifier == "listsToListDetailSegue" {
+             return self.listsTableView.indexPathForSelectedRow != nil
+        }
+        return false
+    }
+    
+    @IBAction func didAddListButtonPressed(_ sender: Any) {
+        performSegue(withIdentifier: "toAddListSegue", sender: sender)
+    }
     
 }
 
-extension WishlistViewController: UIScrollViewDelegate {
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y != 0 {
-            scrollView.contentOffset.y = 0
-        }
-    }
-}
 
 extension WishlistViewController:UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return CustomerLists.shared.customerLists.count
+        return self.customerListsInstance.customerLists.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let list = CustomerLists.shared.customerLists[indexPath.row]
+        let list = self.customerListsInstance.customerLists[indexPath.row]
         let cell = listsTableView.dequeueReusableCell(withIdentifier: "ReusableListCell", for: indexPath) as! ListCell
         
         cell.listNameLabel.text = list.name
         
-        for i in list.products {
-            let theImageView = UIImageView()
-            theImageView.translatesAutoresizingMaskIntoConstraints = false
-            if let img = UIImage(named: i.picture ?? "") {
-                theImageView.image = img
+        if cell.productImagesStack.subviews.isEmpty {
+            for i in list.products {
+                if let url = i.picture {
+                    do{
+                        let theImageView = UIImageView()
+                        theImageView.translatesAutoresizingMaskIntoConstraints = false
+                        try theImageView.loadImageUsingCache(withUrl: url)
+                        print(list.name + "has product with picture " + url)
+                        theImageView.frame = CGRect(x: 0, y: 0, width: cell.productImagesStack.frame.height, height: cell.productImagesStack.frame.height)
+                        theImageView.translatesAutoresizingMaskIntoConstraints = false
+                        let marginguide = cell.contentView.layoutMarginsGuide
+                        theImageView.heightAnchor.constraint(equalToConstant: marginguide.layoutFrame.height).isActive = true
+                        theImageView.widthAnchor.constraint(equalToConstant: marginguide.layoutFrame.height).isActive = true
+                        theImageView.contentMode = .scaleAspectFit
+                        theImageView.layer.cornerRadius = 20 //half of your width or height
+                        
+                        cell.productImagesStack.addArrangedSubview(theImageView)
+                    } catch let error {
+                        print(error)
+                    }
+                }
             }
-            theImageView.frame = CGRect(x: 0, y: 0, width: cell.productImagesStack.frame.height, height: cell.productImagesStack.frame.height)
-            theImageView.translatesAutoresizingMaskIntoConstraints = false
-            let marginguide = cell.contentView.layoutMarginsGuide
-            theImageView.heightAnchor.constraint(equalToConstant: marginguide.layoutFrame.height).isActive = true
-            theImageView.widthAnchor.constraint(equalToConstant: marginguide.layoutFrame.height).isActive = true
-            theImageView.contentMode = .scaleAspectFit
-            theImageView.layer.cornerRadius = 20 //half of your width or height
-            
-            cell.productImagesStack.addArrangedSubview(theImageView)
         }
         return cell
     }
@@ -93,7 +119,7 @@ extension WishlistViewController:UITableViewDelegate,UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //performSegue(withIdentifier: "listsToListDetailSegue", sender: nil)
+        performSegue(withIdentifier: "listsToListDetailSegue", sender: nil)
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
