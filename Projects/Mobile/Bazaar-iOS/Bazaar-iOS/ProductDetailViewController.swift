@@ -47,6 +47,7 @@ class ProductDetailViewController: UIViewController {
         vendorBackgroundView.layer.borderWidth = 2
         vendorBackgroundView.layer.cornerRadius = 20
         vendorBackgroundView.layer.borderColor = #colorLiteral(red: 1, green: 0.6431372549, blue: 0.3568627451, alpha: 1)
+        self.navigationController?.navigationBar.backItem?.title = ""
     }
     
     override func viewDidLoad() {

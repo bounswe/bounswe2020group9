@@ -84,15 +84,21 @@ class SearchResultsViewController: UIViewController {
     
     
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
+        if let productDetailVC = segue.destination as? ProductDetailViewController {
+            let indexPath =  self.searchResultsTableView.indexPathForSelectedRow
+            if indexPath != nil {
+                productDetailVC.product = products[indexPath!.row]
+            }
+        }
     }
-    */
+    
 
 }
 
@@ -110,15 +116,26 @@ extension SearchResultsViewController: UITableViewDelegate, UITableViewDataSourc
         cell.productDescriptionLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
         cell.productPriceLabel.text = String(product.price)
         cell.productPriceLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
-        cell.productImageView.image = UIImage(named: "iphone12")
+        //cell.productImageView.image = UIImage(named: "iphone12")
+        if let url = product.picture {
+            do{
+                try cell.productImageView.loadImageUsingCache(withUrl: url)
+            } catch let error {
+                print(error)
+                cell.productImageView.image = UIImage(named:"xmark.circle")
+                cell.productImageView.tintColor = UIColor.lightGray
+            }
+        } else {
+            cell.productImageView.image = UIImage(named:"xmark.circle")
+            cell.productImageView.tintColor = UIColor.lightGray
+            cell.productImageView.contentMode = .center
+        }
         return cell
     }
     
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
-        let product = products[indexPath.row]
-            print(product.name)
-        
+        performSegue(withIdentifier: "searchResultsToProductDetailSegue", sender: nil)
     }
     
     
