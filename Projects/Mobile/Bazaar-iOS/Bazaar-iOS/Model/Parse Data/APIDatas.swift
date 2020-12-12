@@ -23,19 +23,25 @@ struct AuthData:Codable {
 }
 
 struct ProductData: Codable {
-    let id: Int
+    let id:Int
     let name: String
-    let brand:  String
+    let brand: String
     let labels: [String]
-    let categories: [String]
-    //let subcategory: String
+    let detail: String
+    let category: Category
     let price: Double
     let stock: Int
     let sell_counter: Int
     let rating: Double
     let vendor: Int
     let picture: String?
+    
+struct Category: Codable {
+    let name: String
+    let parent: String?
+  }
 }
+
 //{
 //    "id": 1,
 //    "last_login": "2020-11-23T07:51:49Z",

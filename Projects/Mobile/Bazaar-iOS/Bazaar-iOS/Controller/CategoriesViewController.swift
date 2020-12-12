@@ -34,7 +34,7 @@ class CategoriesViewController: UIViewController {
      let ELECTRONICS = "Electronics"
      let LIVING = "Living"
     
-     var subCategoryDict: [String: [String]] = ["Clothing":["Top", "Bottom", "Outerwear", "Shoes", "Bags", "Accesories", "Activewear"],
+     var subCategoryDict: [String: [String]] = ["Clothing":["Clothing","Top", "Bottom", "Outerwear", "Shoes", "Bags", "Accesories", "Activewear"],
                                                 "Home":["Home Textile", "Kitchen", "Bedroom", "Bathroom", "Furniture", "Lighting", "Other"],
                                                 "Selfcare":["Perfumes", "Makeup", "Skincare", "Hair", "Body Care", "Other"],
                                                 "Electronics":["Smartphone", "Tablet", "Computer", "Photography", "Home Appliances", "TV", "Gaming", "Other"],
@@ -47,12 +47,12 @@ class CategoriesViewController: UIViewController {
      var searchResults:[String] = []
      var historyEndIndex:Int = 0
      var categoriesEndIndex: Int = 0
-     
+    var searchTextField: UITextField?
      
      override func viewWillAppear(_ animated: Bool) {
          searchHistoryTableView.reloadData()
          subCategoriesTableView.reloadData()
-         var searchTextField: UITextField?
+         
          if #available(iOS 13.0, *) {
              searchTextField = searchBar.searchTextField
          } else {
@@ -90,8 +90,9 @@ class CategoriesViewController: UIViewController {
          })
          networkFailedAlert.addAction(okButton)
          selectedCategoryName = CLOTHING
-        subCategoriesTableView.register(SubCategoryCell.self, forCellReuseIdentifier: "SubCategoryCell")
-         searchHistoryTableView.register(SearchHistoryTableViewCell.self, forCellReuseIdentifier: "searchHistoryCell")
+        // subCategoriesTableView.register(SubCategoryCell.self, forCellReuseIdentifier: "SubCategoryCell")
+         // searchHistoryTableView.register(SearchHistoryTableViewCell.self, forCellReuseIdentifier: "searchHistoryCell")
+        subCategoriesTableView.register(UINib(nibName: "SubCategoryCell", bundle: nil), forCellReuseIdentifier: "SubCategoryCell")
          if !(allProductsInstance.dataFetched) {
              print("here")
              self.searchBar.resignFirstResponder()
@@ -149,9 +150,14 @@ class CategoriesViewController: UIViewController {
         } else if segue.identifier=="categoriesToResultsSegue" {
             
             let searchResultsVC = segue.destination as! SearchResultsViewController
-            searchResultsVC.searchWord = selectedCategoryName
             let indexpath = subCategoriesTableView.indexPathForSelectedRow
             if indexpath != nil {
+                let subCategories=subCategoryDict[selectedCategoryName!]!
+                //print(indexPath.row)
+                
+                // look here ***************
+                //cell.nameLabel?.text = subCategories[indexPath.row]
+                searchResultsVC.searchWord = subCategories[indexpath!.row]
                 searchResultsVC.isSearchWord = false
                 searchResultsVC.isBrand = false
                 searchResultsVC.isCategory = true
