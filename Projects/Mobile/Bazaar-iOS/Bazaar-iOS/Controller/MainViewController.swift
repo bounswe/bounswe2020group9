@@ -26,14 +26,14 @@ class MainViewController: UIViewController{
             categorySelected()
         }
     }
-        
+    
     let CLOTHING = "Clothing"
     let HOME = "Home"
     let BEAUTY = "Beauty"
     let ELECTRONICS = "Electronics"
     let LIVING = "Living"
     
-    let categories = ["Clothing", "Home", "Selfcare", "Electronics", "Living"]
+    let categories = ["Categories","Clothing", "Home", "Selfcare", "Electronics", "Living"]
     var products: [Product] = []
     let categoriesReuseIdentifier = "CategoriesCollectionViewCell"
     var networkFailedAlert:UIAlertController = UIAlertController(title: "Error while retrieving products", message: "We encountered a problem while retrieving the products, please check your internet connection.", preferredStyle: .alert)
@@ -140,7 +140,7 @@ class MainViewController: UIViewController{
         } else if let productDetailVC = segue.destination as? ProductDetailViewController {
             let indexPath = self.productTableView.indexPathForSelectedRow
             if indexPath != nil {
-                let products = allProductsInstance.allProducts.filter{$0.categories.contains(selectedCategoryName!)}
+                let products = allProductsInstance.allProducts.filter{$0.category.name.contains(selectedCategoryName!)}
                 productDetailVC.product = products[indexPath!.row]
             }
         }
@@ -173,7 +173,7 @@ extension MainViewController:UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //return 10
         if tableView == productTableView {
-            return allProductsInstance.allProducts.filter{$0.categories.contains(selectedCategoryName!)}.count
+            return allProductsInstance.allProducts.filter{$0.category.name.contains(selectedCategoryName!)}.count
         }
         if tableView == searchHistoryTableView {
             return searchResults.count
@@ -185,7 +185,7 @@ extension MainViewController:UITableViewDelegate,UITableViewDataSource {
         if tableView == productTableView {
             let cell = productTableView.dequeueReusableCell(withIdentifier: "ReusableProdcutCell", for: indexPath) as! ProductCell
             //let filteredProducts:[Product] = products.filter { $0.category == selectedCategoryName }
-            let filteredProducts:[ProductData] = allProductsInstance.allProducts.filter{$0.categories.contains(selectedCategoryName!)}
+            let filteredProducts:[ProductData] = allProductsInstance.allProducts.filter{$0.category.name.contains(selectedCategoryName!)}
             let product = filteredProducts[indexPath.row]
             cell.productNameLabel.text = product.name
             cell.productNameLabel.font = UIFont.systemFont(ofSize: 15, weight: .black)
@@ -233,7 +233,7 @@ extension MainViewController:UITableViewDelegate,UITableViewDataSource {
             performSegue(withIdentifier: "mainToSearchResultsSegue", sender: nil)
             print("f")
         } else {
-            let filteredProducts:[ProductData] = allProductsInstance.allProducts.filter{$0.categories.contains(selectedCategoryName!)}
+            let filteredProducts:[ProductData] = allProductsInstance.allProducts.filter{$0.category.name.contains(selectedCategoryName!)}
             let product = filteredProducts[indexPath.row]
             print(product.name)
             performSegue(withIdentifier: "mainToProductDetailSegue", sender: nil)
