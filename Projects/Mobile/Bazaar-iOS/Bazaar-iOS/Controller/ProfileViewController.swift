@@ -11,7 +11,6 @@ import GoogleSignIn
 class ProfileViewController: UIViewController{
     
     @IBOutlet weak var userEmailLabel: UILabel!
-
     @IBOutlet var menuView: UIView!
     
     override func viewDidLoad() {
@@ -57,16 +56,12 @@ class ProfileViewController: UIViewController{
 
 //MARK: - Extension LoginViewControllerDelegate
 extension ProfileViewController: LoginViewControllerDelegate{
-    func loginViewControllerDidPressSignUp(isPressed: Bool) {
-        if isPressed {
-            performSegue(withIdentifier:"ProfileToSignUpSegue" , sender: nil)
-        }
+    func loginViewControllerDidPressSignUp() {
+        performSegue(withIdentifier:"ProfileToSignUpSegue" , sender: nil)
     }
     
-    func loginViewControllerDidPressContinueAsGuest(isPressed: Bool) {
-        if isPressed {
-            self.tabBarController?.selectedViewController = self.tabBarController?.children[0]
-        }
+    func loginViewControllerDidPressContinueAsGuest() {
+        self.tabBarController?.selectedViewController = self.tabBarController?.children[0]
     }
 }
 //MARK: - Extension SignUpViewControllerDelegate

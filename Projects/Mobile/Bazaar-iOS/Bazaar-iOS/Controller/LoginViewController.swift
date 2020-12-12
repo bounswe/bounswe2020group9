@@ -9,8 +9,8 @@ import UIKit
 import GoogleSignIn
 
 protocol LoginViewControllerDelegate {
-    func loginViewControllerDidPressSignUp(isPressed:Bool)
-    func loginViewControllerDidPressContinueAsGuest(isPressed:Bool)
+    func loginViewControllerDidPressSignUp()
+    func loginViewControllerDidPressContinueAsGuest()
 }
 
 class LoginViewController: UIViewController {
@@ -46,8 +46,13 @@ class LoginViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        delegate?.loginViewControllerDidPressSignUp(isPressed: isSignUpPressed)
-        delegate?.loginViewControllerDidPressContinueAsGuest(isPressed: isContinueAsGuestPressed)
+        if isSignUpPressed {
+            delegate?.loginViewControllerDidPressSignUp()
+        }
+        if isContinueAsGuestPressed{
+            delegate?.loginViewControllerDidPressContinueAsGuest()
+        }
+        
     }
     
     @IBAction func signUpButtonPressed(_ sender: UIButton) {
