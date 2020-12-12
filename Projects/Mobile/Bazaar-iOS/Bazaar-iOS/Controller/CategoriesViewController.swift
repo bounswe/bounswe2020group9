@@ -78,6 +78,7 @@ class CategoriesViewController: UIViewController {
          self.categoryCollectionView.delegate = self
          allProductsInstance.delegate = self
          searchHistoryTableView.isHidden = true
+         // subCategoriesTableView.isHidden = false
          self.view.sendSubviewToBack(searchHistoryTableView)
          self.view.sendSubviewToBack(searchHistoryTableView)
          categoryCollectionView.register(CategoryCollectionViewCell.self, forCellWithReuseIdentifier:  "CategoryCollectionViewCell")
@@ -89,7 +90,7 @@ class CategoriesViewController: UIViewController {
          })
          networkFailedAlert.addAction(okButton)
          selectedCategoryName = CLOTHING
-        subCategoriesTableView.register(SubCategoryCell.self, forCellReuseIdentifier: "ReusableSubCategoryCell")
+        subCategoriesTableView.register(SubCategoryCell.self, forCellReuseIdentifier: "SubCategoryCell")
          searchHistoryTableView.register(SearchHistoryTableViewCell.self, forCellReuseIdentifier: "searchHistoryCell")
          if !(allProductsInstance.dataFetched) {
              print("here")
@@ -200,10 +201,12 @@ class CategoriesViewController: UIViewController {
      func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
          if tableView == subCategoriesTableView {
-            let cell = subCategoriesTableView.dequeueReusableCell(withIdentifier: "ReusableSubCategoryCell", for: indexPath) as! SubCategoryCell
+            let cell = subCategoriesTableView.dequeueReusableCell(withIdentifier: "SubCategoryCell", for: indexPath) as! SubCategoryCell
             let subCategories=subCategoryDict[selectedCategoryName!]!
-            print(indexPath.row)
-            cell.nameLabel.text = subCategories[indexPath.row]
+            //print(indexPath.row)
+            
+            // look here ***************
+            cell.nameLabel?.text = subCategories[indexPath.row]
             
             
             
@@ -264,7 +267,7 @@ class CategoriesViewController: UIViewController {
          } else {
             let subCategories=subCategoryDict[selectedCategoryName!]!
             searchBar.searchTextField.text = subCategories[indexPath.row]
-            searchBar.text = searchResults[indexPath.row]
+            //searchBar.text = searchResults[indexPath.row]
             performSegue(withIdentifier: "categoriesToResultsSegue", sender: nil)
             //   *******  TODO check again *****************
             
