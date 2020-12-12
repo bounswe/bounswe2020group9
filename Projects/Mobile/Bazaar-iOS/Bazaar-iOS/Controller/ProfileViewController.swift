@@ -17,7 +17,7 @@ class ProfileViewController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.setNavigationBarHidden(true, animated: false)
-        menuView.layer.borderColor = #colorLiteral(red: 1, green: 0.621653378, blue: 0, alpha: 1)
+        menuView.layer.borderColor = #colorLiteral(red: 1, green: 0.6235294118, blue: 0, alpha: 1)
     }
     
     override func viewWillAppear(_ animated: Bool) {
