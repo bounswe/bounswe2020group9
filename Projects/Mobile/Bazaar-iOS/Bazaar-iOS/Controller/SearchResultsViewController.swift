@@ -76,7 +76,7 @@ class SearchResultsViewController: UIViewController {
        if (isSearchWord) {
         products = allProductsInstance.allProducts.filter{$0.brand.contains(searchWord) || $0.name.contains(searchWord)}
        } else if (isCategory) {
-        products = allProductsInstance.allProducts.filter{$0.category.name.contains(searchWord)}
+        products = allProductsInstance.allProducts.filter{$0.category.parent!.contains(searchWord!) || $0.category.name.contains(searchWord!)}
        } else {
         products = allProductsInstance.allProducts.filter{$0.brand.contains(searchWord)}
        }

@@ -47,7 +47,6 @@ class ProductDetailViewController: UIViewController {
         vendorBackgroundView.layer.borderWidth = 2
         vendorBackgroundView.layer.cornerRadius = 20
         vendorBackgroundView.layer.borderColor = #colorLiteral(red: 1, green: 0.6431372549, blue: 0.3568627451, alpha: 1)
-        
     }
     
     override func viewDidLoad() {
@@ -71,7 +70,7 @@ class ProductDetailViewController: UIViewController {
         priceLabel.text = "₺" + String(product.price)
         if let url = product.picture {
             do{
-                try productImageView.loadImageUsingCache(withUrl: product.picture!)
+                try productImageView.loadImageUsingCache(withUrl: product.picture ?? "")
             } catch let error {
                 print(error)
                 productImageView.image = UIImage(named:"xmark.circle")

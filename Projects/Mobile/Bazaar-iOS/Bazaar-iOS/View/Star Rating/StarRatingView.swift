@@ -49,9 +49,9 @@ class StarRatingView: UIView {
     
     fileprivate var hstack: StarRatingStackView?
 
-    fileprivate let fullStarImage: UIImage = UIImage(named: "star.fill")!
-    fileprivate let halfStarImage: UIImage = UIImage(named: "star.leadinghalf.fill")!
-    fileprivate let emptyStarImage: UIImage = UIImage(named: "star")!
+    fileprivate let fullStarImage: UIImage = UIImage(named: "star.fill") ?? UIImage(named: "star.fill.old")!
+    fileprivate let halfStarImage: UIImage = UIImage(named: "star.leadinghalf.fill") ?? UIImage(named: "star.half.old")!
+    fileprivate let emptyStarImage: UIImage = UIImage(named: "star") ?? UIImage(named: "star.empty.old")!
 
     
     convenience init(frame: CGRect, rating: Float, color: UIColor, starRounding: StarRounding) {
