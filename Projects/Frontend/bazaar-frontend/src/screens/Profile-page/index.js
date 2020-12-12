@@ -37,7 +37,7 @@ export default class ProfilePage extends Component {
 
       handleValidation(){
         let formIsValid = true;
-        let new_errors = {newpw: '', confpw: '', currpw: ''};
+        let new_errors = {};
         //Name
         if(this.state.newpw.length !== 0 && this.state.newpw.length < 8){
           formIsValid = false;
@@ -96,6 +96,7 @@ export default class ProfilePage extends Component {
         let myCookie = read_cookie('user')
         axios.get(`http://13.59.236.175:8000/api/user/${myCookie.user_id}/`)
           .then(res => {
+              console.log(res.data)
               this.setState({fname : res.data.first_name})
               this.setState({lname : res.data.last_name})
               
@@ -159,7 +160,7 @@ export default class ProfilePage extends Component {
                                   <div className="col">
                                     <input type="password" name="newpw" className="form-control col" placeholder="New password" 
                                     onChange={this.handleChange}/>
-                                    <div style={{color: "red"}}>{this.state.errors["newpw"]}</div>
+                                    <div className="error">{this.state.errors["newpw"]}</div>
                                   </div>
                               </div>
                               <div className="form-group row">
@@ -167,7 +168,7 @@ export default class ProfilePage extends Component {
                                   <div className="col">
                                     <input type="password" name="confpw" className="form-control col" placeholder="New password(again)" 
                                     onChange={this.handleChange}/>
-                                    <div style={{color: "red"}}>{this.state.errors["confpw"]}</div>
+                                    <div className="error">{this.state.errors["confpw"]}</div>
 
                                   </div>
                               </div>

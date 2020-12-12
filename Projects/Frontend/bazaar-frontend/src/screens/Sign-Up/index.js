@@ -40,12 +40,18 @@ export default class SignUp extends Component {
           new_errors["username"] = "Please give a valid email.";      
         }
 
+        if(this.state.utype === ''){
+          formIsValid = false;
+          new_errors["utype"] = "Please select user type.";      
+        }
+
         this.setState({errors: new_errors});
         return formIsValid;
       }
     
       handleChange = event => {
         this.setState({ [event.target.name]: event.target.value });
+        console.log(this.state.utype)
       }
 
       handleSubmit = event => {
@@ -106,25 +112,29 @@ export default class SignUp extends Component {
 
                     <div className="form-group">
                         <label>Password</label>
-                        <input type="text" name="password" className="form-control" placeholder="Enter password"  
+                        <input type="password" name="password" className="form-control" placeholder="Enter password"  
                         onChange={this.handleChange}/>
                         <div className="error">{this.state.errors["password"]}</div>
                     </div>
                     
                     <div className="form-group row">
                         <label className="col-6 align-middle">User type</label>
-                            <div className="form-check form-check-inline">
-                                <input className="form-check-input align-middle" type="radio" name="utype" id="gridRadios1" value="Customer" checked></input>
-                                <label className="form-check-label" for="gridRadios1">
-                                    Customer
-                                </label>
-                            </div>
-                            <div className="form-check form-check-inline">
-                                <input className="form-check-input align-middle" type="radio" name="utype" id="gridRadios2" value="Vendor"></input>
-                                <label className="form-check-label" for="gridRadios2">
-                                    Vendor
-                                </label>
-                            </div>
+                        <div className="form-check form-check-inline">
+                            <input className="form-check-input align-middle" type="radio" name="utype" id="gridRadios1" value="Customer" 
+                            onClick={this.handleChange} defaultChecked></input>
+                            <label className="form-check-label" for="gridRadios1">
+                                Customer
+                            </label>
+                        </div>
+                        <div className="form-check form-check-inline">
+                            <input className="form-check-input align-middle" type="radio" name="utype" id="gridRadios2" value="Vendor"
+                            onClick={this.handleChange}></input>
+                            <label className="form-check-label" for="gridRadios2">
+                                Vendor
+                            </label>
+                        </div>
+                        <div className="error">{this.state.errors["utype"]}</div>
+                        
                         
                     </div>
 

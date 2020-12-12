@@ -10,6 +10,10 @@ import SignUp from "./screens/Sign-Up"
 import Home from "./screens/Home"
 import ForgotPassword from "./screens/Sign-In/forgot-password"
 import MyList from "./screens/MyList/MyList"
+import AddProduct from "./screens/Add-Product/addproduct"
+import Inventory from "./screens/Inventory/inventory"
+
+
 
 //components
 import Header from "./components/Header"
@@ -44,6 +48,14 @@ function App() {
         <Route path="/my-list">
           <Header />
           <MyList />
+        </Route>
+        <Route path="/add-product">
+          <Header />
+          <AddProduct />
+        </Route>
+        <Route path="/inventory">
+          <Header />
+          <Inventory />
         </Route>
       </Switch>
 

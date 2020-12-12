@@ -16,6 +16,8 @@ import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons'
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
+import { faWarehouse } from '@fortawesome/free-solid-svg-icons'
+
 
 import bazaarIMG from '../../assets/bazaar-4.png'
 
@@ -28,7 +30,8 @@ class Header extends Component {
     super(props)
 
     this.state = {
-      isSignedIn: false
+      isSignedIn: false,
+      user_type: 0
     }
 
   }
@@ -47,6 +50,7 @@ class Header extends Component {
     }
     else {
       this.setState({ isSignedIn: true })
+      this.setState({ user_type: myCookie.user_type})
     }
   }
 
@@ -56,6 +60,16 @@ class Header extends Component {
 
     if (Object.keys(read_cookie('user')).length !== 0) {
       SignPart = <ul className="navbar-nav navbar-right">
+        <li className="nav-item dropdown">
+          <a className="nav-link dropdown-toggle" href="#" id="ddlInventory" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <FontAwesomeIcon icon={faWarehouse} />
+            <span className="mr-1"></span>Inventory
+          </a>
+          <div className="dropdown-menu" aria-labelledby="ddlProfile">
+            <a className="dropdown-item" href="/inventory">My Products</a>
+            <a className="dropdown-item" href="/add-product">Add Product</a>
+          </div>
+        </li>
         <li className="nav-item dropdown">
           <a className="nav-link dropdown-toggle" href="#" id="ddlProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <FontAwesomeIcon icon={faUser} />

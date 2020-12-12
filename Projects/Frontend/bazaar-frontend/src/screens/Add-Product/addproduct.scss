@@ -1,0 +1,16 @@
+
+.form-group {
+    & label {
+        text-align: right;
+        font-size: 100%;
+        font-weight: 500;
+    }
+
+    & select {
+        background-color: #f6f6f6;
+    }
+
+    & .error {
+        color: red;
+    }
+}

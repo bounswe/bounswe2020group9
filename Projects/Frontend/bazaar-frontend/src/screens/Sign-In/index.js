@@ -13,7 +13,8 @@ export default class SignIn extends Component {
     this.state = {
       username: '',
       password: '',
-      redirect: null,
+      user_type: 4,
+      redirect: null
     }
   }
 
@@ -33,9 +34,10 @@ export default class SignIn extends Component {
 
     axios.post(`http://13.59.236.175:8000/api/user/login/`, { "username": this.state.username, "password": this.state.password })
       .then(res => {
-
+        
         const cookie_key = 'user';
-        bake_cookie(cookie_key, res.data);
+        const cookie_data = res.data;
+        bake_cookie(cookie_key, cookie_data);
 
         console.log(res);
         console.log(res.data);
