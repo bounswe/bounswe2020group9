@@ -11,6 +11,7 @@
 		6929E5F6257FD4FE008F32D3 /* StarRatingStackView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6929E5F3257FD4FD008F32D3 /* StarRatingStackView.xib */; };
 		6929E5F7257FD4FE008F32D3 /* StarRatingStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6929E5F4257FD4FD008F32D3 /* StarRatingStackView.swift */; };
 		6929E5F8257FD4FE008F32D3 /* StarRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6929E5F5257FD4FE008F32D3 /* StarRatingView.swift */; };
+		672B838DC4092779EF8A1059 /* Pods_Bazaar_iOSTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFCE404E29F7D49B363A2C8E /* Pods_Bazaar_iOSTests.framework */; };
 		6949C910257D8F5B00175AC5 /* SearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6949C90F257D8F5B00175AC5 /* SearchResultsViewController.swift */; };
 		6994EACD255DA3D400AC48F6 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6994EACB255DA3D400AC48F6 /* MainTabBarController.swift */; };
 		6994EACE255DA3D400AC48F6 /* MainTabBarController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6994EACC255DA3D400AC48F6 /* MainTabBarController.xib */; };
@@ -27,6 +28,7 @@
 		938A1552256AD19100572844 /* CategoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938A1550256AD19100572844 /* CategoryCollectionViewCell.swift */; };
 		938A1553256AD19100572844 /* CategoryCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 938A1551256AD19100572844 /* CategoryCollectionViewCell.xib */; };
 		939AB4F825694B76007815C8 /* StringHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939AB4F725694B76007815C8 /* StringHelper.swift */; };
+		93C2D069257FE419007C5750 /* credentials.plist in Resources */ = {isa = PBXBuildFile; fileRef = 93C2D068257FE419007C5750 /* credentials.plist */; };
 		93E99DD92577E8CD00BCFDAD /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E99DD72577E8CC00BCFDAD /* LoginViewController.swift */; };
 		93E99DDA2577E8CD00BCFDAD /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E99DD82577E8CC00BCFDAD /* SignUpViewController.swift */; };
 		93E99DDF2577E91B00BCFDAD /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E99DDE2577E91B00BCFDAD /* RadioButton.swift */; };
@@ -44,6 +46,8 @@
 		93EE3CDA25594A6800B504DF /* ProductCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EE3CD825594A6800B504DF /* ProductCell.swift */; };
 		93EE3CDB25594A6800B504DF /* ProductCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 93EE3CD925594A6800B504DF /* ProductCell.xib */; };
 		99F3379D256ADD460095105F /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F3379C256ADD460095105F /* ProfileViewController.swift */; };
+		C81F3F53A413BAA1CEC2BE54 /* Pods_Bazaar_iOS_Bazaar_iOSUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CCA62DF56EEA5170A37DD4F /* Pods_Bazaar_iOS_Bazaar_iOSUITests.framework */; };
+		C905631B37795D0BFA6BC1F4 /* Pods_Bazaar_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D147AB84EB93AF832C6CC59A /* Pods_Bazaar_iOS.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +72,8 @@
 		6929E5F3257FD4FD008F32D3 /* StarRatingStackView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StarRatingStackView.xib; sourceTree = "<group>"; };
 		6929E5F4257FD4FD008F32D3 /* StarRatingStackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StarRatingStackView.swift; sourceTree = "<group>"; };
 		6929E5F5257FD4FE008F32D3 /* StarRatingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StarRatingView.swift; sourceTree = "<group>"; };
+		3FA7F490455E3D35641E5D4D /* Pods-Bazaar-iOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bazaar-iOSTests.release.xcconfig"; path = "Target Support Files/Pods-Bazaar-iOSTests/Pods-Bazaar-iOSTests.release.xcconfig"; sourceTree = "<group>"; };
+		6034087162F858F015005C28 /* Pods-Bazaar-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bazaar-iOS.release.xcconfig"; path = "Target Support Files/Pods-Bazaar-iOS/Pods-Bazaar-iOS.release.xcconfig"; sourceTree = "<group>"; };
 		6949C90F257D8F5B00175AC5 /* SearchResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsViewController.swift; sourceTree = "<group>"; };
 		6994EACB255DA3D400AC48F6 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		6994EACC255DA3D400AC48F6 /* MainTabBarController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainTabBarController.xib; sourceTree = "<group>"; };
@@ -75,6 +81,8 @@
 		6994EAD1255DB9F500AC48F6 /* CategoriesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CategoriesViewController.swift; path = "Bazaar-iOS/Controller/CategoriesViewController.swift"; sourceTree = SOURCE_ROOT; };
 		6994EAD5255DBF4A00AC48F6 /* MyCartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MyCartViewController.swift; path = "Bazaar-iOS/Controller/MyCartViewController.swift"; sourceTree = SOURCE_ROOT; };
 		6994EAE12566F8D300AC48F6 /* Product.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Product.swift; sourceTree = "<group>"; };
+		7C5A2609DB6D947357D3EE51 /* Pods-Bazaar-iOS-Bazaar-iOSUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bazaar-iOS-Bazaar-iOSUITests.release.xcconfig"; path = "Target Support Files/Pods-Bazaar-iOS-Bazaar-iOSUITests/Pods-Bazaar-iOS-Bazaar-iOSUITests.release.xcconfig"; sourceTree = "<group>"; };
+		7CCA62DF56EEA5170A37DD4F /* Pods_Bazaar_iOS_Bazaar_iOSUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Bazaar_iOS_Bazaar_iOSUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		930C1F9F256C08E20086E1DC /* URLRequestBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLRequestBuilder.swift; sourceTree = "<group>"; };
 		930C1FA5256C09FC0086E1DC /* ApiRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiRouter.swift; sourceTree = "<group>"; };
 		930C1FAE256C0D9D0086E1DC /* APIDatas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIDatas.swift; sourceTree = "<group>"; };
@@ -83,6 +91,7 @@
 		938A1550256AD19100572844 /* CategoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		938A1551256AD19100572844 /* CategoryCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CategoryCollectionViewCell.xib; sourceTree = "<group>"; };
 		939AB4F725694B76007815C8 /* StringHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringHelper.swift; sourceTree = "<group>"; };
+		93C2D068257FE419007C5750 /* credentials.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = credentials.plist; sourceTree = "<group>"; };
 		93E99DD72577E8CC00BCFDAD /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		93E99DD82577E8CC00BCFDAD /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		93E99DDE2577E91B00BCFDAD /* RadioButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadioButton.swift; sourceTree = "<group>"; };
@@ -106,6 +115,11 @@
 		93EE3CD825594A6800B504DF /* ProductCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCell.swift; sourceTree = "<group>"; };
 		93EE3CD925594A6800B504DF /* ProductCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProductCell.xib; sourceTree = "<group>"; };
 		99F3379C256ADD460095105F /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		A85CF019F70A791D259865C3 /* Pods-Bazaar-iOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bazaar-iOSTests.debug.xcconfig"; path = "Target Support Files/Pods-Bazaar-iOSTests/Pods-Bazaar-iOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		AFCE404E29F7D49B363A2C8E /* Pods_Bazaar_iOSTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Bazaar_iOSTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C2CE009AFB6282C4354EBE10 /* Pods-Bazaar-iOS-Bazaar-iOSUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bazaar-iOS-Bazaar-iOSUITests.debug.xcconfig"; path = "Target Support Files/Pods-Bazaar-iOS-Bazaar-iOSUITests/Pods-Bazaar-iOS-Bazaar-iOSUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		D147AB84EB93AF832C6CC59A /* Pods_Bazaar_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Bazaar_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E1954329F55FC30FDF3065EB /* Pods-Bazaar-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bazaar-iOS.debug.xcconfig"; path = "Target Support Files/Pods-Bazaar-iOS/Pods-Bazaar-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +128,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				930C1FC6256C140B0086E1DC /* Alamofire in Frameworks */,
+				C905631B37795D0BFA6BC1F4 /* Pods_Bazaar_iOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -121,6 +136,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				672B838DC4092779EF8A1059 /* Pods_Bazaar_iOSTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -128,6 +144,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C81F3F53A413BAA1CEC2BE54 /* Pods_Bazaar_iOS_Bazaar_iOSUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -150,6 +167,29 @@
 				6929E5F5257FD4FE008F32D3 /* StarRatingView.swift */,
 			);
 			path = "Star Rating";
+			sourceTree = "<group>";
+		};
+		5CCDE0A3E55F37986CEE8AF9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D147AB84EB93AF832C6CC59A /* Pods_Bazaar_iOS.framework */,
+				7CCA62DF56EEA5170A37DD4F /* Pods_Bazaar_iOS_Bazaar_iOSUITests.framework */,
+				AFCE404E29F7D49B363A2C8E /* Pods_Bazaar_iOSTests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		62E71D7045E70866081EA110 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				E1954329F55FC30FDF3065EB /* Pods-Bazaar-iOS.debug.xcconfig */,
+				6034087162F858F015005C28 /* Pods-Bazaar-iOS.release.xcconfig */,
+				C2CE009AFB6282C4354EBE10 /* Pods-Bazaar-iOS-Bazaar-iOSUITests.debug.xcconfig */,
+				7C5A2609DB6D947357D3EE51 /* Pods-Bazaar-iOS-Bazaar-iOSUITests.release.xcconfig */,
+				A85CF019F70A791D259865C3 /* Pods-Bazaar-iOSTests.debug.xcconfig */,
+				3FA7F490455E3D35641E5D4D /* Pods-Bazaar-iOSTests.release.xcconfig */,
+			);
+			path = Pods;
 			sourceTree = "<group>";
 		};
 		6994EAC9255DA38000AC48F6 /* Main Tab Bar */ = {
@@ -232,6 +272,8 @@
 				93EE3CBB2558822700B504DF /* Bazaar-iOSTests */,
 				93EE3CC62558822700B504DF /* Bazaar-iOSUITests */,
 				93EE3CA02558822500B504DF /* Products */,
+				62E71D7045E70866081EA110 /* Pods */,
+				5CCDE0A3E55F37986CEE8AF9 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -258,6 +300,7 @@
 				93EE3CA82558822500B504DF /* Main.storyboard */,
 				93EE3CAE2558822700B504DF /* Assets.xcassets */,
 				93EE3CB02558822700B504DF /* LaunchScreen.storyboard */,
+				93C2D068257FE419007C5750 /* credentials.plist */,
 				93EE3CB32558822700B504DF /* Info.plist */,
 				93EE3CAB2558822500B504DF /* Bazaar_iOS.xcdatamodeld */,
 			);
@@ -317,9 +360,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 93EE3CCC2558822700B504DF /* Build configuration list for PBXNativeTarget "Bazaar-iOS" */;
 			buildPhases = (
+				E4BA753D8561C20437E5DCD8 /* [CP] Check Pods Manifest.lock */,
 				93EE3C9B2558822500B504DF /* Sources */,
 				93EE3C9C2558822500B504DF /* Frameworks */,
 				93EE3C9D2558822500B504DF /* Resources */,
+				6EDC16AB10CAC126FCAEB19E /* [CP] Embed Pods Frameworks */,
+				C7577933BB3104E7CD0470E2 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -337,6 +383,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 93EE3CCF2558822700B504DF /* Build configuration list for PBXNativeTarget "Bazaar-iOSTests" */;
 			buildPhases = (
+				592575AEDD5D75B86DDFD6EB /* [CP] Check Pods Manifest.lock */,
 				93EE3CB42558822700B504DF /* Sources */,
 				93EE3CB52558822700B504DF /* Frameworks */,
 				93EE3CB62558822700B504DF /* Resources */,
@@ -355,9 +402,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 93EE3CD22558822700B504DF /* Build configuration list for PBXNativeTarget "Bazaar-iOSUITests" */;
 			buildPhases = (
+				728871AE6B373247EB0219D4 /* [CP] Check Pods Manifest.lock */,
 				93EE3CBF2558822700B504DF /* Sources */,
 				93EE3CC02558822700B504DF /* Frameworks */,
 				93EE3CC12558822700B504DF /* Resources */,
+				1C839E2A7651B380D1C29DCA /* [CP] Embed Pods Frameworks */,
+				A523CF816381A38234BB0346 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -425,6 +475,7 @@
 				93EE3CAF2558822700B504DF /* Assets.xcassets in Resources */,
 				93EE3CAA2558822500B504DF /* Main.storyboard in Resources */,
 				6929E5F6257FD4FE008F32D3 /* StarRatingStackView.xib in Resources */,
+				93C2D069257FE419007C5750 /* credentials.plist in Resources */,
 				6994EACE255DA3D400AC48F6 /* MainTabBarController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -444,6 +495,143 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		1C839E2A7651B380D1C29DCA /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Bazaar-iOS-Bazaar-iOSUITests/Pods-Bazaar-iOS-Bazaar-iOSUITests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Bazaar-iOS-Bazaar-iOSUITests/Pods-Bazaar-iOS-Bazaar-iOSUITests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Bazaar-iOS-Bazaar-iOSUITests/Pods-Bazaar-iOS-Bazaar-iOSUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		592575AEDD5D75B86DDFD6EB /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Bazaar-iOSTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6EDC16AB10CAC126FCAEB19E /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Bazaar-iOS/Pods-Bazaar-iOS-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Bazaar-iOS/Pods-Bazaar-iOS-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Bazaar-iOS/Pods-Bazaar-iOS-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		728871AE6B373247EB0219D4 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Bazaar-iOS-Bazaar-iOSUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A523CF816381A38234BB0346 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Bazaar-iOS-Bazaar-iOSUITests/Pods-Bazaar-iOS-Bazaar-iOSUITests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Bazaar-iOS-Bazaar-iOSUITests/Pods-Bazaar-iOS-Bazaar-iOSUITests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Bazaar-iOS-Bazaar-iOSUITests/Pods-Bazaar-iOS-Bazaar-iOSUITests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C7577933BB3104E7CD0470E2 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Bazaar-iOS/Pods-Bazaar-iOS-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Bazaar-iOS/Pods-Bazaar-iOS-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Bazaar-iOS/Pods-Bazaar-iOS-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E4BA753D8561C20437E5DCD8 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Bazaar-iOS-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		93EE3C9B2558822500B504DF /* Sources */ = {
@@ -649,6 +837,7 @@
 		};
 		93EE3CCD2558822700B504DF /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E1954329F55FC30FDF3065EB /* Pods-Bazaar-iOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -669,6 +858,7 @@
 		};
 		93EE3CCE2558822700B504DF /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6034087162F858F015005C28 /* Pods-Bazaar-iOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -689,6 +879,7 @@
 		};
 		93EE3CD02558822700B504DF /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A85CF019F70A791D259865C3 /* Pods-Bazaar-iOSTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -711,6 +902,7 @@
 		};
 		93EE3CD12558822700B504DF /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3FA7F490455E3D35641E5D4D /* Pods-Bazaar-iOSTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -733,6 +925,7 @@
 		};
 		93EE3CD32558822700B504DF /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C2CE009AFB6282C4354EBE10 /* Pods-Bazaar-iOS-Bazaar-iOSUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -753,6 +946,7 @@
 		};
 		93EE3CD42558822700B504DF /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7C5A2609DB6D947357D3EE51 /* Pods-Bazaar-iOS-Bazaar-iOSUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
