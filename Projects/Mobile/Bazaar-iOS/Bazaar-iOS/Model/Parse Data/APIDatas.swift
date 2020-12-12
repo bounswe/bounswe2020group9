@@ -19,8 +19,9 @@ struct LoginData : Codable{
 struct AuthData:Codable {
     let token:String
     let user_id:Int
-    let email:String
+    let user_type:Int
 }
+
 
 struct ProductData: Codable {
     let id: Int
