@@ -10,7 +10,6 @@ import CardDeck from 'react-bootstrap/CardDeck'
 import axios from 'axios'
 import Card from "../../components/Card"
 
-import myImage from '../../assets/productFiller.svg'
 
 
 import './home.scss'
@@ -54,7 +53,7 @@ class Home extends React.Component {
     let productCards = this.state.products.map(product => {
         return (
           <Col sm="3">
-            <Card product={product} myImage={myImage}></Card>
+            <Card product={product}></Card>
           </Col>
         )
     })
