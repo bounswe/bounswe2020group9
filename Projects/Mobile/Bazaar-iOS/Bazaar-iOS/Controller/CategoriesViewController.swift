@@ -33,7 +33,6 @@ class CategoriesViewController: UIViewController {
      let SELFCARE = "Selfcare"
      let ELECTRONICS = "Electronics"
      let LIVING = "Living"
-    
      var subCategoryDict: [String: [String]] = ["Clothing":["Clothing","Top", "Bottom", "Outerwear", "Shoes", "Bags", "Accesories", "Activewear"],
                                                 "Home":["Home Textile", "Kitchen", "Bedroom", "Bathroom", "Furniture", "Lighting", "Other"],
                                                 "Selfcare":["Perfumes", "Makeup", "Skincare", "Hair", "Body Care", "Other"],
@@ -275,6 +274,7 @@ class CategoriesViewController: UIViewController {
             searchBar.searchTextField.text = subCategories[indexPath.row]
             //searchBar.text = searchResults[indexPath.row]
             performSegue(withIdentifier: "categoriesToResultsSegue", sender: nil)
+            searchBar.searchTextField.text = ""
             //   *******  TODO check again *****************
             
             /*
