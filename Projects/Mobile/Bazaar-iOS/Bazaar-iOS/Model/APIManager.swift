@@ -36,6 +36,27 @@ struct APIManager {
         }
     }
     
+    func signUp(username:String, password:String, userType:String ,completionHandler: @escaping (Result<String ,Error>) -> Void) {
+        do {
+            let request = try ApiRouter.signUp(username: username, password: password, user_type: userType).asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if (response.response?.statusCode != nil){
+                    guard let safeData = response.data else  {
+                        completionHandler(.failure(response.error!))
+                        return
+                    }
+                    if let decodedData:SignUpData = APIParse().parseJSON(safeData: safeData){
+                        completionHandler(.success("\(decodedData.message)"))
+                    }else {
+                        completionHandler(.failure(MyError.runtimeError("Failed to parse json ")))
+                    }
+                }
+            }
+        }catch let err {
+            completionHandler(.failure(err))
+        }
+    }
+    
     func getAllProducts(completionHandler: @escaping ([ProductData]?) -> Void) {
         let callURL = "http://13.59.236.175:8000/api/product/"
         if let url = URL(string: callURL){

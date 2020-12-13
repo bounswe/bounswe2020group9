@@ -13,7 +13,7 @@ protocol SignUpViewControllerDelegate {
 }
 
 enum UserType:Int {
-    case Vendor , Customer
+    case Customer , Vendor
 }
 
 class SignUpViewController: UIViewController {
@@ -81,8 +81,18 @@ class SignUpViewController: UIViewController {
                                         self.present(alertController, animated: true, completion: nil)
                                     }else {
                                         if let userType = self.signUpUserType{
-                                            UserDefaults.standard.set(email, forKey: K.usernameKey)
-                                            UserDefaults.standard.set(true, forKey: K.isLoggedinKey)
+                                            APIManager().signUp(username: email, password: password, userType: "\(userType.rawValue+1)") { (result) in
+                                                switch result{
+                                                case .success(let message):
+                                                    UserDefaults.standard.set(email, forKey: K.usernameKey)
+                                                    UserDefaults.standard.set(true, forKey: K.isLoggedinKey)
+                                                    alertController.message = message
+                                                    self.present(alertController, animated: true, completion: nil)
+                                                case .failure(let err):
+                                                    alertController.message = err.localizedDescription
+                                                    self.present(alertController, animated: true, completion: nil)
+                                                }
+                                            }
                                         }else {
                                             alertController.message = "Choose one, Vendor or Customer"
                                             self.present(alertController, animated: true, completion: nil)
