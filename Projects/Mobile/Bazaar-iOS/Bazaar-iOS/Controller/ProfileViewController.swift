@@ -26,14 +26,16 @@ class ProfileViewController: UIViewController{
                 self.view.isHidden = true
                 performSegue(withIdentifier: "ProfileToLoginSegue", sender: self)
             }else {
+                if let username = UserDefaults.standard.value(forKey: K.usernameKey) as? String{
+                    self.userEmailLabel.text = username
+                }
                 self.view.isHidden = false
             }
-        }else {
+        }else{
             self.view.isHidden = true
             performSegue(withIdentifier: "ProfileToLoginSegue", sender: self)
         }
     }
-
     
     @IBAction func temporaryLogoutButton(_ sender: UIButton) {
         UserDefaults.standard.set(false, forKey: K.isLoggedinKey)

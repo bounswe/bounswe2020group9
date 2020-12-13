@@ -81,6 +81,7 @@ class SignUpViewController: UIViewController {
                                         self.present(alertController, animated: true, completion: nil)
                                     }else {
                                         if let userType = self.signUpUserType{
+                                            UserDefaults.standard.set(email, forKey: K.usernameKey)
                                             UserDefaults.standard.set(true, forKey: K.isLoggedinKey)
                                         }else {
                                             alertController.message = "Choose one, Vendor or Customer"
@@ -148,6 +149,7 @@ extension SignUpViewController: GIDSignInDelegate{
       let givenName = user.profile.givenName
       let familyName = user.profile.familyName
       let email = user.profile.email
+        UserDefaults.standard.set(email, forKey: K.usernameKey)
         UserDefaults.standard.set(true, forKey: K.isLoggedinKey)
         self.dismiss(animated: true, completion: nil)
       // ...

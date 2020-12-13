@@ -82,6 +82,7 @@ class LoginViewController: UIViewController {
                             switch result {
                             case .success(_):
                                 UserDefaults.standard.set(true, forKey: K.isLoggedinKey)
+                                UserDefaults.standard.set(email, forKey: K.usernameKey)
                                 self.dismiss(animated: false, completion: nil)
                             case .failure(_):
                                 alertController.message = "Invalid username or password"
@@ -113,15 +114,16 @@ extension LoginViewController: GIDSignInDelegate{
         return
       }
       // Perform any operations on signed in user here.
-      let userId = user.userID                  // For client-side use only!
-      let idToken = user.authentication.idToken // Safe to send to the server
-      let fullName = user.profile.name
-      let givenName = user.profile.givenName
-      let familyName = user.profile.familyName
-      let email = user.profile.email
+        let userId = user.userID                  // For client-side use only!
+        let idToken = user.authentication.idToken // Safe to send to the server
+        let fullName = user.profile.name
+        let givenName = user.profile.givenName
+        let familyName = user.profile.familyName
+        let email = user.profile.email
+        UserDefaults.standard.set(email, forKey: K.usernameKey)
         UserDefaults.standard.set(true, forKey: K.isLoggedinKey)
         self.dismiss(animated: true, completion: nil)
-      // ...
+        // ...
     }
     func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!,
               withError error: Error!) {
