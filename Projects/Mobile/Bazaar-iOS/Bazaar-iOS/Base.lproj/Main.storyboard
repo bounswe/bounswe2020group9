@@ -1079,6 +1079,9 @@
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mIW-Tp-z8z">
                                                 <rect key="frame" x="0.0" y="0.0" width="354" height="70"/>
+                                                <connections>
+                                                    <segue destination="L5V-jH-uVD" kind="presentation" id="Smb-dL-ap9"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -1107,7 +1110,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IPb-qT-rEn" userLabel="Help">
                                         <rect key="frame" x="10" y="419.66666666666674" width="354" height="69.666666666666686"/>
                                         <subviews>
-                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="settings_icon" translatesAutoresizingMaskIntoConstraints="NO" id="a0T-TT-dX5">
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="help_icon" translatesAutoresizingMaskIntoConstraints="NO" id="a0T-TT-dX5">
                                                 <rect key="frame" x="10" y="6.9999999999999964" width="42.333333333333336" height="55.666666666666657"/>
                                             </imageView>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="right_arrow" translatesAutoresizingMaskIntoConstraints="NO" id="531-3j-U8E">
@@ -1221,90 +1224,20 @@
             </objects>
             <point key="canvasLocation" x="2179.7101449275365" y="1654.6875"/>
         </scene>
-        <!--Orders View Controller-->
-        <scene sceneID="FcG-FD-LaT">
+        <!--My Account View Controller-->
+        <scene sceneID="2Q7-uk-jzt">
             <objects>
-                <viewController id="lLX-v8-Ua7" userLabel="Orders View Controller" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="Mtc-QS-jre">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                <viewController id="L5V-jH-uVD" customClass="MyAccountViewController" customModule="Bazaar_iOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="2xE-Qj-iDB">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="KZ9-dg-QKB"/>
+                        <viewLayoutGuide key="safeArea" id="2XP-EK-fK7"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
-                    <navigationItem key="navigationItem" id="IGZ-bG-UhC"/>
-                    <splitViewDetailSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="coF-T2-djX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="w6Y-Pq-RmK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3477" y="299"/>
-        </scene>
-        <!--Coupons View Controller-->
-        <scene sceneID="uvk-di-2Jw">
-            <objects>
-                <viewController id="oXo-Ka-Je9" userLabel="Coupons View Controller" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="hac-Dy-bGZ">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="cSq-iq-yav"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="yzg-eU-yQc"/>
-                    <splitViewDetailSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="RKQ-vW-ixk" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3477" y="1655"/>
-        </scene>
-        <!--Notifications View Controller-->
-        <scene sceneID="59n-F3-LFM">
-            <objects>
-                <viewController id="TJD-Jk-gCf" userLabel="Notifications View Controller" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="8ph-Sm-qwV">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="lYp-SA-f02"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="QBj-4b-ZYU"/>
-                    <splitViewDetailSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="yCH-cK-zFT" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3477" y="991"/>
-        </scene>
-        <!--Help View Controller-->
-        <scene sceneID="cyr-zY-k8I">
-            <objects>
-                <viewController id="Yqk-wp-E9p" userLabel="Help View Controller" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="ygv-gJ-VrI">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="mLX-Nz-69Z"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="yaw-EX-2El"/>
-                    <splitViewDetailSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="97g-I1-fpd" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3477" y="3026"/>
-        </scene>
-        <!--Settings View Controller-->
-        <scene sceneID="TL3-WD-evW">
-            <objects>
-                <viewController id="e6f-iy-N7J" userLabel="Settings View Controller" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="r41-NW-Cd7">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="EKP-wq-fVH"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    </view>
-                    <navigationItem key="navigationItem" id="B6j-A6-4Kg"/>
-                    <splitViewDetailSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="04I-9o-yxg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3477" y="2346"/>
+            <point key="canvasLocation" x="3135" y="1655"/>
         </scene>
     </scenes>
     <designables>
@@ -1320,6 +1253,7 @@
         <image name="cart.fill" catalog="system" width="128" height="102"/>
         <image name="heart" catalog="system" width="128" height="109"/>
         <image name="heart.fill" catalog="system" width="128" height="109"/>
+        <image name="help_icon" width="50" height="50"/>
         <image name="house" catalog="system" width="128" height="106"/>
         <image name="house.fill" catalog="system" width="128" height="106"/>
         <image name="logo" width="500" height="500"/>

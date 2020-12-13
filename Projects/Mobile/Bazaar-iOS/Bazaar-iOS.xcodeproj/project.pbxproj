@@ -25,6 +25,7 @@
 		938A1553256AD19100572844 /* CategoryCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 938A1551256AD19100572844 /* CategoryCollectionViewCell.xib */; };
 		939AB4F825694B76007815C8 /* StringHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939AB4F725694B76007815C8 /* StringHelper.swift */; };
 		93C2D069257FE419007C5750 /* credentials.plist in Resources */ = {isa = PBXBuildFile; fileRef = 93C2D068257FE419007C5750 /* credentials.plist */; };
+		93D91AC625867A3B007B238C /* MyAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D91AC525867A3B007B238C /* MyAccountViewController.swift */; };
 		93E99DD92577E8CD00BCFDAD /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E99DD72577E8CC00BCFDAD /* LoginViewController.swift */; };
 		93E99DDA2577E8CD00BCFDAD /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E99DD82577E8CC00BCFDAD /* SignUpViewController.swift */; };
 		93E99DDF2577E91B00BCFDAD /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E99DDE2577E91B00BCFDAD /* RadioButton.swift */; };
@@ -84,6 +85,7 @@
 		938A1551256AD19100572844 /* CategoryCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CategoryCollectionViewCell.xib; sourceTree = "<group>"; };
 		939AB4F725694B76007815C8 /* StringHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringHelper.swift; sourceTree = "<group>"; };
 		93C2D068257FE419007C5750 /* credentials.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = credentials.plist; sourceTree = "<group>"; };
+		93D91AC525867A3B007B238C /* MyAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MyAccountViewController.swift; path = "Bazaar-iOS/MyAccountViewController.swift"; sourceTree = SOURCE_ROOT; };
 		93E99DD72577E8CC00BCFDAD /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		93E99DD82577E8CC00BCFDAD /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		93E99DDE2577E91B00BCFDAD /* RadioButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadioButton.swift; sourceTree = "<group>"; };
@@ -312,6 +314,7 @@
 		93EE3CE325594A9D00B504DF /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				93D91AC525867A3B007B238C /* MyAccountViewController.swift */,
 				93E99DE82577F3F700BCFDAD /* ProductDetailViewController.swift */,
 				99F3379C256ADD460095105F /* ProfileViewController.swift */,
 				93E99DD72577E8CC00BCFDAD /* LoginViewController.swift */,
@@ -616,6 +619,7 @@
 				6994EAD6255DBF4A00AC48F6 /* MyCartViewController.swift in Sources */,
 				99F3379D256ADD460095105F /* ProfileViewController.swift in Sources */,
 				6994EAD2255DB9F500AC48F6 /* CategoriesViewController.swift in Sources */,
+				93D91AC625867A3B007B238C /* MyAccountViewController.swift in Sources */,
 				9333667C25794FDB0010E82F /* Constants.swift in Sources */,
 				93E99DE42577E93300BCFDAD /* APIManager.swift in Sources */,
 				93E99DE92577F3F700BCFDAD /* ProductDetailViewController.swift in Sources */,
