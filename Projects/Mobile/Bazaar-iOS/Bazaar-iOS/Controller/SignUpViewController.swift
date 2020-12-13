@@ -59,7 +59,7 @@ class SignUpViewController: UIViewController {
     @IBAction func signUpButtonPressed(_ sender: UIButton) {
         let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
-        
+
         if let firstName = firstNameTextField.text{
             if !firstName.isName {
                 alertController.message = "Your First Name is invalid. Please enter a valid First Name."
@@ -83,11 +83,13 @@ class SignUpViewController: UIViewController {
                                         if let userType = self.signUpUserType{
                                             APIManager().signUp(username: email, password: password, userType: "\(userType.rawValue+1)") { (result) in
                                                 switch result{
-                                                case .success(let message):
-                                                    UserDefaults.standard.set(email, forKey: K.usernameKey)
-                                                    UserDefaults.standard.set(true, forKey: K.isLoggedinKey)
-                                                    alertController.message = message
-                                                    self.present(alertController, animated: true, completion: nil)
+                                                case .success(_):
+                                                    let alertController2 = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
+                                                    alertController2.message = "You have successfully signed up! To login, a mail has been sent to your e-mail address, please check and verify your e-mail"
+                                                    alertController2.addAction(UIAlertAction(title: "Go To Login", style: UIAlertAction.Style.default){ (action:UIAlertAction!) in
+                                                        self.dismiss(animated: true, completion: nil)
+                                                    })
+                                                    self.present(alertController2, animated: true, completion: nil)
                                                 case .failure(let err):
                                                     alertController.message = err.localizedDescription
                                                     self.present(alertController, animated: true, completion: nil)
