@@ -12,6 +12,8 @@ class WishlistViewController: UIViewController {
     @IBOutlet var listsTableView: UITableView!
     @IBOutlet var addListButton: UIButton!
     
+    var addedList: CustomerListData?
+    
     var customerListsInstance = CustomerLists.shared
     
     var networkFailedAlert:UIAlertController = UIAlertController(title: "Error while retrieving lists", message: "We encountered a problem while retrieving the lists, please check your internet connection.", preferredStyle: .alert)
@@ -54,17 +56,28 @@ class WishlistViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
             dismiss(animated: true, completion: nil)
         //segue after add list !!
-        if let listDetailVC = segue.destination as? ListDetailViewController {
-            let indexPath = self.listsTableView.indexPathForSelectedRow
-            if indexPath != nil {
-                listDetailVC.list = customerListsInstance.customerLists[indexPath!.row]
+        if segue.identifier == "listsToListDetailSegue" {
+            if let listDetailVC = segue.destination as? ListDetailViewController {
+                if self.addedList != nil {
+                    listDetailVC.list = self.addedList
+                    self.addedList = nil
+                } else {
+                    let indexPath = self.listsTableView.indexPathForSelectedRow
+                    if indexPath != nil {
+                        listDetailVC.list = customerListsInstance.customerLists[indexPath!.row]
+                    }
+                }
             }
+        } else if segue.identifier == "toAddListSegue" {
+            let popoverViewController = segue.destination as! AddListViewController
+                        popoverViewController.delegate = self
         }
+        
     }
     
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
         if identifier == "listsToListDetailSegue" {
-             return self.listsTableView.indexPathForSelectedRow != nil
+            return self.listsTableView.indexPathForSelectedRow != nil || self.addedList != nil
         }
         return false
     }
@@ -147,6 +160,23 @@ extension WishlistViewController:UITableViewDelegate,UITableViewDataSource {
         swipeActionConfig.performsFirstActionWithFullSwipe = false
         return swipeActionConfig
     }
+    
+
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        //let product = self.list.products[indexPath.row]
+        let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+        let edit = UIContextualAction(style: .destructive, title: "Edit") { (action, sourceView, completionHandler) in
+                print("index path of delete: \(indexPath)")
+            //completionHandler(true)
+            print("edit")
+        }
+        edit.backgroundColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
+        let swipeActionConfig = UISwipeActionsConfiguration(actions: [edit])
+        swipeActionConfig.performsFirstActionWithFullSwipe = false
+        return swipeActionConfig
+    }
+    
 }
 
 extension WishlistViewController: CustomerListsFetchDelegate {

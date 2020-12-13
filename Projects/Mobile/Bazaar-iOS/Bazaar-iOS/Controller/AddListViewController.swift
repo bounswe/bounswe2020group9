@@ -16,13 +16,14 @@ class AddListViewController: UIViewController {
     @IBOutlet var isPublicRadioButton: RadioButton!
     @IBOutlet var frameView: UIView!
     var isPrivate: Bool?
+    var delegate: WishlistViewController?
+    
+    var addedList: CustomerListData?
     
     override func viewDidLoad() {
-        frameView.layer.borderColor = #colorLiteral(red: 1, green: 0.6431372549, blue: 0.3568627451, alpha: 1)
         frameView.layer.shadowColor = UIColor.black.cgColor
         self.view.bringSubviewToFront(frameView)
     }
-    
     
     @IBAction func addListButtonPressed(_ sender: UIButton) {
         let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
@@ -36,8 +37,10 @@ class AddListViewController: UIViewController {
                 if let isPriv = self.isPrivate {
                     APIManager().addList(name: listName, customer: UserDefaults.standard.value(forKey: K.user_id) as! String, isPrivate: isPriv) { (result) in
                         switch result {
-                        case .success(_):
+                        case .success(let listData):
                             self.dismiss(animated: false, completion: nil)
+                            self.delegate?.addedList = listData
+                            self.delegate?.performSegue(withIdentifier: "listsToListDetailSegue", sender: nil)
                         case .failure(_):
                             alertController.message = "The list cannot be added"
                             self.present(alertController, animated: true, completion: nil)

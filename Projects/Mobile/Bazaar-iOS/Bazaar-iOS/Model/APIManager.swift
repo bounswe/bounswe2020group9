@@ -95,7 +95,7 @@ struct APIManager {
         }
     }
     
-    func addList(name:String, customer:String, isPrivate:Bool, completionHandler: @escaping (Result<Int ,Error>) -> Void) {
+    func addList(name:String, customer:String, isPrivate:Bool, completionHandler: @escaping (Result<CustomerListData ,Error>) -> Void) {
         do {
             let request = try ApiRouter.addList(name: name, customer: customer, isPrivate: isPrivate).asURLRequest()
             AF.request(request).responseJSON { (response) in
@@ -105,7 +105,7 @@ struct APIManager {
                         return
                     }
                     if let decodedData:CustomerListData = APIParse().parseJSON(safeData: safeData) {
-                        completionHandler(.success(decodedData.id))
+                        completionHandler(.success(decodedData))
                     }else {
                         completionHandler(.failure(MyError.runtimeError("Error")))
                     }
@@ -140,5 +140,45 @@ struct APIManager {
         }
     }
     
+    func deleteProductFromList(customer:String, list_id:String, product_id:String , completionHandler: @escaping (Result<CustomerListData ,Error>) -> Void) {
+        do {
+            let request = try ApiRouter.deleteProductFromList(customer: customer, list_id: list_id, product_id: product_id).asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if (response.response?.statusCode != nil){
+                    guard let safeData = response.data else  {
+                        completionHandler(.failure(response.error!))
+                        return
+                    }
+                    if let decodedData:CustomerListData = APIParse().parseJSON(safeData: safeData){
+                        completionHandler(.success(decodedData))
+                    }else {
+                        completionHandler(.failure(MyError.runtimeError("Error")))
+                    }
+                }
+            }
+        }catch let err {
+            completionHandler(.failure(err))
+        }
+    }
     
+    func editList(customer:String, list:String, newName:String , newIsPrivate:Bool, completionHandler: @escaping (Result<CustomerListData ,Error>) -> Void) {
+        do {
+            let request = try ApiRouter.editList(customer: customer, list: list, newName: newName, newIsPrivate: newIsPrivate).asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if (response.response?.statusCode != nil){
+                    guard let safeData = response.data else  {
+                        completionHandler(.failure(response.error!))
+                        return
+                    }
+                    if let decodedData:CustomerListData = APIParse().parseJSON(safeData: safeData){
+                        completionHandler(.success(decodedData))
+                    }else {
+                        completionHandler(.failure(MyError.runtimeError("Error")))
+                    }
+                }
+            }
+        }catch let err {
+            completionHandler(.failure(err))
+        }
+    }
 }

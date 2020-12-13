@@ -14,6 +14,8 @@ enum ApiRouter: URLRequestBuilder {
     case getCustomerLists(customer: String, isCustomerLoggedIn: Bool)
     case addList(name: String, customer: String, isPrivate: Bool)
     case deleteList(customer: String, id: String)
+    case deleteProductFromList(customer: String, list_id: String, product_id: String)
+    case editList(customer:String, list: String, newName: String, newIsPrivate: Bool)
     // MARK: - Path
     internal var path: String {
         switch self {
@@ -25,7 +27,12 @@ enum ApiRouter: URLRequestBuilder {
             return "api/user/" + customer + "/lists/"
         case .deleteList(let customer, let id):
             return "api/user/" + customer + "/list/"+id+"/"
+        case .deleteProductFromList(let customer, let list_id, _):
+            return "api/user/" + customer + "/list/"+list_id+"/edit/"
+        case .editList(let customer, let list, _,_):
+            return "/api/user/" + customer + "/list/" + list + "/"
         }
+        
     }
 
     // MARK: - Parameters
@@ -38,6 +45,11 @@ enum ApiRouter: URLRequestBuilder {
         case .addList(let name, let customer, let isPrivate):
             params["name"] = name
             params["customer"] = customer
+            params["is_private"] = isPrivate
+        case .deleteProductFromList(_, _, let product_id):
+            params["product_id"] = product_id
+        case .editList(_, _, let name, let isPrivate):
+            params["name"] = name
             params["is_private"] = isPrivate
         default:
             break
@@ -58,6 +70,10 @@ enum ApiRouter: URLRequestBuilder {
             headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
         case .deleteList:
             headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
+        case .deleteProductFromList:
+            headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
+        default:
+            break
         }
         return headers
     }
@@ -69,8 +85,10 @@ enum ApiRouter: URLRequestBuilder {
             return .post
         case .getCustomerLists:
             return .get
-        case .deleteList:
+        case .deleteList, .deleteProductFromList:
             return .delete
+        case .editList:
+            return .put
         }
     }
 

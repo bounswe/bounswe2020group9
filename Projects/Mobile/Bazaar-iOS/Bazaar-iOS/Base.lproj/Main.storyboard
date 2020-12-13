@@ -160,7 +160,7 @@
                                 <rect key="frame" x="10" y="127.66666666666669" width="394" height="685.33333333333326"/>
                                 <color key="backgroundColor" systemColor="opaqueSeparatorColor"/>
                                 <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                <color key="sectionIndexBackgroundColor" systemColor="opaqueSeparatorColor"/>
+                                <color key="sectionIndexBackgroundColor" systemColor="systemBackgroundColor"/>
                                 <connections>
                                     <outlet property="dataSource" destination="SBA-Vi-5Ha" id="RHO-aY-Kk2"/>
                                     <outlet property="delegate" destination="SBA-Vi-5Ha" id="Ml2-sC-J6D"/>
@@ -366,10 +366,7 @@
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                        <integer key="value" value="20"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
-                                        <integer key="value" value="2"/>
+                                        <integer key="value" value="15"/>
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.shadowOpacity">
                                         <real key="value" value="0.40000000000000002"/>
@@ -422,7 +419,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1Y0-1D-RsF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2930" y="416"/>
+            <point key="canvasLocation" x="2929" y="376"/>
         </scene>
         <!--List Detail View Controller-->
         <scene sceneID="yfJ-zl-Coh">
@@ -519,6 +516,7 @@
                     <connections>
                         <outlet property="listNameLabel" destination="CJ9-ge-ULR" id="8pz-Vo-RDA"/>
                         <outlet property="productListTableView" destination="4hr-He-qii" id="WDm-qy-bmY"/>
+                        <segue destination="RgT-CZ-30c" kind="show" identifier="listDetailToProductDetailSegue" id="NKp-lJ-XIG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3Iw-Vj-E7E" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -836,6 +834,7 @@
                         <viewLayoutGuide key="safeArea" id="AtQ-sL-JOX"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
+                    <navigationItem key="navigationItem" id="fmC-k6-hFR"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nqj-6k-oDR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

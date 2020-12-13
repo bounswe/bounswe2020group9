@@ -14,6 +14,7 @@ class ListDetailViewController: UIViewController {
     
     var list: CustomerListData!
     let imageCache = NSCache<NSString,UIImage>()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         listNameLabel.text = list.name
@@ -25,6 +26,27 @@ class ListDetailViewController: UIViewController {
         self.navigationController?.popViewController(animated: true)
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+            dismiss(animated: true, completion: nil)
+        //segue after add list !!
+        if let productDetailVC = segue.destination as? ProductDetailViewController {
+            print("hello2")
+            let indexPath = self.productListTableView.indexPathForSelectedRow
+            if indexPath != nil {
+                print("hello3")
+                productDetailVC.product = list.products[indexPath!.row]
+            }
+        }
+    }
+    
+    override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
+        if identifier == "listDetailToProductDetailSegue" {
+            print("hello")
+             return self.productListTableView.indexPathForSelectedRow != nil
+        }
+        return false
+    }
+    
     
 }
 
@@ -32,6 +54,11 @@ extension ListDetailViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return list.products.count
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("hello1")
+        performSegue(withIdentifier: "listDetailToProductDetailSegue", sender: nil)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -59,7 +86,31 @@ extension ListDetailViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
-    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let product = self.list.products[indexPath.row]
+        let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+        let delete = UIContextualAction(style: .destructive, title: "Delete") { (action, sourceView, completionHandler) in
+                print("index path of delete: \(indexPath)")
+            completionHandler(true)
+            APIManager().deleteProductFromList(customer: UserDefaults.standard.value(forKey: K.user_id) as! String, list_id: String(self.list.id), product_id: String(product.id)) { (result) in
+                switch result {
+                case .success(_):
+                    alertController.message = "\(product.name) is successfully deleted"
+                    self.present(alertController, animated: true, completion: nil)
+                    tableView.reloadData()
+                case .failure(_):
+                    alertController.message = "\(product.name) cannot be deleted"
+                    self.present(alertController, animated: true, completion: nil)
+                }
+            }
+        }
+        
+        delete.backgroundColor = #colorLiteral(red: 1, green: 0.6431372549, blue: 0.3568627451, alpha: 1)
+        let swipeActionConfig = UISwipeActionsConfiguration(actions: [delete])
+        swipeActionConfig.performsFirstActionWithFullSwipe = false
+        return swipeActionConfig
+    }
 }
 
 let imageCache = NSCache<NSString,UIImage>()
