@@ -44,7 +44,7 @@
     margin-bottom: 0;
 }
 
-#save-changes {
+#save-changes-profile {
     background-color: #F4A133;
     font-weight: 650;
     color: white;
@@ -57,8 +57,4 @@
 #save-changes-div {
     margin-bottom: 0;
     height: 50px;
-}
-
-#isvendor {
-    
 }

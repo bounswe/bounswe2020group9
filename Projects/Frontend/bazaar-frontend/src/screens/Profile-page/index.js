@@ -175,9 +175,9 @@ export default class ProfilePage extends Component {
                               <div id="save-changes-div">
                                 {this.state.isEnabled
                                 ? 
-                                <button id="save-changes" type="submit" className="btn btn-block">Confirm changes</button>
+                                <button id="save-changes-profile" type="submit" className="btn btn-block">Confirm changes</button>
                                 :
-                                <button id="save-changes" type="submit" className="btn btn-block" disabled>Confirm changes</button>
+                                <button id="save-changes-profile" type="submit" className="btn btn-block" disabled>Confirm changes</button>
                               }
                               </div>
 
