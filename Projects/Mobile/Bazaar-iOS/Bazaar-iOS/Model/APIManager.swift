@@ -18,7 +18,7 @@ struct APIManager {
     func authenticate(username:String,password:String,completionHandler: @escaping (Result<String ,Error>) -> Void) {
         do {
             let request = try ApiRouter.authenticate(username: username, password: password).asURLRequest()
-            AF.request(request).responseJSON { (response) in
+            AF.request(request).responseJSON {(response) in
                 if (response.response?.statusCode != nil){
                     guard let safeData = response.data else  {
                         completionHandler(.failure(response.error!))
@@ -26,6 +26,8 @@ struct APIManager {
                     }
                     if let decodedData:AuthData = APIParse().parseJSON(safeData: safeData){
                         completionHandler(.success(decodedData.token))
+                        UserDefaults.standard.set(String(decodedData.user_id), forKey: K.user_id)
+                        UserDefaults.standard.set(String(decodedData.token), forKey: K.token)
                     }else {
                         completionHandler(.failure(MyError.runtimeError("Error")))
                     }
@@ -35,6 +37,7 @@ struct APIManager {
             completionHandler(.failure(err))
         }
     }
+    
     
     func getAllProducts(completionHandler: @escaping ([ProductData]?) -> Void) {
         let callURL = "http://13.59.236.175:8000/api/product/"
@@ -69,5 +72,113 @@ struct APIManager {
             completionHandler(nil)
         }
             
+    }
+
+    func getCustomerLists(customer:String, isCustomerLoggedIn:Bool, completionHandler: @escaping (Result<[CustomerListData] , Error>) -> Void) {
+        do {
+            let request = try ApiRouter.getCustomerLists(customer: customer, isCustomerLoggedIn: isCustomerLoggedIn).asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if (response.response?.statusCode != nil){
+                    guard let safeData = response.data else  {
+                        completionHandler(.failure(response.error!))
+                        return
+                    }
+                    if let decodedData:[CustomerListData] = APIParse().parseJSON(safeData: safeData){
+                        completionHandler(.success(decodedData))
+                    }else {
+                        completionHandler(.failure(MyError.runtimeError("Error")))
+                    }
+                }
+            }
+        }catch let err {
+            completionHandler(.failure(err))
+        }
+    }
+    
+    func addList(name:String, customer:String, isPrivate:Bool, completionHandler: @escaping (Result<CustomerListData ,Error>) -> Void) {
+        do {
+            let request = try ApiRouter.addList(name: name, customer: customer, isPrivate: isPrivate).asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if (response.response?.statusCode != nil){
+                    guard let safeData = response.data else  {
+                        completionHandler(.failure(response.error!))
+                        return
+                    }
+                    if let decodedData:CustomerListData = APIParse().parseJSON(safeData: safeData) {
+                        completionHandler(.success(decodedData))
+                    }else {
+                        completionHandler(.failure(MyError.runtimeError("Error")))
+                    }
+                }
+            }
+        }catch let err {
+            completionHandler(.failure(err))
+        }
+    }
+    
+    func deleteList(customer:String, id:String , completionHandler: @escaping (Result<String ,Error>) -> Void) {
+        do {
+            let request = try ApiRouter.deleteList(customer: customer, id: id).asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if response.response?.statusCode == 204 {
+                    completionHandler(.success("success"))
+                }
+                else if (response.response?.statusCode != nil){
+                    guard let safeData = response.data else  {
+                        completionHandler(.failure(response.error!))
+                        return
+                    }
+                    if let decodedData:[String:String] = APIParse().parseJSON(safeData: safeData), decodedData.values.first != "not allowed to access"{
+                        completionHandler(.success("success"))
+                    }else {
+                        completionHandler(.failure(MyError.runtimeError("Error")))
+                    }
+                }
+            }
+        }catch let err {
+            completionHandler(.failure(err))
+        }
+    }
+    
+    func deleteProductFromList(customer:String, list_id:String, product_id:String , completionHandler: @escaping (Result<CustomerListData ,Error>) -> Void) {
+        do {
+            let request = try ApiRouter.deleteProductFromList(customer: customer, list_id: list_id, product_id: product_id).asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if (response.response?.statusCode != nil){
+                    guard let safeData = response.data else  {
+                        completionHandler(.failure(response.error!))
+                        return
+                    }
+                    if let decodedData:CustomerListData = APIParse().parseJSON(safeData: safeData){
+                        completionHandler(.success(decodedData))
+                    }else {
+                        completionHandler(.failure(MyError.runtimeError("Error")))
+                    }
+                }
+            }
+        }catch let err {
+            completionHandler(.failure(err))
+        }
+    }
+    
+    func editList(customer:String, list:String, newName:String , newIsPrivate:String, completionHandler: @escaping (Result<CustomerListData ,Error>) -> Void) {
+        do {
+            let request = try ApiRouter.editList(customer: customer, list: list, newName: newName, newIsPrivate: newIsPrivate).asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if (response.response?.statusCode != nil){
+                    guard let safeData = response.data else  {
+                        completionHandler(.failure(response.error!))
+                        return
+                    }
+                    if let decodedData:CustomerListData = APIParse().parseJSON(safeData: safeData){
+                        completionHandler(.success(decodedData))
+                    }else {
+                        completionHandler(.failure(MyError.runtimeError("Error")))
+                    }
+                }
+            }
+        }catch let err {
+            completionHandler(.failure(err))
+        }
     }
 }
