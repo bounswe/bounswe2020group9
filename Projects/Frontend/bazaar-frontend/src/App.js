@@ -7,12 +7,12 @@ import './App.css';
 import ProfilePage from "./screens/Profile-page";
 import SignIn from "./screens/Sign-In"
 import SignUp from "./screens/Sign-Up"
-import Home from "./screens/Home"
+import Home from "./screens/Home/home"
 import ForgotPassword from "./screens/Sign-In/forgot-password"
 import MyList from "./screens/MyList/MyList"
 import AddProduct from "./screens/Add-Product/addproduct"
 import Inventory from "./screens/Inventory/inventory"
-
+import ProductPage from "./screens/ProductPage/ProductPage"
 
 
 //components
@@ -56,6 +56,10 @@ function App() {
         <Route path="/inventory">
           <Header />
           <Inventory />
+        </Route>
+        <Route path="/product:id">
+          <Header />
+          <ProductPage />
         </Route>
       </Switch>
 

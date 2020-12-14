@@ -8,7 +8,7 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import CardDeck from 'react-bootstrap/CardDeck'
 import axios from 'axios'
-import Card from "../../components/Card"
+import Card from "../../components/ProductCard/productCard"
 
 
 
