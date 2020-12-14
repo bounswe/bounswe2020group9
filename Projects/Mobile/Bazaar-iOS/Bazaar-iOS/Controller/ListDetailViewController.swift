@@ -30,10 +30,8 @@ class ListDetailViewController: UIViewController {
             dismiss(animated: true, completion: nil)
         //segue after add list !!
         if let productDetailVC = segue.destination as? ProductDetailViewController {
-            print("hello2")
             let indexPath = self.productListTableView.indexPathForSelectedRow
             if indexPath != nil {
-                print("hello3")
                 productDetailVC.product = list.products[indexPath!.row]
             }
         }
@@ -41,7 +39,6 @@ class ListDetailViewController: UIViewController {
     
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
         if identifier == "listDetailToProductDetailSegue" {
-            print("hello")
              return self.productListTableView.indexPathForSelectedRow != nil
         }
         return false
@@ -57,7 +54,6 @@ extension ListDetailViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("hello1")
         performSegue(withIdentifier: "listDetailToProductDetailSegue", sender: nil)
     }
     

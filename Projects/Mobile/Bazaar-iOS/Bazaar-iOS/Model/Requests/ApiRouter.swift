@@ -15,7 +15,7 @@ enum ApiRouter: URLRequestBuilder {
     case addList(name: String, customer: String, isPrivate: Bool)
     case deleteList(customer: String, id: String)
     case deleteProductFromList(customer: String, list_id: String, product_id: String)
-    case editList(customer:String, list: String, newName: String, newIsPrivate: Bool)
+    case editList(customer:String, list: String, newName: String, newIsPrivate: String)
     // MARK: - Path
     internal var path: String {
         switch self {
@@ -28,7 +28,7 @@ enum ApiRouter: URLRequestBuilder {
         case .deleteList(let customer, let id):
             return "api/user/" + customer + "/list/"+id+"/"
         case .deleteProductFromList(let customer, let list_id, _):
-            return "api/user/" + customer + "/list/"+list_id+"/edit/"
+            return "api/user/" + customer + "/list/" + list_id + "/edit/"
         case .editList(let customer, let list, _,_):
             return "/api/user/" + customer + "/list/" + list + "/"
         }
@@ -66,14 +66,8 @@ enum ApiRouter: URLRequestBuilder {
             if isCustomerLoggedIn {
                 headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
             }
-        case .addList:
+        case .addList, .deleteList, .deleteProductFromList , .editList:
             headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
-        case .deleteList:
-            headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
-        case .deleteProductFromList:
-            headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
-        default:
-            break
         }
         return headers
     }

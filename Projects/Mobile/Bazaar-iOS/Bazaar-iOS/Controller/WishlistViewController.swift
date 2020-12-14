@@ -14,6 +14,8 @@ class WishlistViewController: UIViewController {
     
     var addedList: CustomerListData?
     
+    var editRowIndex: Int!
+    
     var customerListsInstance = CustomerLists.shared
     
     var networkFailedAlert:UIAlertController = UIAlertController(title: "Error while retrieving lists", message: "We encountered a problem while retrieving the lists, please check your internet connection.", preferredStyle: .alert)
@@ -69,8 +71,13 @@ class WishlistViewController: UIViewController {
                 }
             }
         } else if segue.identifier == "toAddListSegue" {
-            let popoverViewController = segue.destination as! AddListViewController
-                        popoverViewController.delegate = self
+            if let popoverVC = segue.destination as? AddListViewController {
+                popoverVC.delegate = self
+                if self.editRowIndex != nil {
+                    popoverVC.listToEdit = customerListsInstance.customerLists[self.editRowIndex]
+                    self.editRowIndex = nil
+                }
+            }
         }
         
     }
@@ -167,9 +174,9 @@ extension WishlistViewController:UITableViewDelegate,UITableViewDataSource {
         let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
         let edit = UIContextualAction(style: .destructive, title: "Edit") { (action, sourceView, completionHandler) in
-                print("index path of delete: \(indexPath)")
-            //completionHandler(true)
-            print("edit")
+                print("index path of edit: \(indexPath)")
+            self.editRowIndex = indexPath.row
+            self.performSegue(withIdentifier: "toAddListSegue", sender: nil)
         }
         edit.backgroundColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
         let swipeActionConfig = UISwipeActionsConfiguration(actions: [edit])

@@ -411,6 +411,7 @@
                     <modalPageSheetSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <connections>
                         <outlet property="addListButton" destination="zrF-Sd-6lC" id="hgX-qG-LIV"/>
+                        <outlet property="addListTitle" destination="3DJ-Lr-s6X" id="Iu4-eZ-iYU"/>
                         <outlet property="frameView" destination="MV9-bx-bRe" id="5Ag-Zw-CJX"/>
                         <outlet property="isPrivateRadioButton" destination="Vn7-FE-yjg" id="Ah7-wb-uPW"/>
                         <outlet property="isPublicRadioButton" destination="q7i-mX-RTp" id="yfJ-9G-snN"/>

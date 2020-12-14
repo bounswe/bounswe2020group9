@@ -161,7 +161,7 @@ struct APIManager {
         }
     }
     
-    func editList(customer:String, list:String, newName:String , newIsPrivate:Bool, completionHandler: @escaping (Result<CustomerListData ,Error>) -> Void) {
+    func editList(customer:String, list:String, newName:String , newIsPrivate:String, completionHandler: @escaping (Result<CustomerListData ,Error>) -> Void) {
         do {
             let request = try ApiRouter.editList(customer: customer, list: list, newName: newName, newIsPrivate: newIsPrivate).asURLRequest()
             AF.request(request).responseJSON { (response) in
