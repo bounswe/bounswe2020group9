@@ -33,12 +33,13 @@ class CategoriesViewController: UIViewController {
      let SELFCARE = "Selfcare"
      let ELECTRONICS = "Electronics"
      let LIVING = "Living"
-     var subCategoryDict: [String: [String]] = ["Clothing":["Clothing","Top", "Bottom", "Outerwear", "Shoes", "Bags", "Accesories", "Activewear"],
+     var subCategoryDict: [String: [String]] = ["Clothing":["Top", "Bottom", "Outerwear", "Shoes", "Bags", "Accesories", "Activewear"],
                                                 "Home":["Home Textile", "Kitchen", "Bedroom", "Bathroom", "Furniture", "Lighting", "Other"],
                                                 "Selfcare":["Perfumes", "Makeup", "Skincare", "Hair", "Body Care", "Other"],
                                                 "Electronics":["Smartphone", "Tablet", "Computer", "Photography", "Home Appliances", "TV", "Gaming", "Other"],
-                                                "Living":["Books", "Art Supplies", "Musical Devices", "Sports", "Other"] ]
-     var categories = ["Clothing", "Home", "Selfcare", "Electronics", "Living"]
+                                                "Living":["Books", "Art Supplies", "Musical Devices", "Sports", "Other"],
+                                                "Categories": ["Categories"] ]
+     var categories = ["Clothing", "Home", "Selfcare", "Electronics", "Living" , "Categories"]
      var products: [Product] = []
      let categoriesReuseIdentifier = "CategoriesCollectionViewCell"
      var networkFailedAlert:UIAlertController = UIAlertController(title: "Error while retrieving products", message: "We encountered a problem while retrieving the products, please check your internet connection.", preferredStyle: .alert)
@@ -163,14 +164,6 @@ class CategoriesViewController: UIViewController {
             }
             //************  Look again to check *********
         }
-        /*
-         else if let productDetailVC = segue.destination as? ProductDetailViewController {
-                     let indexPath = self.subCategoriesTableView.indexPathForSelectedRow
-                     if indexPath != nil {
-                         let products = allProductsInstance.allProducts.filter{$0.category.parent!.contains(selectedCategoryName!) || $0.category.name.contains(selectedCategoryName!)}
-                         productDetailVC.product = products[indexPath!.row]
-                     }
-                 }*/
      }
      
      override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
@@ -195,7 +188,6 @@ class CategoriesViewController: UIViewController {
             return subCategoryDict[selectedCategoryName!]!.count
             // ***look again to check
             
-            //return allProductsInstance.allProducts.filter{$0.category.parent!.contains(selectedCategoryName!) || $0.category.name.contains(selectedCategoryName!)}.count
          }
          if tableView == searchHistoryTableView {
              return searchResults.count
@@ -212,34 +204,6 @@ class CategoriesViewController: UIViewController {
             
             // look here ***************
             cell.nameLabel?.text = subCategories[indexPath.row]
-            
-            
-            
-             //let filteredProducts:[Product] = products.filter { $0.category == selectedCategoryName }
-             //let filteredProducts:[ProductData] = allProductsInstance.allProducts.filter{$0.category.parent!.contains(selectedCategoryName!) || $0.category.name.contains(selectedCategoryName!)}
-             //let product = filteredProducts[indexPath.row]
-             //cell.productNameLabel.text = product.name
-            
-            
-            /*
-             cell.productNameLabel.font = UIFont.systemFont(ofSize: 15, weight: .black)
-             cell.productDescriptionLabel.text = product.brand
-             cell.productDescriptionLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
-             cell.productPriceLabel.text = "₺"+String(product.price)
-             cell.productPriceLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
-             if let url = product.picture {
-                 do{
-                     try cell.productImageView.loadImageUsingCache(withUrl: url)
-                 } catch let error {
-                     print(error)
-                     cell.productImageView.image = UIImage(named:"xmark.circle")
-                     cell.productImageView.tintColor = UIColor.lightGray
-                 }
-             } else {
-                 cell.productImageView.image = UIImage(named:"xmark.circle")
-                 cell.productImageView.tintColor = UIColor.lightGray
-                 cell.productImageView.contentMode = .center
-             }*/
  
              return cell
          } else {
@@ -277,11 +241,6 @@ class CategoriesViewController: UIViewController {
             searchBar.searchTextField.text = ""
             //   *******  TODO check again *****************
             
-            /*
-             let filteredProducts:[ProductData] = allProductsInstance.allProducts.filter{$0.category.parent!.contains(selectedCategoryName!) || $0.category.name.contains(selectedCategoryName!)}
-             let product = filteredProducts[indexPath.row]
-             print(product.name)
-             performSegue(withIdentifier: "categoriesToProductDetailSegue", sender: nil)*/
          }
          
      }
