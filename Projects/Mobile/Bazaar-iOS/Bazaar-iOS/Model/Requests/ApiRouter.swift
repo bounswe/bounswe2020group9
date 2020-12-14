@@ -59,14 +59,14 @@ enum ApiRouter: URLRequestBuilder {
         case .editList(_, _, let name, let isPrivate):
             params["name"] = name
             params["is_private"] = isPrivate
-        default:
-            break
         case .signUp(let username, let password, let user_type):
             params["username"] = username
             params["password"] = password
             params["user_type"] = user_type
         case .resetPasswordEmail(let username):
             params["username"] = username
+        default:
+            break
         }
         return params
     }
