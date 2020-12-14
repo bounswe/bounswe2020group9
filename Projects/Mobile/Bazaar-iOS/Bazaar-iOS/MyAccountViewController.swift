@@ -9,8 +9,34 @@ import UIKit
 import GoogleSignIn
 
 class MyAccountViewController: UIViewController {
+    @IBOutlet weak var firstNameTextField: UITextField!
+    @IBOutlet weak var lastNameTextField: UITextField!
+    @IBOutlet weak var emailLabel: UILabel!
+    @IBOutlet weak var userNameLabel: UILabel!
+    @IBOutlet weak var addressTextView: UITextView!
+    @IBOutlet weak var phoneNumberTextField: UITextField!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        if let firstName = UserDefaults.standard.value(forKey: K.userFirstNameKey) as? String{
+            firstNameTextField.text = firstName
+        }
+        if let lastName = UserDefaults.standard.value(forKey: K.userLastNameKey) as? String{
+            lastNameTextField.text = lastName
+        }
+        if let email = UserDefaults.standard.value(forKey: K.usernameKey) as? String{
+            emailLabel.text = email
+        }
+        if let userName = UserDefaults.standard.value(forKey: K.usernameKey) as? String{
+            userNameLabel.text = userName
+        }
+        if let address = UserDefaults.standard.value(forKey: K.userAddressKey) as? String{
+            addressTextView.text = address
+        }
+        if let phoneNumber = UserDefaults.standard.value(forKey: K.userPhoneNumKey) as? String{
+            phoneNumberTextField.text = phoneNumber
+        }
     }
     
     @IBAction func backButtonPressed(_ sender: UIButton) {
