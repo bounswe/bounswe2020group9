@@ -151,7 +151,7 @@ extension WishlistViewController:UITableViewDelegate,UITableViewDataSource {
                 print("index path of delete: \(indexPath)")
             completionHandler(true)
             DispatchQueue.main.async {
-                APIManager().deleteList(customer: UserDefaults.standard.value(forKey: K.user_id) as! String, id: String(list.id)) { (result) in
+                APIManager().deleteList(customer: UserDefaults.standard.value(forKey: K.userIdKey) as! String, id: String(list.id)) { (result) in
                     switch result {
                     case .success(_):
                         alertController.message = "\(list.name) is successfully deleted"
@@ -242,18 +242,22 @@ class CustomerLists {
     
     func fetchCustomerLists() {
         dispatchGroup.enter()
-        APIManager().getCustomerLists(customer: UserDefaults.standard.value(forKey: K.user_id) as! String, isCustomerLoggedIn: true, completionHandler: { result in
-            switch result {
-                case .success(let lists):
-                    self.dataFetched = true
-                    self.customerLists = lists
-                    self.delegate?.allListsAreFetched()
-                case .failure(_):
-                    self.dataFetched = false
-                    self.customerLists = []
-                    self.delegate?.listsCannotBeFetched()
-            }
-        })
+        if let userId = UserDefaults.standard.value(forKey: K.userIdKey) as? String {
+            APIManager().getCustomerLists(customer: userId, isCustomerLoggedIn: true, completionHandler: { result in
+                switch result {
+                    case .success(let lists):
+                        self.dataFetched = true
+                        self.customerLists = lists
+                        self.delegate?.allListsAreFetched()
+                    case .failure(_):
+                        self.dataFetched = false
+                        self.customerLists = []
+                        self.delegate?.listsCannotBeFetched()
+                }
+            })
+            
+        }
+
         dispatchGroup.leave()
         dispatchGroup.wait()
     }

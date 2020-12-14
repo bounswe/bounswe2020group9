@@ -10,7 +10,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-         <!--Main View Controller-->
+        <!--Main View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="MainViewController" customModule="Bazaar_iOS" customModuleProvider="target" sceneMemberID="viewController">
@@ -58,7 +58,7 @@
                             </stackView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="nHk-J4-f5d">
                                 <rect key="frame" x="10" y="117.66666666666669" width="394" height="35"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="35" id="C54-vu-P8H"/>
                                 </constraints>
@@ -99,17 +99,17 @@
                                                             </constraints>
                                                         </imageView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hak-eK-yP2" userLabel="searchCellLabel">
-                                                            <rect key="frame" x="30.333333333333343" y="11.666666666666666" width="290" height="20.333333333333336"/>
+                                                            <rect key="frame" x="30.333333333333343" y="11.666666666666666" width="290.33333333333326" height="20.333333333333336"/>
                                                             <accessibility key="accessibilityConfiguration" identifier="searchWordLabel"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <color key="textColor" red="0.26605003240000002" green="0.26605003240000002" blue="0.26605003240000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QSg-5L-QuQ" userLabel="categoryLabel">
-                                                            <rect key="frame" x="330.33333333333331" y="11.666666666666666" width="43.666666666666686" height="20.333333333333336"/>
+                                                            <rect key="frame" x="330.66666666666669" y="11.666666666666666" width="43.333333333333314" height="20.333333333333336"/>
                                                             <accessibility key="accessibilityConfiguration" identifier="searchResultTypeLabel"/>
                                                             <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="17"/>
-                                                            <color key="textColor" systemColor="systemGrayColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <color key="textColor" systemColor="systemGrayColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
@@ -133,12 +133,13 @@
                             </tableView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" directionalLockEnabled="YES" alwaysBounceVertical="YES" pagingEnabled="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="150" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="7YP-nJ-ocK">
                                 <rect key="frame" x="10" y="203" width="394" height="693"/>
-                                <color key="backgroundColor" systemColor="tertiarySystemFillColor" red="0.46274509800000002" green="0.46274509800000002" blue="0.50196078430000002" alpha="0.12" colorSpace="custom" customColorSpace="sRGB"/>
-                                <color key="separatorColor" systemColor="tertiarySystemFillColor" red="0.46274509800000002" green="0.46274509800000002" blue="0.50196078430000002" alpha="0.12" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" systemColor="tertiarySystemFillColor"/>
+                                <color key="separatorColor" systemColor="tertiarySystemFillColor"/>
                                 <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </tableView>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="ndD-4i-lO6"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="c2c-qR-Fcn" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.06" id="2Gb-z2-msC"/>
@@ -164,7 +165,6 @@
                             <constraint firstAttribute="trailing" secondItem="nHk-J4-f5d" secondAttribute="trailing" constant="10" id="yda-a9-Wef"/>
                             <constraint firstItem="dhL-Ey-KZT" firstAttribute="leading" secondItem="7YP-nJ-ocK" secondAttribute="leading" id="zP2-cv-CvO"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="ndD-4i-lO6"/>
                     </view>
                     <navigationItem key="navigationItem" id="MYc-uR-rci"/>
                     <connections>
@@ -1215,7 +1215,7 @@
                                                 <attributes>
                                                     <color key="NSBackgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                     <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                                    <font key="NSFont" metaFont="menu" size="14"/>
+                                                    <font key="NSFont" metaFont="system" size="14"/>
                                                     <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
                                                 </attributes>
                                             </fragment>
@@ -2464,8 +2464,6 @@
         <image name="cart.fill" catalog="system" width="128" height="102"/>
         <image name="chevron.left" catalog="system" width="96" height="128"/>
         <image name="clock" catalog="system" width="128" height="121"/>
-        <image name="gear" catalog="system" width="128" height="119"/>
-        <image name="gift" catalog="system" width="128" height="124"/>
         <image name="exit_icon" width="50" height="50"/>
         <image name="heart" catalog="system" width="128" height="109"/>
         <image name="heart.fill" catalog="system" width="128" height="109"/>
@@ -2483,11 +2481,14 @@
         <image name="person" catalog="system" width="128" height="117"/>
         <image name="person.fill" catalog="system" width="128" height="120"/>
         <image name="plus" catalog="system" width="128" height="113"/>
-        <image name="profilepic" width="652" height="649"/>
-        <image name="questionmark.square" catalog="system" width="128" height="114"/>
+        <image name="right_arrow" width="64" height="64"/>
+        <image name="settings_icon" width="50" height="50"/>
         <image name="xmark.circle" catalog="system" width="128" height="121"/>
         <image name="xmark.circle" width="13" height="13"/>
         <systemColor name="darkTextColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="opaqueSeparatorColor">
@@ -2499,23 +2500,14 @@
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
+        <systemColor name="systemGray6Color">
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
         <systemColor name="systemGrayColor">
             <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemOrangeColor">
             <color red="1" green="0.58431372549019611" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <image name="right_arrow" width="64" height="64"/>
-        <image name="settings_icon" width="50" height="50"/>
-        <image name="xmark.circle" catalog="system" width="128" height="121"/>
-        <systemColor name="labelColor">
-            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemGray6Color">
-            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="tertiarySystemFillColor">
             <color red="0.46274509803921571" green="0.46274509803921571" blue="0.50196078431372548" alpha="0.12" colorSpace="custom" customColorSpace="sRGB"/>

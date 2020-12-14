@@ -10,7 +10,7 @@ import Foundation
 struct K {
     static let isLoggedinKey = "isLoggedIn"
     static let searchHistoryKey = "searchHistory"
-    static let user_id = " "
+    static let userIdKey = "userId"
     static let token = "token"
     static let usernameKey = "username"
     static let userFirstNameKey = "userFirstName"

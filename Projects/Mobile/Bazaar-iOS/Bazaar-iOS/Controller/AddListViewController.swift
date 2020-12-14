@@ -65,8 +65,8 @@ class AddListViewController: UIViewController {
                 alertController.message = "Please enter a List Name"
                 self.present(alertController, animated: true, completion: nil)
             } else {
-                if let isPriv = self.isPrivate {
-                    APIManager().addList(name: listName, customer: UserDefaults.standard.value(forKey: K.user_id) as! String, isPrivate: isPriv) { (result) in
+                if let isPriv = self.isPrivate ,let userId=UserDefaults.standard.value(forKey: K.userIdKey) as? String{
+                    APIManager().addList(name: listName, customer: userId, isPrivate: isPriv) { (result) in
                         switch result {
                         case .success(let listData):
                             self.dismiss(animated: false, completion: nil)
@@ -105,13 +105,11 @@ class AddListViewController: UIViewController {
         sender.isSelected = !sender.isSelected
         if sender.isSelected {
             if (self.isPrivate != nil) {
-                self.isPrivateRadioButton.sendActions(for: .touchUpInside)
+                self.isPrivateRadioButton.sendActions(for: .touchUpInside )
             }
             self.isPrivate = false
         } else{
             self.isPrivate = nil
         }
     }
-    
-    
 }

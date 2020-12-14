@@ -26,7 +26,7 @@ struct APIManager {
                     }
                     if let decodedData:AuthData = APIParse().parseJSON(safeData: safeData){
                         completionHandler(.success(decodedData.token))
-                        UserDefaults.standard.set(String(decodedData.user_id), forKey: K.user_id)
+                        UserDefaults.standard.set(String(decodedData.user_id), forKey: K.userIdKey)
                         UserDefaults.standard.set(String(decodedData.token), forKey: K.token)
                     }else {
                         completionHandler(.failure(MyError.runtimeError("Error")))

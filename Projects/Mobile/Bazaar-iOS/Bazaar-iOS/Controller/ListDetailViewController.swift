@@ -89,7 +89,7 @@ extension ListDetailViewController: UITableViewDelegate, UITableViewDataSource {
         let delete = UIContextualAction(style: .destructive, title: "Delete") { (action, sourceView, completionHandler) in
                 print("index path of delete: \(indexPath)")
             completionHandler(true)
-            APIManager().deleteProductFromList(customer: UserDefaults.standard.value(forKey: K.user_id) as! String, list_id: String(self.list.id), product_id: String(product.id)) { (result) in
+            APIManager().deleteProductFromList(customer: UserDefaults.standard.value(forKey: K.userIdKey) as! String, list_id: String(self.list.id), product_id: String(product.id)) { (result) in
                 switch result {
                 case .success(_):
                     alertController.message = "\(product.name) is successfully deleted"
