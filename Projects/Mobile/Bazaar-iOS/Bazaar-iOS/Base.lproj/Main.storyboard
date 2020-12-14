@@ -889,10 +889,46 @@
                     <view key="view" contentMode="scaleToFill" id="N0t-zQ-hI4">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ZFd-QD-nnJ" userLabel="Cart Table View">
+                                <rect key="frame" x="0.0" y="10" width="414" height="793"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cartCell" id="ghX-0c-aTg" customClass="ProductCell" customModule="Bazaar_iOS" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="414" height="43.666667938232422"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ghX-0c-aTg" id="CGn-qD-53k">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.666667938232422"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your cart is empty." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZMB-XJ-Mj0" userLabel="Empty Cart Label">
+                                <rect key="frame" x="0.0" y="98.000000000000014" width="414" height="181.33333333333337"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="28"/>
+                                <color key="textColor" red="0.35893876899999999" green="0.35893876899999999" blue="0.35893876899999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="8eg-qV-qXN" firstAttribute="trailing" secondItem="ZMB-XJ-Mj0" secondAttribute="trailing" id="3xl-ew-Fj7"/>
+                            <constraint firstItem="ZFd-QD-nnJ" firstAttribute="top" secondItem="N0t-zQ-hI4" secondAttribute="top" constant="10" id="Ae7-6n-cmY"/>
+                            <constraint firstItem="ZFd-QD-nnJ" firstAttribute="leading" secondItem="8eg-qV-qXN" secondAttribute="leading" id="U8X-y2-l1a"/>
+                            <constraint firstItem="ZMB-XJ-Mj0" firstAttribute="top" secondItem="8eg-qV-qXN" secondAttribute="top" constant="10" id="WbC-nL-Qbo"/>
+                            <constraint firstItem="8eg-qV-qXN" firstAttribute="trailing" secondItem="ZFd-QD-nnJ" secondAttribute="trailing" id="Wdj-Ps-m0s"/>
+                            <constraint firstItem="8eg-qV-qXN" firstAttribute="bottom" secondItem="ZFd-QD-nnJ" secondAttribute="bottom" constant="10" id="g5W-aU-0vy"/>
+                            <constraint firstItem="ZMB-XJ-Mj0" firstAttribute="leading" secondItem="8eg-qV-qXN" secondAttribute="leading" id="gzR-lg-LRl"/>
+                            <constraint firstItem="ZMB-XJ-Mj0" firstAttribute="height" secondItem="8eg-qV-qXN" secondAttribute="height" multiplier="0.25" id="qEC-so-qlS"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="8eg-qV-qXN"/>
                     </view>
                     <navigationItem key="navigationItem" id="ahA-a5-9E0"/>
+                    <connections>
+                        <outlet property="cartTableView" destination="ZFd-QD-nnJ" id="qOx-B7-dpH"/>
+                        <outlet property="emptyCartLabel" destination="ZMB-XJ-Mj0" id="YYw-6m-VgB"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="N7e-7I-zm9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
