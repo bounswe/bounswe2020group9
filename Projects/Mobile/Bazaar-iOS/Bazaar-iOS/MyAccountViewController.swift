@@ -43,6 +43,11 @@ class MyAccountViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     @IBAction func logoutButtonPressed(_ sender: UIButton) {
+        UserDefaults.standard.set(nil, forKey: K.userFirstNameKey)
+        UserDefaults.standard.set(nil, forKey: K.userLastNameKey)
+        UserDefaults.standard.set(nil, forKey: K.usernameKey)
+        UserDefaults.standard.set(nil, forKey: K.userAddressKey)
+        UserDefaults.standard.set(nil, forKey: K.userPhoneNumKey)
         UserDefaults.standard.set(false, forKey: K.isLoggedinKey)
         GIDSignIn.sharedInstance().signOut()
         self.dismiss(animated: true, completion: nil)
