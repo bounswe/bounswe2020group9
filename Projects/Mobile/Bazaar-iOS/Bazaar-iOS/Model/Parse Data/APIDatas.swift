@@ -25,6 +25,10 @@ struct SignUpData:Codable {
     let message:String
 }
 
+struct ResetPassWordEmailData:Codable {
+    let message:String
+}
+
 struct ProductData: Codable {
     let id: Int
     let name: String

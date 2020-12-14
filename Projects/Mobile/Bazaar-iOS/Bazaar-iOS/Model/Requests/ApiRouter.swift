@@ -12,6 +12,7 @@ enum ApiRouter: URLRequestBuilder {
     
     case authenticate(username: String, password: String)
     case signUp(username:String, password:String, user_type:String)
+    case resetPasswordEmail(username:String)
     // MARK: - Path
     internal var path: String {
         switch self {
@@ -19,6 +20,8 @@ enum ApiRouter: URLRequestBuilder {
             return "api/user/login/"
         case .signUp:
             return "api/user/signup/"
+        case .resetPasswordEmail:
+            return "api/user/resetpwmail/"
         }
     }
 
@@ -33,6 +36,8 @@ enum ApiRouter: URLRequestBuilder {
             params["username"] = username
             params["password"] = password
             params["user_type"] = user_type
+        case .resetPasswordEmail(let username):
+            params["username"] = username
         }
         return params
     }
@@ -44,6 +49,8 @@ enum ApiRouter: URLRequestBuilder {
             headers["Accept"] = "application/json"
         case .signUp:
             headers["Accept"] = "application/json"
+        case .resetPasswordEmail:
+            headers["Accept"] = "application/json"
         }
         return headers
     }
@@ -54,6 +61,8 @@ enum ApiRouter: URLRequestBuilder {
         case .authenticate:
             return .post
         case .signUp:
+            return .post
+        case .resetPasswordEmail:
             return .post
         }
     }
