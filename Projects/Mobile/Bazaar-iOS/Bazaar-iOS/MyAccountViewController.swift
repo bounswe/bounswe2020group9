@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import GoogleSignIn
 
 class MyAccountViewController: UIViewController {
     override func viewDidLoad() {
@@ -16,5 +17,10 @@ class MyAccountViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     @IBAction func logoutButtonPressed(_ sender: UIButton) {
+        UserDefaults.standard.set(false, forKey: K.isLoggedinKey)
+        GIDSignIn.sharedInstance().signOut()
+        self.dismiss(animated: true, completion: nil)
+    }
+    @IBAction func resetPasswordButtonPressed(_ sender: UIButton) {
     }
 }

@@ -879,13 +879,6 @@
                                     <constraint firstItem="m86-Em-bXp" firstAttribute="width" secondItem="6aG-k9-JXU" secondAttribute="width" multiplier="0.1" id="tVi-vL-vNF"/>
                                 </constraints>
                             </stackView>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="A8j-iX-P6E">
-                                <rect key="frame" x="153" y="739.33333333333337" width="109" height="30"/>
-                                <state key="normal" title="Button"/>
-                                <connections>
-                                    <action selector="temporaryLogoutButton:" destination="q6p-hj-l31" eventType="touchUpInside" id="zMd-nw-Onh"/>
-                                </connections>
-                            </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lq5-Wk-g3R">
                                 <rect key="frame" x="20" y="191.66666666666669" width="374" height="537.66666666666652"/>
                                 <subviews>
@@ -1203,7 +1196,6 @@
                         <constraints>
                             <constraint firstItem="lq5-Wk-g3R" firstAttribute="height" secondItem="Oxh-6n-5kT" secondAttribute="height" multiplier="0.6" id="8oC-IT-yEZ"/>
                             <constraint firstItem="lq5-Wk-g3R" firstAttribute="leading" secondItem="M3M-oV-sm5" secondAttribute="leading" constant="20" id="Ccf-ct-LXZ"/>
-                            <constraint firstItem="A8j-iX-P6E" firstAttribute="top" secondItem="lq5-Wk-g3R" secondAttribute="bottom" constant="10" id="ENu-gt-a1l"/>
                             <constraint firstItem="M3M-oV-sm5" firstAttribute="trailing" secondItem="6aG-k9-JXU" secondAttribute="trailing" constant="10" id="FDg-6Y-31N"/>
                             <constraint firstItem="lq5-Wk-g3R" firstAttribute="top" secondItem="6aG-k9-JXU" secondAttribute="bottom" constant="40" id="Koo-Kx-Udj"/>
                             <constraint firstItem="6aG-k9-JXU" firstAttribute="height" secondItem="Oxh-6n-5kT" secondAttribute="height" multiplier="0.06" id="cGu-fv-SO7"/>
@@ -1393,6 +1385,9 @@
                                         <state key="normal" title="Send password reset email" image="lock_icon">
                                             <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
+                                        <connections>
+                                            <action selector="resetPasswordButtonPressed:" destination="L5V-jH-uVD" eventType="touchUpInside" id="tlR-Vz-2mV"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3qp-bg-gGB">
                                         <rect key="frame" x="0.0" y="72" width="139" height="64"/>

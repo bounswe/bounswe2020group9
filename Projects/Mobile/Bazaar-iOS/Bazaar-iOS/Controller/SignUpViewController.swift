@@ -41,7 +41,7 @@ class SignUpViewController: UIViewController {
         GIDSignIn.sharedInstance()?.delegate = self
         GIDSignIn.sharedInstance()?.presentingViewController = self
         // Automatically sign in the user.
-        GIDSignIn.sharedInstance()?.restorePreviousSignIn()
+        //GIDSignIn.sharedInstance()?.restorePreviousSignIn()
         if let isloggedin = UserDefaults.standard.value(forKey: K.isLoggedinKey){
             if isloggedin as! Bool{
                 self.dismiss(animated: true, completion: nil)
