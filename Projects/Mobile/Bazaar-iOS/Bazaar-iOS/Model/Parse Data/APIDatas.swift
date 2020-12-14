@@ -13,13 +13,20 @@ struct LoginData : Codable{
     let first_name: String
     let last_name:String
     let email:String
-    
 }
 
 struct AuthData:Codable {
     let token:String
     let user_id:Int
     let user_type:Int
+}
+
+struct SignUpData:Codable {
+    let message:String
+}
+
+struct ResetPassWordEmailData:Codable {
+    let message:String
 }
 
 

@@ -18,6 +18,8 @@ enum ApiRouter: URLRequestBuilder {
     case editList(customer:String, list: String, newName: String, newIsPrivate: String)
     
     
+    case signUp(username:String, password:String, user_type:String)
+    case resetPasswordEmail(username:String)
     // MARK: - Path
     internal var path: String {
         switch self {
@@ -33,6 +35,10 @@ enum ApiRouter: URLRequestBuilder {
             return "api/user/" + customer + "/list/" + list_id + "/edit/"
         case .editList(let customer, let list, _,_):
             return "/api/user/" + customer + "/list/" + list + "/"
+        case .signUp:
+            return "api/user/signup/"
+        case .resetPasswordEmail:
+            return "api/user/resetpwmail/"
         }
         
     }
@@ -55,6 +61,12 @@ enum ApiRouter: URLRequestBuilder {
             params["is_private"] = isPrivate
         default:
             break
+        case .signUp(let username, let password, let user_type):
+            params["username"] = username
+            params["password"] = password
+            params["user_type"] = user_type
+        case .resetPasswordEmail(let username):
+            params["username"] = username
         }
         return params
     }
@@ -62,7 +74,11 @@ enum ApiRouter: URLRequestBuilder {
     internal var headers: HTTPHeaders? {
         var headers = HTTPHeaders.init()
         switch self {
-        case .authenticate( _, _):
+        case .authenticate:
+            headers["Accept"] = "application/json"
+        case .signUp:
+            headers["Accept"] = "application/json"
+        case .resetPasswordEmail:
             headers["Accept"] = "application/json"
         case .getCustomerLists(_, let isCustomerLoggedIn):
             if isCustomerLoggedIn {
@@ -85,6 +101,10 @@ enum ApiRouter: URLRequestBuilder {
             return .delete
         case .editList:
             return .put
+        case .signUp:
+            return .post
+        case .resetPasswordEmail:
+            return .post
         }
     }
 

@@ -9,8 +9,8 @@ import UIKit
 import GoogleSignIn
 
 protocol LoginViewControllerDelegate {
-    func loginViewControllerDidPressSignUp(isPressed:Bool)
-    func loginViewControllerDidPressContinueAsGuest(isPressed:Bool)
+    func loginViewControllerDidPressSignUp()
+    func loginViewControllerDidPressContinueAsGuest()
 }
 
 class LoginViewController: UIViewController {
@@ -21,6 +21,7 @@ class LoginViewController: UIViewController {
     @IBOutlet weak var frameView: UIView!
     var delegate:LoginViewControllerDelegate?
     var isSignUpPressed = false
+    var isContinueAsGuestPressed = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,22 +30,29 @@ class LoginViewController: UIViewController {
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        isContinueAsGuestPressed = false
+        isSignUpPressed = false
         GIDSignIn.sharedInstance()?.delegate = self
         GIDSignIn.sharedInstance()?.presentingViewController = self
         // Automatically sign in the user.
-        GIDSignIn.sharedInstance()?.restorePreviousSignIn()
+        //GIDSignIn.sharedInstance()?.restorePreviousSignIn()
+        if let isloggedin = UserDefaults.standard.value(forKey: K.isLoggedinKey){
+            if isloggedin as! Bool{
+                self.dismiss(animated: true, completion: nil)
+            }
+        }
     }
 
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        if UserDefaults.standard.value(forKey: K.isLoggedinKey) as! Bool {
-            self.dismiss(animated: true, completion: nil)
-        }else {
-            delegate?.loginViewControllerDidPressSignUp(isPressed: isSignUpPressed)
-            delegate?.loginViewControllerDidPressContinueAsGuest(isPressed: !isSignUpPressed)
+        if isSignUpPressed {
+            delegate?.loginViewControllerDidPressSignUp()
         }
-
+        if isContinueAsGuestPressed{
+            delegate?.loginViewControllerDidPressContinueAsGuest()
+        }
+        
     }
     
     @IBAction func signUpButtonPressed(_ sender: UIButton) {
@@ -52,7 +60,7 @@ class LoginViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     @IBAction func continueAsGuestButtonPressed(_ sender: UIButton) {
-        isSignUpPressed=false
+        isContinueAsGuestPressed=true
         self.dismiss(animated: false, completion: nil)
     }
     
@@ -74,6 +82,7 @@ class LoginViewController: UIViewController {
                             switch result {
                             case .success(_):
                                 UserDefaults.standard.set(true, forKey: K.isLoggedinKey)
+                                UserDefaults.standard.set(email, forKey: K.usernameKey)
                                 self.dismiss(animated: false, completion: nil)
                             case .failure(_):
                                 alertController.message = "Invalid username or password"
@@ -105,15 +114,19 @@ extension LoginViewController: GIDSignInDelegate{
         return
       }
       // Perform any operations on signed in user here.
-      let userId = user.userID                  // For client-side use only!
-      let idToken = user.authentication.idToken // Safe to send to the server
-      let fullName = user.profile.name
-      let givenName = user.profile.givenName
-      let familyName = user.profile.familyName
-      let email = user.profile.email
+        let userId = user.userID                  // For client-side use only!
+        let idToken = user.authentication.idToken // Safe to send to the server
+        let fullName = user.profile.name
+        let givenName = user.profile.givenName
+        let familyName = user.profile.familyName
+        let email = user.profile.email
+        
+        UserDefaults.standard.set(familyName, forKey: K.userLastNameKey)
+        UserDefaults.standard.set(givenName, forKey: K.userFirstNameKey)
+        UserDefaults.standard.set(email, forKey: K.usernameKey)
         UserDefaults.standard.set(true, forKey: K.isLoggedinKey)
         self.dismiss(animated: true, completion: nil)
-      // ...
+        // ...
     }
     func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!,
               withError error: Error!) {

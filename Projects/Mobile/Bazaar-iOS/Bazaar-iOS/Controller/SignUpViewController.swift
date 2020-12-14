@@ -13,7 +13,7 @@ protocol SignUpViewControllerDelegate {
 }
 
 enum UserType:Int {
-    case Vendor , Customer
+    case Customer , Vendor
 }
 
 class SignUpViewController: UIViewController {
@@ -28,6 +28,7 @@ class SignUpViewController: UIViewController {
     @IBOutlet weak var frameView: UIView!
     var signUpUserType: UserType?
     var delegate:SignUpViewControllerDelegate?
+    var isPressedLoginHere = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,17 +37,21 @@ class SignUpViewController: UIViewController {
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        isPressedLoginHere = false
         GIDSignIn.sharedInstance()?.delegate = self
         GIDSignIn.sharedInstance()?.presentingViewController = self
         // Automatically sign in the user.
-        GIDSignIn.sharedInstance()?.restorePreviousSignIn()
+        //GIDSignIn.sharedInstance()?.restorePreviousSignIn()
+        if let isloggedin = UserDefaults.standard.value(forKey: K.isLoggedinKey){
+            if isloggedin as! Bool{
+                self.dismiss(animated: true, completion: nil)
+            }
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        if UserDefaults.standard.value(forKey: K.isLoggedinKey) as! Bool {
-            self.dismiss(animated: true, completion: nil)
-        }else {
+        if isPressedLoginHere{
             delegate?.signUpViewControllerDidPressLoginHere()
         }
     }
@@ -54,7 +59,7 @@ class SignUpViewController: UIViewController {
     @IBAction func signUpButtonPressed(_ sender: UIButton) {
         let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
-        
+
         if let firstName = firstNameTextField.text{
             if !firstName.isName {
                 alertController.message = "Your First Name is invalid. Please enter a valid First Name."
@@ -76,7 +81,20 @@ class SignUpViewController: UIViewController {
                                         self.present(alertController, animated: true, completion: nil)
                                     }else {
                                         if let userType = self.signUpUserType{
-                                            UserDefaults.standard.set(true, forKey: K.isLoggedinKey)
+                                            APIManager().signUp(username: email, password: password, userType: "\(userType.rawValue+1)") { (result) in
+                                                switch result{
+                                                case .success(_):
+                                                    let alertController2 = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
+                                                    alertController2.message = "You have successfully signed up! To login, a mail has been sent to your e-mail address, please check and verify your e-mail"
+                                                    alertController2.addAction(UIAlertAction(title: "Go To Login", style: UIAlertAction.Style.default){ (action:UIAlertAction!) in
+                                                        self.dismiss(animated: true, completion: nil)
+                                                    })
+                                                    self.present(alertController2, animated: true, completion: nil)
+                                                case .failure(let err):
+                                                    alertController.message = err.localizedDescription
+                                                    self.present(alertController, animated: true, completion: nil)
+                                                }
+                                            }
                                         }else {
                                             alertController.message = "Choose one, Vendor or Customer"
                                             self.present(alertController, animated: true, completion: nil)
@@ -92,6 +110,7 @@ class SignUpViewController: UIViewController {
     }
     
     @IBAction func loginHereButtonPressed(_ sender: UIButton) {
+        isPressedLoginHere=true
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -142,6 +161,9 @@ extension SignUpViewController: GIDSignInDelegate{
       let givenName = user.profile.givenName
       let familyName = user.profile.familyName
       let email = user.profile.email
+        UserDefaults.standard.set(familyName, forKey: K.userLastNameKey)
+        UserDefaults.standard.set(givenName, forKey: K.userFirstNameKey)
+        UserDefaults.standard.set(email, forKey: K.usernameKey)
         UserDefaults.standard.set(true, forKey: K.isLoggedinKey)
         self.dismiss(animated: true, completion: nil)
       // ...
