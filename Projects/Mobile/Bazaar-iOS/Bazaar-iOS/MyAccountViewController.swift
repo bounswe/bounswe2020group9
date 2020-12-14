@@ -19,6 +19,13 @@ class MyAccountViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        firstNameTextField.tag=1
+        lastNameTextField.tag=2
+        phoneNumberTextField.tag = 3
+        firstNameTextField.delegate=self
+        lastNameTextField.delegate=self
+        addressTextView.delegate=self
+        phoneNumberTextField.delegate=self
         if let firstName = UserDefaults.standard.value(forKey: K.userFirstNameKey) as? String{
             firstNameTextField.text = firstName
         }
@@ -67,5 +74,24 @@ class MyAccountViewController: UIViewController {
                 }
             }
         }
+    }
+}
+
+extension MyAccountViewController: UITextFieldDelegate, UITextViewDelegate {
+    
+    func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
+        if textField.tag == 1 {
+            UserDefaults.standard.set(textField.text, forKey: K.userFirstNameKey)
+        }
+        if textField.tag == 2 {
+            UserDefaults.standard.set(textField.text, forKey: K.userLastNameKey)
+        }
+        if textField.tag == 3 {
+            UserDefaults.standard.set(textField.text, forKey: K.userPhoneNumKey)
+        }
+        
+    }
+    func textViewDidEndEditing(_ textView: UITextView) {
+        UserDefaults.standard.set(textView.text, forKey: K.userAddressKey)
     }
 }
