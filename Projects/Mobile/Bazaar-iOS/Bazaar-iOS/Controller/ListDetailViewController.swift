@@ -109,8 +109,8 @@ extension ListDetailViewController: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-let imageCache = NSCache<NSString,UIImage>()
-
+//let imageCache = NSCache<NSString,UIImage>()
+/*
 extension UIImageView {
     func loadImageUsingCache(withUrl urlString : String) throws -> String {
         let url = URL(string: urlString)
@@ -146,4 +146,4 @@ extension UIImageView {
         }).resume()
         return "done"
     }
-}
+}*/
