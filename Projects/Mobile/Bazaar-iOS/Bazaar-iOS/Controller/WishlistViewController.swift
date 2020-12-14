@@ -146,22 +146,25 @@ extension WishlistViewController:UITableViewDelegate,UITableViewDataSource {
         let list = CustomerLists.shared.customerLists[indexPath.row]
         let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+        
         let delete = UIContextualAction(style: .destructive, title: "Delete") { (action, sourceView, completionHandler) in
                 print("index path of delete: \(indexPath)")
             completionHandler(true)
-            APIManager().deleteList(customer: UserDefaults.standard.value(forKey: K.user_id) as! String, id: String(list.id)) { (result) in
-                switch result {
-                case .success(_):
-                    alertController.message = "\(list.name) is successfully deleted"
-                    self.present(alertController, animated: true, completion: nil)
-                    self.listsTableView.reloadData()
-                case .failure(_):
-                    alertController.message = "\(list.name) cannot be deleted"
-                    self.present(alertController, animated: true, completion: nil)
+            DispatchQueue.main.async {
+                APIManager().deleteList(customer: UserDefaults.standard.value(forKey: K.user_id) as! String, id: String(list.id)) { (result) in
+                    switch result {
+                    case .success(_):
+                        alertController.message = "\(list.name) is successfully deleted"
+                        self.present(alertController, animated: true, completion: nil)
+                        self.customerListsInstance.customerLists.remove(at: indexPath.row)
+                        self.listsTableView.reloadData()
+                    case .failure(_):
+                        alertController.message = "\(list.name) cannot be deleted"
+                        self.present(alertController, animated: true, completion: nil)
+                    }
                 }
             }
         }
-            
         delete.backgroundColor = #colorLiteral(red: 1, green: 0.6431372549, blue: 0.3568627451, alpha: 1)
         let swipeActionConfig = UISwipeActionsConfiguration(actions: [delete])
         swipeActionConfig.performsFirstActionWithFullSwipe = false

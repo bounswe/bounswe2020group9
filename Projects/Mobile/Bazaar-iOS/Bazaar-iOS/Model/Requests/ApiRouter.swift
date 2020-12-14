@@ -16,6 +16,8 @@ enum ApiRouter: URLRequestBuilder {
     case deleteList(customer: String, id: String)
     case deleteProductFromList(customer: String, list_id: String, product_id: String)
     case editList(customer:String, list: String, newName: String, newIsPrivate: String)
+    
+    
     // MARK: - Path
     internal var path: String {
         switch self {
