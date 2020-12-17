@@ -68,7 +68,7 @@ class UserDetailAPIView(APIView):
         try:
             return User.objects.get(id=id)
         except User.DoesNotExist:
-            raise Http404
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
     def get(self, request, id):
         user = self.get_user(id)
@@ -148,11 +148,12 @@ class UserSignupAPIView(APIView):
             )
             try:
                 email.send(fail_silently=False)
+                return Response({"message": "An mail has been sent to your email, please check it"},
+                            status=status.HTTP_201_CREATED)
             except:
                 user.delete()
                 return Response({"email": ["Couldn't send email"]}, status=status.HTTP_400_BAD_REQUEST)
-            return Response({"message": "An mail has been sent to your email, please check it"},
-                            status=status.HTTP_201_CREATED)
+            
         else:
             return Response(serializer._errors, status=status.HTTP_400_BAD_REQUEST)
 
