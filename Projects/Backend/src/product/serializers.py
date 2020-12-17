@@ -79,7 +79,7 @@ class ProductListSerializer(serializers.ModelSerializer):
         model = ProductList
         fields = ("id", "name", "customer", "products")
 
-class SearchHistory(serializers.ModelSerializer):
+class SearchHistorySerializer(serializers.ModelSerializer):
     user = serializers.IntegerField(read_only=True)
     searched = serializers.CharField(required=True, allow_blank=False, max_length=255)
 

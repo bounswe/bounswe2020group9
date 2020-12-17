@@ -9,7 +9,7 @@ from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_4
 from rest_framework.views import APIView
 
 from product.models import Product, ProductList, SubOrder
-from product.serializers import ProductSerializer, ProductListSerializer
+from product.serializers import ProductSerializer, ProductListSerializer,SearchHistorySerializer
 from product.functions import search_product_db,datamuse_call
 
 
@@ -299,8 +299,13 @@ class ManageCartAPIView(APIView):
         return Response(serializer.data)
 
 class SearchAPIView(APIView):
-    #authenticate and serialize search history
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     def get(self,request):
-        word_list = datamuse_call(request.data["word"])
-        product_list = search_product_db(word_list,request.data["word"])
-        return Response(product_list, status=status.HTTP_200_OK)
+        serializer = SearchHistorySerializer(data={"user":request.user.id,"searched":request.data["searched"]})
+        if serializer.is_valid():
+            serializer.save()
+            word_list = datamuse_call(request.data["searched"])
+            product_list = search_product_db(word_list,request.data["searched"])
+            return Response(product_list, status=status.HTTP_200_OK)
+        return Response(serializer._errors, status=status.HTTP_400_BAD_REQUEST)
