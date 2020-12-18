@@ -301,11 +301,15 @@ class ManageCartAPIView(APIView):
 class SearchAPIView(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
-    def get(self,request):
+    def get(self,request,filter_type):
         serializer = SearchHistorySerializer(data={"user":request.user.id,"searched":request.data["searched"]})
         if serializer.is_valid():
             serializer.save()
             word_list = datamuse_call(request.data["searched"])
             product_list = search_product_db(word_list,request.data["searched"])
-            return Response(product_list, status=status.HTTP_200_OK)
+            filter_type = str(filter_type)
+            if filter_type == "none":
+                return Response(product_list, status=status.HTTP_200_OK)
+            """elif(filter_type[:3] == "prc"):
+                price_arr = filter_type[3:].split("-")"""
         return Response(serializer._errors, status=status.HTTP_400_BAD_REQUEST)

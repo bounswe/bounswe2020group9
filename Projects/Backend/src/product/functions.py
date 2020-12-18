@@ -142,10 +142,12 @@ def search_product_db(word_array,word_searched):
     results = []
     results = results + list(Product.objects.filter(name__icontains = word_searched).values())
     results = results + list(Product.objects.filter(detail__icontains = word_searched).values())
+    results = results + list(Product.objects.filter(brand__icontains = word_searched).values())
     print(results)
     for words in word_array:
         results = results + list(Product.objects.filter(name__icontains = words).values())
         results = results + list(Product.objects.filter(detail__icontains = words).values())
+        results = results + list(Product.objects.filter(brand__icontains = word_searched).values())
     res_set = set(results)
     results = list(res_set)
     return results
