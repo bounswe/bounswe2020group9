@@ -172,3 +172,53 @@ def datamuse_call(word):
             result.append(element["word"])
     res = set(result)
     return list(res)
+def filter_func(filter_types,product_list):
+    for filter_type in filter_types:
+        if filter_type == "none": #no filter
+            filtered_array = product_list
+        elif filter_type[:4] == "prc=": # price filter
+            price_arr = filter_type[4:].split("-")
+            first_num = float(price_arr[0])
+            second_num = float(price_arr[1])
+            filtered_array = []
+            for element in product_list:
+                if float(element["price"]) >= first_num and float(element["price"]) <= second_num:
+                    filtered_array.append(element)
+            product_list=filtered_array
+        elif filter_type[:3] == "pr=" : # customer reviews
+            filtered_array = []
+            rating = float(filter_type[3:])
+            for element in product_list:
+                if float(element["rating"]) >= rating:
+                    filtered_array.append(element)
+            product_list=filtered_array
+        elif filter_type[:3] == "br=" : # brand name filter
+            filtered_array = []
+            brand = str(filter_type[3:])
+            for element in product_list:
+                if str(element["brand"]) == brand:
+                    filtered_array.append(element)
+            product_list=filtered_array
+        #TODO sort by vendor
+        elif filter_type[:3] == "ss=": # stock filter
+            stock_arr = filter_type[4:].split("-")
+            first_num = int(stock_arr[0])
+            second_num = int(stock_arr[1])
+            filtered_array = []
+            for element in product_list:
+                if int(element["stock"]) >= first_num and int(element["stock"]) <= second_num:
+                    filtered_array.append(element)
+            product_list=filtered_array
+    return product_list
+def sort_func(sort_type,product_list):
+    if sort_type == "bs":
+        return sorted(product_list, key = lambda i: i['sell_counter'],reverse=True)
+    elif sort_type == "mf":
+        return sorted(product_list, key = lambda i: i['rating'],reverse=True)
+    elif sort_type == "pr_des":
+        return sorted(product_list, key = lambda i: i['rating'],reverse=True)
+    elif sort_type == "pr_asc":
+        return sorted(product_list, key = lambda i: i['rating'])
+    #TODO release date, comment num
+    else:
+        return product_list

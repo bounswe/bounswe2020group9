@@ -17,7 +17,6 @@ from user.models import Customer, Admin, Vendor
 from .models import User
 from .serializers import UserSerializer
 
-
 from user.models import Customer, Admin, Vendor
 from .models import User
 from .serializers import UserSerializer

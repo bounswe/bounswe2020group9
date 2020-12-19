@@ -37,7 +37,7 @@ class Category(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=255)
     detail = models.CharField(max_length=511, blank=True)
-    # image = models.ImageField(upload_to ='pics')#option is to select media directory TODO need to implement
+    image = models.ImageField(upload_to ='pics')#option is to select media directory TODO need to implement
     brand = models.CharField(max_length=255)
     price = models.FloatField()
     stock = models.IntegerField(default=0)
