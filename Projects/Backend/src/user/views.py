@@ -11,15 +11,15 @@ from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.status import HTTP_404_NOT_FOUND
 from rest_framework.views import APIView
 
+from product.models import Product
+from product.serializers import ProductSerializer
 from user.models import Customer, Admin, Vendor
 from .models import User
 from .serializers import UserSerializer
 
-from user.models import Customer, Admin, Vendor
-from .models import User
-from .serializers import UserSerializer
 
 class UserListAPIView(APIView):
 
@@ -108,8 +108,9 @@ class UserLoginAPIView(ObtainAuthToken):
         return Response({
             'token': token.key,
             'user_id': user.pk,
-            'email': user.email,
-            'password': password
+            # 'email': user.email,
+            # 'password': password,
+            'user_type': user.user_type
         })
 
 
@@ -247,3 +248,14 @@ class VerificationView(APIView):
         user.save()
         return Response({"message": "Your Account, " + user.email + " has been activated"},
                             status=status.HTTP_200_OK)
+
+class vendorProductListView(APIView):
+
+    def get(self, request, vendor_id):
+        vendor = Vendor.objects.filter(user_id=vendor_id)
+        if not vendor.exists():
+            return Response({"message": "vendor not found"}, status=HTTP_404_NOT_FOUND)
+
+        product_list = Product.objects.filter(vendor_id=vendor_id)
+        serializer = ProductSerializer(product_list,many=True, context={'request': request})
+        return Response(serializer.data)

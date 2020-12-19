@@ -21,18 +21,13 @@ def productImage(instance, filename):
     return '/'.join(['images', str(instance.name), filename])
 
 
-def productImage(instance, filename):
-    return '/'.join(['images', str(instance.name), filename])
-
-
-
 class Category(models.Model):
     name = models.CharField(max_length=255, unique=True)
     parent = models.ForeignKey("self", default=0, on_delete=models.CASCADE, db_constraint=False)
-    # products = models.ManyToManyField(Product, related_name="categories", blank=True)
 
     def __str__(self):
         return self.name
+
 
 class Product(models.Model):
     name = models.CharField(max_length=255)
@@ -44,7 +39,7 @@ class Product(models.Model):
     rating = models.FloatField(default=0)
     sell_counter = models.IntegerField(default=0)
     release_date = models.DateTimeField(default=timezone.now)
-    picture = models.ImageField(upload_to=productImage, null=True, blank=True)
+    picture = models.ImageField(upload_to=productImage, null=True, blank=True, default=None)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, default=1)
 
     vendor = models.ForeignKey(
@@ -62,7 +57,7 @@ class Product(models.Model):
 class SubOrder(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    amount = models.IntegerField(default=1)
+    amount = models.IntegerField(default=0)
     purchased = models.BooleanField(default=False)
 
 
@@ -72,7 +67,6 @@ class Label(models.Model):
 
     def __str__(self):
         return self.name
-
 
 
 class Order(models.Model):
@@ -97,9 +91,10 @@ class Comment(models.Model):
         (4, "Good"),
         (5, "Excellent"),
     )
-    timestamp = models.DateTimeField()
+    timestamp = models.DateTimeField(auto_now_add=True)
     body = models.CharField(max_length=255)
     rating = models.PositiveSmallIntegerField(choices=RATES, default=5)
+    is_anonymous = models.BooleanField(default=False)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
 

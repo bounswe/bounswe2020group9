@@ -7,15 +7,16 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_204_NO_CONTENT, \
     HTTP_200_OK, HTTP_202_ACCEPTED
 from rest_framework.views import APIView
+from django.utils import timezone
 
-from product.models import Product, ProductList, SubOrder
-from product.serializers import ProductSerializer, ProductListSerializer,SearchHistorySerializer
+from product.models import Product, ProductList, SubOrder, Comment, Category
+from product.serializers import ProductSerializer, ProductListSerializer, CommentSerializer, SubOrderSerializer,SearchHistorySerializer
 from product.functions import search_product_db,datamuse_call,filter_func,sort_func
 
 
 # Create your views here.
-from user.models import User, Customer
-
+from user.models import User, Customer, Vendor
+from user.serializers import UserSerializer
 
 class ProductListAPIView(APIView):
 
@@ -25,11 +26,24 @@ class ProductListAPIView(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        serializer = ProductSerializer(data=request.data)
-        if serializer.is_valid():
+        if not Vendor.objects.filter(user_id=request.user.id).exists():
+            return Response({"message":"you must be logged in as a Vendor to add product"}, status=HTTP_400_BAD_REQUEST)
+        serializer = ProductSerializer(data=request.data, context={'request': request})
+        try:
             file = request.data['file']
             image = Product.objects.create(image=file)
-            serializer.save()
+        except:
+            None
+        if serializer.is_valid():
+            if "category_id" in request.data:
+                try:
+                    category = Category.objects.get(id=request.data["category_id"])
+                except:
+                    return Response({"message": "no category with id: 'category_id' "},
+                                    status=HTTP_400_BAD_REQUEST)
+                serializer.save(vendor_id=self.request.user.id, category=category)
+            else:
+                serializer.save(vendor_id=self.request.user.id)
             return Response(serializer.data, status=HTTP_201_CREATED)
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
@@ -59,9 +73,15 @@ class ProductDetailAPIView(APIView):
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
     def delete(self, request, id):
+        product = Product.objects.filter(id=id)
+        if not product.exists():
+            return Response({"message":"product not found"}, status=HTTP_404_NOT_FOUND)
+        product = product[0]
+        if not product.vendor_id == request.user.id:
+            return Response({"message":"you must be the owner to delete product"}, status=HTTP_400_BAD_REQUEST)
         product = self.get_product(id)
         product.delete()
-        return Response("product id "+ str(id) + " deleted", status=HTTP_204_NO_CONTENT)
+        return Response({"message":"product id "+ str(id) + " deleted"}, status=HTTP_204_NO_CONTENT)
 
 
 class ListListAPIView(APIView):
@@ -87,6 +107,16 @@ class ListListAPIView(APIView):
         product_lists = self.get_list_list(request, id)
         serializer = ProductListSerializer(product_lists, many=True, context={'request': request})
         return Response(serializer.data)
+
+    def post(self, request, id):
+        if not self.is_user(request, id):
+            return Response({"message": "bad request"}, status=status.HTTP_400_BAD_REQUEST)
+        # error handling done above
+        serializer = ProductListSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=HTTP_201_CREATED)
+        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
 class ListDetailAPIView(APIView):
 
@@ -122,30 +152,25 @@ class ListDetailAPIView(APIView):
         serializer = ProductListSerializer(list, context={'request': request})
         return Response(serializer.data)
 
-    def post(self, request, id, list_id):
-        if not self.check_user(request, id, list_id):
-            return Response({"message": "bad request"}, status=status.HTTP_400_BAD_REQUEST)
-        if not self.is_owner(request, id, list_id):
-            return Response({"message": "not allowed to access"}, status=status.HTTP_401_UNAUTHORIZED)
-        # error handling done above
-        serializer = ProductListSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=HTTP_201_CREATED)
-        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
-
     def put(self, request, id, list_id):
         if not self.check_user(request, id, list_id):
             return Response({"message": "bad request"}, status=status.HTTP_400_BAD_REQUEST)
+        if "is_private" in request.data and request.data["is_private"] not in ["true","false"]:
+            return Response({"is_private": ["return either 'true' or 'false'."]}, status=status.HTTP_400_BAD_REQUEST)
         list = self.get_list(request, list_id)
         if not self.is_owner(request, id, list_id):
             return Response({"message": "not allowed to access"}, status=status.HTTP_401_UNAUTHORIZED)
         # error handling done above
-        serializer = ProductListSerializer(list, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
+        try:
+            if "name" in request.data:
+                list.name = request.data["name"]
+            if "is_private" in request.data:
+                list.is_private = (request.data["is_private"] == "true")
+            list.save()
+            serializer = ProductListSerializer(list)
             return Response(serializer.data)
-        return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
+        except:
+            return Response({"message":"bad request"}, status=HTTP_400_BAD_REQUEST)
 
     def delete(self, request, id, list_id):
         if not self.check_user(request, id, list_id):
@@ -156,25 +181,6 @@ class ListDetailAPIView(APIView):
         # error handling done above
         list.delete()
         return Response({"message":"list, id: "+ str(list_id) + ", is deleted"}, status=HTTP_204_NO_CONTENT)
-
-
-class CartAPIView(APIView):
-    def get_cart(self, id):
-        try:
-            user = Customer.objects.get(user_id=id)
-            return user.suborder_set.filter(is_alert_list=True)[0]
-        except:
-            raise Http404
-
-    def check_private_access(self, request, id):
-        return id == request.user.id
-
-    def get(self, request, id):
-        if not self.check_private_access(request, id):
-            return Response({"message": "not allowed to access"}, status=status.HTTP_401_UNAUTHORIZED)
-        cart = self.get_cart(id)
-        serializer = ProductListSerializer(cart, context={'request': request})
-        return Response(serializer.data)
 
 class AlertListAPIView(APIView):
     def get_alert_list(self, id):
@@ -257,46 +263,173 @@ class AddProductToListAPIView(APIView):
             serializer = ProductListSerializer(list, context={'request': request})
             return Response(serializer.data, status= HTTP_204_NO_CONTENT)
 
-class ManageCartAPIView(APIView):
+
+class CartAPIView(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
-    def get_product(self, product_id):
+    def add_or_create_sub_order(self, user_id, product_id, amount):
         try:
-            product = Product.objects.get(id=product_id)
-            return product
+            subOrder = SubOrder.objects.get_or_create(customer_id=user_id, product_id=product_id, purchased=False)[0]
         except:
             raise Http404
+        subOrder.amount += amount
+        subOrder.save()
+        return subOrder
 
-    def create_sub_order(self, user_id, product_id, amount):
-        subOrder = SubOrder.objects.get(customer_id=user_id, product_id=product_id, purchased=False)
-        if subOrder:
-            subOrder.amount += amount
-            subOrder.save()
-            return subOrder
-        else:
-            return SubOrder.objects.create(product_id=product_id, customer_id=user_id, amount=amount, purchased=False)
-
-    def post(self, request, id):
-        self.create_sub_order(request.user.id, id, request.data["amount"])
-        cart = SubOrder.objects.filter(customer=request.user.id)
-        serializer = ProductListSerializer(cart, context={'request': request})
+    def cart_serializer_response(self, request):
+        try:
+            user = Customer.objects.get(user_id=request.user.id)
+            cart = user.suborder_set.filter(purchased=False)
+        except:
+            raise Http404
+        serializer = SubOrderSerializer(cart, many=True, context={'request': request})
         return Response(serializer.data)
+
+    def get(self, request):
+        return self.cart_serializer_response(request)
+
+    def post(self, request):
+        try:
+            self.add_or_create_sub_order(request.user.id, request.data["product_id"], request.data["amount"])
+        except Http404:
+            raise Http404
+        except:
+            return Response({"message": "bad request body, 'product_id' and 'amount' required"}, status=status.HTTP_400_BAD_REQUEST)
+        return self.cart_serializer_response(request)
+
+    def put(self, request):
+        try:
+            subOrder = SubOrder.objects.get(customer_id=request.user.id, product_id=request.data["product_id"], purchased=False)
+            subOrder.amount = request.data["amount"]
+            subOrder.save()
+        except:
+            return Response({"message": "bad request body, 'product_id' and 'amount' required"}, status=status.HTTP_400_BAD_REQUEST)
+        return self.cart_serializer_response(request)
+
+    def delete(self, request):
+        try:
+            suborder = SubOrder.objects.filter(customer_id=request.user.id, product_id=request.data["product_id"], purchased=False)
+            if suborder:
+                suborder = suborder[0]
+                suborder.delete()
+            else:
+                response = self.cart_serializer_response(request)
+                response.status_code=HTTP_204_NO_CONTENT
+                return response
+        except:
+            return Response({"message": "bad request body, 'product_id' required"}, status=status.HTTP_400_BAD_REQUEST)
+        return self.cart_serializer_response(request)
+
+
+class AddCommentAPIView(APIView):
+
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        try:
+            user_id = request.user.id
+        except:
+            return Response({"message": "Token is not valid."}, status=status.HTTP_401_UNAUTHORIZED)
+        serializer = CommentSerializer(data=request.data)
+        if serializer.is_valid():
+            comment = Comment.objects.filter(product_id=serializer.validated_data['product'].id, customer_id=serializer.validated_data['customer'].user_id)
+            if comment:
+                return Response({"message": "A comment of you already exists"}, status=status.HTTP_400_BAD_REQUEST)
+            if serializer.validated_data['customer'].user_id == user_id:
+                # update the rating of the product
+                product = serializer.validated_data['product']
+                rating = request.data['rating']
+                rateCounter =len(Comment.objects.filter(product_id=product.id))
+                if rateCounter:
+                    product.rating = (rating + product.rating*rateCounter)/(rateCounter+1)
+                else:
+                    product.rating = rating
+                product.save()
+                
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            else:
+                return Response({"message": "Token and user id didn't match"}, status=status.HTTP_401_UNAUTHORIZED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class UserCommentAPIView(APIView):
+
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, pid, uid):
+        try:
+            user_id = request.user.id
+        except:
+            return Response({"message": "Token is not valid."}, status=status.HTTP_401_UNAUTHORIZED)
+        if uid == user_id:
+            comment = Comment.objects.filter(product_id=pid, customer_id=uid)
+            serializer = CommentSerializer(comment, many=True)
+            return Response(serializer.data)
+        return Response({"message": "Token and user id didn't match"}, status=status.HTTP_401_UNAUTHORIZED)
+
+class UpdateCommentAPIView(APIView):
+
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def put(self, request, id):
-        subOrder = SubOrder.objects.get(customer_id=request.user.id, product_id=id)
-        subOrder.amount = request.data["amount"]
-        subOrder.save()
-        cart = SubOrder.objects.filter(customer=request.user.id)
-        serializer = ProductListSerializer(cart, context={'request': request})
-        return Response(serializer.data)
+        try:
+            user_id = request.user.id
+        except:
+            return Response({"message": "Token is not valid."}, status=status.HTTP_401_UNAUTHORIZED)
+        serializer = CommentSerializer(data=request.data)
+        if serializer.is_valid():
+            if serializer.validated_data['customer'].user_id == user_id:
+                oldComment = Comment.objects.get(id=id)
+                serializer = CommentSerializer(oldComment, data=request.data)
+                if serializer.is_valid():
+                    # update the rating of the product
+                    product = serializer.validated_data['product']
+                    rating = request.data['rating']
+                    rateCounter =len(Comment.objects.filter(product_id=product.id))
+                    if rateCounter:
+                        product.rating = (rating - oldComment.rating + product.rating*(rateCounter))/rateCounter
+                    else:
+                        product.rating = rating
+                    product.save()
 
+                    serializer.save()
+                    return Response(serializer.data)
+            else:
+                return Response({"message": "Token and user id didn't match"}, status=status.HTTP_401_UNAUTHORIZED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, id):
-        SubOrder.objects.get(customer_id=request.user.id, product_id=id).delete()
-        cart = SubOrder.objects.filter(customer=request.user.id)
-        serializer = ProductListSerializer(cart, context={'request': request})
-        return Response(serializer.data)
+        try:
+            user_id = request.user.id
+        except:
+            return Response({"message": "Token is not valid."}, status=status.HTTP_401_UNAUTHORIZED)
+        try:
+            comment = Comment.objects.get(id=id)
+
+        except Comment.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        if comment.customer.user_id == user_id:
+            comment.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response({"message": "Token and user id didn't match"}, status=status.HTTP_401_UNAUTHORIZED) 
+
+
+class CommentsOfProductAPIView(APIView):
+    def get(self, request, pid):
+        comments = Comment.objects.filter(product_id=pid)
+        serializers = []
+        for comment in comments:
+            if comment.is_anonymous:
+                comment.customer = None
+                serializers.append(CommentSerializer(comment).data)
+            else:
+                serializer = {**CommentSerializer(comment).data, **UserSerializer(User.objects.get(id = comment.customer.user_id)).data}
+                serializers.append(serializer)
+        return Response(serializers)
 
 class SearchAPIView(APIView):
     authentication_classes = [TokenAuthentication]
