@@ -81,6 +81,16 @@ class ProductDetailViewController: UIViewController {
         }
     }
     
+    @IBAction func addToCart(_ sender: UIButton) {
+        let user = UserDefaults.standard.value(forKey: K.userIdKey) as! String
+        let amount:Int? = Int(amountPickerTextField.text ?? "1")
+        print("add to cart pushed")
+        APIManager().addToCart(user: user, productID: product.id, amount: amount!, completionHandler: { result in
+            print(result)
+        })
+    }
+    
+    
 }
 
 // MARK: - Amount of Purchase

@@ -47,7 +47,7 @@ enum ApiRouter: URLRequestBuilder {
         case .getCart(let user):
             return "api/user/"+user+"/cart/"
         case .addToCart(let user,  _,  _):
-            return "api/user/"+user+"cart/"
+            return "api/user/"+user+"/cart/"
         case .editAmountInCart( _,  _):
             return "api/user/cart/"
         case .deleteProductFromCart(_):

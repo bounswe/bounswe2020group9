@@ -226,10 +226,13 @@ struct APIManager {
     func getCart(user:String, completionHandler: @escaping (Result<Cart, Error>) -> Void) {
         do {
             let request = try ApiRouter.getCart(user: user).asURLRequest()
+            print("request:",request)
             AF.request(request).responseJSON { response in
+                print("apimanager, response:", response)
                 if (response.response?.statusCode == 200) {
                     guard let safeData = response.data else {
                         completionHandler(.failure(response.error!))
+                        print("sth")
                         return
                     }
                     if let decodedData: Cart = APIParse().parseJSON(safeData: safeData) {
@@ -240,6 +243,7 @@ struct APIManager {
                 }
             }
         } catch let error {
+            print(error)
             completionHandler(.failure(error))
         }
     }
@@ -247,7 +251,9 @@ struct APIManager {
     func addToCart(user: String, productID: Int, amount: Int, completionHandler: @escaping (Result<Cart, Error>) -> Void) {
         do {
             let request = try ApiRouter.addToCart(user: user, productID: productID, amount: amount).asURLRequest()
+            print(request)
             AF.request(request).responseJSON { response in
+                print(response)
                 if (response.response?.statusCode == 200) {
                     guard let safeData = response.data else {
                         completionHandler(.failure(response.error!))
