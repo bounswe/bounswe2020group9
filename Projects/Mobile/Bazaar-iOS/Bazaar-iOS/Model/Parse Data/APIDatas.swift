@@ -60,3 +60,14 @@ struct CustomerListData: Codable {
 struct ListDeleteMessage: Codable{
     let message: String
 }
+
+struct Cart: Codable {
+    let cart: [CartProduct]
+}
+
+struct CartProduct: Codable {
+    let id: Int
+    let amount: Int
+    let product: Int
+    let customer: Int
+}

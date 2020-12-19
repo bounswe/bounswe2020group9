@@ -9,6 +9,11 @@ import UIKit
 
 class MyCartViewController: UIViewController {
 
+    @IBOutlet weak var emptyCartLabel: UILabel!
+    @IBOutlet weak var loadingContainerView: UIView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak var cartTableView: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 

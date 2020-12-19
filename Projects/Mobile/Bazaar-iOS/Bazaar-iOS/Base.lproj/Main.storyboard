@@ -1410,10 +1410,55 @@
                     <view key="view" contentMode="scaleToFill" id="N0t-zQ-hI4">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qfa-q1-AOT" userLabel="Empty Cart Label">
+                                <rect key="frame" x="0.0" y="87.999999999999986" width="414" height="217.66666666666663"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I5s-GO-UVc" userLabel="LoadingView">
+                                <rect key="frame" x="0.0" y="88" width="414" height="725"/>
+                                <subviews>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="DeK-kZ-slH">
+                                        <rect key="frame" x="197" y="352.66666666666669" width="20" height="20"/>
+                                    </activityIndicatorView>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="DeK-kZ-slH" firstAttribute="centerY" secondItem="I5s-GO-UVc" secondAttribute="centerY" id="aK3-kQ-5ot"/>
+                                    <constraint firstItem="DeK-kZ-slH" firstAttribute="centerX" secondItem="I5s-GO-UVc" secondAttribute="centerX" id="f1n-ai-g8Q"/>
+                                </constraints>
+                            </view>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="owe-ns-1jA" userLabel="Cart Table View">
+                                <rect key="frame" x="0.0" y="88" width="414" height="725"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="8eg-qV-qXN"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="8eg-qV-qXN" firstAttribute="trailing" secondItem="I5s-GO-UVc" secondAttribute="trailing" id="Bb3-Lz-blL"/>
+                            <constraint firstItem="Qfa-q1-AOT" firstAttribute="leading" secondItem="8eg-qV-qXN" secondAttribute="leading" id="EBP-wm-C6z"/>
+                            <constraint firstItem="Qfa-q1-AOT" firstAttribute="height" secondItem="8eg-qV-qXN" secondAttribute="height" multiplier="0.3" id="LIV-Ib-0Ib"/>
+                            <constraint firstItem="8eg-qV-qXN" firstAttribute="trailing" secondItem="owe-ns-1jA" secondAttribute="trailing" id="XXY-A6-CYv"/>
+                            <constraint firstItem="Qfa-q1-AOT" firstAttribute="top" secondItem="8eg-qV-qXN" secondAttribute="top" id="Xfd-iz-UKX"/>
+                            <constraint firstItem="owe-ns-1jA" firstAttribute="top" secondItem="8eg-qV-qXN" secondAttribute="top" id="bfu-l3-Xdg"/>
+                            <constraint firstItem="8eg-qV-qXN" firstAttribute="bottom" secondItem="I5s-GO-UVc" secondAttribute="bottom" id="e8x-vF-fjH"/>
+                            <constraint firstItem="8eg-qV-qXN" firstAttribute="bottom" secondItem="owe-ns-1jA" secondAttribute="bottom" id="fqB-yq-Wlz"/>
+                            <constraint firstItem="owe-ns-1jA" firstAttribute="leading" secondItem="8eg-qV-qXN" secondAttribute="leading" id="h8A-JK-XIb"/>
+                            <constraint firstItem="I5s-GO-UVc" firstAttribute="leading" secondItem="8eg-qV-qXN" secondAttribute="leading" id="jRs-xU-gBV"/>
+                            <constraint firstItem="8eg-qV-qXN" firstAttribute="trailing" secondItem="Qfa-q1-AOT" secondAttribute="trailing" id="u3H-Mb-SlR"/>
+                            <constraint firstItem="I5s-GO-UVc" firstAttribute="top" secondItem="8eg-qV-qXN" secondAttribute="top" id="y8B-DG-MwD"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="ahA-a5-9E0"/>
+                    <connections>
+                        <outlet property="activityIndicator" destination="DeK-kZ-slH" id="Tzg-Ku-gTa"/>
+                        <outlet property="cartTableView" destination="owe-ns-1jA" id="s26-9h-cdp"/>
+                        <outlet property="emptyCartLabel" destination="Qfa-q1-AOT" id="sfg-A3-QeS"/>
+                        <outlet property="loadingContainerView" destination="I5s-GO-UVc" id="3xd-rs-7aC"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="N7e-7I-zm9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

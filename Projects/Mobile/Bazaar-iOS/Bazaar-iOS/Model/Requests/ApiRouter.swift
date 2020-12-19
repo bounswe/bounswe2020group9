@@ -20,6 +20,11 @@ enum ApiRouter: URLRequestBuilder {
     
     case signUp(username:String, password:String, user_type:String)
     case resetPasswordEmail(username:String)
+    
+    case getCart(user: String)
+    case addToCart(user: String, productID: Int, amount: Int)
+    case editAmountInCart(productID: Int, amount: Int)
+    case deleteProductFromCart(productID: Int)
     // MARK: - Path
     internal var path: String {
         switch self {
@@ -39,6 +44,14 @@ enum ApiRouter: URLRequestBuilder {
             return "api/user/signup/"
         case .resetPasswordEmail:
             return "api/user/resetpwmail/"
+        case .getCart(let user):
+            return "api/user/"+user+"/cart/"
+        case .addToCart(let user,  _,  _):
+            return "api/user/"+user+"cart/"
+        case .editAmountInCart( _,  _):
+            return "api/user/cart/"
+        case .deleteProductFromCart(_):
+            return "api/user/cart/"
         }
         
     }
@@ -65,6 +78,14 @@ enum ApiRouter: URLRequestBuilder {
             params["user_type"] = user_type
         case .resetPasswordEmail(let username):
             params["username"] = username
+        case .addToCart(_, let productID, let amount):
+            params["product_id"] = productID
+            params["amount"] = amount
+        case .editAmountInCart(let productID, let amount):
+            params["product_id"] = productID
+            params["amount"] = amount
+        case .deleteProductFromCart(let productID):
+            params["product_id"] = productID
         default:
             break
         }
@@ -86,6 +107,8 @@ enum ApiRouter: URLRequestBuilder {
             }
         case .addList, .deleteList, .deleteProductFromList , .editList:
             headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
+        case .getCart, .addToCart, .editAmountInCart, .deleteProductFromCart:
+            headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
         }
         return headers
     }
@@ -105,6 +128,14 @@ enum ApiRouter: URLRequestBuilder {
             return .post
         case .resetPasswordEmail:
             return .post
+        case .getCart:
+            return .get
+        case .addToCart:
+            return .post
+        case .editAmountInCart:
+            return .put
+        case .deleteProductFromCart:
+            return .delete
         }
     }
 

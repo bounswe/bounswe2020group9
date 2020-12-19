@@ -112,9 +112,9 @@ struct APIManager {
             AllProducts.shared.dataFetched = false
             completionHandler(nil)
         }
-            
+        
     }
-
+    
     func getCustomerLists(customer:String, isCustomerLoggedIn:Bool, completionHandler: @escaping (Result<[CustomerListData] , Error>) -> Void) {
         do {
             let request = try ApiRouter.getCustomerLists(customer: customer, isCustomerLoggedIn: isCustomerLoggedIn).asURLRequest()
@@ -220,6 +220,93 @@ struct APIManager {
             }
         }catch let err {
             completionHandler(.failure(err))
+        }
+    }
+    
+    func getCart(user:String, completionHandler: @escaping (Result<Cart, Error>) -> Void) {
+        do {
+            let request = try ApiRouter.getCart(user: user).asURLRequest()
+            AF.request(request).responseJSON { response in
+                if (response.response?.statusCode == 200) {
+                    guard let safeData = response.data else {
+                        completionHandler(.failure(response.error!))
+                        return
+                    }
+                    if let decodedData: Cart = APIParse().parseJSON(safeData: safeData) {
+                        completionHandler(.success(decodedData))
+                    } else {
+                        completionHandler(.failure(MyError.runtimeError("err")))
+                    }
+                }
+            }
+        } catch let error {
+            completionHandler(.failure(error))
+        }
+    }
+    
+    func addToCart(user: String, productID: Int, amount: Int, completionHandler: @escaping (Result<Cart, Error>) -> Void) {
+        do {
+            let request = try ApiRouter.addToCart(user: user, productID: productID, amount: amount).asURLRequest()
+            AF.request(request).responseJSON { response in
+                if (response.response?.statusCode == 200) {
+                    guard let safeData = response.data else {
+                        completionHandler(.failure(response.error!))
+                        return
+                    }
+                    if let decodedData: Cart = APIParse().parseJSON(safeData: safeData) {
+                        completionHandler(.success(decodedData))
+                    } else {
+                        completionHandler(.failure(MyError.runtimeError("err2")))
+                    }
+                }
+            }
+        } catch let error {
+            completionHandler(.failure(error))
+        }
+    }
+    
+    func editAmountInCart(productID: Int, amount: Int, completionHandler: @escaping (Result<Cart, Error>) -> Void) {
+        do {
+            let request = try ApiRouter.editAmountInCart(productID: productID, amount: amount).asURLRequest()
+            AF.request(request).responseJSON { response in
+                if (response.response?.statusCode == 200) {
+                    guard let safeData = response.data else {
+                        completionHandler(.failure(response.error!))
+                        return
+                    }
+                    if let decodedData: Cart = APIParse().parseJSON(safeData: safeData) {
+                        completionHandler(.success(decodedData))
+                    } else {
+                        completionHandler(.failure(MyError.runtimeError("err2")))
+                    }
+                }
+            }
+        } catch let error {
+            completionHandler(.failure(error))
+        }
+    }
+    
+    func deleteProductFromCart(productID: Int, completionHandler: @escaping (Result<Cart, Error>) -> Void) {
+        do {
+            let request = try ApiRouter.deleteProductFromCart(productID: productID).asURLRequest()
+            AF.request(request).responseJSON { response in
+                if (response.response?.statusCode != nil) {
+                    if response.response?.statusCode == 204 {
+                        completionHandler(.failure(MyError.runtimeError("product already in cart")))
+                    }
+                    guard let safeData = response.data else {
+                        completionHandler(.failure(response.error!))
+                        return
+                    }
+                    if let decodedData: Cart = APIParse().parseJSON(safeData: safeData) {
+                        completionHandler(.success(decodedData))
+                    } else {
+                        completionHandler(.failure(MyError.runtimeError("err3")))
+                    }
+                }
+            }
+        } catch let error {
+            completionHandler(.failure(error))
         }
     }
 }
