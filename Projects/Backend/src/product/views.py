@@ -9,7 +9,7 @@ from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_4
 from rest_framework.views import APIView
 from django.utils import timezone
 
-from product.models import Product, ProductList, SubOrder, Comment
+from product.models import Product, ProductList, SubOrder, Comment, Category
 from product.serializers import ProductSerializer, ProductListSerializer, CommentSerializer, SubOrderSerializer
 
 # Create your views here.
@@ -33,7 +33,15 @@ class ProductListAPIView(APIView):
         except:
             None
         if serializer.is_valid():
-            serializer.save(vendor_id=self.request.user.id)
+            if "category_id" in request.data:
+                try:
+                    category = Category.objects.get(id=request.data["category_id"])
+                except:
+                    return Response({"message": "no category with id: 'category_id' "},
+                                    status=HTTP_400_BAD_REQUEST)
+                serializer.save(vendor_id=self.request.user.id, category=category)
+            else:
+                serializer.save(vendor_id=self.request.user.id)
             return Response(serializer.data, status=HTTP_201_CREATED)
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
