@@ -2,7 +2,9 @@ from pygments.lexers import get_all_lexers
 from pygments.styles import get_all_styles
 from rest_framework import serializers
 
-from .models import Product, Label, Category, ProductList, Comment, SubOrder
+
+from .models import Product, Label, Category, ProductList, Comment, SubOrder,SearchHistory
+
 
 LEXERS = [item for item in get_all_lexers() if item[1]]
 LANGUAGE_CHOICES = sorted([(item[1][0], item[0]) for item in LEXERS])
@@ -80,6 +82,19 @@ class ProductListSerializer(serializers.ModelSerializer):
         fields = ("id", "name", "customer", "products", "is_private")
 
 
+
+class SearchHistorySerializer(serializers.ModelSerializer):
+    user = serializers.IntegerField(read_only=True)
+    searched = serializers.CharField(required=True, allow_blank=False, max_length=255)
+
+    class Meta:
+        model = SearchHistory
+        fields = ("user", "searched")
+    def create(self,validated_data):
+        return SearchHistory.objects.create(**validated_data)
+
+
+
 class CommentSerializer(serializers.ModelSerializer):
     customer_name = serializers.RelatedField(source='user', read_only=True)
     class Meta:
@@ -91,3 +106,4 @@ class SubOrderSerializer(serializers.ModelSerializer):
         model = SubOrder
         fields = '__all__'
         extra_kwargs = {'purchased': {'write_only': True}}
+

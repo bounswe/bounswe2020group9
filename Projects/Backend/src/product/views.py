@@ -10,7 +10,9 @@ from rest_framework.views import APIView
 from django.utils import timezone
 
 from product.models import Product, ProductList, SubOrder, Comment, Category
-from product.serializers import ProductSerializer, ProductListSerializer, CommentSerializer, SubOrderSerializer
+from product.serializers import ProductSerializer, ProductListSerializer, CommentSerializer, SubOrderSerializer,SearchHistorySerializer
+from product.functions import search_product_db,datamuse_call,filter_func,sort_func
+
 
 # Create your views here.
 from user.models import User, Customer, Vendor
@@ -429,3 +431,19 @@ class CommentsOfProductAPIView(APIView):
                 serializers.append(serializer)
         return Response(serializers)
 
+class SearchAPIView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    def get(self,request,filter_type,sort_type):
+        serializer = SearchHistorySerializer(data={"user":request.user.id,"searched":request.data["searched"]})
+        if serializer.is_valid():
+            serializer.save()
+            word_list = datamuse_call(request.data["searched"])
+            product_list = search_product_db(word_list,request.data["searched"])
+            filter_type = str(filter_type)
+            sort_type = str(sort_type)
+            filter_types = filter_type.split("&")
+            product_list = filter_func(filter_types,product_list)
+            product_list = sort_func(sort_type,product_list)
+            return Response(product_list, status=status.HTTP_200_OK)
+        return Response(serializer._errors, status=status.HTTP_400_BAD_REQUEST)
