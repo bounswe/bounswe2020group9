@@ -224,7 +224,7 @@ class AddProductToListAPIView(APIView):
         try:
             list = ProductList.objects.get(id=list_id)
         except:
-            return Response({"message": "bad request: list"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": "bad request: list_id"}, status=status.HTTP_400_BAD_REQUEST)
         if request.user.id != id:
             return Response({"message": "bad token"}, status=status.HTTP_400_BAD_REQUEST)
         if list.customer_id != customer.user_id:
@@ -325,8 +325,8 @@ class CartAPIView(APIView):
 
 class CategoryListAPIView(APIView):
     def get(self, request):
-        categories = Category.objects.filter(id__gte=2)
-        serializer = CategorySerializer(categories)
+        categories = Category.objects.exclude(id=1)
+        serializer = CategorySerializer(categories, many=True)
         return Response(serializer.data)
 
 

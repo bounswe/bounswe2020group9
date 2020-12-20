@@ -22,13 +22,13 @@ class LabelSerializer(serializers.ModelSerializer):
 
 
 class CategorySerializer(serializers.ModelSerializer):
-    # id = serializers.IntegerField(read_only=True)
+    id = serializers.IntegerField(read_only=True)
     name = serializers.CharField(required=True, allow_blank=False, max_length=255)
     parent = serializers.StringRelatedField(read_only=True)
 
     class Meta:
         model = Category
-        fields = ("name", "parent")
+        fields = ("name", "parent", "id")
     def get_fields(self):
         fields = super(CategorySerializer, self).get_fields()
         fields['parent'] = serializers.StringRelatedField()
