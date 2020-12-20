@@ -445,7 +445,7 @@ class SearchAPIView(APIView):
     def get(self,request,filter_type,sort_type):
         serializer = SearchHistorySerializer(data={"user":request.user.id,"searched":request.data["searched"]})
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(user_id=request.user.id)
             word_list = datamuse_call(request.data["searched"])
             product_list = search_product_db(word_list,request.data["searched"])
             filter_type = str(filter_type)
