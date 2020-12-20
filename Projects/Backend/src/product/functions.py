@@ -137,25 +137,32 @@ def delete_payment(payment_id):
     deleting_payment = Payment.objects.get(pk=payment_id)
     Payment.delete(deleting_payment)
 
-    
+def remove_duplicates(dict_list):
+    seen = set()
+    new_list = []
+    for dictionary in dict_list:
+        t = tuple(dictionary.items())
+        if t not in seen:
+            seen.add(t)
+            new_list.append(dictionary)
+    return new_list
+
 def search_product_db(word_array,word_searched):
     results = []
     results = results + list(Product.objects.filter(name__icontains = word_searched).values())
     results = results + list(Product.objects.filter(detail__icontains = word_searched).values())
     results = results + list(Product.objects.filter(brand__icontains = word_searched).values())
-    print(results)
     for words in word_array:
         results = results + list(Product.objects.filter(name__icontains = words).values())
         results = results + list(Product.objects.filter(detail__icontains = words).values())
         results = results + list(Product.objects.filter(brand__icontains = word_searched).values())
-    res_set = set(results)
-    results = list(res_set)
+    results = remove_duplicates(results)
     return results
 
 def datamuse_call(word):
     result = []
     word_array = word.split()
-    max_word = int(60/len(word_array))
+    max_word = int(120/len(word_array))
     words_string = ""
     for i in range(len(word_array)):
         words_string+=word_array[i]
