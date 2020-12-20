@@ -44,10 +44,11 @@ enum ApiRouter: URLRequestBuilder {
             return "api/user/signup/"
         case .resetPasswordEmail:
             return "api/user/resetpwmail/"
-        case .getCart(let user):
-            return "api/user/"+user+"/cart/"
-        case .addToCart(let user,  _,  _):
-            return "api/user/"+user+"/cart/"
+        case .getCart(_):
+            //return "api/user/"+user+"/cart/"
+            return "api/user/cart/"
+        case .addToCart(_,  _,  _):
+            return "api/user/cart/"
         case .editAmountInCart( _,  _):
             return "api/user/cart/"
         case .deleteProductFromCart(_):
@@ -109,6 +110,7 @@ enum ApiRouter: URLRequestBuilder {
             headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
         case .getCart, .addToCart, .editAmountInCart, .deleteProductFromCart:
             headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
+            //headers["Authorization"] = "Token " + "ce4b96c3f871f70954f5f41d1068fea3b8c92766"
         }
         return headers
     }

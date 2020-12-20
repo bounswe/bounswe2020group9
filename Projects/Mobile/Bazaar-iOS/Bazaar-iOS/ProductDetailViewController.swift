@@ -83,11 +83,28 @@ class ProductDetailViewController: UIViewController {
     
     @IBAction func addToCart(_ sender: UIButton) {
         let user = UserDefaults.standard.value(forKey: K.userIdKey) as! String
-        let amount:Int? = Int(amountPickerTextField.text ?? "1")
-        print("add to cart pushed")
-        APIManager().addToCart(user: user, productID: product.id, amount: amount!, completionHandler: { result in
-            print(result)
-        })
+        if(amountPickerTextField.text == "Choose Amount") {
+            let alertController = UIAlertController(title: "Problem", message: "You should choose the amount before adding an item to your cart.", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+            self.present(alertController, animated:true, completion: nil)
+        } else {
+            let amount:Int? = Int(amountPickerTextField.text!)
+            print("add to cart pushed")
+            APIManager().addToCart(user: user, productID: product.id, amount: amount!, completionHandler: { result in
+                switch result{
+                case .success(let cart):
+                    let alertController = UIAlertController(title: "Success", message: "Item successfully added to your cart.", preferredStyle: .alert)
+                    alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+                    self.present(alertController, animated:true, completion: nil)
+                case .failure(let error):
+                    let alertController = UIAlertController(title: "Problem", message: "The item cannot be added to your cart due to a network problem. Please try again later.", preferredStyle: .alert)
+                    alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+                    self.present(alertController, animated:true, completion: nil)
+                    print("error while adding product to cart: ",error)
+                }
+            })
+        }
+        
     }
     
     
@@ -100,16 +117,24 @@ extension ProductDetailViewController: UIPickerViewDelegate, UIPickerViewDataSou
         return 1
     }
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return buyCount.filter{$0<=product.stock}.count
+        return buyCount.filter{$0<=product.stock}.count+1
     }
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        let available = buyCount.filter{$0<=product.stock}
-        let str = String(available[row])
-        return str
+        if (row==0) {
+            return "Choose Amount"
+        } else {
+            let available = buyCount.filter{$0<=product.stock}
+            let str = String(available[row-1])
+            return str
+        }
     }
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        let available = buyCount.filter{Int($0)<=product.stock}
-        amountPickerTextField.text = String(available[row])
+        if(row==0) {
+            amountPickerTextField.text = "Choose Amount"
+        } else {
+            let available = buyCount.filter{Int($0)<=product.stock}
+            amountPickerTextField.text = String(available[row-1])
+        }
     }
     
     func dismissPickerView() {

@@ -33,7 +33,7 @@ class MainViewController: UIViewController{
     let ELECTRONICS = "Electronics"
     let LIVING = "Living"
     
-    let categories = ["Categories", "Clothing", "Home", "Selfcare", "Electronics", "Living"]
+    let categories = ["Clothing", "Home", "Selfcare", "Electronics", "Living"]
     var products: [Product] = []
     let categoriesReuseIdentifier = "CategoriesCollectionViewCell"
     var networkFailedAlert:UIAlertController = UIAlertController(title: "Error while retrieving products", message: "We encountered a problem while retrieving the products, please check your internet connection.", preferredStyle: .alert)

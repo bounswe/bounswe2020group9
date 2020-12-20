@@ -223,7 +223,7 @@ struct APIManager {
         }
     }
     
-    func getCart(user:String, completionHandler: @escaping (Result<Cart, Error>) -> Void) {
+    func getCart(user:String, completionHandler: @escaping (Result<[CartProduct], Error>) -> Void) {
         do {
             let request = try ApiRouter.getCart(user: user).asURLRequest()
             print("request:",request)
@@ -235,7 +235,7 @@ struct APIManager {
                         print("sth")
                         return
                     }
-                    if let decodedData: Cart = APIParse().parseJSON(safeData: safeData) {
+                    if let decodedData: [CartProduct] = APIParse().parseJSON(safeData: safeData) {
                         completionHandler(.success(decodedData))
                     } else {
                         completionHandler(.failure(MyError.runtimeError("err")))
@@ -248,18 +248,19 @@ struct APIManager {
         }
     }
     
-    func addToCart(user: String, productID: Int, amount: Int, completionHandler: @escaping (Result<Cart, Error>) -> Void) {
+    func addToCart(user: String, productID: Int, amount: Int, completionHandler: @escaping (Result<[CartProduct], Error>) -> Void) {
         do {
             let request = try ApiRouter.addToCart(user: user, productID: productID, amount: amount).asURLRequest()
             print(request)
             AF.request(request).responseJSON { response in
-                print(response)
+                debugPrint(response)
+                //print(response)
                 if (response.response?.statusCode == 200) {
                     guard let safeData = response.data else {
                         completionHandler(.failure(response.error!))
                         return
                     }
-                    if let decodedData: Cart = APIParse().parseJSON(safeData: safeData) {
+                    if let decodedData: [CartProduct] = APIParse().parseJSON(safeData: safeData) {
                         completionHandler(.success(decodedData))
                     } else {
                         completionHandler(.failure(MyError.runtimeError("err2")))
@@ -271,7 +272,7 @@ struct APIManager {
         }
     }
     
-    func editAmountInCart(productID: Int, amount: Int, completionHandler: @escaping (Result<Cart, Error>) -> Void) {
+    func editAmountInCart(productID: Int, amount: Int, completionHandler: @escaping (Result<[CartProduct], Error>) -> Void) {
         do {
             let request = try ApiRouter.editAmountInCart(productID: productID, amount: amount).asURLRequest()
             AF.request(request).responseJSON { response in
@@ -280,7 +281,7 @@ struct APIManager {
                         completionHandler(.failure(response.error!))
                         return
                     }
-                    if let decodedData: Cart = APIParse().parseJSON(safeData: safeData) {
+                    if let decodedData: [CartProduct] = APIParse().parseJSON(safeData: safeData) {
                         completionHandler(.success(decodedData))
                     } else {
                         completionHandler(.failure(MyError.runtimeError("err2")))
@@ -292,7 +293,7 @@ struct APIManager {
         }
     }
     
-    func deleteProductFromCart(productID: Int, completionHandler: @escaping (Result<Cart, Error>) -> Void) {
+    func deleteProductFromCart(productID: Int, completionHandler: @escaping (Result<[CartProduct], Error>) -> Void) {
         do {
             let request = try ApiRouter.deleteProductFromCart(productID: productID).asURLRequest()
             AF.request(request).responseJSON { response in
@@ -304,7 +305,7 @@ struct APIManager {
                         completionHandler(.failure(response.error!))
                         return
                     }
-                    if let decodedData: Cart = APIParse().parseJSON(safeData: safeData) {
+                    if let decodedData: [CartProduct] = APIParse().parseJSON(safeData: safeData) {
                         completionHandler(.success(decodedData))
                     } else {
                         completionHandler(.failure(MyError.runtimeError("err3")))
