@@ -10,7 +10,8 @@ from rest_framework.views import APIView
 from django.utils import timezone
 
 from product.models import Product, ProductList, SubOrder, Comment, Category
-from product.serializers import ProductSerializer, ProductListSerializer, CommentSerializer, SubOrderSerializer,SearchHistorySerializer
+from product.serializers import ProductSerializer, ProductListSerializer, CommentSerializer, SubOrderSerializer, \
+    SearchHistorySerializer, CategorySerializer
 from product.functions import search_product_db,datamuse_call,filter_func,sort_func
 
 
@@ -223,7 +224,7 @@ class AddProductToListAPIView(APIView):
         try:
             list = ProductList.objects.get(id=list_id)
         except:
-            return Response({"message": "bad request: list"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": "bad request: list_id"}, status=status.HTTP_400_BAD_REQUEST)
         if request.user.id != id:
             return Response({"message": "bad token"}, status=status.HTTP_400_BAD_REQUEST)
         if list.customer_id != customer.user_id:
@@ -320,6 +321,13 @@ class CartAPIView(APIView):
         except:
             return Response({"message": "bad request body, 'product_id' required"}, status=status.HTTP_400_BAD_REQUEST)
         return self.cart_serializer_response(request)
+
+
+class CategoryListAPIView(APIView):
+    def get(self, request):
+        categories = Category.objects.exclude(id=1)
+        serializer = CategorySerializer(categories, many=True)
+        return Response(serializer.data)
 
 
 class AddCommentAPIView(APIView):
