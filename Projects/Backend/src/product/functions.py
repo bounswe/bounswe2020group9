@@ -201,7 +201,12 @@ def filter_func(filter_types,product_list):
             product_list=filtered_array
         elif filter_type[:3] == "br=" : # brand name filter
             filtered_array = []
-            brand = str(filter_type[3:])
+            brand_arr = filter_type[3:].split("-")
+            brand = ""
+            for i in range(len(brand_arr)):
+                brand = brand +brand_arr[i]
+                if i != len(brand_arr) -1:
+                    brand += " "
             for element in product_list:
                 if str(element["brand"]) == brand:
                     filtered_array.append(element)
@@ -223,9 +228,9 @@ def sort_func(sort_type,product_list):
     elif sort_type == "mf":
         return sorted(product_list, key = lambda i: i['rating'],reverse=True)
     elif sort_type == "pr_des":
-        return sorted(product_list, key = lambda i: i['rating'],reverse=True)
+        return sorted(product_list, key = lambda i: i['price'],reverse=True)
     elif sort_type == "pr_asc":
-        return sorted(product_list, key = lambda i: i['rating'])
+        return sorted(product_list, key = lambda i: i['price'])
     #TODO release date, comment num
     else:
         return product_list
