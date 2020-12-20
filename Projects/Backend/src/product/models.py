@@ -32,7 +32,7 @@ class Category(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=255)
     detail = models.CharField(max_length=511, blank=True)
-    # image = models.ImageField(upload_to ='pics')#option is to select media directory TODO need to implement
+    image = models.ImageField(upload_to ='pics')#option is to select media directory TODO need to implement
     brand = models.CharField(max_length=255)
     price = models.FloatField()
     stock = models.IntegerField(default=0)
@@ -57,7 +57,7 @@ class Product(models.Model):
 class SubOrder(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    amount = models.IntegerField(default=1)
+    amount = models.IntegerField(default=0)
     purchased = models.BooleanField(default=False)
 
 
@@ -109,4 +109,4 @@ class Payment(models.Model):
 
 class SearchHistory(models.Model):
     user =  models.ForeignKey(User, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    searched = models.CharField(max_length=255,default="")

@@ -11,7 +11,9 @@ from django.utils import timezone
 
 from product.models import Product, ProductList, SubOrder, Comment, Category
 from product.serializers import ProductSerializer, ProductListSerializer, CommentSerializer, SubOrderSerializer, \
-    CategorySerializer
+    SearchHistorySerializer, CategorySerializer
+from product.functions import search_product_db,datamuse_call,filter_func,sort_func
+
 
 # Create your views here.
 from user.models import User, Customer, Vendor
@@ -34,7 +36,15 @@ class ProductListAPIView(APIView):
         except:
             None
         if serializer.is_valid():
-            serializer.save(vendor_id=self.request.user.id)
+            if "category_id" in request.data:
+                try:
+                    category = Category.objects.get(id=request.data["category_id"])
+                except:
+                    return Response({"message": "no category with id: 'category_id' "},
+                                    status=HTTP_400_BAD_REQUEST)
+                serializer.save(vendor_id=self.request.user.id, category=category)
+            else:
+                serializer.save(vendor_id=self.request.user.id)
             return Response(serializer.data, status=HTTP_201_CREATED)
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
@@ -173,25 +183,6 @@ class ListDetailAPIView(APIView):
         list.delete()
         return Response({"message":"list, id: "+ str(list_id) + ", is deleted"}, status=HTTP_204_NO_CONTENT)
 
-
-class CartAPIView(APIView):
-    def get_cart(self, id):
-        try:
-            user = Customer.objects.get(user_id=id)
-            return user.suborder_set.filter(is_alert_list=True)[0]
-        except:
-            raise Http404
-
-    def check_private_access(self, request, id):
-        return id == request.user.id
-
-    def get(self, request, id):
-        if not self.check_private_access(request, id):
-            return Response({"message": "not allowed to access"}, status=status.HTTP_401_UNAUTHORIZED)
-        cart = self.get_cart(id)
-        serializer = ProductListSerializer(cart, context={'request': request})
-        return Response(serializer.data)
-
 class AlertListAPIView(APIView):
     def get_alert_list(self, id):
         try:
@@ -274,46 +265,62 @@ class AddProductToListAPIView(APIView):
             return Response(serializer.data, status= HTTP_204_NO_CONTENT)
 
 
-class ManageCartAPIView(APIView):
+class CartAPIView(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
-    def get_product(self, product_id):
+    def add_or_create_sub_order(self, user_id, product_id, amount):
         try:
-            product = Product.objects.get(id=product_id)
-            return product
+            subOrder = SubOrder.objects.get_or_create(customer_id=user_id, product_id=product_id, purchased=False)[0]
         except:
             raise Http404
-
-    def create_sub_order(self, user_id, product_id, amount):
-        subOrder = SubOrder.objects.get(customer_id=user_id, product_id=product_id, purchased=False)
-        if subOrder:
-            subOrder.amount += amount
-            subOrder.save()
-            return subOrder
-        else:
-            return SubOrder.objects.create(product_id=product_id, customer_id=user_id, amount=amount, purchased=False)
-
-    def post(self, request, id):
-        self.create_sub_order(request.user.id, id, request.data["amount"])
-        cart = SubOrder.objects.filter(customer=request.user.id)
-        serializer = ProductListSerializer(cart, context={'request': request})
-        return Response(serializer.data)
-
-    def put(self, request, id):
-        subOrder = SubOrder.objects.get(customer_id=request.user.id, product_id=id)
-        subOrder.amount = request.data["amount"]
+        subOrder.amount += amount
         subOrder.save()
-        cart = SubOrder.objects.filter(customer=request.user.id)
-        serializer = ProductListSerializer(cart, context={'request': request})
+        return subOrder
+
+    def cart_serializer_response(self, request):
+        try:
+            user = Customer.objects.get(user_id=request.user.id)
+            cart = user.suborder_set.filter(purchased=False)
+        except:
+            raise Http404
+        serializer = SubOrderSerializer(cart, many=True, context={'request': request})
         return Response(serializer.data)
 
+    def get(self, request):
+        return self.cart_serializer_response(request)
 
-    def delete(self, request, id):
-        SubOrder.objects.get(customer_id=request.user.id, product_id=id).delete()
-        cart = SubOrder.objects.filter(customer=request.user.id)
-        serializer = ProductListSerializer(cart, context={'request': request})
-        return Response(serializer.data)
+    def post(self, request):
+        try:
+            self.add_or_create_sub_order(request.user.id, request.data["product_id"], request.data["amount"])
+        except Http404:
+            raise Http404
+        except:
+            return Response({"message": "bad request body, 'product_id' and 'amount' required"}, status=status.HTTP_400_BAD_REQUEST)
+        return self.cart_serializer_response(request)
+
+    def put(self, request):
+        try:
+            subOrder = SubOrder.objects.get(customer_id=request.user.id, product_id=request.data["product_id"], purchased=False)
+            subOrder.amount = request.data["amount"]
+            subOrder.save()
+        except:
+            return Response({"message": "bad request body, 'product_id' and 'amount' required"}, status=status.HTTP_400_BAD_REQUEST)
+        return self.cart_serializer_response(request)
+
+    def delete(self, request):
+        try:
+            suborder = SubOrder.objects.filter(customer_id=request.user.id, product_id=request.data["product_id"], purchased=False)
+            if suborder:
+                suborder = suborder[0]
+                suborder.delete()
+            else:
+                response = self.cart_serializer_response(request)
+                response.status_code=HTTP_204_NO_CONTENT
+                return response
+        except:
+            return Response({"message": "bad request body, 'product_id' required"}, status=status.HTTP_400_BAD_REQUEST)
+        return self.cart_serializer_response(request)
 
 
 class CategoryListAPIView(APIView):
@@ -432,3 +439,19 @@ class CommentsOfProductAPIView(APIView):
                 serializers.append(serializer)
         return Response(serializers)
 
+class SearchAPIView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    def get(self,request,filter_type,sort_type):
+        serializer = SearchHistorySerializer(data={"user":request.user.id,"searched":request.data["searched"]})
+        if serializer.is_valid():
+            serializer.save()
+            word_list = datamuse_call(request.data["searched"])
+            product_list = search_product_db(word_list,request.data["searched"])
+            filter_type = str(filter_type)
+            sort_type = str(sort_type)
+            filter_types = filter_type.split("&")
+            product_list = filter_func(filter_types,product_list)
+            product_list = sort_func(sort_type,product_list)
+            return Response(product_list, status=status.HTTP_200_OK)
+        return Response(serializer._errors, status=status.HTTP_400_BAD_REQUEST)

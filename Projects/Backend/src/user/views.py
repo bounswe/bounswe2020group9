@@ -11,8 +11,11 @@ from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.status import HTTP_404_NOT_FOUND
 from rest_framework.views import APIView
 
+from product.models import Product
+from product.serializers import ProductSerializer
 from user.models import Customer, Admin, Vendor
 from .models import User
 from .serializers import UserSerializer
@@ -64,12 +67,15 @@ class UserDetailAPIView(APIView):
         try:
             return User.objects.get(id=id)
         except User.DoesNotExist:
-            raise Http404
+            return Response(status=status.HTTP_400_BAD_REQUEST)
 
     def get(self, request, id):
         user = self.get_user(id)
-        serializer = UserSerializer(user)
-        return Response(serializer.data)
+        if type(user) == Response:
+            return user
+        else:
+            serializer = UserSerializer(user)
+            return Response(serializer.data)
 
     def put(self, request, id):
 
@@ -145,11 +151,12 @@ class UserSignupAPIView(APIView):
             )
             try:
                 email.send(fail_silently=False)
+                return Response({"message": "An mail has been sent to your email, please check it"},
+                            status=status.HTTP_201_CREATED)
             except:
                 user.delete()
                 return Response({"email": ["Couldn't send email"]}, status=status.HTTP_400_BAD_REQUEST)
-            return Response({"message": "An mail has been sent to your email, please check it"},
-                            status=status.HTTP_201_CREATED)
+            
         else:
             return Response(serializer._errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -209,11 +216,10 @@ class ResetPasswordView(APIView):
                 'status': 'success',
                 'code': status.HTTP_200_OK,
                 'message': 'Password updated successfully',
-                'data': []
             }
         except:
             return Response({"message":"Couldn't reset password"}, status=status.HTTP_400_BAD_REQUEST)
-        return Response(response)
+        return Response(response,status=status.HTTP_201_CREATED)
 
 class VerificationView(APIView):
     def get(self, request, uidb64):
@@ -242,3 +248,14 @@ class VerificationView(APIView):
         user.save()
         return Response({"message": "Your Account, " + user.email + " has been activated"},
                             status=status.HTTP_200_OK)
+
+class vendorProductListView(APIView):
+
+    def get(self, request, vendor_id):
+        vendor = Vendor.objects.filter(user_id=vendor_id)
+        if not vendor.exists():
+            return Response({"message": "vendor not found"}, status=HTTP_404_NOT_FOUND)
+
+        product_list = Product.objects.filter(vendor_id=vendor_id)
+        serializer = ProductSerializer(product_list,many=True, context={'request': request})
+        return Response(serializer.data)
