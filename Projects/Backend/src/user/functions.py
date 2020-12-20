@@ -32,10 +32,11 @@ def create_user(user_type, email, password, name="", surname=""):
     except:
         print("ERROR")
         return
-    # TODO create "cart" and "alert_product_list"
     return new_user
 
 
 def delete_user(email):
     deleing_user = User.objects.get(email=email)
     User.delete(deleing_user)
+
+
