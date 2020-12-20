@@ -17,6 +17,8 @@ class CartTableViewCell: UITableViewCell {
     @IBOutlet weak var amountStepper: UIStepper!
     
     var product: ProductData!
+    var amountChangedDelegate: CartItemAmountChangedDelegate!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         amountStepper.minimumValue = 1
@@ -33,12 +35,20 @@ class CartTableViewCell: UITableViewCell {
         let quantity = Int(sender.value)
         APIManager().editAmountInCart(productID: product!.id, amount: quantity, completionHandler: { result in
             switch result {
-            case .success( _):
+            case .success(let cart):
                 self.amountTextField.text = String(quantity)
+                if let mycartVC = self.amountChangedDelegate as? MyCartViewController {
+                    mycartVC.userCart = cart
+                }
+                self.amountChangedDelegate.amountChangedForItem(product: self.product, amount: quantity)
             case .failure(let error):
                 print(error)
             }
         })
     }
     
+}
+
+protocol CartItemAmountChangedDelegate {
+    func amountChangedForItem(product: ProductData, amount: Int)
 }

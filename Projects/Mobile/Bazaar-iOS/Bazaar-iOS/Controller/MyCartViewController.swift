@@ -21,22 +21,10 @@ class MyCartViewController: UIViewController {
     var userCart:[CartProduct] = []
     
     override func viewWillAppear(_ animated: Bool) {
-        fetchCart()
-    }
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        cartTableView.delegate = self
-        cartTableView.dataSource = self
-        cartTableView.register(UINib(nibName: "CartTableViewCell", bundle: nil), forCellReuseIdentifier: "CartCell")
-        totalPriceLabel.text = "Total:\n₺15000"
-        cartTableView.tableFooterView = UIView(frame: .zero)
-        cartTableView.tableFooterView?.isHidden = true
-        print(UserDefaults.standard.value(forKey: K.isLoggedinKey)!)
         if let isLoggedIn = UserDefaults.standard.value(forKey: K.isLoggedinKey) as? Bool {
             if (isLoggedIn) {
                 startIndicator()
                 fetchCart()
-                print("usercart:",userCart)
             } else {
                 loadingContainerView.isHidden = true
                 activityIndicator.isHidden = true
@@ -51,27 +39,49 @@ class MyCartViewController: UIViewController {
             
         }
     }
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        cartTableView.delegate = self
+        cartTableView.dataSource = self
+        cartTableView.register(UINib(nibName: "CartTableViewCell", bundle: nil), forCellReuseIdentifier: "CartCell")
+        totalPriceLabel.text = "Total:\n₺"
+        cartTableView.tableFooterView = UIView(frame: .zero)
+        cartTableView.tableFooterView?.isHidden = true
+        if let isLoggedIn = UserDefaults.standard.value(forKey: K.isLoggedinKey) as? Bool {
+            if (isLoggedIn) {
+                startIndicator()
+                fetchCart()
+            } else {
+                loadingContainerView.isHidden = true
+                activityIndicator.isHidden = true
+                cartTableView.isHidden = true
+                emptyCartLabel.isHidden = false
+                emptyCartLabel.text = "You should be logged in to view your cart."
+                buyContainerView.isHidden = true
+            }
+        } else {
+            print("why am i here")
+        }
+    }
     
     func fetchCart() {
         let user = UserDefaults.standard.value(forKey: K.userIdKey) as! String
         APIManager().getCart(user: user, completionHandler: {(result) in
-            print(result)
             switch result {
             case .success(let cart):
                 DispatchQueue.main.async {
                     self.userCart = cart
-                    print("cart:",cart)
                     self.stopIndicator()
-                    if(self.userCart.isEmpty) {
+                    if(self.userCart.count == 0) {
                         self.emptyCartLabel.text = "Your cart is empty."
                         self.emptyCartLabel.isHidden = false
                         self.cartTableView.isHidden = true
-                        self.loadingContainerView.isHidden = true
-                        self.view.bringSubviewToFront(self.emptyCartLabel)
+                        self.buyContainerView.isHidden = true
+                    } else {
+                        self.buyContainerView.isHidden = false
+                        self.cartTableView.reloadData()
+                        self.reloadTotalPrice()
                     }
-                    self.cartTableView.reloadData()
-                    self.reloadTotalPrice()
-                    
                 }
                
             case .failure(let error):
@@ -79,7 +89,6 @@ class MyCartViewController: UIViewController {
                 // error ver 
             }
         })
-        
         /*APIManager().getCart(user:user , completionHandler: { result in
             switch result {
             case .success(let cart):
@@ -98,9 +107,11 @@ class MyCartViewController: UIViewController {
     }
     
     func reloadTotalPrice () {
-        let cartProdIDs = userCart.map{$0.product}
-        let cartProducts = AllProducts.shared.allProducts.filter {cartProdIDs.contains($0.id)}
-        let totalPrice = cartProducts.map{$0.price}.reduce(0,+)
+        var totalPrice:Double = 0.0
+        for product in userCart {
+            let prod = AllProducts.shared.allProducts.filter{$0.id == product.product}[0]
+            totalPrice = totalPrice + (Double(product.amount) * prod.price)
+        }
         self.totalPriceLabel.text = "Total:\n₺" + String(totalPrice)
     }
     
@@ -113,13 +124,11 @@ class MyCartViewController: UIViewController {
     }
     
     func stopIndicator() {
-        DispatchQueue.main.async {
-            self.loadingContainerView.isHidden = true
-            self.activityIndicator.isHidden = true
-            self.activityIndicator.stopAnimating()
-            self.cartTableView.isHidden = false
-            self.emptyCartLabel.isHidden = true
-        }
+        self.loadingContainerView.isHidden = true
+        self.activityIndicator.isHidden = true
+        self.activityIndicator.stopAnimating()
+        self.cartTableView.isHidden = false
+        self.emptyCartLabel.isHidden = true
     }
     
     
@@ -144,7 +153,6 @@ class MyCartViewController: UIViewController {
 
 extension MyCartViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("count: ", userCart.count)
         return userCart.count
     }
     
@@ -155,8 +163,8 @@ extension MyCartViewController: UITableViewDelegate, UITableViewDataSource {
         cell.productImageView.image = UIImage(named: "1")
         cell.productPriceLabel.text = "₺"+"15000.00"*/
         let product = AllProducts.shared.allProducts.filter {$0.id == userCart[indexPath.row].product}[0]
-        print("product:",product)
         cell.product = product
+        cell.amountChangedDelegate = self
         cell.productNameLabel.text = product.name
         cell.productBrandLabel.text = product.brand
         cell.productPriceLabel.text = "₺"+String(product.price)
@@ -202,6 +210,13 @@ extension MyCartViewController: UITableViewDelegate, UITableViewDataSource {
                     DispatchQueue.main.async {
                         self.userCart = cart
                         self.cartTableView.reloadData()
+                        self.reloadTotalPrice()
+                        if(cart.isEmpty) {
+                            self.emptyCartLabel.text = "Your cart is empty."
+                            self.emptyCartLabel.isHidden = false
+                            self.cartTableView.isHidden = true
+                            self.loadingContainerView.isHidden = true
+                        }
                     }
                 case .failure(let err):
                     DispatchQueue.main.async {
@@ -216,3 +231,12 @@ extension MyCartViewController: UITableViewDelegate, UITableViewDataSource {
     
     
 }
+
+extension MyCartViewController: CartItemAmountChangedDelegate {
+    func amountChangedForItem(product: ProductData, amount: Int) {
+        reloadTotalPrice()
+    }
+    
+    
+}
+

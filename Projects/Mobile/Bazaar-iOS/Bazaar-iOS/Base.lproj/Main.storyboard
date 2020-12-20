@@ -1429,6 +1429,19 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I5s-GO-UVc" userLabel="LoadingView">
+                                <rect key="frame" x="0.0" y="88" width="414" height="725"/>
+                                <subviews>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="DeK-kZ-slH">
+                                        <rect key="frame" x="197" y="352.66666666666669" width="20" height="20"/>
+                                    </activityIndicatorView>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstItem="DeK-kZ-slH" firstAttribute="centerY" secondItem="I5s-GO-UVc" secondAttribute="centerY" id="aK3-kQ-5ot"/>
+                                    <constraint firstItem="DeK-kZ-slH" firstAttribute="centerX" secondItem="I5s-GO-UVc" secondAttribute="centerX" id="f1n-ai-g8Q"/>
+                                </constraints>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7In-JC-clK" userLabel="Buy Container View">
                                 <rect key="frame" x="0.0" y="726" width="414" height="87"/>
                                 <subviews>
@@ -1472,19 +1485,6 @@
                                 <color key="textColor" red="0.35893876899999999" green="0.35893876899999999" blue="0.35893876899999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="I5s-GO-UVc" userLabel="LoadingView">
-                                <rect key="frame" x="0.0" y="88" width="414" height="725"/>
-                                <subviews>
-                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="DeK-kZ-slH">
-                                        <rect key="frame" x="197" y="352.66666666666669" width="20" height="20"/>
-                                    </activityIndicatorView>
-                                </subviews>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <constraints>
-                                    <constraint firstItem="DeK-kZ-slH" firstAttribute="centerY" secondItem="I5s-GO-UVc" secondAttribute="centerY" id="aK3-kQ-5ot"/>
-                                    <constraint firstItem="DeK-kZ-slH" firstAttribute="centerX" secondItem="I5s-GO-UVc" secondAttribute="centerX" id="f1n-ai-g8Q"/>
-                                </constraints>
-                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="8eg-qV-qXN"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -1513,7 +1513,7 @@
                         <outlet property="buyButton" destination="kPC-Dr-9Bw" id="yOH-Tx-RMV"/>
                         <outlet property="buyContainerView" destination="7In-JC-clK" id="n4d-IG-gv7"/>
                         <outlet property="cartTableView" destination="owe-ns-1jA" id="s26-9h-cdp"/>
-                        <outlet property="emptyCartLabel" destination="Qfa-q1-AOT" id="sfg-A3-QeS"/>
+                        <outlet property="emptyCartLabel" destination="Qfa-q1-AOT" id="PDW-91-CFU"/>
                         <outlet property="loadingContainerView" destination="I5s-GO-UVc" id="3xd-rs-7aC"/>
                         <outlet property="totalPriceLabel" destination="AwT-oQ-Luh" id="W5I-Kt-def"/>
                         <segue destination="RgT-CZ-30c" kind="show" identifier="cartToProductDetailSegue" id="Dtb-U7-9lN"/>
@@ -2587,8 +2587,8 @@
         <image name="plus" catalog="system" width="128" height="113"/>
         <image name="right_arrow" width="64" height="64"/>
         <image name="settings_icon" width="50" height="50"/>
-        <image name="xmark.circle" width="13" height="13"/>
         <image name="xmark.circle" catalog="system" width="128" height="121"/>
+        <image name="xmark.circle" width="13" height="13"/>
         <systemColor name="darkTextColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
