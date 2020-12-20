@@ -25,6 +25,7 @@ class ListCell: UITableViewCell {
     }
     
     func configCell(pictureUrls: [Int:[String]], listName: String, listID: Int) {
+        
         self.listNameLabel.text = listName
         if let pics = pictureUrls.values.first {
             for i in 0..<pics.count {
@@ -47,6 +48,13 @@ class ListCell: UITableViewCell {
                 theImageView.contentMode = .scaleAspectFit
             }
         }
+    }
+    
+    override func prepareForReuse() {
+        for i in productImages {
+            i.image = nil
+        }
+        //configCell(pictureUrls: copyPictureUrls, listName: copyListName, listID: copyListID)
     }
     
 }

@@ -24,43 +24,51 @@ class WishlistViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        listsTableView.reloadData()
-        /*
-        if let isLoggedIn =  UserDefaults.standard.value(forKey: K.isLoggedinKey) as? Bool {
-            if !isLoggedIn {
-                self.disableTabbarItems([1])
-            }else {
-                self.enableTabbarItems([1])
-            }
-        }else {
-            self.enableTabbarItems([1])
+        if (UserDefaults.standard.value(forKey: K.isLoggedinKey) as! Bool) {
+            listsTableView.reloadData()
         }
-        */
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        self.customerListsInstance.fetchCustomerLists()
-        listsTableView.reloadData()
+        if !(UserDefaults.standard.value(forKey: K.isLoggedinKey) as! Bool) {
+            let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "Login", style: UIAlertAction.Style.default, handler: nil))
+            alertController.message = "Please log in to see your lists!"
+            self.present(alertController, animated: true, completion: nil)
+            self.listsTableView.isHidden = true
+        } else {
+            super.viewDidAppear(animated)
+            self.customerListsInstance.fetchCustomerLists()
+            listsTableView.reloadData()
+        }
     }
     
     override func viewDidLoad() {
-       super.viewDidLoad()
-       listsTableView.dataSource = self
-       listsTableView.delegate = self
-       customerListsInstance.delegate = self
-       createIndicatorView()
-       let okButton = UIAlertAction(title: "Retry", style: .cancel, handler: { action in
+        super.viewDidLoad()
+        listsTableView.dataSource = self
+        listsTableView.delegate = self
+        customerListsInstance.delegate = self
+        createIndicatorView()
+        let okButton = UIAlertAction(title: "Retry", style: .cancel, handler: { action in
            self.customerListsInstance.fetchCustomerLists()
-       })
-       networkFailedAlert.addAction(okButton)
-       listsTableView.register(UINib(nibName: "ListCell", bundle: nil), forCellReuseIdentifier: "ReusableListCell")
-       self.customerListsInstance.fetchCustomerLists()
-       if !(customerListsInstance.dataFetched) {
+        })
+        networkFailedAlert.addAction(okButton)
+        listsTableView.register(UINib(nibName: "ListCell", bundle: nil), forCellReuseIdentifier: "ReusableListCell")
+        if !(UserDefaults.standard.value(forKey: K.isLoggedinKey) as! Bool) {
+            let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "Login", style: UIAlertAction.Style.default, handler: nil))
+            alertController.message = "Please log in to see your lists!"
+            self.present(alertController, animated: true, completion: nil)
+            self.listsTableView.isHidden = true
+            return
+        }
+        self.customerListsInstance.fetchCustomerLists()
+        if !(customerListsInstance.dataFetched) {
            startIndicator()
            self.customerListsInstance.fetchCustomerLists()
-       }
-       self.view.bringSubviewToFront(listsTableView)
-       self.listsTableView.reloadData()
+        }
+        self.view.bringSubviewToFront(listsTableView)
+        self.listsTableView.reloadData()
     }
 
     
