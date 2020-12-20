@@ -34,7 +34,7 @@ enum ApiRouter: URLRequestBuilder {
         case .deleteProductFromList(let customer, let list_id, _):
             return "api/user/" + customer + "/list/" + list_id + "/edit/"
         case .editList(let customer, let list, _,_):
-            return "/api/user/" + customer + "/list/" + list + "/"
+            return "api/user/" + customer + "/list/" + list + "/"
         case .signUp:
             return "api/user/signup/"
         case .resetPasswordEmail:

@@ -12,6 +12,7 @@ class ListCell: UITableViewCell {
     @IBOutlet var listNameLabel: UILabel!
     @IBOutlet var productImagesStack: UIStackView!
     @IBOutlet var frameView: UIView!
+    @IBOutlet var productImages: [UIImageView]!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -22,17 +23,30 @@ class ListCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-    /*
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        //frameView.layer.cornerRadius = 5
-        frameView.layer.borderWidth = 0.8
-        frameView.layer.borderColor = #colorLiteral(red: 0.9995815158, green: 0.6448794603, blue: 0.3569172323, alpha: 1)
-        frameView.layer.shadowColor = UIColor.black.cgColor
-        frameView.layer.shadowOffset = CGSize(width: 2, height: 2)
-        frameView.layer.shadowOpacity = 0.4
-        frameView.layer.shadowRadius = 2.0
-        
-    }*/
+    
+    func configCell(pictureUrls: [Int:[String]], listName: String, listID: Int) {
+        self.listNameLabel.text = listName
+        if let pics = pictureUrls.values.first {
+            for i in 0..<pics.count {
+                let theImageView = self.productImages[i]
+                theImageView.translatesAutoresizingMaskIntoConstraints = false
+                if listID == pictureUrls.keys.first {
+                    DispatchQueue.main.async {
+                        do {
+                            try theImageView.loadImageUsingCache(withUrl: pics[i])
+                        } catch let error {
+                            print(error)
+                        }
+                    }
+                }
+                theImageView.frame = CGRect(x: 0, y: 0, width: self.productImagesStack.frame.height, height: self.productImagesStack.frame.height)
+                theImageView.translatesAutoresizingMaskIntoConstraints = false
+                let marginguide = self.contentView.layoutMarginsGuide
+                theImageView.heightAnchor.constraint(equalToConstant: marginguide.layoutFrame.height).isActive = true
+                theImageView.widthAnchor.constraint(equalToConstant: marginguide.layoutFrame.height).isActive = true
+                theImageView.contentMode = .scaleAspectFit
+            }
+        }
+    }
     
 }
