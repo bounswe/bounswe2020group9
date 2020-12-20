@@ -9,8 +9,9 @@ from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_4
 from rest_framework.views import APIView
 from django.utils import timezone
 
-from product.models import Product, ProductList, SubOrder, Comment
-from product.serializers import ProductSerializer, ProductListSerializer, CommentSerializer
+from product.models import Product, ProductList, SubOrder, Comment, Category
+from product.serializers import ProductSerializer, ProductListSerializer, CommentSerializer, SubOrderSerializer, \
+    CategorySerializer
 
 # Create your views here.
 from user.models import User, Customer, Vendor
@@ -312,6 +313,13 @@ class ManageCartAPIView(APIView):
         SubOrder.objects.get(customer_id=request.user.id, product_id=id).delete()
         cart = SubOrder.objects.filter(customer=request.user.id)
         serializer = ProductListSerializer(cart, context={'request': request})
+        return Response(serializer.data)
+
+
+class CategoryListAPIView(APIView):
+    def get(self, request):
+        categories = Category.objects.filter(id__gte=2)
+        serializer = CategorySerializer(categories)
         return Response(serializer.data)
 
 

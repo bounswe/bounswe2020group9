@@ -1,9 +1,11 @@
 from django.urls import path
 
-from .views import ProductDetailAPIView, ProductListAPIView, ManageCartAPIView, UserCommentAPIView, CommentsOfProductAPIView, AddCommentAPIView, UpdateCommentAPIView
+from .views import ProductDetailAPIView, ProductListAPIView, UserCommentAPIView, CommentsOfProductAPIView, \
+    AddCommentAPIView, UpdateCommentAPIView, CategoryListAPIView, ManageCartAPIView
 
 urlpatterns = [
     path('', ProductListAPIView.as_view(), name="product-list"),
+    path('/categories/', CategoryListAPIView.as_view(), name="category-list"),
     path('<int:id>/', ProductDetailAPIView.as_view(), name="product-detail"),
     path('<int:id>/cart/', ManageCartAPIView.as_view(), name="product-add-to-cart"),
     path('comment/<int:pid>/<int:uid>/', UserCommentAPIView.as_view(), name="user-comment"),
