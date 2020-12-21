@@ -16,8 +16,6 @@ enum ApiRouter: URLRequestBuilder {
     case deleteList(customer: String, id: String)
     case deleteProductFromList(customer: String, list_id: String, product_id: String)
     case editList(customer:String, list: String, newName: String, newIsPrivate: String)
-    
-    
     case signUp(username:String, password:String, user_type:String)
     case resetPasswordEmail(username:String)
     
@@ -25,7 +23,10 @@ enum ApiRouter: URLRequestBuilder {
     case addToCart(user: String, productID: Int, amount: Int)
     case editAmountInCart(productID: Int, amount: Int)
     case deleteProductFromCart(productID: Int)
-    // MARK: - Path
+
+  case getProfileInfo(authorization:String)
+
+  // MARK: - Path
     internal var path: String {
         switch self {
         case .authenticate:
@@ -39,7 +40,7 @@ enum ApiRouter: URLRequestBuilder {
         case .deleteProductFromList(let customer, let list_id, _):
             return "api/user/" + customer + "/list/" + list_id + "/edit/"
         case .editList(let customer, let list, _,_):
-            return "/api/user/" + customer + "/list/" + list + "/"
+            return "api/user/" + customer + "/list/" + list + "/"
         case .signUp:
             return "api/user/signup/"
         case .resetPasswordEmail:
@@ -53,6 +54,8 @@ enum ApiRouter: URLRequestBuilder {
             return "api/user/cart/"
         case .deleteProductFromCart(_):
             return "api/user/cart/"
+        case .getProfileInfo:
+            return "api/user/profile/"
         }
         
     }
@@ -111,6 +114,8 @@ enum ApiRouter: URLRequestBuilder {
         case .getCart, .addToCart, .editAmountInCart, .deleteProductFromCart:
             headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
             //headers["Authorization"] = "Token " + "ce4b96c3f871f70954f5f41d1068fea3b8c92766"
+        case .getProfileInfo(let authorization):
+            headers["Authorization"] = "Token \(authorization)"
         }
         return headers
     }
@@ -138,6 +143,8 @@ enum ApiRouter: URLRequestBuilder {
             return .put
         case .deleteProductFromCart:
             return .delete
+        case .getProfileInfo:
+            return .get
         }
     }
 

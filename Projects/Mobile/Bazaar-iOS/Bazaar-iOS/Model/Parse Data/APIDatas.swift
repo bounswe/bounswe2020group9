@@ -70,4 +70,12 @@ struct CartProduct: Codable {
     let amount: Int
     let product: Int
     let customer: Int
+
+ struct ProfileData:Codable {
+    let id: Int
+    let email:String
+    let first_name:String
+    let last_name:String
+    let user_type:Int
+    let bazaar_point:Int
 }
