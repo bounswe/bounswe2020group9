@@ -11,7 +11,7 @@ import Alamofire
 enum ApiRouter: URLRequestBuilder {
     
     case authenticate(username: String, password: String)
-    case getCustomerLists(customer: String, isCustomerLoggedIn: Bool)
+    case getCustomerLists(userId: Int, isCustomerLoggedIn: Bool)
     case addList(name: String, customer: String, isPrivate: Bool)
     case deleteList(customer: String, id: String)
     case deleteProductFromList(customer: String, list_id: String, product_id: String)
@@ -31,8 +31,8 @@ enum ApiRouter: URLRequestBuilder {
         switch self {
         case .authenticate:
             return "api/user/login/"
-        case .getCustomerLists(let customer, _):
-            return "api/user/"+customer+"/lists/"
+        case .getCustomerLists(let userId, _):
+            return "api/user/\(userId)/lists/"
         case .addList(_, let customer, _):
             return "api/user/" + customer + "/lists/"
         case .deleteList(let customer, let id):

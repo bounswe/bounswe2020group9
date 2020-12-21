@@ -33,24 +33,24 @@ class WishlistViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if let isLoggedIn = UserDefaults.standard.value(forKey: K.isLoggedinKey) as? Bool{
-            if isLoggedIn {
-                self.customerListsInstance.fetchCustomerLists()
-                listsTableView.reloadData()
-            }else {
-                let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
-                alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
-                alertController.message = "Please log in to see your lists!"
-                self.present(alertController, animated: true, completion: nil)
-                self.listsTableView.isHidden = true
-            }
-        }else {
-            let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
-            alertController.message = "Please log in to see your lists!"
-            self.present(alertController, animated: true, completion: nil)
-            self.listsTableView.isHidden = true
-        }
+//        if let isLoggedIn = UserDefaults.standard.value(forKey: K.isLoggedinKey) as? Bool{
+//            if isLoggedIn {
+//                self.customerListsInstance.fetchCustomerLists()
+//                listsTableView.reloadData()
+//            }else {
+//                let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
+//                alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+//                alertController.message = "Please log in to see your lists!"
+//                self.present(alertController, animated: true, completion: nil)
+//                self.listsTableView.isHidden = true
+//            }
+//        }else {
+//            let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
+//            alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+//            alertController.message = "Please log in to see your lists!"
+//            self.present(alertController, animated: true, completion: nil)
+//            self.listsTableView.isHidden = true
+//        }
     }
     
     override func viewDidLoad() {
@@ -67,22 +67,27 @@ class WishlistViewController: UIViewController {
         let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
         if let isLoggedIn = UserDefaults.standard.value(forKey: K.isLoggedinKey) as? Bool{
+            print("hola1")
             if !isLoggedIn {
+                print("hola2")
                 alertController.message = "Please log in to see your lists!"
                 self.present(alertController, animated: true, completion: nil)
                 self.listsTableView.isHidden = true
                 return
             }else {
-                self.listsTableView.isHidden = false
+                print("hola3")
                 self.customerListsInstance.fetchCustomerLists()
                 if !(customerListsInstance.dataFetched) {
+                    print("hola5")
                     startIndicator()
+                    print("hola6")
                     self.customerListsInstance.fetchCustomerLists()
                 }
                 self.view.bringSubviewToFront(listsTableView)
                 self.listsTableView.reloadData()
             }
         }else {
+            print("hola4")
             alertController.message = "Please log in to see your lists!"
             self.present(alertController, animated: true, completion: nil)
             self.listsTableView.isHidden = true
@@ -300,8 +305,8 @@ class CustomerLists {
     
     func fetchCustomerLists() {
         dispatchGroup.enter()
-        if let userId = UserDefaults.standard.value(forKey: K.userIdKey) as? String {
-            APIManager().getCustomerLists(customer: userId, isCustomerLoggedIn: true, completionHandler: { result in
+        if let userId = UserDefaults.standard.value(forKey: K.userIdKey) as? Int {
+            APIManager().getCustomerLists(userId: userId, isCustomerLoggedIn: true, completionHandler: { result in
                 switch result {
                     case .success(let lists):
                         self.dataFetched = true
