@@ -65,30 +65,33 @@ class MyCartViewController: UIViewController {
     }
     
     func fetchCart() {
-        let user = UserDefaults.standard.value(forKey: K.userIdKey) as! String
-        APIManager().getCart(user: user, completionHandler: {(result) in
-            switch result {
-            case .success(let cart):
-                DispatchQueue.main.async {
-                    self.userCart = cart
-                    self.stopIndicator()
-                    if(self.userCart.count == 0) {
-                        self.emptyCartLabel.text = "Your cart is empty."
-                        self.emptyCartLabel.isHidden = false
-                        self.cartTableView.isHidden = true
-                        self.buyContainerView.isHidden = true
-                    } else {
-                        self.buyContainerView.isHidden = false
-                        self.cartTableView.reloadData()
-                        self.reloadTotalPrice()
+        if let user = UserDefaults.standard.value(forKey: K.userIdKey) as? Int {
+            APIManager().getCart(user: user, completionHandler: {(result) in
+                switch result {
+                case .success(let cart):
+                    DispatchQueue.main.async {
+                        self.userCart = cart
+                        self.stopIndicator()
+                        if(self.userCart.count == 0) {
+                            self.emptyCartLabel.text = "Your cart is empty."
+                            self.emptyCartLabel.isHidden = false
+                            self.cartTableView.isHidden = true
+                            self.buyContainerView.isHidden = true
+                        } else {
+                            self.buyContainerView.isHidden = false
+                            self.cartTableView.reloadData()
+                            self.reloadTotalPrice()
+                        }
                     }
-                }
-               
-            case .failure(let error):
-                self.userCart = []
+                    
+                case .failure(let error):
+                    self.userCart = []
                 // error ver 
-            }
-        })
+                }
+            })
+        }else {
+            print(UserDefaults.standard.value(forKey: K.userIdKey))
+        }
         /*APIManager().getCart(user:user , completionHandler: { result in
             switch result {
             case .success(let cart):

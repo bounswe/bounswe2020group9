@@ -19,7 +19,7 @@ enum ApiRouter: URLRequestBuilder {
     case signUp(username:String, password:String, user_type:String)
     case resetPasswordEmail(username:String)
     
-    case getCart(user: String)
+    case getCart(user: Int)
     case addToCart(user: String, productID: Int, amount: Int)
     case editAmountInCart(productID: Int, amount: Int)
     case deleteProductFromCart(productID: Int)
