@@ -70,6 +70,7 @@ struct CartProduct: Codable {
     let amount: Int
     let product: Int
     let customer: Int
+}
 
  struct ProfileData:Codable {
     let id: Int
