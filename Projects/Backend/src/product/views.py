@@ -67,7 +67,7 @@ class ProductDetailAPIView(APIView):
 
     def put(self, request, id):
         product = self.get_product(id)
-        serializer = ProductSerializer(product, data=request.data)
+        serializer = ProductSerializer(product, data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
