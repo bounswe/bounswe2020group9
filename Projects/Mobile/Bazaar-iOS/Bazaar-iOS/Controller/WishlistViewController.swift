@@ -24,22 +24,32 @@ class WishlistViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if let _ = UserDefaults.standard.value(forKey: K.isLoggedinKey) as? Bool{
-            listsTableView.reloadData()
+        if let isLoggedIn = UserDefaults.standard.value(forKey: K.isLoggedinKey) as? Bool{
+            if isLoggedIn {
+                listsTableView.reloadData()
+            }
         }
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        if let _ = UserDefaults.standard.value(forKey: K.isLoggedinKey) as? Bool{
+        super.viewDidAppear(animated)
+        if let isLoggedIn = UserDefaults.standard.value(forKey: K.isLoggedinKey) as? Bool{
+            if isLoggedIn {
+                self.customerListsInstance.fetchCustomerLists()
+                listsTableView.reloadData()
+            }else {
+                let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+                alertController.message = "Please log in to see your lists!"
+                self.present(alertController, animated: true, completion: nil)
+                self.listsTableView.isHidden = true
+            }
+        }else {
             let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
             alertController.message = "Please log in to see your lists!"
             self.present(alertController, animated: true, completion: nil)
             self.listsTableView.isHidden = true
-        } else {
-            super.viewDidAppear(animated)
-            self.customerListsInstance.fetchCustomerLists()
-            listsTableView.reloadData()
         }
     }
     
@@ -62,6 +72,15 @@ class WishlistViewController: UIViewController {
                 self.present(alertController, animated: true, completion: nil)
                 self.listsTableView.isHidden = true
                 return
+            }else {
+                self.listsTableView.isHidden = false
+                self.customerListsInstance.fetchCustomerLists()
+                if !(customerListsInstance.dataFetched) {
+                    startIndicator()
+                    self.customerListsInstance.fetchCustomerLists()
+                }
+                self.view.bringSubviewToFront(listsTableView)
+                self.listsTableView.reloadData()
             }
         }else {
             alertController.message = "Please log in to see your lists!"
@@ -69,13 +88,6 @@ class WishlistViewController: UIViewController {
             self.listsTableView.isHidden = true
             return
         }
-        self.customerListsInstance.fetchCustomerLists()
-        if !(customerListsInstance.dataFetched) {
-            startIndicator()
-            self.customerListsInstance.fetchCustomerLists()
-        }
-        self.view.bringSubviewToFront(listsTableView)
-        self.listsTableView.reloadData()
     }
 
     
