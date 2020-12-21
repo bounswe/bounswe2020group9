@@ -60,3 +60,12 @@ struct CustomerListData: Codable {
 struct ListDeleteMessage: Codable{
     let message: String
 }
+
+struct ProfileData:Codable {
+    let id: Int
+    let email:String
+    let first_name:String
+    let last_name:String
+    let user_type:Int
+    let bazaar_point:Int
+}

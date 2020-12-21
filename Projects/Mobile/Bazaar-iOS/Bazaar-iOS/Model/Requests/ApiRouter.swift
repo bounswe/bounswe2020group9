@@ -16,10 +16,9 @@ enum ApiRouter: URLRequestBuilder {
     case deleteList(customer: String, id: String)
     case deleteProductFromList(customer: String, list_id: String, product_id: String)
     case editList(customer:String, list: String, newName: String, newIsPrivate: String)
-    
-    
     case signUp(username:String, password:String, user_type:String)
     case resetPasswordEmail(username:String)
+    case getProfileInfo(authorization:String)
     // MARK: - Path
     internal var path: String {
         switch self {
@@ -34,11 +33,13 @@ enum ApiRouter: URLRequestBuilder {
         case .deleteProductFromList(let customer, let list_id, _):
             return "api/user/" + customer + "/list/" + list_id + "/edit/"
         case .editList(let customer, let list, _,_):
-            return "/api/user/" + customer + "/list/" + list + "/"
+            return "api/user/" + customer + "/list/" + list + "/"
         case .signUp:
             return "api/user/signup/"
         case .resetPasswordEmail:
             return "api/user/resetpwmail/"
+        case .getProfileInfo:
+            return "api/user/profile/"
         }
         
     }
@@ -86,6 +87,8 @@ enum ApiRouter: URLRequestBuilder {
             }
         case .addList, .deleteList, .deleteProductFromList , .editList:
             headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
+        case .getProfileInfo(let authorization):
+            headers["Authorization"] = "Token \(authorization)"
         }
         return headers
     }
@@ -105,6 +108,8 @@ enum ApiRouter: URLRequestBuilder {
             return .post
         case .resetPasswordEmail:
             return .post
+        case .getProfileInfo:
+            return .get
         }
     }
 

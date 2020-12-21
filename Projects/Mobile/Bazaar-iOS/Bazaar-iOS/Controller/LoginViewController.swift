@@ -80,9 +80,20 @@ class LoginViewController: UIViewController {
                     }else {
                         APIManager().authenticate(username: email, password: password) { (result) in
                             switch result {
-                            case .success(_):
-                                UserDefaults.standard.set(true, forKey: K.isLoggedinKey)
+                            case .success(let token):
+                                print(token)
+                                APIManager().getProfileInfo(authorization: token) { (result) in
+                                    switch result {
+                                    case .success(let profileInfo):
+                                        UserDefaults.standard.set(profileInfo.first_name, forKey: K.userFirstNameKey)
+                                        UserDefaults.standard.set(profileInfo.last_name, forKey: K.userLastNameKey)
+                                        UserDefaults.standard.set(profileInfo.id, forKey: K.userIdKey)
+                                        UserDefaults.standard.set(profileInfo.user_type, forKey: K.userTypeKey)
+                                    case .failure(_): break
+                                    }
+                                }
                                 UserDefaults.standard.set(email, forKey: K.usernameKey)
+                                UserDefaults.standard.set(true, forKey: K.isLoggedinKey)
                                 self.dismiss(animated: false, completion: nil)
                             case .failure(_):
                                 alertController.message = "Invalid username or password"
@@ -116,7 +127,6 @@ extension LoginViewController: GIDSignInDelegate{
       // Perform any operations on signed in user here.
         let userId = user.userID                  // For client-side use only!
         let idToken = user.authentication.idToken // Safe to send to the server
-        let fullName = user.profile.name
         let givenName = user.profile.givenName
         let familyName = user.profile.familyName
         let email = user.profile.email
