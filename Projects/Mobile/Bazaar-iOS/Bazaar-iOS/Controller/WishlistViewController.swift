@@ -10,7 +10,9 @@ import UIKit
 class WishlistViewController: UIViewController {
 
     @IBOutlet var listsTableView: UITableView!
+    @IBOutlet var loadingView: UIView!
     @IBOutlet var addListButton: UIButton!
+    @IBOutlet var activityIndicator: UIActivityIndicatorView!
     
     var addedList: CustomerListData?
     
@@ -22,23 +24,22 @@ class WishlistViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        listsTableView.reloadData()
-        /*
-        if let isLoggedIn =  UserDefaults.standard.value(forKey: K.isLoggedinKey) as? Bool {
-            if !isLoggedIn {
-                self.disableTabbarItems([1])
-            }else {
-                self.enableTabbarItems([1])
-            }
-        }else {
-            self.enableTabbarItems([1])
+        if (UserDefaults.standard.value(forKey: K.isLoggedinKey) as! Bool) {
+            listsTableView.reloadData()
         }
-        */
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        self.customerListsInstance.fetchCustomerLists()
-        listsTableView.reloadData()
+        if !(UserDefaults.standard.value(forKey: K.isLoggedinKey) as! Bool) {
+            let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
+            alertController.message = "Please log in to see your lists!"
+            self.present(alertController, animated: true, completion: nil)
+            self.listsTableView.isHidden = true
+        } else {
+            super.viewDidAppear(animated)
+            self.customerListsInstance.fetchCustomerLists()
+            listsTableView.reloadData()
+        }
     }
     
     override func viewDidLoad() {
@@ -46,18 +47,32 @@ class WishlistViewController: UIViewController {
         listsTableView.dataSource = self
         listsTableView.delegate = self
         customerListsInstance.delegate = self
+        createIndicatorView()
+        let okButton = UIAlertAction(title: "Retry", style: .cancel, handler: { action in
+           self.customerListsInstance.fetchCustomerLists()
+        })
+        networkFailedAlert.addAction(okButton)
         listsTableView.register(UINib(nibName: "ListCell", bundle: nil), forCellReuseIdentifier: "ReusableListCell")
+        if !(UserDefaults.standard.value(forKey: K.isLoggedinKey) as! Bool) {
+            let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
+            alertController.message = "Please log in to see your lists!"
+            self.present(alertController, animated: true, completion: nil)
+            self.listsTableView.isHidden = true
+            return
+        }
         self.customerListsInstance.fetchCustomerLists()
         if !(customerListsInstance.dataFetched) {
-            self.customerListsInstance.fetchCustomerLists()
+           startIndicator()
+           self.customerListsInstance.fetchCustomerLists()
         }
         self.view.bringSubviewToFront(listsTableView)
-        listsTableView.reloadData()
+        self.listsTableView.reloadData()
     }
+
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
             dismiss(animated: true, completion: nil)
-        //segue after add list !!
+    
         if segue.identifier == "listsToListDetailSegue" {
             if let listDetailVC = segue.destination as? ListDetailViewController {
                 if self.addedList != nil {
@@ -97,42 +112,32 @@ class WishlistViewController: UIViewController {
 
 
 extension WishlistViewController:UITableViewDelegate,UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.customerListsInstance.customerLists.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let list = self.customerListsInstance.customerLists[indexPath.row]
+        
         let cell = listsTableView.dequeueReusableCell(withIdentifier: "ReusableListCell", for: indexPath) as! ListCell
-        
-        cell.listNameLabel.text = list.name
-        
-        if cell.productImagesStack.subviews.isEmpty {
-            for i in list.products {
-                if let url = i.picture {
-                    do{
-                        let theImageView = UIImageView()
-                        theImageView.translatesAutoresizingMaskIntoConstraints = false
-                        try theImageView.loadImageUsingCache(withUrl: url)
-                        print(list.name + "has product with picture " + url)
-                        theImageView.frame = CGRect(x: 0, y: 0, width: cell.productImagesStack.frame.height, height: cell.productImagesStack.frame.height)
-                        theImageView.translatesAutoresizingMaskIntoConstraints = false
-                        let marginguide = cell.contentView.layoutMarginsGuide
-                        theImageView.heightAnchor.constraint(equalToConstant: marginguide.layoutFrame.height).isActive = true
-                        theImageView.widthAnchor.constraint(equalToConstant: marginguide.layoutFrame.height).isActive = true
-                        theImageView.contentMode = .scaleAspectFit
-                        theImageView.layer.cornerRadius = 20 //half of your width or height
-                        
-                        cell.productImagesStack.addArrangedSubview(theImageView)
-                    } catch let error {
-                        print(error)
-                    }
-                }
+        let list:CustomerListData = customerListsInstance.customerLists[indexPath.row]
+        var pictures: [Int:[String]] = [:]
+        pictures[list.id] = []
+        for i in 0...9 {
+            if (list.products.count - 1) < i {
+                break
+            }
+            if let pic = list.products[i].picture {
+                    pictures[list.id]?.append(pic)
+            }
+        }
+        DispatchQueue.main.async {
+            if list.products.count == pictures[list.id]?.count {
+                cell.configCell(pictureUrls: pictures, listName: list.name, listID: list.id)
             }
         }
         return cell
     }
-    
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return tableView.frame.height / 3.5
@@ -191,10 +196,12 @@ extension WishlistViewController:UITableViewDelegate,UITableViewDataSource {
 
 extension WishlistViewController: CustomerListsFetchDelegate {
     func allListsAreFetched() {
+        stopIndicator()
         self.listsTableView.reloadData()
     }
     
     func listsCannotBeFetched() {
+        startIndicator()
         presentAlert()
     }
     
@@ -210,6 +217,36 @@ extension WishlistViewController: CustomerListsFetchDelegate {
         }
     }
 }
+
+extension WishlistViewController {
+    func startIndicator() {
+        self.view.bringSubviewToFront(loadingView)
+        loadingView.isHidden = false
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+        listsTableView.isHidden = true
+    }
+
+    func createIndicatorView() {
+        loadingView.isHidden = false
+        activityIndicator.isHidden = false
+        activityIndicator.startAnimating()
+        listsTableView.isHidden = true
+    }
+    
+    func stopIndicator() {
+        DispatchQueue.main.async {
+            self.loadingView.isHidden = true
+            self.activityIndicator.isHidden = true
+            self.activityIndicator.stopAnimating()
+            self.view.sendSubviewToBack(self.loadingView)
+            self.listsTableView.isHidden = false
+            self.listsTableView.isUserInteractionEnabled = true
+            self.listsTableView.reloadData()
+        }
+    }
+}
+
 
 protocol CustomerListsFetchDelegate {
     func allListsAreFetched()
