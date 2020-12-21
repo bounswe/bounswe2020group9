@@ -12,7 +12,6 @@ class MyAccountViewController: UIViewController {
     @IBOutlet weak var firstNameTextField: UITextField!
     @IBOutlet weak var lastNameTextField: UITextField!
     @IBOutlet weak var emailLabel: UILabel!
-    @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var addressTextView: UITextView!
     @IBOutlet weak var phoneNumberTextField: UITextField!
     
@@ -34,9 +33,6 @@ class MyAccountViewController: UIViewController {
         }
         if let email = UserDefaults.standard.value(forKey: K.usernameKey) as? String{
             emailLabel.text = email
-        }
-        if let userName = UserDefaults.standard.value(forKey: K.usernameKey) as? String{
-            userNameLabel.text = userName
         }
         if let address = UserDefaults.standard.value(forKey: K.userAddressKey) as? String{
             addressTextView.text = address
