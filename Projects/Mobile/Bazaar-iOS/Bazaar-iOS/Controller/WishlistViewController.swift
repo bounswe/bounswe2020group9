@@ -32,7 +32,6 @@ class WishlistViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         if !(UserDefaults.standard.value(forKey: K.isLoggedinKey) as! Bool) {
             let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: "Login", style: UIAlertAction.Style.default, handler: nil))
             alertController.message = "Please log in to see your lists!"
             self.present(alertController, animated: true, completion: nil)
             self.listsTableView.isHidden = true
@@ -56,7 +55,6 @@ class WishlistViewController: UIViewController {
         listsTableView.register(UINib(nibName: "ListCell", bundle: nil), forCellReuseIdentifier: "ReusableListCell")
         if !(UserDefaults.standard.value(forKey: K.isLoggedinKey) as! Bool) {
             let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: "Login", style: UIAlertAction.Style.default, handler: nil))
             alertController.message = "Please log in to see your lists!"
             self.present(alertController, animated: true, completion: nil)
             self.listsTableView.isHidden = true
