@@ -157,9 +157,9 @@ struct APIManager {
         }
     }
     
-    func addList(name:String, customer:String, isPrivate:Bool, completionHandler: @escaping (Result<CustomerListData ,Error>) -> Void) {
+    func addList(name:String, userId:Int, isPrivate:Bool, completionHandler: @escaping (Result<CustomerListData ,Error>) -> Void) {
         do {
-            let request = try ApiRouter.addList(name: name, customer: customer, isPrivate: isPrivate).asURLRequest()
+            let request = try ApiRouter.addList(name: name, userId: userId, isPrivate: isPrivate).asURLRequest()
             AF.request(request).responseJSON { (response) in
                 if (response.response?.statusCode != nil){
                     guard let safeData = response.data else  {
@@ -178,9 +178,9 @@ struct APIManager {
         }
     }
     
-    func deleteList(customer:String, id:String , completionHandler: @escaping (Result<String ,Error>) -> Void) {
+    func deleteList(userId:Int, id:String , completionHandler: @escaping (Result<String ,Error>) -> Void) {
         do {
-            let request = try ApiRouter.deleteList(customer: customer, id: id).asURLRequest()
+            let request = try ApiRouter.deleteList(userId: userId, id: id).asURLRequest()
             AF.request(request).responseJSON { (response) in
                 if response.response?.statusCode == 204 {
                     completionHandler(.success("success"))
@@ -202,9 +202,9 @@ struct APIManager {
         }
     }
     
-    func deleteProductFromList(customer:String, list_id:String, product_id:String , completionHandler: @escaping (Result<CustomerListData ,Error>) -> Void) {
+    func deleteProductFromList(userId:Int, list_id:String, product_id:String , completionHandler: @escaping (Result<CustomerListData ,Error>) -> Void) {
         do {
-            let request = try ApiRouter.deleteProductFromList(customer: customer, list_id: list_id, product_id: product_id).asURLRequest()
+            let request = try ApiRouter.deleteProductFromList(userId: userId, list_id: list_id, product_id: product_id).asURLRequest()
             AF.request(request).responseJSON { (response) in
                 if (response.response?.statusCode != nil){
                     guard let safeData = response.data else  {
@@ -223,9 +223,9 @@ struct APIManager {
         }
     }
     
-    func editList(customer:String, list:String, newName:String , newIsPrivate:String, completionHandler: @escaping (Result<CustomerListData ,Error>) -> Void) {
+    func editList(userId:Int, list:String, newName:String , newIsPrivate:String, completionHandler: @escaping (Result<CustomerListData ,Error>) -> Void) {
         do {
-            let request = try ApiRouter.editList(customer: customer, list: list, newName: newName, newIsPrivate: newIsPrivate).asURLRequest()
+            let request = try ApiRouter.editList(userId: userId, list: list, newName: newName, newIsPrivate: newIsPrivate).asURLRequest()
             AF.request(request).responseJSON { (response) in
                 if (response.response?.statusCode != nil){
                     guard let safeData = response.data else  {

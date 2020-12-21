@@ -12,10 +12,10 @@ enum ApiRouter: URLRequestBuilder {
     
     case authenticate(username: String, password: String)
     case getCustomerLists(userId: Int, isCustomerLoggedIn: Bool)
-    case addList(name: String, customer: String, isPrivate: Bool)
-    case deleteList(customer: String, id: String)
-    case deleteProductFromList(customer: String, list_id: String, product_id: String)
-    case editList(customer:String, list: String, newName: String, newIsPrivate: String)
+    case addList(name: String, userId: Int, isPrivate: Bool)
+    case deleteList(userId: Int, id: String)
+    case deleteProductFromList(userId: Int, list_id: String, product_id: String)
+    case editList(userId:Int, list: String, newName: String, newIsPrivate: String)
     case signUp(username:String, password:String, user_type:String)
     case resetPasswordEmail(username:String)
     
@@ -33,14 +33,14 @@ enum ApiRouter: URLRequestBuilder {
             return "api/user/login/"
         case .getCustomerLists(let userId, _):
             return "api/user/\(userId)/lists/"
-        case .addList(_, let customer, _):
-            return "api/user/" + customer + "/lists/"
-        case .deleteList(let customer, let id):
-            return "api/user/" + customer + "/list/"+id+"/"
-        case .deleteProductFromList(let customer, let list_id, _):
-            return "api/user/" + customer + "/list/" + list_id + "/edit/"
-        case .editList(let customer, let list, _,_):
-            return "api/user/" + customer + "/list/" + list + "/"
+        case .addList(_, let userId, _):
+            return "api/user/\(userId)/lists/"
+        case .deleteList(let userId, let id):
+            return "api/user/\(userId)/list/\(id)/"
+        case .deleteProductFromList(let userId, let list_id, _):
+            return "api/user/\(userId)/list/\(list_id)/edit/"
+        case .editList(let userId, let list, _,_):
+            return "api/user/\(userId)/list/\(list)/"
         case .signUp:
             return "api/user/signup/"
         case .resetPasswordEmail:

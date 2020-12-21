@@ -44,8 +44,8 @@ class AddListViewController: UIViewController {
         if let list = listToEdit {
             if let listName = listNameTextField.text{
                 let newListName = ((listName.count) > 0) ? listName : list.name
-                if let isPriv = self.isPrivate {
-                    APIManager().editList(customer: UserDefaults.standard.value(forKey: K.userIdKey) as! String, list: String(list.id), newName: newListName, newIsPrivate: String(isPriv)) { (result) in
+                if let isPriv = self.isPrivate ,let  userId = UserDefaults.standard.value(forKey: K.userIdKey) as? Int{
+                    APIManager().editList(userId: userId, list: String(list.id), newName: newListName, newIsPrivate: String(isPriv)) { (result) in
                         switch result {
                         case .success(let listData):
                             self.dismiss(animated: false, completion: nil)
@@ -63,8 +63,8 @@ class AddListViewController: UIViewController {
                 alertController.message = "Please enter a List Name"
                 self.present(alertController, animated: true, completion: nil)
             } else {
-                if let isPriv = self.isPrivate ,let userId=UserDefaults.standard.value(forKey: K.userIdKey) as? String{
-                    APIManager().addList(name: listName, customer: userId, isPrivate: isPriv) { (result) in
+                if let isPriv = self.isPrivate ,let userId=UserDefaults.standard.value(forKey: K.userIdKey) as? Int{
+                    APIManager().addList(name: listName, userId: userId, isPrivate: isPriv) { (result) in
                         switch result {
                         case .success(let listData):
                             self.dismiss(animated: false, completion: nil)

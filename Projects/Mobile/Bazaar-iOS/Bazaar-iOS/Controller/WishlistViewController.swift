@@ -33,24 +33,24 @@ class WishlistViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-//        if let isLoggedIn = UserDefaults.standard.value(forKey: K.isLoggedinKey) as? Bool{
-//            if isLoggedIn {
-//                self.customerListsInstance.fetchCustomerLists()
-//                listsTableView.reloadData()
-//            }else {
-//                let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
-//                alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
-//                alertController.message = "Please log in to see your lists!"
-//                self.present(alertController, animated: true, completion: nil)
-//                self.listsTableView.isHidden = true
-//            }
-//        }else {
-//            let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
-//            alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
-//            alertController.message = "Please log in to see your lists!"
-//            self.present(alertController, animated: true, completion: nil)
-//            self.listsTableView.isHidden = true
-//        }
+        if let isLoggedIn = UserDefaults.standard.value(forKey: K.isLoggedinKey) as? Bool{
+            if isLoggedIn {
+                self.customerListsInstance.fetchCustomerLists()
+                listsTableView.reloadData()
+            }else {
+                let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+                alertController.message = "Please log in to see your lists!"
+                self.present(alertController, animated: true, completion: nil)
+                self.listsTableView.isHidden = true
+            }
+        }else {
+            let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+            alertController.message = "Please log in to see your lists!"
+            self.present(alertController, animated: true, completion: nil)
+            self.listsTableView.isHidden = true
+        }
     }
     
     override func viewDidLoad() {
@@ -182,16 +182,18 @@ extension WishlistViewController:UITableViewDelegate,UITableViewDataSource {
                 print("index path of delete: \(indexPath)")
             completionHandler(true)
             DispatchQueue.main.async {
-                APIManager().deleteList(customer: UserDefaults.standard.value(forKey: K.userIdKey) as! String, id: String(list.id)) { (result) in
-                    switch result {
-                    case .success(_):
-                        alertController.message = "\(list.name) is successfully deleted"
-                        self.present(alertController, animated: true, completion: nil)
-                        self.customerListsInstance.customerLists.remove(at: indexPath.row)
-                        self.listsTableView.reloadData()
-                    case .failure(_):
-                        alertController.message = "\(list.name) cannot be deleted"
-                        self.present(alertController, animated: true, completion: nil)
+                if let userId =  UserDefaults.standard.value(forKey: K.userIdKey) as? Int{
+                    APIManager().deleteList(userId:userId, id: String(list.id)) { (result) in
+                        switch result {
+                        case .success(_):
+                            alertController.message = "\(list.name) is successfully deleted"
+                            self.present(alertController, animated: true, completion: nil)
+                            self.customerListsInstance.customerLists.remove(at: indexPath.row)
+                            self.listsTableView.reloadData()
+                        case .failure(_):
+                            alertController.message = "\(list.name) cannot be deleted"
+                            self.present(alertController, animated: true, completion: nil)
+                        }
                     }
                 }
             }
