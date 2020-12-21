@@ -24,14 +24,15 @@ class WishlistViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if (UserDefaults.standard.value(forKey: K.isLoggedinKey) as! Bool) {
+        if let _ = UserDefaults.standard.value(forKey: K.isLoggedinKey) as? Bool{
             listsTableView.reloadData()
         }
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        if !(UserDefaults.standard.value(forKey: K.isLoggedinKey) as! Bool) {
+        if let _ = UserDefaults.standard.value(forKey: K.isLoggedinKey) as? Bool{
             let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
             alertController.message = "Please log in to see your lists!"
             self.present(alertController, animated: true, completion: nil)
             self.listsTableView.isHidden = true
@@ -53,8 +54,16 @@ class WishlistViewController: UIViewController {
         })
         networkFailedAlert.addAction(okButton)
         listsTableView.register(UINib(nibName: "ListCell", bundle: nil), forCellReuseIdentifier: "ReusableListCell")
-        if !(UserDefaults.standard.value(forKey: K.isLoggedinKey) as! Bool) {
-            let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+        if let isLoggedIn = UserDefaults.standard.value(forKey: K.isLoggedinKey) as? Bool{
+            if !isLoggedIn {
+                alertController.message = "Please log in to see your lists!"
+                self.present(alertController, animated: true, completion: nil)
+                self.listsTableView.isHidden = true
+                return
+            }
+        }else {
             alertController.message = "Please log in to see your lists!"
             self.present(alertController, animated: true, completion: nil)
             self.listsTableView.isHidden = true
@@ -62,8 +71,8 @@ class WishlistViewController: UIViewController {
         }
         self.customerListsInstance.fetchCustomerLists()
         if !(customerListsInstance.dataFetched) {
-           startIndicator()
-           self.customerListsInstance.fetchCustomerLists()
+            startIndicator()
+            self.customerListsInstance.fetchCustomerLists()
         }
         self.view.bringSubviewToFront(listsTableView)
         self.listsTableView.reloadData()

@@ -81,7 +81,6 @@ class LoginViewController: UIViewController {
                         APIManager().authenticate(username: email, password: password) { (result) in
                             switch result {
                             case .success(let token):
-                                print(token)
                                 APIManager().getProfileInfo(authorization: token) { (result) in
                                     switch result {
                                     case .success(let profileInfo):
