@@ -269,7 +269,7 @@ struct APIManager {
         }
     }
     
-    func addToCart(user: String, productID: Int, amount: Int, completionHandler: @escaping (Result<[CartProduct], Error>) -> Void) {
+    func addToCart(user: Int, productID: Int, amount: Int, completionHandler: @escaping (Result<[CartProduct], Error>) -> Void) {
         do {
             let request = try ApiRouter.addToCart(user: user, productID: productID, amount: amount).asURLRequest()
             print(request)

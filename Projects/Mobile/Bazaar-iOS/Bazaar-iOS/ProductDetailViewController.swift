@@ -82,7 +82,7 @@ class ProductDetailViewController: UIViewController {
     }
     
     @IBAction func addToCart(_ sender: UIButton) {
-        let user = UserDefaults.standard.value(forKey: K.userIdKey) as! String
+        if let user = UserDefaults.standard.value(forKey: K.userIdKey) as? Int{
         if(amountPickerTextField.text == "Choose Amount") {
             let alertController = UIAlertController(title: "Problem", message: "You should choose the amount before adding an item to your cart.", preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
@@ -104,6 +104,7 @@ class ProductDetailViewController: UIViewController {
                 }
             })
         }
+    }
         
     }
     
