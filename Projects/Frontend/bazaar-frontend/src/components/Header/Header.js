@@ -43,7 +43,6 @@ class Header extends Component {
 
   componentDidMount() {
     let myCookie = read_cookie('user')
-    console.log(Object.keys(read_cookie('user')).length, "DENEME")
 
     if (Object.keys(myCookie).length === 0) {
       this.setState({ isSignedIn: false })

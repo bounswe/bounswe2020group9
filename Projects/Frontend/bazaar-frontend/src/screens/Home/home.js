@@ -29,9 +29,7 @@ class Home extends React.Component {
   componentDidMount() {
     axios.get(`http://13.59.236.175:8000/api/product/`)
       .then(res => {
-        console.log(res.data[1].brand)
         this.setState({ products: res.data })
-        console.log(this.state.products[0])
       })
 
   }

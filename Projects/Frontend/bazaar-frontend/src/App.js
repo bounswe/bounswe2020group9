@@ -57,10 +57,7 @@ function App() {
           <Header />
           <Inventory />
         </Route>
-        <Route path="/product:id">
-          <Header />
-          <ProductPage />
-        </Route>
+        <Route path="/product/:id" render={(props) => <ProductPage {...props} />}/> 
       </Switch>
 
       <Footer />
