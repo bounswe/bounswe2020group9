@@ -52,6 +52,8 @@ class ProductDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        addToListButton.titleLabel?.minimumScaleFactor = 0.5 // or some more adequate size
+        self.addToListButton.titleLabel?.adjustsFontSizeToFitWidth = true
         pickerView.delegate = self
         amountPickerTextField.inputView = pickerView
         setProductInfo()

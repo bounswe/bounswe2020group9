@@ -42,7 +42,6 @@ class LoginViewController: UIViewController {
             }
         }
     }
-
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -129,6 +128,7 @@ extension LoginViewController: GIDSignInDelegate{
         let givenName = user.profile.givenName
         let familyName = user.profile.familyName
         let email = user.profile.email
+        
         UserDefaults.standard.set(userId, forKey: K.userIdKey)
         UserDefaults.standard.set(familyName, forKey: K.userLastNameKey)
         UserDefaults.standard.set(givenName, forKey: K.userFirstNameKey)

@@ -1191,11 +1191,11 @@
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" spacing="100" translatesAutoresizingMaskIntoConstraints="NO" id="PFm-qV-wFn" userLabel="User List Stack View">
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" alignment="center" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="PFm-qV-wFn" userLabel="User List Stack View">
                                         <rect key="frame" x="15" y="488" width="384" height="43.333333333333371"/>
                                         <subviews>
                                             <textField opaque="NO" contentMode="redraw" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Choose Amount" borderStyle="roundedRect" placeholder="Choose Amount" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="lHU-hd-faC" userLabel="Picker Text Field">
-                                                <rect key="frame" x="0.0" y="4.3333333333333144" width="197" height="34.666666666666664"/>
+                                                <rect key="frame" x="0.0" y="4.3333333333333144" width="247" height="34.666666666666664"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <color key="textColor" systemColor="scrollViewTexturedBackgroundColor"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -1206,6 +1206,7 @@
                                                 <color key="backgroundColor" red="0.96776050329999996" green="0.6416403651" blue="0.1417042017" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="wjE-Af-hBx" secondAttribute="height" multiplier="2:1" id="hp7-WD-M92"/>
+                                                    <constraint firstAttribute="width" constant="87" id="iuj-fJ-MKo"/>
                                                 </constraints>
                                                 <color key="tintColor" red="0.96776050329999996" green="0.6416403651" blue="0.1417042017" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                 <state key="normal" title="Add to List">
@@ -2585,8 +2586,8 @@
         <image name="plus" catalog="system" width="128" height="113"/>
         <image name="right_arrow" width="64" height="64"/>
         <image name="settings_icon" width="50" height="50"/>
-        <image name="xmark.circle" width="13" height="13"/>
         <image name="xmark.circle" catalog="system" width="128" height="121"/>
+        <image name="xmark.circle" width="13" height="13"/>
         <systemColor name="darkTextColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
