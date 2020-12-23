@@ -172,26 +172,59 @@ extension WishlistViewController:UITableViewDelegate,UITableViewDataSource {
         let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
         
+        
+        
         let delete = UIContextualAction(style: .destructive, title: "Delete") { (action, sourceView, completionHandler) in
                 print("index path of delete: \(indexPath)")
             completionHandler(true)
-            DispatchQueue.main.async {
-                if let userId =  UserDefaults.standard.value(forKey: K.userIdKey) as? Int{
-                    APIManager().deleteList(userId:userId, id: String(list.id)) { (result) in
-                        switch result {
-                        case .success(_):
-                            alertController.message = "\(list.name) is successfully deleted"
-                            self.present(alertController, animated: true, completion: nil)
-                            self.customerListsInstance.customerLists.remove(at: indexPath.row)
-                            self.listsTableView.reloadData()
-                        case .failure(_):
-                            alertController.message = "\(list.name) cannot be deleted"
-                            self.present(alertController, animated: true, completion: nil)
+            
+            if list.products.count > 0 {
+                let deleteAlert = UIAlertController(title: "Confirm", message: "This list has \(list.products.count) products. \n Are you sure you want to delete?", preferredStyle: UIAlertController.Style.alert)
+
+                deleteAlert.addAction(UIAlertAction(title: "Delete", style: .default, handler: { (action: UIAlertAction!) in
+                    DispatchQueue.main.async {
+                        if let userId =  UserDefaults.standard.value(forKey: K.userIdKey) as? Int{
+                            APIManager().deleteList(userId:userId, id: String(list.id)) { (result) in
+                                switch result {
+                                case .success(_):
+                                    alertController.message = "\(list.name) is successfully deleted"
+                                    self.present(alertController, animated: true, completion: nil)
+                                    self.customerListsInstance.customerLists.remove(at: indexPath.row)
+                                    self.listsTableView.reloadData()
+                                case .failure(_):
+                                    alertController.message = "\(list.name) cannot be deleted"
+                                    self.present(alertController, animated: true, completion: nil)
+                                }
+                            }
+                        }
+                    }
+                }))
+
+                deleteAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (action: UIAlertAction!) in
+                      print("cancel")
+                }))
+            
+                self.present(deleteAlert, animated: true, completion: nil)
+            } else {
+                DispatchQueue.main.async {
+                    if let userId =  UserDefaults.standard.value(forKey: K.userIdKey) as? Int{
+                        APIManager().deleteList(userId:userId, id: String(list.id)) { (result) in
+                            switch result {
+                            case .success(_):
+                                alertController.message = "\(list.name) is successfully deleted"
+                                self.present(alertController, animated: true, completion: nil)
+                                self.customerListsInstance.customerLists.remove(at: indexPath.row)
+                                self.listsTableView.reloadData()
+                            case .failure(_):
+                                alertController.message = "\(list.name) cannot be deleted"
+                                self.present(alertController, animated: true, completion: nil)
+                            }
                         }
                     }
                 }
             }
         }
+        
         delete.backgroundColor = #colorLiteral(red: 1, green: 0.6431372549, blue: 0.3568627451, alpha: 1)
         let swipeActionConfig = UISwipeActionsConfiguration(actions: [delete])
         swipeActionConfig.performsFirstActionWithFullSwipe = false
@@ -200,11 +233,7 @@ extension WishlistViewController:UITableViewDelegate,UITableViewDataSource {
     
 
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        //let product = self.list.products[indexPath.row]
-        let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
         let edit = UIContextualAction(style: .destructive, title: "Edit") { (action, sourceView, completionHandler) in
-                print("index path of edit: \(indexPath)")
             self.editRowIndex = indexPath.row
             self.performSegue(withIdentifier: "toAddListSegue", sender: nil)
         }
