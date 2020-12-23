@@ -1,0 +1,28 @@
+
+#image-container {
+  padding: 1rem;
+  text-align: center;
+  margin-right: 10%;
+  margin-left: 10%;
+  border-width: 3px;
+  border-style: solid;
+  margin-bottom: 10px;
+  border-color: lightgray;
+  border-radius: 5rem;
+  & #product-image {
+    height: 15rem;
+    width: 15rem;
+    align-content: center;
+    cursor: pointer;
+
+  }
+}
+
+#save-changes-product {
+  border-color: #F4A133;
+  background-color: #F4A133;
+  color: white;
+    &:hover {
+      background-color: #da8415;
+  }
+}

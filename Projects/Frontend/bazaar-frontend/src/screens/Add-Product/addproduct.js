@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import axios from 'axios'
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 import Cookies from 'js-cookie';
+import { Modal, Button } from "react-bootstrap";
+
 
 import "./addproduct.scss";
 import { faGlassWhiskey } from "@fortawesome/free-solid-svg-icons";
@@ -228,7 +230,7 @@ export default class AddProduct extends Component {
                                   </div>
                               </div>
                               <div id="save-changes-div">
-                                <button id="save-changes" type="submit" className="btn btn-block">Add Product</button>
+                                <Button variant="primary" id="save-changes-product" type="submit">Save Changes</Button>
                               </div>
 
                             </form>
