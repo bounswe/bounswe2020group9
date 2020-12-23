@@ -244,6 +244,27 @@ struct APIManager {
         }
     }
     
+    func addToList(userId:Int, list_id:Int, product_id:Int, completionHandler: @escaping (Result<CustomerListData ,Error>) -> Void) {
+        do {
+            let request = try ApiRouter.addToList(userId: userId, list_id: list_id, product_id: product_id).asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if (response.response?.statusCode != nil){
+                    guard let safeData = response.data else  {
+                        completionHandler(.failure(response.error!))
+                        return
+                    }
+                    if let decodedData:CustomerListData = APIParse().parseJSON(safeData: safeData){
+                        completionHandler(.success(decodedData))
+                    }else {
+                        completionHandler(.failure(MyError.runtimeError("Error")))
+                    }
+                }
+            }
+        }catch let err {
+            completionHandler(.failure(err))
+        }
+    }
+    
     func getCart(user:Int, completionHandler: @escaping (Result<[CartProduct], Error>) -> Void) {
         do {
             let request = try ApiRouter.getCart(user: user).asURLRequest()

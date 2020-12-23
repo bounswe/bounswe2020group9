@@ -16,6 +16,8 @@ enum ApiRouter: URLRequestBuilder {
     case deleteList(userId: Int, id: String)
     case deleteProductFromList(userId: Int, list_id: String, product_id: String)
     case editList(userId:Int, list: String, newName: String, newIsPrivate: String)
+    case addToList(userId:Int, list_id: Int, product_id: Int)
+    
     case signUp(username:String, password:String, user_type:String)
     case resetPasswordEmail(username:String)
     
@@ -41,6 +43,8 @@ enum ApiRouter: URLRequestBuilder {
             return "api/user/\(userId)/list/\(list_id)/edit/"
         case .editList(let userId, let list, _,_):
             return "api/user/\(userId)/list/\(list)/"
+        case .addToList(let userId, let list_id, _):
+            return "api/user/\(userId)/list/\(list_id)/edit/"
         case .signUp:
             return "api/user/signup/"
         case .resetPasswordEmail:
@@ -76,6 +80,8 @@ enum ApiRouter: URLRequestBuilder {
         case .editList(_, _, let name, let isPrivate):
             params["name"] = name
             params["is_private"] = isPrivate
+        case .addToList(_,_, let product_id):
+            params["product_id"] = String(product_id)
         case .signUp(let username, let password, let user_type):
             params["username"] = username
             params["password"] = password
@@ -109,11 +115,10 @@ enum ApiRouter: URLRequestBuilder {
             if isCustomerLoggedIn {
                 headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
             }
-        case .addList, .deleteList, .deleteProductFromList , .editList:
+        case .addList, .deleteList, .deleteProductFromList , .editList, .addToList:
             headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
         case .getCart, .addToCart, .editAmountInCart, .deleteProductFromCart:
             headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
-            //headers["Authorization"] = "Token " + "ce4b96c3f871f70954f5f41d1068fea3b8c92766"
         case .getProfileInfo(let authorization):
             headers["Authorization"] = "Token \(authorization)"
         }
@@ -123,7 +128,7 @@ enum ApiRouter: URLRequestBuilder {
     // MARK: - Methods
     internal var method: HTTPMethod {
         switch self {
-        case .authenticate, .addList:
+        case .authenticate, .addList, .addToList:
             return .post
         case .getCustomerLists:
             return .get
