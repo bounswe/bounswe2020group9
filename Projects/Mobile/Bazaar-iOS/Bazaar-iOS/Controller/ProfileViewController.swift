@@ -26,7 +26,9 @@ class ProfileViewController: UIViewController{
                 self.view.isHidden = true
                 performSegue(withIdentifier: "ProfileToLoginSegue", sender: self)
             }else {
-                if let username = UserDefaults.standard.value(forKey: K.usernameKey) as? String{
+                if let firstName = UserDefaults.standard.value(forKey: K.userFirstNameKey) as? String , let lastName = UserDefaults.standard.value(forKey: K.userLastNameKey) as? String  {
+                    self.userEmailLabel.text = "\(firstName) \(lastName)"
+                }else if let username = UserDefaults.standard.value(forKey: K.usernameKey) as? String  {
                     self.userEmailLabel.text = username
                 }
                 self.view.isHidden = false
