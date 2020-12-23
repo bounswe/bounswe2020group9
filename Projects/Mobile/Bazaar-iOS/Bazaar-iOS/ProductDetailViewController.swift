@@ -31,25 +31,21 @@ class ProductDetailViewController: UIViewController {
     let imageCache = NSCache<NSString, UIImage>()
     
     var customerListsInstance = CustomerLists.shared
-    var customerListsArray: [String] = []
-    
     var selectedList: Int?
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
-        amountPickerTextField.tintColor = #colorLiteral(red: 1, green: 0.6431372549, blue: 0.3568627451, alpha: 1)
+        amountPickerTextField.tintColor = UIColor.clear
         amountPickerTextField.layer.borderWidth = 1
         amountPickerTextField.layer.cornerRadius = 5
         amountPickerTextField.layer.borderColor = #colorLiteral(red: 1, green: 0.6431372549, blue: 0.3568627451, alpha: 1)
         amountPickerTextField.rightViewMode = .always
         amountPickerTextField.translatesAutoresizingMaskIntoConstraints = true
         
-        listPickerTextField.tintColor = #colorLiteral(red: 1, green: 0.6431372549, blue: 0.3568627451, alpha: 1)
+        listPickerTextField.tintColor = UIColor.clear
         listPickerTextField.layer.borderWidth = 1
         listPickerTextField.layer.cornerRadius = 5
         listPickerTextField.layer.borderColor = #colorLiteral(red: 1, green: 0.6431372549, blue: 0.3568627451, alpha: 1)
-        listPickerTextField.rightViewMode = .always
-        listPickerTextField.translatesAutoresizingMaskIntoConstraints = true
         
         let arrow = UIImageView(image: UIImage(named: "chevron.down")?.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: -3, bottom: 0, right: -3)))
         
@@ -93,15 +89,12 @@ class ProductDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        addToListButton.titleLabel?.minimumScaleFactor = 0.5 // or some more adequate size
-        self.addToListButton.titleLabel?.adjustsFontSizeToFitWidth = true
         pickerView.delegate = self
         listPickerView.delegate = self
         amountPickerTextField.inputView = pickerView
         listPickerTextField.inputView = listPickerView
         setProductInfo()
         dismissPickerView()
-        
         
         if let isLoggedIn = UserDefaults.standard.value(forKey: K.isLoggedinKey) as? Bool{
             if !isLoggedIn {
@@ -110,7 +103,6 @@ class ProductDetailViewController: UIViewController {
             }else {
                 self.addToListStackView.isHidden = false
                 self.customerListsInstance.fetchCustomerLists()
-                print(self.customerListsInstance.customerLists.count)
                 if !(customerListsInstance.dataFetched) {
                     self.customerListsInstance.fetchCustomerLists()
                 }
@@ -187,7 +179,7 @@ class ProductDetailViewController: UIViewController {
                 APIManager().addToList(userId: user, list_id: list_id!, product_id: product.id, completionHandler: { result in
                     switch result{
                     case .success(_):
-                        let alertController = UIAlertController(title: "Problem", message: "The Item is already in the list \"\(self.listPickerTextField.text!)\"", preferredStyle: .alert)
+                        let alertController = UIAlertController(title: "Problem", message: "The Item is added to the list \"\(self.listPickerTextField.text!)\"", preferredStyle: .alert)
                         alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
                         self.present(alertController, animated:true, completion: nil)
                         return
@@ -201,11 +193,6 @@ class ProductDetailViewController: UIViewController {
         }
         
     }
-    
-    func getListNames() {
-        print(customerListsInstance.customerLists.count)
-    }
-    
     
 }
 

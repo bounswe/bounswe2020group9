@@ -67,27 +67,21 @@ class WishlistViewController: UIViewController {
         let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
         if let isLoggedIn = UserDefaults.standard.value(forKey: K.isLoggedinKey) as? Bool{
-            print("hola1")
             if !isLoggedIn {
-                print("hola2")
                 alertController.message = "Please log in to see your lists!"
                 self.present(alertController, animated: true, completion: nil)
                 self.listsTableView.isHidden = true
                 return
             }else {
-                print("hola3")
                 self.customerListsInstance.fetchCustomerLists()
                 if !(customerListsInstance.dataFetched) {
-                    print("hola5")
                     startIndicator()
-                    print("hola6")
                     self.customerListsInstance.fetchCustomerLists()
                 }
                 self.view.bringSubviewToFront(listsTableView)
                 self.listsTableView.reloadData()
             }
         }else {
-            print("hola4")
             alertController.message = "Please log in to see your lists!"
             self.present(alertController, animated: true, completion: nil)
             self.listsTableView.isHidden = true
