@@ -15,9 +15,12 @@ class MyAccountViewController: UIViewController {
     @IBOutlet weak var addressTextView: UITextView!
     @IBOutlet weak var phoneNumberTextField: UITextField!
     
+    @IBOutlet weak var frameView: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        frameView.layer.borderColor = #colorLiteral(red: 1, green: 0.6235294118, blue: 0, alpha: 1)
+
         firstNameTextField.tag=1
         lastNameTextField.tag=2
         phoneNumberTextField.tag = 3
