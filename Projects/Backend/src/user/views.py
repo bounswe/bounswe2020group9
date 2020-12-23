@@ -19,7 +19,8 @@ from product.serializers import ProductSerializer
 from user.models import Customer, Admin, Vendor
 from .models import User
 from .serializers import UserSerializer
-
+from location.models import Location
+from location.serializers import LocationSerializer
 
 class UserListAPIView(APIView):
 
@@ -117,8 +118,15 @@ class UserLoginAPIView(ObtainAuthToken):
 class UserSignupAPIView(APIView):
 
     def post(self, request):
-
-        serializer = UserSerializer(data=request.data)
+        user_field = ['id',  'username', 'password', 'email', 'first_name', 'last_name', 'date_joined', 'last_login', 'user_type', 'bazaar_point','company']
+        user_dict = {}
+        location_dict = {}
+        for fields in request.data:
+            if fields in user_field:
+                user_dict[fields] = request.data[fields]
+            else:
+                location_dict[fields] = request.data[fields]
+        serializer = UserSerializer(data=user_dict)
 
         if serializer.is_valid():
             # There error handling part might not be required, additional test is needed
@@ -133,7 +141,11 @@ class UserSignupAPIView(APIView):
             user = User.objects.get(username=email)
             user.is_active = False
             user.save()
-
+            if request.data['user_type'] == 2:
+                location_dict['user'] = user.id
+                serializer2 = LocationSerializer(data=location_dict)
+                if serializer2.is_valid():
+                    serializer2.save()
             uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
 
             domain = get_current_site(request).domain

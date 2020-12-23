@@ -1,16 +1,16 @@
 from rest_framework import serializers
 
-from .models import User
+from .models import User,Vendor
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id',  'username', 'password', 'email', 'first_name', 'last_name', 'date_joined', 'last_login', 'user_type', 'bazaar_point')
+        fields = ('id',  'username', 'password', 'email', 'first_name', 'last_name', 'date_joined', 'last_login', 'user_type', 'bazaar_point','company')
         extra_kwargs = {'password': {'write_only': True}, 'username': {'write_only': True}}
 
     def create(self, validated_data):
-          
+        
         user = User(
             email=validated_data['username'],
             username=validated_data['username'],
@@ -21,6 +21,8 @@ class UserSerializer(serializers.ModelSerializer):
         if validated_data['last_name'] :
             user.last_name = validated_data['last_name']  
         user.set_password(validated_data['password'])
+        if validated_data['user_type'] == 2:
+            user.company = validated_data['company']
         user.save()
         return user
 
