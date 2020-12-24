@@ -74,7 +74,7 @@ class LoginViewController: UIViewController {
             }else{
                 if let password = passwordTextField.text{
                     if password.count < 3 || password.count > 20 {
-                        alertController.message = "Password must be at least 3 , at most 20 characters in length"
+                        alertController.message = "Password must be at least 8 , at most 20 characters in length"
                         self.present(alertController, animated: true, completion: nil)
                     }else {
                         APIManager().authenticate(username: email, password: password) { (result) in
