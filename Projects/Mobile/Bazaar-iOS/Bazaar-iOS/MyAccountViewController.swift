@@ -12,17 +12,11 @@ class MyAccountViewController: UIViewController {
     @IBOutlet weak var firstNameTextField: UITextField!
     @IBOutlet weak var lastNameTextField: UITextField!
     @IBOutlet weak var emailLabel: UILabel!
-    
     @IBOutlet weak var frameView: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         frameView.layer.borderColor = #colorLiteral(red: 1, green: 0.6235294118, blue: 0, alpha: 1)
-        firstNameTextField.tag=1
-        lastNameTextField.tag=2
-        firstNameTextField.delegate=self
-        lastNameTextField.delegate=self
-        print(UserDefaults.standard.value(forKey: K.token))
         if let firstName = UserDefaults.standard.value(forKey: K.userFirstNameKey) as? String{
             firstNameTextField.text = firstName
         }
@@ -60,8 +54,8 @@ class MyAccountViewController: UIViewController {
             }
             
         }
-
     }
+    
     @IBAction func logoutButtonPressed(_ sender: UIButton) {
         UserDefaults.standard.setValue(nil, forKey: K.isGoogleSignedInKey)
         UserDefaults.standard.set(nil, forKey: K.userFirstNameKey)
@@ -96,21 +90,3 @@ class MyAccountViewController: UIViewController {
     }
 }
 
-extension MyAccountViewController: UITextFieldDelegate, UITextViewDelegate {
-    
-    func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
-        if textField.tag == 1 {
-            UserDefaults.standard.set(textField.text, forKey: K.userFirstNameKey)
-        }
-        if textField.tag == 2 {
-            UserDefaults.standard.set(textField.text, forKey: K.userLastNameKey)
-        }
-        if textField.tag == 3 {
-            UserDefaults.standard.set(textField.text, forKey: K.userPhoneNumKey)
-        }
-        
-    }
-    func textViewDidEndEditing(_ textView: UITextView) {
-        UserDefaults.standard.set(textView.text, forKey: K.userAddressKey)
-    }
-}
