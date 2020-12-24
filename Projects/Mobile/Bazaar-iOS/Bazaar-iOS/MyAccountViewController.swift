@@ -12,22 +12,16 @@ class MyAccountViewController: UIViewController {
     @IBOutlet weak var firstNameTextField: UITextField!
     @IBOutlet weak var lastNameTextField: UITextField!
     @IBOutlet weak var emailLabel: UILabel!
-    @IBOutlet weak var addressTextView: UITextView!
-    @IBOutlet weak var phoneNumberTextField: UITextField!
     
     @IBOutlet weak var frameView: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         frameView.layer.borderColor = #colorLiteral(red: 1, green: 0.6235294118, blue: 0, alpha: 1)
-
         firstNameTextField.tag=1
         lastNameTextField.tag=2
-        phoneNumberTextField.tag = 3
         firstNameTextField.delegate=self
         lastNameTextField.delegate=self
-        addressTextView.delegate=self
-        phoneNumberTextField.delegate=self
         if let firstName = UserDefaults.standard.value(forKey: K.userFirstNameKey) as? String{
             firstNameTextField.text = firstName
         }
@@ -36,12 +30,6 @@ class MyAccountViewController: UIViewController {
         }
         if let email = UserDefaults.standard.value(forKey: K.usernameKey) as? String{
             emailLabel.text = email
-        }
-        if let address = UserDefaults.standard.value(forKey: K.userAddressKey) as? String{
-            addressTextView.text = address
-        }
-        if let phoneNumber = UserDefaults.standard.value(forKey: K.userPhoneNumKey) as? String{
-            phoneNumberTextField.text = phoneNumber
         }
     }
     
