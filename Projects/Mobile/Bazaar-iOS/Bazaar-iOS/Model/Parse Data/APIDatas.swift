@@ -80,3 +80,8 @@ struct CartProduct: Codable {
     let user_type:Int
     let bazaar_point:Int
 }
+
+struct UpdatePasswordData:Codable {
+    let status:String
+    let message:String
+}
