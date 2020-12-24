@@ -16,18 +16,18 @@ class UserSerializer(serializers.ModelSerializer):
             username=validated_data['username'],
             user_type=validated_data['user_type']
         )
-        if validated_data['first_name'] :
+        if "first_name" in validated_data :
             user.first_name = validated_data['first_name']
-        if validated_data['last_name'] :
+        if 'last_name' in validated_data :
             user.last_name = validated_data['last_name']  
         user.set_password(validated_data['password'])
         if validated_data['user_type'] == 2:
-            user.company = validated_data['company']
+            if "company" in validated_data:
+                user.company = validated_data['company']
         user.save()
         return user
 
     def update(self, instance, validated_data):
-
         password = validated_data.pop('password', None)
 
         for (key, value) in validated_data.items():

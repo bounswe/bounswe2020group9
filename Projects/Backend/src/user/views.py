@@ -81,7 +81,7 @@ class UserDetailAPIView(APIView):
     def put(self, request, id):
 
         user = self.get_user(id)
-        serializer = UserSerializer(user, data=request.data, context={'request': request})
+        serializer = UserSerializer(user, data=request.data, context={'request': request}, partial=True)
 
         if serializer.is_valid():
             serializer.save()
@@ -162,15 +162,23 @@ class UserSignupAPIView(APIView):
             if not "password" in serializer.validated_data.keys():
                 return Response({"password": ["This field is required."]}, status=status.HTTP_400_BAD_REQUEST)
             email = serializer.validated_data['username']
+
             serializer.save()
             user = User.objects.get(username=email)
-            user.is_active = False
-            user.save()
-            if request.data['user_type'] == 2:
+
+            if request.data['user_type'] == 2 or request.data['user_type'] == '2':
+                if not "company" in request.data:
+                    return Response({"company": ["This field is required."]}, status=status.HTTP_400_BAD_REQUEST)
                 location_dict['user'] = user.id
                 serializer2 = LocationSerializer(data=location_dict)
                 if serializer2.is_valid():
                     serializer2.save()
+                else:
+                    return Response({"location": ["bad location request."]}, status=status.HTTP_400_BAD_REQUEST)
+
+            user.is_active = False
+            user.save()
+
             uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
 
             domain = get_current_site(request).domain
