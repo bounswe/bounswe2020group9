@@ -23,6 +23,7 @@ class User(AbstractUser):
 
 class Vendor(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    company = models.CharField(max_length=255)
     def __str__(self):
         return self.user.email
 

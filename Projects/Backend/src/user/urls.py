@@ -2,7 +2,7 @@ from django.urls import path
 
 from product.views import ListListAPIView, ListDetailAPIView, CartAPIView, AlertListAPIView, AddProductToListAPIView
 from .views import UserListAPIView, UserDetailAPIView, UserLoginAPIView, UserSignupAPIView, UserProfileAPIView, \
-    VerificationView, CustomerListAPIView, VendorListAPIView, ResetPasswordView,ResetPasswordMailView
+    VerificationView, CustomerListAPIView, VendorListAPIView, ResetPasswordView,ResetPasswordMailView, GoogleUserAPIView
 
 urlpatterns = [
     path('', UserListAPIView.as_view(), name="user-list"),
@@ -22,5 +22,6 @@ urlpatterns = [
     path('activate/<uidb64>/', VerificationView.as_view(), name="activate"),
     path('resetpwmail/', ResetPasswordMailView.as_view()),
     path('resetpw/<uidb64>/', ResetPasswordView.as_view(), name="resetpw"),
+    path('googleuser/', GoogleUserAPIView.as_view()),
 
 ]
