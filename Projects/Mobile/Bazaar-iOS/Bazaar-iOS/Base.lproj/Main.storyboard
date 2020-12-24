@@ -2248,13 +2248,22 @@
                                             <action selector="backButtonPressed:" destination="L5V-jH-uVD" eventType="touchUpInside" id="pFA-1L-qlr"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zha-rl-GOD">
+                                        <rect key="frame" x="360" y="50" width="34" height="30"/>
+                                        <state key="normal" title="Save"/>
+                                        <connections>
+                                            <action selector="saveButtonPressed:" destination="L5V-jH-uVD" eventType="touchUpInside" id="oit-wW-7aj"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemGray6Color"/>
                                 <constraints>
                                     <constraint firstAttribute="bottom" secondItem="1Re-5U-P7C" secondAttribute="bottom" constant="5" id="Cii-0y-cDT"/>
+                                    <constraint firstAttribute="trailing" secondItem="Zha-rl-GOD" secondAttribute="trailing" constant="20" id="JJB-Jt-EUt"/>
                                     <constraint firstItem="PHB-JM-Abb" firstAttribute="centerX" secondItem="SVq-wV-hiC" secondAttribute="centerX" id="LkK-Kg-qnb"/>
                                     <constraint firstAttribute="bottom" secondItem="PHB-JM-Abb" secondAttribute="bottom" constant="20" id="Vfe-b9-ava"/>
                                     <constraint firstAttribute="height" constant="100" id="fSg-Mi-M9d"/>
+                                    <constraint firstAttribute="bottom" secondItem="Zha-rl-GOD" secondAttribute="bottom" constant="20" id="klo-NG-9UP"/>
                                     <constraint firstItem="1Re-5U-P7C" firstAttribute="leading" secondItem="SVq-wV-hiC" secondAttribute="leading" constant="20" id="xAd-xK-JcI"/>
                                 </constraints>
                             </view>
@@ -2540,8 +2549,8 @@
         <image name="plus" catalog="system" width="128" height="113"/>
         <image name="right_arrow" width="64" height="64"/>
         <image name="settings_icon" width="50" height="50"/>
-        <image name="xmark.circle" width="13" height="13"/>
         <image name="xmark.circle" catalog="system" width="128" height="121"/>
+        <image name="xmark.circle" width="13" height="13"/>
         <systemColor name="darkTextColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

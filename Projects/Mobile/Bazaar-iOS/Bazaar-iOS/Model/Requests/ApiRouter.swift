@@ -18,13 +18,12 @@ enum ApiRouter: URLRequestBuilder {
     case editList(userId:Int, list: String, newName: String, newIsPrivate: String)
     case signUp(username:String, password:String, user_type:String)
     case resetPasswordEmail(username:String)
-    
     case getCart(user: Int)
     case addToCart(user: Int, productID: Int, amount: Int)
     case editAmountInCart(productID: Int, amount: Int)
     case deleteProductFromCart(productID: Int)
-
-  case getProfileInfo(authorization:String)
+    case getProfileInfo(authorization:String)
+    case setProfileInfo(authorization:String, firstName:String, lastName:String)
 
   // MARK: - Path
     internal var path: String {
@@ -55,6 +54,8 @@ enum ApiRouter: URLRequestBuilder {
         case .deleteProductFromCart(_):
             return "api/user/cart/"
         case .getProfileInfo:
+            return "api/user/profile/"
+        case .setProfileInfo:
             return "api/user/profile/"
         }
         
@@ -90,6 +91,9 @@ enum ApiRouter: URLRequestBuilder {
             params["amount"] = amount
         case .deleteProductFromCart(let productID):
             params["product_id"] = productID
+        case .setProfileInfo( _, let firstName, let lastName):
+            params["first_name"] = firstName
+            params["last_name"] = lastName
         default:
             break
         }
@@ -115,6 +119,8 @@ enum ApiRouter: URLRequestBuilder {
             headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
             //headers["Authorization"] = "Token " + "ce4b96c3f871f70954f5f41d1068fea3b8c92766"
         case .getProfileInfo(let authorization):
+            headers["Authorization"] = "Token \(authorization)"
+        case .setProfileInfo(let authorization,_,_):
             headers["Authorization"] = "Token \(authorization)"
         }
         return headers
@@ -145,6 +151,8 @@ enum ApiRouter: URLRequestBuilder {
             return .delete
         case .getProfileInfo:
             return .get
+        case .setProfileInfo:
+            return .put
         }
     }
 
