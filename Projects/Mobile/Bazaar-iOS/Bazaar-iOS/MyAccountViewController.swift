@@ -22,6 +22,7 @@ class MyAccountViewController: UIViewController {
         lastNameTextField.tag=2
         firstNameTextField.delegate=self
         lastNameTextField.delegate=self
+        print(UserDefaults.standard.value(forKey: K.token))
         if let firstName = UserDefaults.standard.value(forKey: K.userFirstNameKey) as? String{
             firstNameTextField.text = firstName
         }
@@ -35,6 +36,31 @@ class MyAccountViewController: UIViewController {
     
     @IBAction func backButtonPressed(_ sender: UIButton) {
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction func saveButtonPressed(_ sender: UIButton) {
+        let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+        if let firstName = firstNameTextField.text {
+            UserDefaults.standard.setValue(firstName, forKey: K.userFirstNameKey)
+        }
+        if let lastName = lastNameTextField.text{
+            UserDefaults.standard.setValue(lastName, forKey: K.userLastNameKey)
+        }
+        if let authorization = UserDefaults.standard.value(forKey: K.token) as? String,let firstName = UserDefaults.standard.value(forKey: K.userFirstNameKey) as? String,let lastName = UserDefaults.standard.value(forKey: K.userLastNameKey) as? String{
+            APIManager().setProfileInfo(authorization: authorization, firstName: firstName, lastName: lastName) { (result) in
+                switch result {
+                case .success(_):
+                    alertController.message = "Your profile information has been successfully updated!"
+                    self.present(alertController, animated: true, completion: nil)
+                case .failure(_):
+                    alertController.message = "Your profile information could not be updated!"
+                    self.present(alertController, animated: true, completion: nil)
+                }
+            }
+            
+        }
+
     }
     @IBAction func logoutButtonPressed(_ sender: UIButton) {
         UserDefaults.standard.setValue(nil, forKey: K.isGoogleSignedInKey)
