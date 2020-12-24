@@ -19,7 +19,8 @@ from product.serializers import ProductSerializer
 from user.models import Customer, Admin, Vendor
 from .models import User
 from .serializers import UserSerializer
-
+from location.models import Location
+from location.serializers import LocationSerializer
 
 class UserListAPIView(APIView):
 
@@ -59,8 +60,8 @@ class VendorListAPIView(APIView):
 
 class UserDetailAPIView(APIView):
 
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
+    #authentication_classes = [TokenAuthentication]
+    #permission_classes = [IsAuthenticated]
 
     def get_user(self, id):
 
@@ -113,12 +114,44 @@ class UserLoginAPIView(ObtainAuthToken):
             'user_type': user.user_type
         })
 
+class GoogleUserAPIView(APIView):
+    def post(self,request):
+        request.data["password"] = "googlepassword"
+        try:
+            user = User.objects.get(username=request.data["username"])
+        except:
+            user = None
+        if user == None:
+            request.data["user_type"] = 1
+            serializer = UserSerializer(data=request.data)
+            if serializer.is_valid():
+            # There error handling part might not be required, additional test is needed
+                if not "user_type" in serializer.validated_data.keys():
+                    return Response({"user_type": ["This field is required."]}, status=status.HTTP_400_BAD_REQUEST)
+                if not "username" in serializer.validated_data.keys():
+                    return Response({"username": ["This field is required."]}, status=status.HTTP_400_BAD_REQUEST)
+                if not "password" in serializer.validated_data.keys():
+                    return Response({"password": ["This field is required."]}, status=status.HTTP_400_BAD_REQUEST)
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response(serializer._errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            parent = UserLoginAPIView()
+            return parent.post(request)
 
 class UserSignupAPIView(APIView):
 
     def post(self, request):
-
-        serializer = UserSerializer(data=request.data)
+        user_field = ['id',  'username', 'password', 'email', 'first_name', 'last_name', 'date_joined', 'last_login', 'user_type', 'bazaar_point','company']
+        user_dict = {}
+        location_dict = {}
+        for fields in request.data:
+            if fields in user_field:
+                user_dict[fields] = request.data[fields]
+            else:
+                location_dict[fields] = request.data[fields]
+        serializer = UserSerializer(data=user_dict)
 
         if serializer.is_valid():
             # There error handling part might not be required, additional test is needed
@@ -133,7 +166,11 @@ class UserSignupAPIView(APIView):
             user = User.objects.get(username=email)
             user.is_active = False
             user.save()
-
+            if request.data['user_type'] == 2:
+                location_dict['user'] = user.id
+                serializer2 = LocationSerializer(data=location_dict)
+                if serializer2.is_valid():
+                    serializer2.save()
             uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
 
             domain = get_current_site(request).domain
@@ -206,9 +243,10 @@ class ResetPasswordView(APIView):
     def post(self, request, uidb64):
         user_temp = self.get_object(request,uidb64)
         # Check old password
-        #if not user_temp.check_password(request.data["old_password"]):
-            #return Response({"old_password": ["Wrong password."]}, status=status.HTTP_400_BAD_REQUEST)
-            # set_password also hashes the password that the user will get
+        if "old_password" in request.data.keys():
+            if not user_temp.check_password(request.data["old_password"]):
+                return Response({"old_password": ["Wrong password."]}, status=status.HTTP_400_BAD_REQUEST)
+                # set_password also hashes the password that the user will get
         try:
             user_temp.set_password(request.data["new_password"])
             user_temp.save()
