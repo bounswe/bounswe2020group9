@@ -21,6 +21,9 @@ class MyAccountViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        newPasswordTextField.textContentType = .oneTimeCode
+        currentPasswordTextField.textContentType = .oneTimeCode
+        newPasswordAgainTextField.textContentType = .oneTimeCode
         frameView.layer.borderColor = #colorLiteral(red: 1, green: 0.6235294118, blue: 0, alpha: 1)
         passwordUpdateView.layer.borderColor = #colorLiteral(red: 1, green: 0.6235294118, blue: 0, alpha: 1)
         if let firstName = UserDefaults.standard.value(forKey: K.userFirstNameKey) as? String{
@@ -84,6 +87,49 @@ class MyAccountViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
+    @IBAction func updatePasswordButtonPressed(_ sender: UIButton) {
+        
+        let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+        if let currentPassword = currentPasswordTextField.text {
+            if currentPassword.count != 0 {
+            if let newPassword = newPasswordTextField.text {
+                if newPassword.count != 0 {
+                if newPassword.count < 8 || newPassword.count > 20 {
+                    alertController.message = "New password must be at least 8 , at most 20 characters in length"
+                    self.present(alertController, animated: true, completion: nil)
+                    return
+                }else if let newPasswordAgain = newPasswordAgainTextField.text{
+                    if newPasswordAgain.count != 0 {
+                    if newPassword != newPasswordAgain {
+                        alertController.message = "Your passwords do not match!"
+                        self.present(alertController, animated: true, completion: nil)
+                        return
+                    }else {
+                        
+                    }
+                }else {
+                    alertController.message = "Enter new password again"
+                    self.present(alertController, animated: true, completion: nil)
+                }
+                }
+            }else{
+                alertController.message = "Enter new password"
+                self.present(alertController, animated: true, completion: nil)
+            }
+            }
+        }else {
+            alertController.message = "Enter current password"
+            self.present(alertController, animated: true, completion: nil)
+        }
+        }
+        
+//        if password.count < 8 || password.count > 20 {
+//            alertController.message = "Password must be at least 8 , at most 20 characters in length"
+//            self.present(alertController, animated: true, completion: nil)
+//        }
+        
+    }
     
     @IBAction func resetPasswordButtonPressed(_ sender: UIButton) {
         let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
