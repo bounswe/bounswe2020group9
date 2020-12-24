@@ -815,6 +815,9 @@
                                                         <state key="normal" title="Forgot Password?">
                                                             <color key="titleColor" red="1" green="0.64313725489999995" blue="0.35686274509999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         </state>
+                                                        <connections>
+                                                            <action selector="forgotButtonPressed:" destination="Ghz-qv-MNd" eventType="touchUpInside" id="lhP-8i-XFc"/>
+                                                        </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nSX-4R-nQN">
                                                         <rect key="frame" x="20" y="170" width="334" height="36"/>
