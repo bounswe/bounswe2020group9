@@ -14,9 +14,12 @@ class MyAccountViewController: UIViewController {
     @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var frameView: UIView!
     @IBOutlet weak var passwordUpdateView: UIView!
+    @IBOutlet weak var myAddressView: UIView!
     @IBOutlet weak var currentPasswordTextField: UITextField!
     @IBOutlet weak var newPasswordTextField: UITextField!
     @IBOutlet weak var newPasswordAgainTextField: UITextField!
+    var firstName:String?
+    var lastName:String?
     
     
     override func viewDidLoad() {
@@ -26,14 +29,25 @@ class MyAccountViewController: UIViewController {
         newPasswordAgainTextField.textContentType = .oneTimeCode
         frameView.layer.borderColor = #colorLiteral(red: 1, green: 0.6235294118, blue: 0, alpha: 1)
         passwordUpdateView.layer.borderColor = #colorLiteral(red: 1, green: 0.6235294118, blue: 0, alpha: 1)
+        myAddressView.layer.borderColor = #colorLiteral(red: 1, green: 0.6235294118, blue: 0, alpha: 1)
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         if let firstName = UserDefaults.standard.value(forKey: K.userFirstNameKey) as? String{
             firstNameTextField.text = firstName
+        }else {
+            firstNameTextField.text = ""
         }
         if let lastName = UserDefaults.standard.value(forKey: K.userLastNameKey) as? String{
             lastNameTextField.text = lastName
+        }else {
+            lastNameTextField.text = ""
         }
         if let email = UserDefaults.standard.value(forKey: K.usernameKey) as? String{
             emailLabel.text = email
+        }else {
+            lastNameTextField.text = ""
         }
     }
     
@@ -50,7 +64,7 @@ class MyAccountViewController: UIViewController {
                 self.present(alertController, animated: true, completion: nil)
                 return
             }
-            UserDefaults.standard.setValue(firstName, forKey: K.userFirstNameKey)
+            self.firstName = firstName
         }
         if let lastName = lastNameTextField.text{
             if !lastName.isName {
@@ -58,12 +72,15 @@ class MyAccountViewController: UIViewController {
                 self.present(alertController, animated: true, completion: nil)
                 return
             }
-            UserDefaults.standard.setValue(lastName, forKey: K.userLastNameKey)
+            self.lastName = lastName
         }
-        if let authorization = UserDefaults.standard.value(forKey: K.token) as? String,let firstName = UserDefaults.standard.value(forKey: K.userFirstNameKey) as? String,let lastName = UserDefaults.standard.value(forKey: K.userLastNameKey) as? String{
+        
+        if let authorization = UserDefaults.standard.value(forKey: K.token) as? String,let firstName = self.firstName,let lastName = self.lastName{
             APIManager().setProfileInfo(authorization: authorization, firstName: firstName, lastName: lastName) { (result) in
                 switch result {
                 case .success(_):
+                    UserDefaults.standard.setValue(firstName, forKey: K.userFirstNameKey)
+                    UserDefaults.standard.setValue(lastName, forKey: K.userLastNameKey)
                     alertController.message = "Your profile information has been successfully updated!"
                     self.present(alertController, animated: true, completion: nil)
                 case .failure(_):
@@ -71,18 +88,24 @@ class MyAccountViewController: UIViewController {
                     self.present(alertController, animated: true, completion: nil)
                 }
             }
-            
+        }else {
+            alertController.message = "Your profile information could not be updated!"
+            self.present(alertController, animated: true, completion: nil)
         }
     }
     
     @IBAction func logoutButtonPressed(_ sender: UIButton) {
+        UserDefaults.standard.setValue(nil, forKey: K.searchHistoryKey)
+        UserDefaults.standard.setValue(nil, forKey: K.userTypeKey)
+        UserDefaults.standard.setValue(nil, forKey: K.token)
+        UserDefaults.standard.setValue(nil, forKey: K.userIdKey)
         UserDefaults.standard.setValue(nil, forKey: K.isGoogleSignedInKey)
-        UserDefaults.standard.set(nil, forKey: K.userFirstNameKey)
-        UserDefaults.standard.set(nil, forKey: K.userLastNameKey)
-        UserDefaults.standard.set(nil, forKey: K.usernameKey)
-        UserDefaults.standard.set(nil, forKey: K.userAddressKey)
-        UserDefaults.standard.set(nil, forKey: K.userPhoneNumKey)
-        UserDefaults.standard.set(false, forKey: K.isLoggedinKey)
+        UserDefaults.standard.setValue(nil, forKey: K.userFirstNameKey)
+        UserDefaults.standard.setValue(nil, forKey: K.userLastNameKey)
+        UserDefaults.standard.setValue(nil, forKey: K.usernameKey)
+        UserDefaults.standard.setValue(nil, forKey: K.userAddressKey)
+        UserDefaults.standard.setValue(nil, forKey: K.userPhoneNumKey)
+        UserDefaults.standard.setValue(false, forKey: K.isLoggedinKey)
         GIDSignIn.sharedInstance().signOut()
         self.dismiss(animated: true, completion: nil)
     }
