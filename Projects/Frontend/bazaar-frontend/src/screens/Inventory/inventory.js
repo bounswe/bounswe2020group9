@@ -21,14 +21,39 @@ export default class Inventory extends Component {
       category: '',
       subcategory: '',
       errors: [],
-      isOpen: false
+      isOpen: false,
+      categoryList: {"":[]}
     }
     this.handleImageChange = this.handleImageChange.bind(this)
 
   }
 
+
   componentDidMount() {
     let myCookie = read_cookie('user')
+    axios.get('http://13.59.236.175:8000/api/product/categories/')
+    .then(res => {
+      let resp = res.data;
+      let categoryListTemp = {};
+      let keys = [];
+      for (let i=0;i<resp.length;i++) {
+        if (resp[i]["parent"] == "Categories") {
+          keys.push(resp[i]["name"])
+        }
+      }
+      for (let i=0;i<keys.length;i++) {
+        let sublist = []
+        for (let j=0;j<resp.length;j++) {
+          if (resp[j]["parent"] == keys[i]) {
+            sublist.push(resp[j]["name"]);
+          }
+        }
+        categoryListTemp[keys[i]] = sublist;
+      }
+      categoryListTemp[''] = []
+      this.setState({categoryList: categoryListTemp})
+      
+    })
     axios.get(`http://13.59.236.175:8000/api/product/`)
       .then(res => {
         let myProducts = res.data.filter(product => product.vendor === myCookie.user_id)
@@ -36,11 +61,12 @@ export default class Inventory extends Component {
       })
 
 
+
   }
   handleChange = (event) => {
     // You can use setState or dispatch with something like Redux so we can use the retrieved data
     this.setState({ [event.target.name]: event.target.value });
-    console.log(this.state.category)
+    //console.log(this.state.category)
   };
 
   handleImageChange = event => {
@@ -100,17 +126,7 @@ export default class Inventory extends Component {
       }
     ];
 
-    let categoryList = {"Home": ["Home Textile", "Bedroom", "Bathroom", "Kitchen", "Lighting", "Furniture", "Home/Other"],
-                        "Electronics": ["Tablets", "Smartphones", "Computers", "TV", "Gaming", "Home Appliances", "Electronics/Other"], 
-                        "Clothing": ["Top", "Bottom", "Outerwear", "Shoes", "Bags", "Accessories", "Activewear", "Clothing/Other"], 
-                        "Living": ["Art Supplies", "Musical Devices", "Sports", "Living/Other", "Living/Other"], 
-                        "Selfcare": ["Perfumes", "Makeup", "Skincare", "Hair", "Body Care", "Selfcare/Other"],
-                        "Books": ["Books/Other"],
-                        "Categories": ["Home", "Electronics", "Clothing", "Living", "Selfcare", "Books"],
-                        '': []
-    }
-
-    let categories = Object.keys(categoryList).map(category => {
+    let categories = Object.keys(this.state.categoryList).map(category => {
       if (category !== ""){
         return (
           <option value={category}>{category}</option>
@@ -118,7 +134,7 @@ export default class Inventory extends Component {
       }
     })
 
-    let subcategories = categoryList[this.state.category].map(subcategory => {
+    let subcategories = this.state.categoryList[this.state.category].map(subcategory => {
       return (
         <option value={subcategory}>{subcategory}</option>
       )

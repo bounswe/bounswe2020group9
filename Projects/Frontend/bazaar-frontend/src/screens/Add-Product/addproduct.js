@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import axios from 'axios'
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 import Cookies from 'js-cookie';
+import { Modal, Button } from "react-bootstrap";
+
 
 import "./addproduct.scss";
 import { faGlassWhiskey } from "@fortawesome/free-solid-svg-icons";
@@ -24,7 +26,8 @@ export default class AddProduct extends Component {
           token: '',
           redirect: null,
           hasError: false,
-          errors: {}
+          errors: {},
+          categoryList: {"":[]}
         //   user_id: Cookies.get("user_id")
         }
       }
@@ -112,20 +115,35 @@ export default class AddProduct extends Component {
 
       componentDidMount() {
         let myCookie = read_cookie('user')
-
+        axios.get('http://13.59.236.175:8000/api/product/categories/')
+        .then(res => {
+          let resp = res.data;
+          let categoryListTemp = {};
+          let keys = [];
+          for (let i=0;i<resp.length;i++) {
+            if (resp[i]["parent"] == "Categories") {
+              keys.push(resp[i]["name"])
+            }
+          }
+          for (let i=0;i<keys.length;i++) {
+            let sublist = []
+            for (let j=0;j<resp.length;j++) {
+              if (resp[j]["parent"] == keys[i]) {
+                sublist.push(resp[j]["name"]);
+              }
+            }
+            categoryListTemp[keys[i]] = sublist;
+          }
+          categoryListTemp[''] = []
+          this.setState({categoryList: categoryListTemp})
+          
+        })
 
       }
 
 
     render() {
-      let categoryList = {"Home": ["Home Textile", "Bedroom", "Bathroom", "Kitchen", "Lighting", "Furniture", "Home/Other"],
-                          "Electronics": ["Tablets", "Smartphones", "Computers", "TV", "Gaming", "Home Appliances", "Electronics/Other"], 
-                          "Clothing": ["Top", "Bottom", "Outerwear", "Shoes", "Bags", "Accessories", "Activewear", "Clothing/Other"], 
-                          "Living": ["Art Supplies", "Musical Devices", "Sports", "Living/Other", "Living/Other"], 
-                          "Selfcare": ["Perfumes", "Makeup", "Skincare", "Hair", "Body Care", "Selfcare/Other"],
-                          "Books": ["Books/Other"],
-                          "": []
-                        }
+      let categoryList = this.state.categoryList
 
       let categories = Object.keys(categoryList).map(category => {
         if (category !== ""){
@@ -228,7 +246,7 @@ export default class AddProduct extends Component {
                                   </div>
                               </div>
                               <div id="save-changes-div">
-                                <button id="save-changes" type="submit" className="btn btn-block">Add Product</button>
+                                <Button variant="primary" id="save-changes-product" type="submit">Save Changes</Button>
                               </div>
 
                             </form>
