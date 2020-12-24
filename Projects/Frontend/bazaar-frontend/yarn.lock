@@ -9394,7 +9394,7 @@ prop-types-extra@^1.1.0:
     react-is "^16.3.2"
     warning "^4.0.0"
 
-prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@^15.6.0, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -9648,6 +9648,14 @@ react-google-button@^0.7.1:
   integrity sha512-FN8/9Va6oAGKL561yddNzcjz0iGlt2GZFwiDPczEu0fDVnR21/nBrPs7Y5x97V1S4//nvtkvv6ohfwtxIHpbfg==
   dependencies:
     prop-types "^15.7.2"
+
+react-google-login@^5.2.1:
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/react-google-login/-/react-google-login-5.2.1.tgz#29e14906269cba6cf7a9dc359baf55ed7b482a00"
+  integrity sha512-7yz0yH+JxSFy/KOMBfm5QY8W4xxJTh/qFIi/MNjDjyXKgDtB8JpoVyPsTRMlv8HKdDshFHSZn199KEX9Q2flFA==
+  dependencies:
+    "@types/react" "*"
+    prop-types "^15.6.0"
 
 react-is@^16.3.2, react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1:
   version "16.13.1"

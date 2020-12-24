@@ -4,6 +4,9 @@ import axios from 'axios'
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 import { Redirect } from "react-router-dom";
 
+import { GoogleLogin } from 'react-google-login';
+
+
 import "./sign-in.css";
 
 export default class SignIn extends Component {
@@ -18,6 +21,53 @@ export default class SignIn extends Component {
     }
   }
 
+  insertGapiScript() {
+      const script = document.createElement('script')
+      script.src = 'https://apis.google.com/js/platform.js'
+      script.onload = () => {
+        this.initializeGoogleSignIn()
+      }
+      document.body.appendChild(script)
+  }
+
+  initializeGoogleSignIn() {
+    window.gapi.load('auth2', () => {
+      window.gapi.auth2.init({
+        client_id: '668711281350-36g6p1rlp9doabsb79lktm95hpa56qcj.apps.googleusercontent.com'
+      })
+
+      console.log('api init')
+
+      window.gapi.load('signin2', ()=> {
+        const params = {
+          
+          onsuccess: this.onSuccess ,
+          onfailure: this.onFailure ,
+          }
+         
+        window.gapi.signin2.render('SignInButton' , params);
+      })
+
+    })
+
+  }
+  onSuccess(googleUser) {
+    const profile = googleUser.getBasicProfile();
+    console.log("Name: " + profile.getName());
+    console.log("Mail: " + profile.getEmail());
+    var id_token = googleUser.getAuthResponse().id_token;
+
+  }
+  onFailure(googleUser){
+    console.log("Failure ");
+  }
+
+  componentDidMount() {
+    console.log('loading')
+
+    this.insertGapiScript()
+  }
+
 
   handleChange = event => {
 
@@ -25,11 +75,14 @@ export default class SignIn extends Component {
 
   }
 
+
   handleSubmit = event => {
 
     event.preventDefault();
 
     // const data = { "username": "omerBenzer61@bazaar.com", "password": "mypw" }
+
+
 
 
     axios.post(`http://13.59.236.175:8000/api/user/login/`, { "username": this.state.username, "password": this.state.password })
@@ -83,9 +136,8 @@ export default class SignIn extends Component {
             Forgot <a href="/forgot-password">password?</a>
           </p>
         </form>
-        <GoogleButton className="btn-google"
-          onClick={() => { console.log('Google button clicked') }}
-        />
+        <GoogleButton id= "SignInButton" className= "btn-google"></GoogleButton> 
+        
       </div>
 
     );
