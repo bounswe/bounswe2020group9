@@ -36,9 +36,19 @@ class MyAccountViewController: UIViewController {
         let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
         if let firstName = firstNameTextField.text {
+            if !firstName.isName {
+                alertController.message = "Your First Name is invalid. Please enter a valid First Name."
+                self.present(alertController, animated: true, completion: nil)
+                return
+            }
             UserDefaults.standard.setValue(firstName, forKey: K.userFirstNameKey)
         }
         if let lastName = lastNameTextField.text{
+            if !lastName.isName {
+                alertController.message = "Your Last Name is invalid. Please enter a valid Last Name."
+                self.present(alertController, animated: true, completion: nil)
+                return
+            }
             UserDefaults.standard.setValue(lastName, forKey: K.userLastNameKey)
         }
         if let authorization = UserDefaults.standard.value(forKey: K.token) as? String,let firstName = UserDefaults.standard.value(forKey: K.userFirstNameKey) as? String,let lastName = UserDefaults.standard.value(forKey: K.userLastNameKey) as? String{
