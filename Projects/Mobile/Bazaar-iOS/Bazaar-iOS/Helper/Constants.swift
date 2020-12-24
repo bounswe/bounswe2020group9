@@ -18,4 +18,5 @@ struct K {
     static let userAddressKey = "userAddress"
     static let userPhoneNumKey = "userPhoneNum"
     static let userTypeKey = "userType"
+    static let isGoogleSignedInKey = "isGoogleSignedIn"
 }

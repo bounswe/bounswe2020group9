@@ -15,9 +15,12 @@ class MyAccountViewController: UIViewController {
     @IBOutlet weak var addressTextView: UITextView!
     @IBOutlet weak var phoneNumberTextField: UITextField!
     
+    @IBOutlet weak var frameView: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        frameView.layer.borderColor = #colorLiteral(red: 1, green: 0.6235294118, blue: 0, alpha: 1)
+
         firstNameTextField.tag=1
         lastNameTextField.tag=2
         phoneNumberTextField.tag = 3
@@ -46,6 +49,7 @@ class MyAccountViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     @IBAction func logoutButtonPressed(_ sender: UIButton) {
+        UserDefaults.standard.setValue(nil, forKey: K.isGoogleSignedInKey)
         UserDefaults.standard.set(nil, forKey: K.userFirstNameKey)
         UserDefaults.standard.set(nil, forKey: K.userLastNameKey)
         UserDefaults.standard.set(nil, forKey: K.usernameKey)
@@ -59,14 +63,19 @@ class MyAccountViewController: UIViewController {
         let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
         if let username = UserDefaults.standard.value(forKey: K.usernameKey) as? String{
-            APIManager().resetPasswordEmail(username: username) { (result) in
-                switch result{
-                case .success(_):
-                    alertController.message = "A mail has been sent to your email, please check it!"
-                    self.present(alertController, animated: true, completion: nil)
-                case .failure(_):
-                    alertController.message = "There was a problem resetting your password!"
-                    self.present(alertController, animated: true, completion: nil)
+            if let _ = UserDefaults.standard.value(forKey: K.isGoogleSignedInKey) as? Bool {
+                alertController.message = "You cannot reset your password because you are logged in with a Google account!"
+                self.present(alertController, animated: true, completion: nil)
+            }else {
+                APIManager().resetPasswordEmail(username: username) { (result) in
+                    switch result{
+                    case .success(_):
+                        alertController.message = "A mail has been sent to your email, please check it!"
+                        self.present(alertController, animated: true, completion: nil)
+                    case .failure(_):
+                        alertController.message = "There was a problem resetting your password!"
+                        self.present(alertController, animated: true, completion: nil)
+                    }
                 }
             }
         }
