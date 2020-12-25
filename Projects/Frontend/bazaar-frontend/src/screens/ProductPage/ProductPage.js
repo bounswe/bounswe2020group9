@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import "./productpage.scss"
-import myImg from "../../assets/productFiller.svg"
 
 import Carousel from 'react-bootstrap/Carousel'
 import Container from 'react-bootstrap/Container'
@@ -73,6 +72,12 @@ export default class Productpage extends Component {
                 <h5 className={"productPrice"}><span className={'productPriceName'}>Price: </span><span className={'productPriceAmount'}> ₺{product.price}</span></h5>
               </Container>
             </Col>
+            <Row>
+              <Col>
+              </Col>
+              <Col>
+              </Col>
+            </Row>
           </Row>
         </Container>
 
