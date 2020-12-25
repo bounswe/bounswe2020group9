@@ -4,6 +4,7 @@ import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 import Cookies from 'js-cookie';
 import DataTable from 'react-data-table-component';
 import { Modal, Button } from "react-bootstrap";
+import {serverUrl} from '../../utils/get-url'
 
 import "./inventory.scss";
 
@@ -31,7 +32,7 @@ export default class Inventory extends Component {
 
   componentDidMount() {
     let myCookie = read_cookie('user')
-    axios.get('http://13.59.236.175:8000/api/product/categories/')
+    axios.get(serverUrl+'api/product/categories/')
     .then(res => {
       let resp = res.data;
       let categoryListTemp = {};
@@ -54,7 +55,7 @@ export default class Inventory extends Component {
       this.setState({categoryList: categoryListTemp})
       
     })
-    axios.get(`http://13.59.236.175:8000/api/product/`)
+    axios.get(serverUrl+`api/product/`)
       .then(res => {
         let myProducts = res.data.filter(product => product.vendor === myCookie.user_id)
         this.setState({ products: myProducts })
