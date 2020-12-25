@@ -399,4 +399,25 @@ struct APIManager {
             completionHandler(.failure(error))
         }
     }
+    
+    func getComments(productID: Int, completionHandler: @escaping (Result<[CommentData], Error>) -> Void) {
+        do {
+            let request = try ApiRouter.getComments(product_id: productID).asURLRequest()
+            AF.request(request).responseJSON { response in
+                if (response.response?.statusCode != nil) {
+                    guard let safeData = response.data else {
+                        completionHandler(.failure(MyError.runtimeError("Error")))
+                        return
+                    }
+                    if let decodedData: [CommentData] = APIParse().parseJSON(safeData: safeData) {
+                        completionHandler(.success(decodedData))
+                    } else {
+                        completionHandler(.failure(MyError.runtimeError("err3")))
+                    }
+                }
+            }
+        } catch let error {
+            completionHandler(.failure(error))
+        }
+    }
 }
