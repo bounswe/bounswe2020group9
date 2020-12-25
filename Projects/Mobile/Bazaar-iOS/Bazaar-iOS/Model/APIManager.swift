@@ -69,7 +69,7 @@ struct APIManager {
                         return
                     }
                     if let decodedData:GoogleSignInData = APIParse().parseJSON(safeData: safeData){
-                        completionHandler(.success(decodedData.userId))
+                        completionHandler(.success(decodedData.id))
                     }else {
                         completionHandler(.failure(MyError.runtimeError("Failed to parse json ")))
                     }

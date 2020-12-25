@@ -86,5 +86,5 @@ struct UpdatePasswordData:Codable {
 }
 
 struct GoogleSignInData:Codable {
-    let userId:Int
+    let id:Int
 }
