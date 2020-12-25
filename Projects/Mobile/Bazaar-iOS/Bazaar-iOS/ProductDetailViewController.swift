@@ -66,7 +66,11 @@ class ProductDetailViewController: UIViewController {
         starRatingView.rating = Float(product.rating)
         rateLabel.isUserInteractionEnabled = true
         rateLabel.textColor = #colorLiteral(red: 1, green: 0.6431372549, blue: 0.3568627451, alpha: 1)
-        descriptionLabel.text = "Vendor: " + String(product.vendor) + "\n\nStock: " + String(product.stock)
+        let description = "No description provided for this product."
+        descriptionLabel.text = description
+        if product.detail != "" {
+            descriptionLabel.text = product.detail//"Vendor: " + String(product.vendor) + "\n\nStock: " + String(product.stock)
+        }
         descriptionLabel.numberOfLines = 0
         descriptionLabel.sizeToFit()
         descriptionLabel.textColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
