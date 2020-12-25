@@ -79,10 +79,51 @@ struct APIManager {
             completionHandler(.failure(err))
         }
     }
+    func updatePassword(userId:Int,currentPassword:String,newPassword:String,completionHandler: @escaping (Result<String ,Error>) -> Void)  {
+        do {
+            let request = try ApiRouter.updatePassword(userId:userId ,currentPassword: currentPassword, newPassword: newPassword).asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if (response.response?.statusCode != nil){
+                    guard let safeData = response.data else  {
+                        completionHandler(.failure(response.error!))
+                        return
+                    }
+                    if let decodedData:UpdatePasswordData = APIParse().parseJSON(safeData: safeData){
+                        completionHandler(.success(decodedData.message))
+                    }else {
+                        completionHandler(.failure(MyError.runtimeError("Failed to parse json ")))
+                    }
+                }
+            }
+        }catch let err {
+            completionHandler(.failure(err))
+        }
+    }
     
     func getProfileInfo(authorization:String,completionHandler: @escaping (Result<ProfileData ,Error>) -> Void)  {
         do {
             let request = try ApiRouter.getProfileInfo(authorization: authorization).asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if (response.response?.statusCode != nil){
+                    guard let safeData = response.data else  {
+                        completionHandler(.failure(response.error!))
+                        return
+                    }
+                    if let decodedData:ProfileData = APIParse().parseJSON(safeData: safeData){
+                        completionHandler(.success(decodedData))
+                    }else {
+                        completionHandler(.failure(MyError.runtimeError("Failed to parse json ")))
+                    }
+                }
+            }
+        }catch let err {
+            completionHandler(.failure(err))
+        }
+    }
+    
+    func setProfileInfo(authorization:String,firstName:String,lastName:String,completionHandler: @escaping (Result<ProfileData ,Error>) -> Void)  {
+        do {
+            let request = try ApiRouter.setProfileInfo(authorization: authorization, firstName: firstName, lastName: lastName).asURLRequest()
             AF.request(request).responseJSON { (response) in
                 if (response.response?.statusCode != nil){
                     guard let safeData = response.data else  {
