@@ -59,6 +59,27 @@ struct APIManager {
         }
     }
     
+    func googleSingIn(username:String, token:String, firstName:String, lastName:String ,completionHandler: @escaping (Result<Int ,Error>) -> Void) {
+        do {
+            let request = try ApiRouter.googleSignIn(userName: username, token: token, firstName: firstName, lastName: lastName).asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if (response.response?.statusCode != nil){
+                    guard let safeData = response.data else  {
+                        completionHandler(.failure(response.error!))
+                        return
+                    }
+                    if let decodedData:GoogleSignInData = APIParse().parseJSON(safeData: safeData){
+                        completionHandler(.success(decodedData.userId))
+                    }else {
+                        completionHandler(.failure(MyError.runtimeError("Failed to parse json ")))
+                    }
+                }
+            }
+        }catch let err {
+            completionHandler(.failure(err))
+        }
+    }
+    
     func resetPasswordEmail(username:String,completionHandler: @escaping (Result<String ,Error>) -> Void)  {
         do {
             let request = try ApiRouter.resetPasswordEmail(username: username).asURLRequest()
