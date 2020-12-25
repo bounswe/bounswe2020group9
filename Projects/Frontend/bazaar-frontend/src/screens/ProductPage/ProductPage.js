@@ -56,7 +56,7 @@ export default class Productpage extends Component {
               <Container style={{display:"flex", flexDirection:"column", height:'100%'}}>
                 <div style={{flex: '1'}}>
                   <Row>
-                    <Col>
+                    <Col  style={{width:'max-content'}}>
                       <h2 className={"productHeader"}>{product.name}</h2>
                     </Col>
                     <Col>
