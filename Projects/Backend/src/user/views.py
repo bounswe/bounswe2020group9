@@ -250,6 +250,20 @@ class ResetPasswordView(APIView):
         return Response({"message":"true"})
     def post(self, request, uidb64):
         user_temp = self.get_object(request,uidb64)
+        try:
+            user_temp.set_password(request.data["new_password"])
+            user_temp.save()
+            response = {
+                'status': 'success',
+                'code': status.HTTP_200_OK,
+                'message': 'Password updated successfully',
+            }
+        except:
+            return Response({"message":"Couldn't reset password"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(response,status=status.HTTP_201_CREATED)
+class ResetPasswordProfileView(APIView):
+    def post(self,request):
+        user_temp = User.objects.get(id = request.data["user_id"])
         # Check old password
         if "old_password" in request.data.keys():
             if not user_temp.check_password(request.data["old_password"]):
