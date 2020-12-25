@@ -13,15 +13,32 @@
     padding: 2rem;
 
     & .productHeader{
-        margin-bottom: 2rem;
     }
     & .productBrand{
-        color: cornflowerblue;
-    }
+        color: #42AEA8;
+        font-family: monospace;
+        margin-bottom: .8rem;
+        }
     & .productPrice{
+        margin-top: .5rem;
+        & .productPriceName{
+            font-family: monospace;
 
-        & span{
-            color: crimson;
+        }
+
+        & .productPriceAmount{
+            color: #db5c73;
+        }
+    }
+    & .productCategory{
+        margin-left: 5rem;
+        font-size: 1rem;
+        & .productCategoryName{
+            color: #A7A298;
+        }
+
+        & .productCategoryParent{
+            color: #213E3B;
         }
     }
 }

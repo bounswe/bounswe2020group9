@@ -10,23 +10,15 @@ import axios from 'axios'
 
 import Header from "../../components/Header/Header"
 
+//components
+import StarRatings from '../../../node_modules/react-star-ratings';
+
 
 export default class Productpage extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      productData: [],
-    };
-  }
-
-  componentDidMount() {
-    this.setState({ productData: this.props.location.state.product })
-  }
-
   render() {
-
-    console.log(this.state.productData)
+    const { product } = this.props.location.state;
+    console.log(product)
 
     return (
       <div>
@@ -38,7 +30,7 @@ export default class Productpage extends Component {
                 <Carousel.Item interval={1000}>
                   <img
                     className="d-block w-100"
-                    src={this.state.productData.picture}
+                    src={product.picture}
                     alt="First slide"
                   />
                   <Carousel.Caption>
@@ -49,7 +41,7 @@ export default class Productpage extends Component {
                 <Carousel.Item interval={500}>
                   <img
                     className="d-block w-100"
-                    src={this.state.productData.picture}
+                    src={product.picture}
                     alt="Third slide"
                   />
                   <Carousel.Caption>
@@ -60,7 +52,7 @@ export default class Productpage extends Component {
                 <Carousel.Item>
                   <img
                     className="d-block w-100"
-                    src={this.state.productData.picture}
+                    src={product.picture}
                     alt="Third slide"
                   />
                   <Carousel.Caption>
@@ -73,10 +65,24 @@ export default class Productpage extends Component {
 
             <Col className={"productInfo"}>
               <Container>
-                <h2 className={"productHeader"}>{this.state.productData.name}</h2>
-                <h5 className={"productBrand"}>{this.state.productData.brand}</h5>
-                <h5 className={"productPrice"}>Price: <span>{this.state.productData.price}</span></h5>
-
+                <Row>
+                  <Col>
+                    <h2 className={"productHeader"}>{product.name}</h2>
+                  </Col>
+                  <Col>
+                    <h5 className={"productCategory"}><span className={'productCategoryName'}>{product.category.name}</span> <span className={'productCategoryParent'}>{product.category.parent}</span></h5>
+                  </Col>
+                </Row>
+                <h5 className={"productBrand"}>{product.brand}</h5>
+                <StarRatings
+                  rating={2.403}
+                  starDimension="40px"
+                  starSpacing="15px"
+                  starRatedColor="#FFA41B"
+                  starDimension="20px"
+                  starSpacing="2px"
+                />
+                <h5 className={"productPrice"}><span className={'productPriceName'}>Price: </span><span className={'productPriceAmount'}> ₺{product.price}</span></h5>
               </Container>
             </Col>
           </Row>
