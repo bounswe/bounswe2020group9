@@ -53,7 +53,7 @@ struct CustomerListData: Codable {
     let id: Int
     let name: String
     let customer: Int
-    let products: [ProductData]
+    var products: [ProductData]
     let is_private: Bool
 }
 
