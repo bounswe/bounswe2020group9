@@ -18,7 +18,7 @@ enum ApiRouter: URLRequestBuilder {
     case editList(userId:Int, list: String, newName: String, newIsPrivate: String)
     case signUp(username:String, password:String, user_type:String)
     case resetPasswordEmail(username:String)
-    case updatePassword(currentPassword:String, newPassword:String)
+    case updatePassword(userId:Int,currentPassword:String, newPassword:String)
     case getCart(user: Int)
     case addToCart(user: Int, productID: Int, amount: Int)
     case editAmountInCart(productID: Int, amount: Int)
@@ -59,7 +59,7 @@ enum ApiRouter: URLRequestBuilder {
         case .setProfileInfo:
             return "api/user/profile/"
         case .updatePassword:
-            return "api/user/resetpw/"
+            return "api/user/resetpwprofile/"
         }
         
     }
@@ -97,7 +97,8 @@ enum ApiRouter: URLRequestBuilder {
         case .setProfileInfo( _, let firstName, let lastName):
             params["first_name"] = firstName
             params["last_name"] = lastName
-        case .updatePassword(let currentPassword, let newPassword):
+        case .updatePassword(let userID , let currentPassword, let newPassword):
+            params["user_id"] = userID
             params["old_password"] = currentPassword
             params["new_password"] = newPassword
         default:

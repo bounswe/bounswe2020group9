@@ -79,9 +79,9 @@ struct APIManager {
             completionHandler(.failure(err))
         }
     }
-    func updatePassword(currentPassword:String,newPassword:String,completionHandler: @escaping (Result<String ,Error>) -> Void)  {
+    func updatePassword(userId:Int,currentPassword:String,newPassword:String,completionHandler: @escaping (Result<String ,Error>) -> Void)  {
         do {
-            let request = try ApiRouter.updatePassword(currentPassword: currentPassword, newPassword: newPassword).asURLRequest()
+            let request = try ApiRouter.updatePassword(userId:userId ,currentPassword: currentPassword, newPassword: newPassword).asURLRequest()
             AF.request(request).responseJSON { (response) in
                 if (response.response?.statusCode != nil){
                     guard let safeData = response.data else  {

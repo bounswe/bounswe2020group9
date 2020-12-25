@@ -133,15 +133,20 @@ class MyAccountViewController: UIViewController {
                                         self.present(alertController, animated: true, completion: nil)
                                         return
                                     }else {
-                                        APIManager().updatePassword(currentPassword: currentPassword, newPassword: newPassword) { (result) in
-                                            switch result{
-                                            case .success(_):
-                                                alertController.message = "Your password has been successfully updated!"
-                                                self.present(alertController, animated: true, completion: nil)
-                                            case .failure(_):
-                                                alertController.message = "Password update failed!"
-                                                self.present(alertController, animated: true, completion: nil)
+                                        if let userId = UserDefaults.standard.value(forKey: K.userIdKey) as? Int{
+                                            APIManager().updatePassword(userId:userId,currentPassword: currentPassword, newPassword: newPassword) { (result) in
+                                                switch result{
+                                                case .success(let _):
+                                                    alertController.message = "Your password has been successfully updated!"
+                                                    self.present(alertController, animated: true, completion: nil)
+                                                case .failure(let _):
+                                                    alertController.message = "Password update failed!"
+                                                    self.present(alertController, animated: true, completion: nil)
+                                                }
                                             }
+                                        }else {
+                                            alertController.message = "Password update failed!"
+                                            self.present(alertController, animated: true, completion: nil)
                                         }
                                     }
                                 }else {

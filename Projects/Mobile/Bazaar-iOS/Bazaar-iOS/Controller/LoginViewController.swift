@@ -101,7 +101,7 @@ class LoginViewController: UIViewController {
                 self.present(alertController, animated: true, completion: nil)
             }else{
                 if let password = passwordTextField.text{
-                    if password.count < 3 || password.count > 20 {
+                    if password.count < 8 || password.count > 20 {
                         alertController.message = "Password must be at least 8 , at most 20 characters in length"
                         self.present(alertController, animated: true, completion: nil)
                     }else {

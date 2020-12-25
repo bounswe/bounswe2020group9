@@ -82,6 +82,5 @@ struct CartProduct: Codable {
 }
 
 struct UpdatePasswordData:Codable {
-    let status:String
     let message:String
 }
