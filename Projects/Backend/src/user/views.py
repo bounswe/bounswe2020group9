@@ -134,25 +134,25 @@ class GoogleUserAPIView(APIView):
                     return Response({"password": ["This field is required."]}, status=status.HTTP_400_BAD_REQUEST)
                 serializer.save()
                 user_temp = User.objects.get(username=request.data["username"])
-                Token.objects.filter(user=user_temp).delete()
-                print(Token.objects.filter(user=user_temp))
+                Token.objects.get(user=user_temp.id).delete()
                 token = Token.objects.create(user=user_temp,key=request.data["token"])
                 return Response(serializer.data, status=status.HTTP_200_OK)
             else:
                 return Response(serializer._errors, status=status.HTTP_400_BAD_REQUEST)
         else:
-            token= Token.objects.get(user=user.id)
-            if token.key == request.data["token"]:
+            Token.objects.get(user=user.id).delete()
+            try:
+                token = Token.objects.create(user=user,key=request.data["token"])
                 user.last_login = timezone.now()
                 user.save()
                 return Response({
                 'token': token.key,
-                'user_id': user.pk,
+                'id': user.pk,
                 # 'email': user.email,
                 # 'password': password,
                 'user_type': user.user_type
                 })
-            else:
+            except:
                 return Response({"token": ["token is not valid"]}, status=status.HTTP_400_BAD_REQUEST)
 
 class UserSignupAPIView(APIView):
