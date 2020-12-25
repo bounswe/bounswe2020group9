@@ -453,5 +453,7 @@ class SearchAPIView(APIView):
             filter_types = filter_type.split("&")
             product_list = filter_func(filter_types,product_list)
             product_list = sort_func(sort_type,product_list)
-            return Response(product_list, status=status.HTTP_200_OK)
+            product_dict = {}
+            product_dict["product_list"] = product_list
+            return Response(product_dict, status=status.HTTP_200_OK)
         return Response(serializer._errors, status=status.HTTP_400_BAD_REQUEST)
