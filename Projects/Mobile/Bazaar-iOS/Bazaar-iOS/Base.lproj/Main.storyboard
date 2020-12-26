@@ -1452,21 +1452,6 @@
                                     <constraint firstItem="b4J-K2-cmi" firstAttribute="height" secondItem="jtm-1c-Ccx" secondAttribute="height" multiplier="0.8" id="qh5-EM-mcK"/>
                                 </constraints>
                             </stackView>
-                            <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="C3f-NJ-8xc" userLabel="loadingView">
-                                <rect key="frame" x="5" y="117.66666666666669" width="404" height="690.33333333333326"/>
-                                <subviews>
-                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="ucQ-0g-VbU" userLabel="Activity Indicator">
-                                        <rect key="frame" x="192" y="335.33333333333331" width="20" height="20"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <color key="color" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </activityIndicatorView>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstItem="ucQ-0g-VbU" firstAttribute="centerX" secondItem="C3f-NJ-8xc" secondAttribute="centerX" id="arR-go-h69"/>
-                                    <constraint firstItem="ucQ-0g-VbU" firstAttribute="centerY" secondItem="C3f-NJ-8xc" secondAttribute="centerY" id="c8b-gW-CLU"/>
-                                </constraints>
-                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Pi7-1f-3fo"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -1475,20 +1460,14 @@
                             <constraint firstItem="7pp-fb-aPF" firstAttribute="top" secondItem="jtm-1c-Ccx" secondAttribute="bottom" constant="20" id="2Bw-U3-Ou4"/>
                             <constraint firstItem="jtm-1c-Ccx" firstAttribute="top" secondItem="Pi7-1f-3fo" secondAttribute="top" constant="10" id="8Jf-jO-Zm1"/>
                             <constraint firstAttribute="trailing" secondItem="7pp-fb-aPF" secondAttribute="trailing" constant="10" id="8P7-tm-EyY"/>
-                            <constraint firstItem="Pi7-1f-3fo" firstAttribute="bottom" secondItem="C3f-NJ-8xc" secondAttribute="bottom" constant="5" id="EDl-cZ-4gg"/>
-                            <constraint firstItem="Pi7-1f-3fo" firstAttribute="trailing" secondItem="C3f-NJ-8xc" secondAttribute="trailing" constant="5" id="L5m-gM-dzc"/>
                             <constraint firstAttribute="trailing" secondItem="jtm-1c-Ccx" secondAttribute="trailing" constant="10" id="NYU-H5-D8S"/>
                             <constraint firstItem="7pp-fb-aPF" firstAttribute="leading" secondItem="S1K-WJ-Y7M" secondAttribute="leading" constant="10" id="eTD-Ri-xXM"/>
                             <constraint firstItem="jtm-1c-Ccx" firstAttribute="height" secondItem="S1K-WJ-Y7M" secondAttribute="height" multiplier="0.06" id="hLy-Mi-Nuh"/>
                             <constraint firstItem="Pi7-1f-3fo" firstAttribute="bottom" secondItem="7pp-fb-aPF" secondAttribute="bottom" id="kPq-Is-o17"/>
-                            <constraint firstItem="C3f-NJ-8xc" firstAttribute="leading" secondItem="Pi7-1f-3fo" secondAttribute="leading" constant="5" id="uIz-Qc-Glg"/>
-                            <constraint firstItem="C3f-NJ-8xc" firstAttribute="top" secondItem="jtm-1c-Ccx" secondAttribute="bottom" constant="10" id="wsS-KB-xrK"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="FU9-xx-kxb"/>
                     <connections>
-                        <outlet property="activityIndicator" destination="ucQ-0g-VbU" id="Psi-rf-XhZ"/>
-                        <outlet property="loadingView" destination="C3f-NJ-8xc" id="0l2-cF-mE2"/>
                         <outlet property="reviewsTableView" destination="7pp-fb-aPF" id="kCM-rt-aIC"/>
                     </connections>
                 </viewController>

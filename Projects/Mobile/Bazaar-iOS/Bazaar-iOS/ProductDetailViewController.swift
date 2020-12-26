@@ -195,6 +195,14 @@ class ProductDetailViewController: UIViewController {
         
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if let reviewsVC = segue.destination as? ReviewsViewController {
+            reviewsVC.productId = product.id
+        }
+        
+    }
+    
 }
 
 // MARK: - Amount of Purchase
