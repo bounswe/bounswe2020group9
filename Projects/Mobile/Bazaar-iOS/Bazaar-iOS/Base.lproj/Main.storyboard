@@ -1673,6 +1673,9 @@
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jse-4x-j3M">
                                                                 <rect key="frame" x="49.666666666666686" y="54" width="275" height="30"/>
                                                                 <state key="normal" title="Find Your Company Address on the Map"/>
+                                                                <connections>
+                                                                    <segue destination="f8W-BH-naY" kind="presentation" id="JZR-px-JcR"/>
+                                                                </connections>
                                                             </button>
                                                         </subviews>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1916,11 +1919,49 @@
             <objects>
                 <viewController id="f8W-BH-naY" customClass="MapViewController" customModule="Bazaar_iOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="j7L-vB-2Un">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sbj-79-XAy" customClass="MKMapView">
+                                <rect key="frame" x="0.0" y="60" width="414" height="748"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wTZ-Pp-Mgw" userLabel="Header">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="60"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f7o-O8-h0d">
+                                        <rect key="frame" x="143" y="13" width="128" height="34"/>
+                                        <state key="normal" title="Save &amp; Go Back">
+                                            <color key="titleColor" red="1" green="0.62352941179999999" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="backButtonPressed:" destination="L5V-jH-uVD" eventType="touchUpInside" id="2PP-n1-EBP"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemGray6Color"/>
+                                <constraints>
+                                    <constraint firstItem="f7o-O8-h0d" firstAttribute="centerY" secondItem="wTZ-Pp-Mgw" secondAttribute="centerY" id="KLt-9D-XCi"/>
+                                    <constraint firstAttribute="height" constant="60" id="SYQ-vk-EP4"/>
+                                    <constraint firstItem="f7o-O8-h0d" firstAttribute="centerX" secondItem="wTZ-Pp-Mgw" secondAttribute="centerX" id="rpD-F3-y5L"/>
+                                </constraints>
+                            </view>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="moP-5d-ta5"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="moP-5d-ta5" firstAttribute="bottom" secondItem="sbj-79-XAy" secondAttribute="bottom" id="RiN-j4-3vp"/>
+                            <constraint firstItem="moP-5d-ta5" firstAttribute="trailing" secondItem="sbj-79-XAy" secondAttribute="trailing" id="SCH-TZ-g0I"/>
+                            <constraint firstItem="sbj-79-XAy" firstAttribute="top" secondItem="wTZ-Pp-Mgw" secondAttribute="bottom" id="SN5-Re-8Yc"/>
+                            <constraint firstItem="wTZ-Pp-Mgw" firstAttribute="trailing" secondItem="moP-5d-ta5" secondAttribute="trailing" id="Zst-X2-Nq3"/>
+                            <constraint firstItem="sbj-79-XAy" firstAttribute="leading" secondItem="moP-5d-ta5" secondAttribute="leading" id="gRS-qe-4UL"/>
+                            <constraint firstItem="wTZ-Pp-Mgw" firstAttribute="top" secondItem="moP-5d-ta5" secondAttribute="top" id="m80-Tn-7H2"/>
+                            <constraint firstItem="wTZ-Pp-Mgw" firstAttribute="leading" secondItem="moP-5d-ta5" secondAttribute="leading" id="pGf-Qx-VTf"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="mapView" destination="sbj-79-XAy" id="bhL-zX-bv4"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="360-jI-3sp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -2701,11 +2742,6 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jj4-C4-Vul" customClass="MKMapView">
-                                <rect key="frame" x="10" y="605" width="384" height="232"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="2XP-EK-fK7"/>
                         <color key="backgroundColor" systemColor="systemGray6Color"/>
@@ -2733,7 +2769,6 @@
                         <outlet property="firstNameTextField" destination="RO7-1V-2LN" id="64s-6Y-jgz"/>
                         <outlet property="frameView" destination="e3Y-4l-TEa" id="nko-2g-hjW"/>
                         <outlet property="lastNameTextField" destination="Bsu-dS-L4M" id="86B-md-c55"/>
-                        <outlet property="mapKitC" destination="jj4-C4-Vul" id="nYq-YX-5E2"/>
                         <outlet property="myAddressView" destination="oMM-Ll-Lf6" id="hVH-pg-c8b"/>
                         <outlet property="newPasswordAgainTextField" destination="p9X-aT-NCb" id="L1D-R5-AGA"/>
                         <outlet property="newPasswordTextField" destination="3iX-57-CWr" id="Lq8-Ty-vvF"/>
@@ -2788,8 +2823,8 @@
         <image name="plus" catalog="system" width="128" height="113"/>
         <image name="right_arrow" width="64" height="64"/>
         <image name="settings_icon" width="50" height="50"/>
-        <image name="xmark.circle" catalog="system" width="128" height="121"/>
         <image name="xmark.circle" width="13" height="13"/>
+        <image name="xmark.circle" catalog="system" width="128" height="121"/>
         <systemColor name="darkTextColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
