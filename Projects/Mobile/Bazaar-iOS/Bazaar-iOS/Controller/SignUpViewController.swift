@@ -42,6 +42,7 @@ class SignUpViewController: UIViewController {
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        passwordTextField.textContentType = .oneTimeCode
         isPressedLoginHere = false
         upDownConstraint.constant = 15
         if let isloggedin = UserDefaults.standard.value(forKey: K.isLoggedinKey){
@@ -88,18 +89,36 @@ class SignUpViewController: UIViewController {
                                         self.present(alertController, animated: true, completion: nil)
                                     }else {
                                         if let userType = self.signUpUserType{
-                                            APIManager().signUpCustomer(firstName:firstName,lastName: lastName,username: email, password: password, userType: "\(userType.rawValue+1)") { (result) in
-                                                switch result{
-                                                case .success(_):
-                                                    let alertController2 = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
-                                                    alertController2.message = "You have successfully signed up! To login, a mail has been sent to your e-mail address, please check and verify your e-mail"
-                                                    alertController2.addAction(UIAlertAction(title: "Go To Login", style: UIAlertAction.Style.default){ (action:UIAlertAction!) in
-                                                        self.dismiss(animated: true, completion: nil)
-                                                    })
-                                                    self.present(alertController2, animated: true, completion: nil)
-                                                case .failure(let err):
-                                                    alertController.message = err.localizedDescription
-                                                    self.present(alertController, animated: true, completion: nil)
+                                            if userType.rawValue == 0 {
+                                                APIManager().signUpCustomer(firstName:firstName,lastName: lastName,username: email, password: password, userType: "\(userType.rawValue+1)") { (result) in
+                                                    switch result{
+                                                    case .success(_):
+                                                        let alertController2 = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
+                                                        alertController2.message = "You have successfully signed up! To login, a mail has been sent to your e-mail address, please check and verify your e-mail"
+                                                        alertController2.addAction(UIAlertAction(title: "Go To Login", style: UIAlertAction.Style.default){ (action:UIAlertAction!) in
+                                                            self.dismiss(animated: true, completion: nil)
+                                                        })
+                                                        self.present(alertController2, animated: true, completion: nil)
+                                                    case .failure(let err):
+                                                        alertController.message = err.localizedDescription
+                                                        self.present(alertController, animated: true, completion: nil)
+                                                    }
+                                                }
+                                            }else {
+                                                if let companyName = companyNameTextField.text {
+                                                    if companyName.count < 2 {
+                                                        alertController.message = "Company name must be at least 2 characters in length"
+                                                        self.present(alertController, animated: true, completion: nil)
+                                                    }else {
+                                                        if let addressTitle = addressTextField.text {
+                                                            if addressTitle.count < 1 {
+                                                                alertController.message = "Address title must be at least 1 characters in length"
+                                                                self.present(alertController, animated: true, completion: nil)
+                                                            }else {
+                                                                print("success")
+                                                            }
+                                                        }
+                                                    }
                                                 }
                                             }
                                         }else {
