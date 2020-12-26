@@ -230,7 +230,6 @@ extension MainViewController:UITableViewDelegate,UITableViewDataSource {
             searchTextField?.text = searchResults[indexPath.row]
             searchBar.text = searchResults[indexPath.row]
             performSegue(withIdentifier: "mainToSearchResultsSegue", sender: nil)
-            print("f")
         } else {
             let filteredProducts:[ProductData] = allProductsInstance.allProducts.filter{($0.category.parent?.contains(selectedCategoryName!))! || $0.category.name.contains(selectedCategoryName!)}
             let product = filteredProducts[indexPath.row]

@@ -13,6 +13,9 @@ class SearchResultsViewController: UIViewController {
     var isSearchWord: Bool!
     var isCategory: Bool!
     var isBrand: Bool!
+    var searchResults:[ProductData] = []
+    var filterType = "none"
+    var sortType = "none"
     
     @IBOutlet weak var loadingView: UIView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
@@ -44,6 +47,7 @@ class SearchResultsViewController: UIViewController {
         searchResultsTableView.isHidden = false
         let okButton = UIAlertAction(title: "Retry", style: .cancel, handler: { action in
             // fetch products
+            //self.fetchSearchResults(filterType: "none", sortType: "none")
             self.allProductsInstance.fetchAllProducts()
         })
         networkFailedAlert.addAction(okButton)
@@ -53,8 +57,9 @@ class SearchResultsViewController: UIViewController {
             self.allProductsInstance.fetchAllProducts()
         }
         findProducts()
+        //fetchSearchResults(filterType: filterType, sortType: sortType)
         searchResultsTableView.reloadData()
-        // Do any additional setup after loading the view.
+        print((UserDefaults.standard.value(forKey: K.token) as! String))
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -70,6 +75,40 @@ class SearchResultsViewController: UIViewController {
             self.title = searchWord
         }
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.darkGray]
+    }
+    
+    func fetchSearchResults(filterType:String, sortType:String) {
+        APIManager().search(filterType: filterType, sortType: sortType, searchWord: searchWord, completionHandler: { result in
+            switch result {
+            case .success(let searchResults):
+                DispatchQueue.main.async {
+                    //let searchResultIDs = searchResults.map {$0.id}
+                    //self.products = self.allProductsInstance.allProducts.filter{searchResultIDs.contains($0.id)}
+                    
+                    self.stopIndicator()
+                    if(self.products.count == 0) {
+                        self.searchResultsTableView.isHidden = true
+                        // add label
+                    }
+                }
+                print("xxx")
+            case .failure(let err):
+                print("xxx")
+                self.products = []
+                print(err)
+                self.networkFailedAlert.message = "Search results cannot be retrieved due to a network problem. Please try again later."
+                
+                self.present(self.networkFailedAlert, animated:true, completion: nil /*{
+                    self.fetchSearchResults(filterType: self.filterType, sortType: self.sortType)
+                }*/)
+                //error ver
+            }
+        })
+        if (isCategory) {
+        products = products.filter{$0.category.parent!.contains(searchWord!) || $0.category.name.contains(searchWord!)}
+       } else if (isBrand) {
+        products = products.filter{$0.brand.contains(searchWord)}
+       }
     }
     
     func findProducts() {

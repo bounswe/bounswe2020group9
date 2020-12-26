@@ -46,6 +46,7 @@ struct ProductData: Codable {
   struct Category: Codable {
     let name: String
     let parent: String?
+    let id: Int
   }
 }
 
@@ -83,4 +84,23 @@ struct CartProduct: Codable {
 
 struct UpdatePasswordData:Codable {
     let message:String
+}
+
+struct SearchProduct:Codable {
+    let id: Int
+    let name: String
+    let detail: String
+    let brand: String
+    let price: Double
+    let stock: Int
+    let rating: Double
+    let sell_counter: Int
+    let release_date: String
+    let picture: String
+    let category_id: Int
+    let vendor_id: Int?
+}
+
+struct SearchProductList:Codable {
+    let product_list:[SearchProduct]?
 }
