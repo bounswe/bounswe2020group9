@@ -7,6 +7,7 @@
 
 import UIKit
 import GoogleSignIn
+import MapKit
 
 protocol SignUpViewControllerDelegate {
     func signUpViewControllerDidPressLoginHere()
@@ -33,9 +34,14 @@ class SignUpViewController: UIViewController {
     var signUpUserType: UserType?
     var delegate:SignUpViewControllerDelegate?
     var isPressedLoginHere = false
+    var mapViewController = MapViewController()
+    var latitude:Float?
+    var longitude:Float?
+    var addressAnnotation: MKPointAnnotation?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+       
         passwordTextField.textContentType = .oneTimeCode
         frameView.layer.borderColor = #colorLiteral(red: 1, green: 0.6431372549, blue: 0.3568627451, alpha: 1)
         frameView.layer.shadowColor = UIColor.black.cgColor
@@ -170,5 +176,38 @@ class SignUpViewController: UIViewController {
         } else{
             self.signUpUserType = nil
         }
+    }
+    
+    @IBAction func findCompanyAddressButtonPressed(_ sender: UIButton) {
+        performSegue(withIdentifier: "goToMapSegue", sender: nil)
+    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "goToMapSegue" {
+            if let destinationVC = segue.destination as? MapViewController {
+                destinationVC.delegate = self
+                if let annotation = self.addressAnnotation{
+                    destinationVC.annotations.append(annotation)
+                }
+            }
+        }
+    }
+}
+
+extension SignUpViewController:MapViewControllerDelegate{
+    func mapViewControllerDidGetLocation(latitude: Float, longitude: Float, annotation:MKPointAnnotation) {
+        self.latitude=latitude
+        self.longitude = longitude
+        self.addressAnnotation = annotation
+        let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+        alertController.message = "We have successfully received your address."
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
+    func mapViewControllerDidFail() {
+        let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+        alertController.message = "We could not get your address information, please try again! You have to long press when selecting your address."
+        self.present(alertController, animated: true, completion: nil)
     }
 }

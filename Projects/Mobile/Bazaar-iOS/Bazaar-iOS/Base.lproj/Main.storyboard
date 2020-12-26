@@ -1674,7 +1674,7 @@
                                                                 <rect key="frame" x="49.666666666666686" y="54" width="275" height="30"/>
                                                                 <state key="normal" title="Find Your Company Address on the Map"/>
                                                                 <connections>
-                                                                    <segue destination="f8W-BH-naY" kind="presentation" id="JZR-px-JcR"/>
+                                                                    <action selector="findCompanyAddressButtonPressed:" destination="w39-Ll-aUk" eventType="touchUpInside" id="TrR-Ch-eWX"/>
                                                                 </connections>
                                                             </button>
                                                         </subviews>
@@ -1908,6 +1908,7 @@
                         <outlet property="passwordTextField" destination="qmb-OC-YrS" id="7P9-Qc-bcM"/>
                         <outlet property="upDownConstraint" destination="Qmn-10-Dnn" id="Jia-iX-FTK"/>
                         <outlet property="vendorInfoView" destination="dTc-ss-scW" id="E6E-sW-U0L"/>
+                        <segue destination="f8W-BH-naY" kind="presentation" identifier="goToMapSegue" id="4Ek-xd-hSS"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="acR-Yu-gM9" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1936,6 +1937,7 @@
                                         </state>
                                         <connections>
                                             <action selector="backButtonPressed:" destination="L5V-jH-uVD" eventType="touchUpInside" id="2PP-n1-EBP"/>
+                                            <action selector="saveGoBackButtonPressed:" destination="f8W-BH-naY" eventType="touchUpInside" id="JuD-Q6-wp3"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -1965,7 +1967,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="360-jI-3sp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-494" y="3036"/>
+            <point key="canvasLocation" x="-491" y="3232"/>
         </scene>
         <!--Profile View Controller-->
         <scene sceneID="bQZ-RS-C3K">
@@ -2823,8 +2825,8 @@
         <image name="plus" catalog="system" width="128" height="113"/>
         <image name="right_arrow" width="64" height="64"/>
         <image name="settings_icon" width="50" height="50"/>
-        <image name="xmark.circle" width="13" height="13"/>
         <image name="xmark.circle" catalog="system" width="128" height="121"/>
+        <image name="xmark.circle" width="13" height="13"/>
         <systemColor name="darkTextColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
