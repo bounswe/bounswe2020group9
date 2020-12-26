@@ -47,6 +47,7 @@ class MyCartViewController: UIViewController {
         totalPriceLabel.text = "Total:\n₺"
         cartTableView.tableFooterView = UIView(frame: .zero)
         cartTableView.tableFooterView?.isHidden = true
+        buyContainerView.isHidden = true
         if let isLoggedIn = UserDefaults.standard.value(forKey: K.isLoggedinKey) as? Bool {
             if (isLoggedIn) {
                 startIndicator()
@@ -115,7 +116,7 @@ class MyCartViewController: UIViewController {
             let prod = AllProducts.shared.allProducts.filter{$0.id == product.product}[0]
             totalPrice = totalPrice + (Double(product.amount) * prod.price)
         }
-        self.totalPriceLabel.text = "Total:\n₺" + String(totalPrice)
+        self.totalPriceLabel.text = "Total:\n₺" + String(totalPrice.rounded(toPlaces: 2))
     }
     
     func startIndicator() {
@@ -243,3 +244,11 @@ extension MyCartViewController: CartItemAmountChangedDelegate {
     
 }
 
+extension Double {
+    /// Rounds the double to decimal places value
+    // from: https://stackoverflow.com/a/32581409
+    func rounded(toPlaces places:Int) -> Double {
+        let divisor = pow(10.0, Double(places))
+        return (self * divisor).rounded() / divisor
+    }
+}
