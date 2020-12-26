@@ -1,8 +1,58 @@
 .productCarousel{
     max-width: 40rem;
     margin: 2rem 0rem;
+    & img{
+        width: 20rem!important;
+    }
 }
 
 .productInfo{
     margin: 2rem 0rem;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 12px;
+    padding: 2rem;
+    min-height: 30rem;
+
+
+    & .productBrand{
+        color: #42AEA8;
+        font-family: monospace;
+        margin-bottom: .8rem;
+        }
+    & .productPrice{
+        margin-top: .5rem;
+        & .productPriceName{
+            font-family: monospace;
+
+        }
+
+        & .productPriceAmount{
+            color: #db5c73;
+        }
+    }
+    & .productCategory{
+        margin-left: 5rem;
+        font-size: 1rem;
+        & .productCategoryName{
+            color: #A7A298;
+        }
+
+        & .productCategoryParent{
+            color: #213E3B;
+        }
+    }
+}
+
+.productButton{
+    background: transparent;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 12px;
+    width: 162px;
+    & img{
+        width: 40px;
+    }
+    & span{
+        margin-right: 10px;
+    }
+
 }

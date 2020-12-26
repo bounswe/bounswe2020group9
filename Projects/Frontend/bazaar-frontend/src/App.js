@@ -17,8 +17,8 @@ import ViewCategory from "./screens/ViewCategory/view-category"
 
 
 //components
-import Header from "./components/Header/header"
-import Footer from "./components/Footer/footer"
+import Header from "./components/Header/Header"
+import Footer from "./components/Footer/Footer"
 
 
 function App() {
@@ -58,10 +58,11 @@ function App() {
           <Header />
           <Inventory />
         </Route>
-        <Route path="/product:id">
-          <Header />
-          <ProductPage />
-        </Route>
+        <Route path="/product/:id" render={(props) => <ProductPage {...props} />}/> 
+//         <Route path="/product:id">
+//           <Header />
+//           <ProductPage />
+//         </Route>
 
         <Route 
           path="/category/:id"  
@@ -72,7 +73,6 @@ function App() {
               </div> 
           } 
       />
-
       </Switch>
 
       <Footer />

@@ -32,9 +32,7 @@ class Home extends Component {
   componentDidMount() {
     axios.get(serverUrl+`api/product/`)
       .then(res => {
-        console.log(res.data[1].brand)
         this.setState({ products: res.data })
-        console.log(this.state.products[0])
       })
     axios.get(serverUrl+'api/product/categories/')
     .then(res => {

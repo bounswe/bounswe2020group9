@@ -5,30 +5,31 @@ import "./productCard.scss";
 
 export default class CardComponent extends Component {
 
-render(){
+  render() {
 
-    return(
-        <div>
-            <Link to={`/product${this.props.product.id}`} params={{product: this.props.product}}>
-            <Card className={"productCard"}>
+
+    return (
+      <div>
+        <Link to={{pathname: `/product/${this.props.product.id}`, state: {product: this.props.product} }} >
+          <Card className={"productCard"}>
             <div className={"productImgWrapper"}>
-                <Card.Img className={"productCardImage"} variant="top" src={this.props.product.picture} />
+              <Card.Img className={"productCardImage"} variant="top" src={this.props.product.picture} />
             </div>
             <Card.Body className={"productCardBody"}>
-                <Card.Title>{this.props.product.name}</Card.Title>
-                <Card.Text>
-                    {this.props.product.category["name"]}
-                </Card.Text>
+              <Card.Title>{this.props.product.name}</Card.Title>
+              <Card.Text>
+                {this.props.product.category["name"]}
+              </Card.Text>
             </Card.Body>
             <Card.Footer className={"productCardFooter"}>
-                <small className="text-muted">{this.props.product.brand},  </small>
-                <small className="text-muted productCardPrice">${this.props.product.price}</small>
+              <small className="text-muted">{this.props.product.brand},  </small>
+              <small className="text-muted productCardPrice">${this.props.product.price}</small>
             </Card.Footer>
-            </Card>
-            </Link>
+          </Card>
+        </Link>
 
-        </div>
+      </div>
     )
-}
+  }
 
 }
