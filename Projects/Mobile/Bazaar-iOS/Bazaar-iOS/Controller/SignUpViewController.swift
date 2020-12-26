@@ -105,8 +105,8 @@ class SignUpViewController: UIViewController {
                                                             self.dismiss(animated: true, completion: nil)
                                                         })
                                                         self.present(alertController2, animated: true, completion: nil)
-                                                    case .failure(let err):
-                                                        alertController.message = err.localizedDescription
+                                                    case .failure(_):
+                                                        alertController.message = "A user with that email already exists."
                                                         self.present(alertController, animated: true, completion: nil)
                                                     }
                                                 }
@@ -122,12 +122,24 @@ class SignUpViewController: UIViewController {
                                                                 self.present(alertController, animated: true, completion: nil)
                                                             }else {
                                                                 if let latitude = self.latitude, let longitude = self.longitude {
-                                                                    print("success")
-                                                                    
+                                                                    APIManager().signUpVendor(firstName: firstName, lastName: lastName, username: email, password: password, user_type: "\(userType.rawValue+1)", addressName: addressTitle, address: addressTitle, postalCode: userType.rawValue, latitude: latitude, lontitude: longitude, companyName: companyName) { (result) in
+                                                                        switch result {
+                                                                        
+                                                                        case .success(_):
+                                                                            let alertController2 = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
+                                                                            alertController2.message = "You have successfully signed up! To login, a mail has been sent to your e-mail address, please check and verify your e-mail"
+                                                                            alertController2.addAction(UIAlertAction(title: "Go To Login", style: UIAlertAction.Style.default){ (action:UIAlertAction!) in
+                                                                                self.dismiss(animated: true, completion: nil)
+                                                                            })
+                                                                            self.present(alertController2, animated: true, completion: nil)
+                                                                        case .failure(_):
+                                                                            alertController.message = "A user with that email already exists."
+                                                                            self.present(alertController, animated: true, completion: nil)
+                                                                        }
+                                                                    }
                                                                 }else {
                                                                     alertController.message = "We could not get your address information, please try again! You have to long press when selecting your address."
                                                                     self.present(alertController, animated: true, completion: nil)
-                                                                    
                                                                 }
                                                             }
                                                         }
