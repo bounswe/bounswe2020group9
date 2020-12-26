@@ -72,6 +72,11 @@ class ProductDetailViewController: UIViewController {
         
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
+
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -158,6 +163,14 @@ class ProductDetailViewController: UIViewController {
                     print("error while adding product to cart: ",error)
                 }
             })
+        } else {
+            let alertController = UIAlertController(title: "Problem", message: "You should be logged in to use your cart.", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.cancel, handler: nil))
+            /*alertController.addAction(UIAlertAction(title: "Login", style: .default, handler: {_ in
+                self.view.isHidden = true
+                self.performSegue(withIdentifier: "cartToLoginSegue", sender: nil)
+            }))*/
+            self.present(alertController, animated:true, completion: nil)
         }
     }
     

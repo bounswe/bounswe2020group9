@@ -35,8 +35,14 @@ class MyCartViewController: UIViewController {
                 buyContainerView.isHidden = true
             }
         } else {
-            print("********problem")
-            
+            loadingContainerView.isHidden = true
+            activityIndicator.isHidden = true
+            cartTableView.isHidden = true
+            emptyCartLabel.isHidden = false
+            emptyCartLabel.text = "You should be logged in to view your cart."
+            emptyCartLabel.isHidden = false
+            buyContainerView.isHidden = true
+            self.navigationController?.setNavigationBarHidden(true, animated: true)
         }
     }
     override func viewDidLoad() {
@@ -61,7 +67,13 @@ class MyCartViewController: UIViewController {
                 buyContainerView.isHidden = true
             }
         } else {
-            print("why am i here")
+            loadingContainerView.isHidden = true
+            activityIndicator.isHidden = true
+            cartTableView.isHidden = true
+            emptyCartLabel.isHidden = false
+            emptyCartLabel.text = "You should be logged in to view your cart."
+            emptyCartLabel.isHidden = false
+            buyContainerView.isHidden = true
         }
     }
     
@@ -252,3 +264,4 @@ extension Double {
         return (self * divisor).rounded() / divisor
     }
 }
+
