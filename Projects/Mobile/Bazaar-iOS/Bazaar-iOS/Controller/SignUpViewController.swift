@@ -121,7 +121,14 @@ class SignUpViewController: UIViewController {
                                                                 alertController.message = "Address title must be at least 1 characters in length"
                                                                 self.present(alertController, animated: true, completion: nil)
                                                             }else {
-                                                                print("success")
+                                                                if let latitude = self.latitude, let longitude = self.longitude {
+                                                                    print("success")
+                                                                    
+                                                                }else {
+                                                                    alertController.message = "We could not get your address information, please try again! You have to long press when selecting your address."
+                                                                    self.present(alertController, animated: true, completion: nil)
+                                                                    
+                                                                }
                                                             }
                                                         }
                                                     }

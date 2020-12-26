@@ -1648,7 +1648,7 @@
                                                         <rect key="frame" x="20" y="129" width="334" height="34"/>
                                                         <color key="backgroundColor" red="0.95686274510000002" green="0.95686274510000002" blue="0.94901960780000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                        <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                                                        <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="one-time-code"/>
                                                     </textField>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dTc-ss-scW" userLabel="Vendor Info View">
                                                         <rect key="frame" x="0.0" y="222.99999999999994" width="374" height="90"/>

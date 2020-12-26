@@ -59,6 +59,27 @@ struct APIManager {
         }
     }
     
+    func signUpVendor(firstName:String, lastName:String, username:String, password:String, user_type:String,addressName:String, address:String, postalCode:Int, latitude:Float, lontitude:Float, companyName:String ,completionHandler: @escaping (Result<String ,Error>) -> Void) {
+        do {
+            let request = try ApiRouter.signUpVendor(firstName: firstName, lastName: lastName, username: username, password: password, user_type: user_type, addressName: addressName, address: address, postalCode: postalCode, latitude: latitude, lontitude: lontitude, companyName: companyName).asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if (response.response?.statusCode != nil){
+                    guard let safeData = response.data else  {
+                        completionHandler(.failure(MyError.runtimeError("Error")))
+                        return
+                    }
+                    if let decodedData:SignUpData = APIParse().parseJSON(safeData: safeData){
+                        completionHandler(.success("\(decodedData.message)"))
+                    }else {
+                        completionHandler(.failure(MyError.runtimeError("Failed to parse json ")))
+                    }
+                }
+            }
+        }catch let err {
+            completionHandler(.failure(err))
+        }
+    }
+    
     func googleSingIn(username:String, token:String, firstName:String, lastName:String ,completionHandler: @escaping (Result<Int ,Error>) -> Void) {
         do {
             let request = try ApiRouter.googleSignIn(userName: username, token: token, firstName: firstName, lastName: lastName).asURLRequest()
