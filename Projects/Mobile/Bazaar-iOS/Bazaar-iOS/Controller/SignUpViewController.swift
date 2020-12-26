@@ -17,15 +17,17 @@ enum UserType:Int {
 }
 
 class SignUpViewController: UIViewController {
-    
-    @IBOutlet var signInButton: GIDSignInButton!
+
     @IBOutlet weak var isCustomerButton: RadioButton!
     @IBOutlet weak var isVendorButton: RadioButton!
     @IBOutlet weak var firstNameTextField: UITextField!
     @IBOutlet weak var lastNameTextField: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
+    @IBOutlet weak var companyNameTextField: UITextField!
     @IBOutlet weak var frameView: UIView!
+    @IBOutlet weak var addressTextField: UITextField!
+    @IBOutlet weak var vendorInfoView: UIView!
     var signUpUserType: UserType?
     var delegate:SignUpViewControllerDelegate?
     var isPressedLoginHere = false
@@ -39,10 +41,6 @@ class SignUpViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         isPressedLoginHere = false
-        GIDSignIn.sharedInstance()?.delegate = self
-        GIDSignIn.sharedInstance()?.presentingViewController = self
-        // Automatically sign in the user.
-        //GIDSignIn.sharedInstance()?.restorePreviousSignIn()
         if let isloggedin = UserDefaults.standard.value(forKey: K.isLoggedinKey){
             if isloggedin as! Bool{
                 self.dismiss(animated: true, completion: nil)
@@ -138,55 +136,4 @@ class SignUpViewController: UIViewController {
             self.signUpUserType = nil
         }
     }
-}
-//MARK: - Extension GIDSignInDelegate
-extension SignUpViewController: GIDSignInDelegate{
-    @available(iOS 9.0, *)
-    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any]) -> Bool {
-      return GIDSignIn.sharedInstance().handle(url)
-    }
-    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!,
-              withError error: Error!) {
-      if let error = error {
-        if (error as NSError).code == GIDSignInErrorCode.hasNoAuthInKeychain.rawValue {
-          print("The user has not signed in before or they have since signed out.")
-        } else {
-          print("\(error.localizedDescription)")
-        }
-        return
-      }
-      // Perform any operations on signed in user here.
-        let idToken = user.authentication.idToken ?? "" // Safe to send to the server
-        let givenName = user.profile.givenName ?? ""
-        let familyName = user.profile.familyName ?? ""
-        let email = user.profile.email ?? ""
-        APIManager().googleSingIn(username: email , token: idToken , firstName: givenName , lastName: familyName) { (result) in
-            switch result {
-            case .success(let id):
-                UserDefaults.standard.set(id, forKey: K.userIdKey)
-                APIManager().getProfileInfo(authorization: idToken ) { (result) in
-                    switch result {
-                    case .success(let profileInfo):
-                        UserDefaults.standard.set(profileInfo.first_name, forKey: K.userFirstNameKey)
-                        UserDefaults.standard.set(profileInfo.last_name, forKey: K.userLastNameKey)
-                        UserDefaults.standard.set(profileInfo.user_type, forKey: K.userTypeKey)
-                        UserDefaults.standard.set(idToken, forKey: K.token)
-                        UserDefaults.standard.setValue(true, forKey: K.isGoogleSignedInKey)
-                        UserDefaults.standard.set(profileInfo.email, forKey: K.usernameKey)
-                        UserDefaults.standard.set(true, forKey: K.isLoggedinKey)
-                        self.dismiss(animated: true, completion: nil)
-                    case .failure(_): break
-                    }
-                }
-            case .failure(_): break
-            }
-        }
-    }
-    func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!,
-              withError error: Error!) {
-        UserDefaults.standard.set(false, forKey: K.isLoggedinKey)
-      // Perform any operations when the user disconnects from app here.
-      // ...
-    }
-    
 }
