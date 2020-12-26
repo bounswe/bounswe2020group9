@@ -84,3 +84,7 @@ struct CartProduct: Codable {
 struct UpdatePasswordData:Codable {
     let message:String
 }
+
+struct GoogleSignInData:Codable {
+    let id:Int
+}
