@@ -203,6 +203,9 @@ class CategoriesViewController: UIViewController {
             
             // look here ***************
             cell.nameLabel?.text = subCategories[indexPath.row]
+            cell.subCategoryImage?.image = UIImage(named: subCategories[indexPath.row].lowercased())
+            
+            
  
              return cell
          } else {
