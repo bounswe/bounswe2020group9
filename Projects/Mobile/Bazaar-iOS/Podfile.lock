@@ -4,6 +4,7 @@ PODS:
     - AppAuth/ExternalUserAgent (= 1.4.0)
   - AppAuth/Core (1.4.0)
   - AppAuth/ExternalUserAgent (1.4.0)
+  - DropDown (2.3.13)
   - GoogleSignIn (5.0.2):
     - AppAuth (~> 1.2)
     - GTMAppAuth (~> 1.0)
@@ -19,12 +20,14 @@ PODS:
   - MARKRangeSlider (1.1.1)
 
 DEPENDENCIES:
+  - DropDown
   - GoogleSignIn
   - MARKRangeSlider
 
 SPEC REPOS:
   trunk:
     - AppAuth
+    - DropDown
     - GoogleSignIn
     - GTMAppAuth
     - GTMSessionFetcher
@@ -32,11 +35,12 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   AppAuth: 31bcec809a638d7bd2f86ea8a52bd45f6e81e7c7
+  DropDown: 8a2116376c1981888557f72ec2ffc9a5e0e456ec
   GoogleSignIn: 7137d297ddc022a7e0aa4619c86d72c909fa7213
   GTMAppAuth: 197a8dabfea5d665224aa00d17f164fc2248dab9
   GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
   MARKRangeSlider: ef7e1fe84d22996f47fd72dcb8de50b9410aac47
 
-PODFILE CHECKSUM: 013bf328a4cecba477a2f8597b3804cbf253ce61
+PODFILE CHECKSUM: 6f61aa366d7e147bb87f18afcfcd8e1e2476d871
 
 COCOAPODS: 1.10.0

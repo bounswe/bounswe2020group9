@@ -102,5 +102,5 @@ struct SearchProduct:Codable {
 }
 
 struct SearchProductList:Codable {
-    let product_list:[SearchProduct]?
+    let product_list:[SearchProduct]
 }

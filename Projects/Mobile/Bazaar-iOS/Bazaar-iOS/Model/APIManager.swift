@@ -288,13 +288,10 @@ struct APIManager {
     func getCart(user:Int, completionHandler: @escaping (Result<[CartProduct], Error>) -> Void) {
         do {
             let request = try ApiRouter.getCart(user: user).asURLRequest()
-            //print("request:",request)
             AF.request(request).responseJSON { response in
-                //print("apimanager, response:", response)
                 if (response.response?.statusCode == 200) {
                     guard let safeData = response.data else {
                         completionHandler(.failure(response.error!))
-                        print("sth")
                         return
                     }
                     if let decodedData: [CartProduct] = APIParse().parseJSON(safeData: safeData) {
@@ -313,10 +310,7 @@ struct APIManager {
     func addToCart(user: Int, productID: Int, amount: Int, completionHandler: @escaping (Result<[CartProduct], Error>) -> Void) {
         do {
             let request = try ApiRouter.addToCart(user: user, productID: productID, amount: amount).asURLRequest()
-            print(request)
             AF.request(request).responseJSON { response in
-                debugPrint(response)
-                //print(response)
                 if (response.response?.statusCode == 200) {
                     guard let safeData = response.data else {
                         completionHandler(.failure(response.error!))
@@ -338,8 +332,6 @@ struct APIManager {
         do {
             let request = try ApiRouter.editAmountInCart(productID: productID, amount: amount).asURLRequest()
             AF.request(request).responseJSON { response in
-                print("request:", request)
-                print("response:",response)
                 if (response.response?.statusCode == 200) {
                     guard let safeData = response.data else {
                         completionHandler(.failure(response.error!))
@@ -360,7 +352,6 @@ struct APIManager {
     func deleteProductFromCart(productID: Int, completionHandler: @escaping (Result<[CartProduct], Error>) -> Void) {
         do {
             let request = try ApiRouter.deleteProductFromCart(productID: productID).asURLRequest()
-            print("req:",request)
             AF.request(request).responseJSON { response in
                 if (response.response?.statusCode != nil) {
                     if response.response?.statusCode == 204 {
@@ -385,21 +376,15 @@ struct APIManager {
     func search(filterType: String, sortType: String, searchWord: String, completionHandler: @escaping (Result<SearchProductList, Error>) -> Void) {
         do {
             let request = try ApiRouter.search(filterType: filterType, sortType: sortType, searchWord: searchWord).asURLRequest()
-            print("1:",request)
             AF.request(request).responseJSON { response in
-                print("2:", response)
                 if (response.response?.statusCode != nil) {
-                    print("request:", request.headers)
-                    print("response:",response)
                     guard let safeData = response.data else  {
-                        print("Error-searchapicall-response")
                         completionHandler(.failure(MyError.runtimeError("Error-searchapicall-response")))
                         return
                     }
                     if let decodedData:SearchProductList = APIParse().parseJSON(safeData: safeData){
                         completionHandler(.success(decodedData))
                     }else {
-                        print("Error-searchapicall-decode")
                         completionHandler(.failure(MyError.runtimeError("Error-searchapicall-decode")))
                     }
                 }

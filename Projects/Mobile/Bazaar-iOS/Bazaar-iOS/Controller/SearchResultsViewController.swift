@@ -14,14 +14,14 @@ class SearchResultsViewController: UIViewController {
     var isCategory: Bool!
     var isBrand: Bool!
     var searchResults:[ProductData] = []
-    var filterType = "none"
-    var sortType = "none"
+    var filterType:String!
+    var sortType:String!
     
     @IBOutlet weak var loadingView: UIView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var filterButton: UIButton!
-    @IBOutlet weak var sortButton: UIButton!
     @IBOutlet weak var searchResultsTableView: UITableView!
+    @IBOutlet weak var searchResultsEmptyLabel: UILabel!
     
     var allProductsInstance = AllProducts.shared
     let categories = ["Clothing", "Home", "Selfcare", "Electronics", "Living"]
@@ -31,7 +31,8 @@ class SearchResultsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         setTitle()
-        //searchResultsTableView.reloadData()
+        fetchSearchResults(filterType: filterType, sortType: sortType)
+        searchResultsTableView.reloadData()
     }
     
     override func viewDidLoad() {
@@ -45,21 +46,28 @@ class SearchResultsViewController: UIViewController {
         searchResultsTableView.register(UINib(nibName: "ProductCell", bundle: nil), forCellReuseIdentifier: "ReusableProdcutCell")
         createIndicatorView()
         searchResultsTableView.isHidden = false
-        let okButton = UIAlertAction(title: "Retry", style: .cancel, handler: { action in
+        let retryButton = UIAlertAction(title: "Retry", style: .cancel, handler: { action in
             // fetch products
-            //self.fetchSearchResults(filterType: "none", sortType: "none")
+            self.fetchSearchResults(filterType: "none", sortType: "none")
             self.allProductsInstance.fetchAllProducts()
         })
+        let okButton = UIAlertAction(title: "Ok", style: .default, handler: nil)
         networkFailedAlert.addAction(okButton)
+        networkFailedAlert.addAction(retryButton)
         
         if !(allProductsInstance.dataFetched) {
             startIndicator()
             self.allProductsInstance.fetchAllProducts()
         }
-        findProducts()
-        //fetchSearchResults(filterType: filterType, sortType: sortType)
+        if filterType == nil {
+            filterType = "none"
+        }
+        if sortType == nil {
+            sortType = "none"
+        }
+        startIndicator()
+        fetchSearchResults(filterType: filterType, sortType: sortType)
         searchResultsTableView.reloadData()
-        print((UserDefaults.standard.value(forKey: K.token) as! String))
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -78,40 +86,98 @@ class SearchResultsViewController: UIViewController {
     }
     
     func fetchSearchResults(filterType:String, sortType:String) {
-        APIManager().search(filterType: filterType, sortType: sortType, searchWord: searchWord, completionHandler: { result in
-            switch result {
-            case .success(let searchResults):
-                DispatchQueue.main.async {
-                    //let searchResultIDs = searchResults.map {$0.id}
-                    //self.products = self.allProductsInstance.allProducts.filter{searchResultIDs.contains($0.id)}
-                    
-                    self.stopIndicator()
-                    if(self.products.count == 0) {
-                        self.searchResultsTableView.isHidden = true
-                        // add label
+        if (isCategory) {
+            self.searchResultsTableView.isHidden = true
+            self.products = allProductsInstance.allProducts.filter{$0.category.parent!.lowercased().contains(searchWord!.lowercased()) || $0.category.name.lowercased().contains(searchWord!.lowercased())}
+            if filterType != "none" {
+                let filters = filterType.split(separator: "&")
+                let filtersValues = filters.map {$0.split(separator: "=")}
+                for filter in filtersValues {
+                    print("... ", filter)
+                    if filter[0] == "pr" {
+                        self.products = self.products.filter {$0.rating >= Double(filter[1])!}
+                    } else if filter[0] == "prc" {
+                        print("1")
+                        let priceRange = filter[1].split(separator: "-")
+                        print(priceRange[0], priceRange[1])
+                        self.products = self.products.filter {(Int($0.price.rounded(.down)) >= Int(priceRange[0])!) && (Int($0.price.rounded(.down)) <= Int(priceRange[1])!)}
+                    } else if filter[0] == "br" {
+                        self.products = self.products.filter{$0.brand.lowercased() == filter[1].lowercased()}
                     }
                 }
-                print("xxx")
-            case .failure(let err):
-                print("xxx")
-                self.products = []
-                print(err)
-                self.networkFailedAlert.message = "Search results cannot be retrieved due to a network problem. Please try again later."
-                
-                self.present(self.networkFailedAlert, animated:true, completion: nil /*{
-                    self.fetchSearchResults(filterType: self.filterType, sortType: self.sortType)
-                }*/)
-                //error ver
             }
-        })
-        if (isCategory) {
-        products = products.filter{$0.category.parent!.contains(searchWord!) || $0.category.name.contains(searchWord!)}
-       } else if (isBrand) {
-        products = products.filter{$0.brand.contains(searchWord)}
-       }
+            
+            if sortType == "bs" {
+                self.products = self.products.sorted(by: {$0.sell_counter > $1.sell_counter})
+            } else if sortType == "mf" {
+                self.products = self.products.sorted(by: {$0.rating > $1.rating})
+            } else if sortType == "pr_des" {
+                self.products = self.products.sorted(by: {$0.price > $1.price})
+            } else if sortType == "pr_asc" {
+                self.products = self.products.sorted(by: {$0.price < $1.price})
+            }
+            if(self.products.count == 0) {
+                self.searchResultsTableView.isHidden = true
+                self.searchResultsEmptyLabel.isHidden = false
+            } else {
+                self.searchResultsTableView.isHidden = false
+                self.searchResultsEmptyLabel.isHidden = true
+                self.searchResultsTableView.reloadData()
+            }
+            self.searchResultsTableView.reloadData()
+            self.searchResultsTableView.isHidden = false
+            DispatchQueue.main.async {
+                self.stopIndicator()
+            }
+        /*} else if (isBrand) {
+            self.searchResultsTableView.isHidden = true
+            self.products = allProductsInstance.allProducts.filter{$0.brand.lowercased() == searchWord.lowercased()}
+            self.searchResultsTableView.reloadData()
+            DispatchQueue.main.async {
+                self.stopIndicator()
+            }
+            self.searchResultsTableView.isHidden = false */
+        } else {
+            self.searchResultsTableView.isHidden = true
+            APIManager().search(filterType: filterType, sortType: sortType, searchWord: searchWord, completionHandler: { result in
+                switch result {
+                case .success(let searchResultList):
+                    DispatchQueue.main.async {
+                        let searchResultIDs = searchResultList.product_list.map{$0.id}
+                        self.products = []
+                        for id in searchResultIDs {
+                            self.products.append(self.allProductsInstance.allProducts.filter{$0.id == id}[0])
+                        }
+                        //self.products = self.allProductsInstance.allProducts.filter{searchResultIDs.contains($0.id)}
+                        if(self.products.count == 0) {
+                            self.searchResultsTableView.isHidden = true
+                            self.searchResultsEmptyLabel.isHidden = false
+                        } else {
+                            self.searchResultsTableView.isHidden = false
+                            self.searchResultsEmptyLabel.isHidden = true
+                            self.searchResultsTableView.reloadData()
+                        }
+                    }
+                case .failure(let err):
+                    DispatchQueue.main.async {
+                        self.products = []
+                        print(err)
+                        self.networkFailedAlert.message = "Search results cannot be retrieved due to a network problem. Please try again later."
+                        
+                        self.present(self.networkFailedAlert, animated:true, completion: nil /*{
+                                     self.fetchSearchResults(filterType: self.filterType, sortType: self.sortType)
+                                     }*/)
+                    }
+                }
+                self.stopIndicator()
+                self.searchResultsTableView.reloadData()
+            })
+        }
+        self.stopIndicator()
+        self.searchResultsTableView.reloadData()
     }
     
-    func findProducts() {
+    /*func findProducts() {
        if (isSearchWord) {
         products = allProductsInstance.allProducts.filter{$0.brand.contains(searchWord) || $0.name.contains(searchWord)}
        } else if (isCategory) {
@@ -119,7 +185,7 @@ class SearchResultsViewController: UIViewController {
        } else {
         products = allProductsInstance.allProducts.filter{$0.brand.contains(searchWord)}
        }
-    }
+    }*/
     
     
 
@@ -135,6 +201,9 @@ class SearchResultsViewController: UIViewController {
             if indexPath != nil {
                 productDetailVC.product = products[indexPath!.row]
             }
+        }
+        if let filterVC = segue.destination as? FilterViewController {
+            filterVC.delegate = self
         }
     }
     
@@ -153,12 +222,13 @@ extension SearchResultsViewController: UITableViewDelegate, UITableViewDataSourc
         cell.productNameLabel.font = UIFont.systemFont(ofSize: 15, weight: .black)
         cell.productDescriptionLabel.text = product.brand
         cell.productDescriptionLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
-        cell.productPriceLabel.text = String(product.price)
+        cell.productPriceLabel.text = "₺\(product.price)"
         cell.productPriceLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         //cell.productImageView.image = UIImage(named: "iphone12")
         if let url = product.picture {
             do{
                 try cell.productImageView.loadImageUsingCache(withUrl: url)
+                cell.productImageView.contentMode = .scaleAspectFit
             } catch let error {
                 print(error)
                 cell.productImageView.image = UIImage(named:"xmark.circle")
@@ -178,6 +248,14 @@ extension SearchResultsViewController: UITableViewDelegate, UITableViewDataSourc
     }
     
     
+}
+
+extension SearchResultsViewController: FilterViewControllerDelegate {
+    func filterViewControllerResponse(filterStr: String, sortStr: String) {
+        self.filterType = filterStr
+        self.sortType = sortStr
+        self.fetchSearchResults(filterType: self.filterType, sortType: self.filterType)
+    }
 }
 
 extension SearchResultsViewController: AllProductsFetchDelegate {
@@ -206,11 +284,12 @@ extension SearchResultsViewController: AllProductsFetchDelegate {
 
 extension SearchResultsViewController {
     func startIndicator() {
-        self.view.bringSubviewToFront(loadingView)
-        loadingView.isHidden = false
-        activityIndicator.isHidden = false
-        activityIndicator.startAnimating()
-        searchResultsTableView.isHidden = true
+        DispatchQueue.main.async {
+            self.loadingView.isHidden = false
+            self.activityIndicator.isHidden = false
+            self.activityIndicator.startAnimating()
+            self.searchResultsTableView.isHidden = true
+        }
     }
 
     func createIndicatorView() {
@@ -225,8 +304,6 @@ extension SearchResultsViewController {
             self.loadingView.isHidden = true
             self.activityIndicator.isHidden = true
             self.activityIndicator.stopAnimating()
-            self.view.sendSubviewToBack(self.loadingView)
-            self.view.sendSubviewToBack(self.loadingView)
             self.searchResultsTableView.isHidden = false
             self.searchResultsTableView.isUserInteractionEnabled = true
             self.searchResultsTableView.reloadData()

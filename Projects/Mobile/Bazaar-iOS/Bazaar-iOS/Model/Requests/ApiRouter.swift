@@ -173,7 +173,7 @@ enum ApiRouter: URLRequestBuilder {
         case .updatePassword:
             return .post
         case .search:
-            return .get
+            return .post
         }
     }
 }

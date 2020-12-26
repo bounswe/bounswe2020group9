@@ -116,6 +116,8 @@ class MainViewController: UIViewController{
             searchResultsVC.searchWord = searchTextField?.text
             let indexpath = searchHistoryTableView.indexPathForSelectedRow
             if indexpath != nil {
+                searchResultsVC.filterType = "none"
+                searchResultsVC.sortType = "none"
                 if indexpath!.row < historyEndIndex {
                     searchResultsVC.isSearchWord = true
                     searchResultsVC.isBrand = false
