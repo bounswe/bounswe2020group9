@@ -442,7 +442,7 @@ class CommentsOfProductAPIView(APIView):
 class SearchAPIView(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
-    def get(self,request,filter_type,sort_type):
+    def post(self,request,filter_type,sort_type):
         serializer = SearchHistorySerializer(data={"user":request.user.id,"searched":request.data["searched"]})
         if serializer.is_valid():
             serializer.save(user_id=request.user.id)
