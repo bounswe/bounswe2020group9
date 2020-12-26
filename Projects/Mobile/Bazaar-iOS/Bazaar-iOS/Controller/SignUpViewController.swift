@@ -28,6 +28,8 @@ class SignUpViewController: UIViewController {
     @IBOutlet weak var frameView: UIView!
     @IBOutlet weak var addressTextField: UITextField!
     @IBOutlet weak var vendorInfoView: UIView!
+    @IBOutlet weak var upDownConstraint: NSLayoutConstraint!
+    
     var signUpUserType: UserType?
     var delegate:SignUpViewControllerDelegate?
     var isPressedLoginHere = false
@@ -41,11 +43,17 @@ class SignUpViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         isPressedLoginHere = false
+        upDownConstraint.constant = 15
         if let isloggedin = UserDefaults.standard.value(forKey: K.isLoggedinKey){
             if isloggedin as! Bool{
                 self.dismiss(animated: true, completion: nil)
             }
         }
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.vendorInfoView.isHidden = true
+        self.upDownConstraint.constant = 15
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -119,6 +127,10 @@ class SignUpViewController: UIViewController {
             if (self.signUpUserType != nil) {
                 self.isCustomerButton.sendActions(for: .touchUpInside)
             }
+            DispatchQueue.main.async {
+                self.vendorInfoView.isHidden = false
+                self.upDownConstraint.constant = 120
+            }
             self.signUpUserType = UserType.Vendor
         } else{
             self.signUpUserType = nil
@@ -132,6 +144,10 @@ class SignUpViewController: UIViewController {
                 self.isVendorButton.sendActions(for: .touchUpInside)
             }
             self.signUpUserType = UserType.Customer
+            DispatchQueue.main.async {
+                self.vendorInfoView.isHidden = true
+                self.upDownConstraint.constant = 15
+            }
         } else{
             self.signUpUserType = nil
         }
