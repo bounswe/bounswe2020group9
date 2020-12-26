@@ -21,7 +21,7 @@ struct APIManager {
             AF.request(request).responseJSON {(response) in
                 if (response.response?.statusCode != nil){
                     guard let safeData = response.data else  {
-                        completionHandler(.failure(response.error!))
+                        completionHandler(.failure(MyError.runtimeError("Error")))
                         return
                     }
                     if let decodedData:AuthData = APIParse().parseJSON(safeData: safeData){
@@ -44,11 +44,32 @@ struct APIManager {
             AF.request(request).responseJSON { (response) in
                 if (response.response?.statusCode != nil){
                     guard let safeData = response.data else  {
-                        completionHandler(.failure(response.error!))
+                        completionHandler(.failure(MyError.runtimeError("Error")))
                         return
                     }
                     if let decodedData:SignUpData = APIParse().parseJSON(safeData: safeData){
                         completionHandler(.success("\(decodedData.message)"))
+                    }else {
+                        completionHandler(.failure(MyError.runtimeError("Failed to parse json ")))
+                    }
+                }
+            }
+        }catch let err {
+            completionHandler(.failure(err))
+        }
+    }
+    
+    func googleSingIn(username:String, token:String, firstName:String, lastName:String ,completionHandler: @escaping (Result<Int ,Error>) -> Void) {
+        do {
+            let request = try ApiRouter.googleSignIn(userName: username, token: token, firstName: firstName, lastName: lastName).asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if (response.response?.statusCode != nil){
+                    guard let safeData = response.data else  {
+                        completionHandler(.failure(response.error!))
+                        return
+                    }
+                    if let decodedData:GoogleSignInData = APIParse().parseJSON(safeData: safeData){
+                        completionHandler(.success(decodedData.id))
                     }else {
                         completionHandler(.failure(MyError.runtimeError("Failed to parse json ")))
                     }
@@ -65,7 +86,7 @@ struct APIManager {
             AF.request(request).responseJSON { (response) in
                 if (response.response?.statusCode != nil){
                     guard let safeData = response.data else  {
-                        completionHandler(.failure(response.error!))
+                        completionHandler(.failure(MyError.runtimeError("Error")))
                         return
                     }
                     if let decodedData:ResetPassWordEmailData = APIParse().parseJSON(safeData: safeData){
@@ -106,7 +127,7 @@ struct APIManager {
             AF.request(request).responseJSON { (response) in
                 if (response.response?.statusCode != nil){
                     guard let safeData = response.data else  {
-                        completionHandler(.failure(response.error!))
+                        completionHandler(.failure(MyError.runtimeError("Error")))
                         return
                     }
                     if let decodedData:ProfileData = APIParse().parseJSON(safeData: safeData){
@@ -183,7 +204,7 @@ struct APIManager {
             AF.request(request).responseJSON { (response) in
                 if (response.response?.statusCode != nil){
                     guard let safeData = response.data else  {
-                        completionHandler(.failure(response.error!))
+                        completionHandler(.failure(MyError.runtimeError("Error")))
                         return
                     }
                     if let decodedData:[CustomerListData] = APIParse().parseJSON(safeData: safeData){
@@ -204,7 +225,7 @@ struct APIManager {
             AF.request(request).responseJSON { (response) in
                 if (response.response?.statusCode != nil){
                     guard let safeData = response.data else  {
-                        completionHandler(.failure(response.error!))
+                        completionHandler(.failure(MyError.runtimeError("Error")))
                         return
                     }
                     if let decodedData:CustomerListData = APIParse().parseJSON(safeData: safeData) {
@@ -228,7 +249,7 @@ struct APIManager {
                 }
                 else if (response.response?.statusCode != nil){
                     guard let safeData = response.data else  {
-                        completionHandler(.failure(response.error!))
+                        completionHandler(.failure(MyError.runtimeError("Error")))
                         return
                     }
                     if let decodedData:[String:String] = APIParse().parseJSON(safeData: safeData), decodedData.values.first != "not allowed to access"{
@@ -249,7 +270,7 @@ struct APIManager {
             AF.request(request).responseJSON { (response) in
                 if (response.response?.statusCode != nil){
                     guard let safeData = response.data else  {
-                        completionHandler(.failure(response.error!))
+                        completionHandler(.failure(MyError.runtimeError("Error")))
                         return
                     }
                     if let decodedData:CustomerListData = APIParse().parseJSON(safeData: safeData){
@@ -270,7 +291,28 @@ struct APIManager {
             AF.request(request).responseJSON { (response) in
                 if (response.response?.statusCode != nil){
                     guard let safeData = response.data else  {
-                        completionHandler(.failure(response.error!))
+                        completionHandler(.failure(MyError.runtimeError("Error")))
+                        return
+                    }
+                    if let decodedData:CustomerListData = APIParse().parseJSON(safeData: safeData){
+                        completionHandler(.success(decodedData))
+                    }else {
+                        completionHandler(.failure(MyError.runtimeError("Error")))
+                    }
+                }
+            }
+        }catch let err {
+            completionHandler(.failure(err))
+        }
+    }
+    
+    func addToList(userId:Int, list_id:Int, product_id:Int, completionHandler: @escaping (Result<CustomerListData ,Error>) -> Void) {
+        do {
+            let request = try ApiRouter.addToList(userId: userId, list_id: list_id, product_id: product_id).asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if (response.response?.statusCode != nil){
+                    guard let safeData = response.data else  {
+                        completionHandler(.failure(MyError.runtimeError("Error")))
                         return
                     }
                     if let decodedData:CustomerListData = APIParse().parseJSON(safeData: safeData){
@@ -291,7 +333,7 @@ struct APIManager {
             AF.request(request).responseJSON { response in
                 if (response.response?.statusCode == 200) {
                     guard let safeData = response.data else {
-                        completionHandler(.failure(response.error!))
+                        completionHandler(.failure(MyError.runtimeError("Error")))
                         return
                     }
                     if let decodedData: [CartProduct] = APIParse().parseJSON(safeData: safeData) {
@@ -313,7 +355,7 @@ struct APIManager {
             AF.request(request).responseJSON { response in
                 if (response.response?.statusCode == 200) {
                     guard let safeData = response.data else {
-                        completionHandler(.failure(response.error!))
+                        completionHandler(.failure(MyError.runtimeError("Error")))
                         return
                     }
                     if let decodedData: [CartProduct] = APIParse().parseJSON(safeData: safeData) {
@@ -334,7 +376,7 @@ struct APIManager {
             AF.request(request).responseJSON { response in
                 if (response.response?.statusCode == 200) {
                     guard let safeData = response.data else {
-                        completionHandler(.failure(response.error!))
+                        completionHandler(.failure(MyError.runtimeError("Error")))
                         return
                     }
                     if let decodedData: [CartProduct] = APIParse().parseJSON(safeData: safeData) {
@@ -358,7 +400,7 @@ struct APIManager {
                         completionHandler(.failure(MyError.runtimeError("product already in cart")))
                     }
                     guard let safeData = response.data else {
-                        completionHandler(.failure(response.error!))
+                        completionHandler(.failure(MyError.runtimeError("Error")))
                         return
                     }
                     if let decodedData: [CartProduct] = APIParse().parseJSON(safeData: safeData) {

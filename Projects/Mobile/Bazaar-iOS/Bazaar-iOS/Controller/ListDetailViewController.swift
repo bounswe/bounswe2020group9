@@ -89,16 +89,19 @@ extension ListDetailViewController: UITableViewDelegate, UITableViewDataSource {
         let delete = UIContextualAction(style: .destructive, title: "Delete") { (action, sourceView, completionHandler) in
                 print("index path of delete: \(indexPath)")
             completionHandler(true)
-            if let userId = UserDefaults.standard.value(forKey: K.userIdKey) as? Int{
-                APIManager().deleteProductFromList(userId:userId , list_id: String(self.list.id), product_id: String(product.id)) { (result) in
-                    switch result {
-                    case .success(_):
-                        alertController.message = "\(product.name) is successfully deleted"
-                        self.present(alertController, animated: true, completion: nil)
-                        tableView.reloadData()
-                    case .failure(_):
-                        alertController.message = "\(product.name) cannot be deleted"
-                        self.present(alertController, animated: true, completion: nil)
+            DispatchQueue.main.async {
+                if let userId = UserDefaults.standard.value(forKey: K.userIdKey) as? Int{
+                    APIManager().deleteProductFromList(userId:userId , list_id: String(self.list.id), product_id: String(product.id)) { (result) in
+                        switch result {
+                        case .success(_):
+                            alertController.message = "\(product.name) is successfully deleted"
+                            self.present(alertController, animated: true, completion: nil)
+                            self.list.products.remove(at: indexPath.row)
+                            tableView.reloadData()
+                        case .failure(_):
+                            alertController.message = "\(product.name) cannot be deleted"
+                            self.present(alertController, animated: true, completion: nil)
+                        }
                     }
                 }
             }
