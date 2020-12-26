@@ -37,9 +37,8 @@ class CategoriesViewController: UIViewController {
                                                 "Home":["Home Textile", "Kitchen", "Bedroom", "Bathroom", "Furniture", "Lighting", "Other"],
                                                 "Selfcare":["Perfumes", "Makeup", "Skincare", "Hair", "Body Care", "Other"],
                                                 "Electronics":["Smartphone", "Tablet", "Computer", "Photography", "Home Appliances", "TV", "Gaming", "Other"],
-                                                "Living":["Books", "Art Supplies", "Musical Devices", "Sports", "Other"],
-                                                "Categories": ["Categories"] ]
-     var categories = ["Clothing", "Home", "Selfcare", "Electronics", "Living" , "Categories"]
+                                                "Living":["Books", "Art Supplies", "Musical Devices", "Sports", "Other"]]
+     var categories = ["Clothing", "Home", "Selfcare", "Electronics", "Living"]
      var products: [Product] = []
      let categoriesReuseIdentifier = "CategoriesCollectionViewCell"
      var networkFailedAlert:UIAlertController = UIAlertController(title: "Error while retrieving products", message: "We encountered a problem while retrieving the products, please check your internet connection.", preferredStyle: .alert)
