@@ -43,7 +43,6 @@ class Header extends Component {
 
   componentDidMount() {
     let myCookie = read_cookie('user')
-    console.log(Object.keys(read_cookie('user')).length, "DENEME")
 
     if (Object.keys(myCookie).length === 0) {
       this.setState({ isSignedIn: false })
@@ -140,12 +139,12 @@ class Header extends Component {
 
     return (
       <nav className="navbar navbar-expand-md navbar-light myNavbar">
-        { <a className="navbar-brand" href="/" >
+        <a className="navbar-brand" href="/" >
           <img
             src={bazaarIMG}
             width="100"
             height="100"
-          /></a> }
+          /></a>
 
         <div className="collapse navbar-collapse" id="collapsibleNavId">
           <ul className="navbar-nav  mr-auto mt-2 mt-lg-0">
