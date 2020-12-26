@@ -3,6 +3,7 @@ import GoogleButton from 'react-google-button'
 import axios from 'axios'
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 import { Redirect } from "react-router-dom";
+import {serverUrl} from '../../utils/get-url'
 
 import "./sign-in.css";
 
@@ -30,7 +31,7 @@ export default class ForgotPassword extends Component {
     // const data = { "username": "omerBenzer61@bazaar.com", "password": "mypw" }
 
 
-    axios.post(`http://13.59.236.175:8000/api/user/login/`, { "username": this.state.username, "password": this.state.password })
+    axios.post(serverUrl+`api/user/login/`, { "username": this.state.username, "password": this.state.password })
       .then(res => {
 
       })

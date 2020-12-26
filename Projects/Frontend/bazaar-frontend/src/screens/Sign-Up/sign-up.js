@@ -2,6 +2,7 @@ import React, { Component, useState } from "react";
 import GoogleButton from 'react-google-button'
 import axios from 'axios'
 import { Redirect } from "react-router-dom";
+import {serverUrl} from '../../utils/get-url'
 
 
 import "./sign-up.css";
@@ -69,7 +70,7 @@ export default class SignUp extends Component {
         }
         if (this.handleValidation()){
             console.log(this.state.username);
-            axios.post(`http://13.59.236.175:8000/api/user/signup/`, data)
+            axios.post(serverUrl+`api/user/signup/`, data)
               .then(res => {
         
                 console.log(res);
