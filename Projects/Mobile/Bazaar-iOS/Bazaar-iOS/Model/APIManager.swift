@@ -38,9 +38,9 @@ struct APIManager {
         }
     }
     
-    func signUp(username:String, password:String, userType:String ,completionHandler: @escaping (Result<String ,Error>) -> Void) {
+    func signUpCustomer(firstName:String, lastName:String ,username:String, password:String, userType:String ,completionHandler: @escaping (Result<String ,Error>) -> Void) {
         do {
-            let request = try ApiRouter.signUp(username: username, password: password, user_type: userType).asURLRequest()
+            let request = try ApiRouter.signUpCustomer(firstName:firstName, lastName: lastName ,username: username, password: password, user_type: userType).asURLRequest()
             AF.request(request).responseJSON { (response) in
                 if (response.response?.statusCode != nil){
                     guard let safeData = response.data else  {

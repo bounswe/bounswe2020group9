@@ -136,10 +136,13 @@ class MyAccountViewController: UIViewController {
                                         if let userId = UserDefaults.standard.value(forKey: K.userIdKey) as? Int{
                                             APIManager().updatePassword(userId:userId,currentPassword: currentPassword, newPassword: newPassword) { (result) in
                                                 switch result{
-                                                case .success(let _):
+                                                case .success(_):
                                                     alertController.message = "Your password has been successfully updated!"
                                                     self.present(alertController, animated: true, completion: nil)
-                                                case .failure(let _):
+                                                    self.currentPasswordTextField.text=""
+                                                    self.newPasswordTextField.text = ""
+                                                    self.newPasswordAgainTextField.text = ""
+                                                case .failure(_):
                                                     alertController.message = "Password update failed!"
                                                     self.present(alertController, animated: true, completion: nil)
                                                 }

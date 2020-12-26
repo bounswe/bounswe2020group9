@@ -82,7 +82,7 @@ class SignUpViewController: UIViewController {
                                         self.present(alertController, animated: true, completion: nil)
                                     }else {
                                         if let userType = self.signUpUserType{
-                                            APIManager().signUp(username: email, password: password, userType: "\(userType.rawValue+1)") { (result) in
+                                            APIManager().signUpCustomer(firstName:firstName,lastName: lastName,username: email, password: password, userType: "\(userType.rawValue+1)") { (result) in
                                                 switch result{
                                                 case .success(_):
                                                     let alertController2 = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
