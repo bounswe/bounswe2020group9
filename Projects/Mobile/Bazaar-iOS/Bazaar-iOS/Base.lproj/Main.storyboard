@@ -1911,6 +1911,21 @@
             </objects>
             <point key="canvasLocation" x="-491.304347826087" y="2372.5446428571427"/>
         </scene>
+        <!--Map View Controller-->
+        <scene sceneID="RF9-Lr-oeh">
+            <objects>
+                <viewController id="f8W-BH-naY" customClass="MapViewController" customModule="Bazaar_iOS" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="j7L-vB-2Un">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="moP-5d-ta5"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="360-jI-3sp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-494" y="3036"/>
+        </scene>
         <!--Profile View Controller-->
         <scene sceneID="bQZ-RS-C3K">
             <objects>
@@ -2730,6 +2745,20 @@
             <point key="canvasLocation" x="3134.7826086956525" y="1654.6875"/>
         </scene>
     </scenes>
+    <designables>
+        <designable name="8Xv-IK-imB">
+            <size key="intrinsicContentSize" width="30" height="30"/>
+        </designable>
+        <designable name="Dpb-Nw-seZ">
+            <size key="intrinsicContentSize" width="30" height="30"/>
+        </designable>
+        <designable name="Vn7-FE-yjg">
+            <size key="intrinsicContentSize" width="30" height="21"/>
+        </designable>
+        <designable name="q7i-mX-RTp">
+            <size key="intrinsicContentSize" width="30" height="21"/>
+        </designable>
+    </designables>
     <inferredMetricsTieBreakers>
         <segue reference="Dtb-U7-9lN"/>
         <segue reference="NHr-zy-FFi"/>
