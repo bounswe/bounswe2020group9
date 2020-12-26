@@ -36,7 +36,7 @@ class CategoriesViewController: UIViewController {
      var subCategoryDict: [String: [String]] = ["Clothing":["Top", "Bottom", "Outerwear", "Shoes", "Bags", "Accesories", "Activewear"],
                                                 "Home":["Home Textile", "Kitchen", "Bedroom", "Bathroom", "Furniture", "Lighting", "Other"],
                                                 "Selfcare":["Perfumes", "Makeup", "Skincare", "Hair", "Body Care", "Other"],
-                                                "Electronics":["Smartphone", "Tablet", "Computer", "Photography", "Home Appliances", "TV", "Gaming", "Other"],
+                                                "Electronics":["Mobile Devices", "Tablet", "Computer", "Photography", "Home Appliances", "TV", "Gaming", "Other"],
                                                 "Living":["Books", "Art Supplies", "Musical Devices", "Sports", "Other"]]
      var categories = ["Clothing", "Home", "Selfcare", "Electronics", "Living"]
      var products: [Product] = []
