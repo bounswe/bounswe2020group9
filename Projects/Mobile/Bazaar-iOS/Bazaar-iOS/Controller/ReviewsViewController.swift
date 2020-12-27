@@ -10,11 +10,10 @@ import UIKit
 class ReviewsViewController: UIViewController {
 
     @IBOutlet weak var reviewsTableView: UITableView!
-   // @IBOutlet weak var loadingView: UIView!
-   // @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     var commentsArray: [CommentData] = []
     var productId: Int!
+    var myComment: CommentData!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,12 +21,33 @@ class ReviewsViewController: UIViewController {
         reviewsTableView.dataSource = self
         
         reviewsTableView.register(UINib(nibName: "ReviewTableViewCell", bundle: nil), forCellReuseIdentifier: "ReusableReviewCell")
+        
         self.reviewsTableView.backgroundColor = UIColor.systemBackground
+        
+        if let isLoggedIn = UserDefaults.standard.value(forKey: K.isLoggedinKey) as? Bool{
+            if isLoggedIn {
+                if let userId = UserDefaults.standard.value(forKey: K.userIdKey) as? Int {
+                    APIManager().getUsersComment(productID: productId, userID: userId, completionHandler: { result in
+                        switch result{
+                        case .success(let comment):
+                            self.myComment = comment
+                            return
+                        case .failure(_):
+                            self.myComment = nil
+                        }
+                    })
+                }
+            }
+        }
         
         APIManager().getComments(productID: productId, completionHandler: { result in
             switch result{
             case .success(let comments):
-                self.commentsArray = comments
+                if let myComm = self.myComment {
+                    self.commentsArray = comments.filter{$0.id != myComm.id}
+                } else {
+                    self.commentsArray = comments
+                }
                 self.reviewsTableView.reloadData()
                 return
             case .failure(_):
@@ -37,6 +57,8 @@ class ReviewsViewController: UIViewController {
             }
         })
         
+        
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -44,33 +66,45 @@ class ReviewsViewController: UIViewController {
         self.reviewsTableView.reloadData()
     }
     
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
 
 extension ReviewsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return commentsArray.count
+        if section == 0 {
+            if let _ = myComment {
+                return 1
+            } else {
+                return 0
+            }
+        } else {
+            return commentsArray.count
+        }
+        
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = reviewsTableView.dequeueReusableCell(withIdentifier: "ReusableReviewCell", for: indexPath) as! ReviewTableViewCell
-        let comment = commentsArray[indexPath.row]
-        cell.customerNameLabel.text = "\(comment.first_name) \(comment.last_name)"
-        //timestamp to date convert
-        cell.commentTimeLabel.text = comment.timestamp.formatDate
-        cell.commentBody.text = comment.body
-        cell.starRatingView.rating = Float(comment.rating)
+        
+        if indexPath.section == 0 {
+            if let comment = self.myComment {
+                cell.customerNameLabel.text = " "
+                cell.commentTimeLabel.text = comment.timestamp.formatDate + "  |"
+                cell.commentBody.text = comment.body
+                cell.starRatingView.rating = Float(comment.rating)
+                cell.layer.borderColor = #colorLiteral(red: 1, green: 0.6431372549, blue: 0.3568627451, alpha: 1)
+                cell.layer.borderWidth = 1.5
+                cell.layer.cornerRadius = 10
+                cell.layer.shadowColor = UIColor.black.cgColor
+            }
+        } else {
+            let comment = commentsArray[indexPath.row]
+            if !comment.is_anonymous {
+                cell.customerNameLabel.text = "\(comment.first_name) \(comment.last_name)"
+            }
+            cell.commentTimeLabel.text = comment.timestamp.formatDate + "  |"
+            cell.commentBody.text = comment.body
+            cell.starRatingView.rating = Float(comment.rating)
+        }
         return cell
     }
     
