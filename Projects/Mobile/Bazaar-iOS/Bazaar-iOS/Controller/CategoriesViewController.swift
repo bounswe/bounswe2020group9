@@ -51,7 +51,7 @@ class CategoriesViewController: UIViewController {
      override func viewWillAppear(_ animated: Bool) {
          searchHistoryTableView.reloadData()
          subCategoriesTableView.reloadData()
-         
+        navigationController?.setNavigationBarHidden(true, animated: true)
          if #available(iOS 13.0, *) {
              searchTextField = searchBar.searchTextField
          } else {
@@ -65,6 +65,10 @@ class CategoriesViewController: UIViewController {
          historyEndIndex = searchHistory.count
          categoriesEndIndex = searchHistory.count
      }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        navigationController?.setNavigationBarHidden(false, animated: true)
+    }
      override func viewDidLoad() {
          super.viewDidLoad()
          searchBar.delegate = self

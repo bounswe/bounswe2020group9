@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		672B838DC4092779EF8A1059 /* Pods_Bazaar_iOSTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFCE404E29F7D49B363A2C8E /* Pods_Bazaar_iOSTests.framework */; };
+		6917C9C2259696E700BCA7B8 /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6917C9C1259696E700BCA7B8 /* FilterViewController.swift */; };
 		6929E5F1257F8576008F32D3 /* SearchHistoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6929E5F0257F8576008F32D3 /* SearchHistoryTableViewCell.swift */; };
 		6929E5F6257FD4FE008F32D3 /* StarRatingStackView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6929E5F3257FD4FD008F32D3 /* StarRatingStackView.xib */; };
 		6929E5F7257FD4FE008F32D3 /* StarRatingStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6929E5F4257FD4FD008F32D3 /* StarRatingStackView.swift */; };
@@ -79,6 +80,7 @@
 /* Begin PBXFileReference section */
 		3FA7F490455E3D35641E5D4D /* Pods-Bazaar-iOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bazaar-iOSTests.release.xcconfig"; path = "Target Support Files/Pods-Bazaar-iOSTests/Pods-Bazaar-iOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		6034087162F858F015005C28 /* Pods-Bazaar-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bazaar-iOS.release.xcconfig"; path = "Target Support Files/Pods-Bazaar-iOS/Pods-Bazaar-iOS.release.xcconfig"; sourceTree = "<group>"; };
+		6917C9C1259696E700BCA7B8 /* FilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
 		6929E5F0257F8576008F32D3 /* SearchHistoryTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHistoryTableViewCell.swift; sourceTree = "<group>"; };
 		6929E5F3257FD4FD008F32D3 /* StarRatingStackView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = StarRatingStackView.xib; sourceTree = "<group>"; };
 		6929E5F4257FD4FD008F32D3 /* StarRatingStackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StarRatingStackView.swift; sourceTree = "<group>"; };
@@ -382,6 +384,7 @@
 				6949C90F257D8F5B00175AC5 /* SearchResultsViewController.swift */,
 				9907F0F32582A53F00026DB0 /* AddListViewController.swift */,
 				9996E88C2585121000986DB1 /* ListDetailViewController.swift */,
+				6917C9C1259696E700BCA7B8 /* FilterViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -712,6 +715,7 @@
 				938A1552256AD19100572844 /* CategoryCollectionViewCell.swift in Sources */,
 				6994EAD0255DB7BC00AC48F6 /* WishlistViewController.swift in Sources */,
 				939AB4F825694B76007815C8 /* StringHelper.swift in Sources */,
+				6917C9C2259696E700BCA7B8 /* FilterViewController.swift in Sources */,
 				6994EACD255DA3D400AC48F6 /* MainTabBarController.swift in Sources */,
 				93EE3CDA25594A6800B504DF /* ProductCell.swift in Sources */,
 				930C1FA0256C08E20086E1DC /* URLRequestBuilder.swift in Sources */,
