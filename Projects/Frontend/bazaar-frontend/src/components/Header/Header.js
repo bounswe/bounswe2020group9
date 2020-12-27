@@ -1,15 +1,20 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom'
-import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
-
+import axios from 'axios'
+import "./header.css";
 
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap/dist/js/bootstrap.bundle"
 
-import "./header.css";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
+
+//components
+import {serverUrl} from '../../utils/get-url'
+import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
+
+//utils
+import bazaarIMG from '../../assets/bazaar-4.png'
 import { faUserPlus } from '@fortawesome/free-solid-svg-icons'
 import { faSignInAlt } from '@fortawesome/free-solid-svg-icons'
 import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons'
@@ -17,9 +22,8 @@ import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons'
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
 import { faWarehouse } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-
-import bazaarIMG from '../../assets/bazaar-4.png'
 
 
 
@@ -31,7 +35,8 @@ class Header extends Component {
 
     this.state = {
       isSignedIn: false,
-      user_type: 0
+      user_type: 0,
+      cart: [],
     }
 
   }
@@ -51,6 +56,18 @@ class Header extends Component {
       this.setState({ isSignedIn: true })
       this.setState({ user_type: myCookie.user_type})
     }
+
+    
+    axios.get(serverUrl+'api/user/cart/', {
+      headers:{
+        'Authorization': `Token ${myCookie.token}`
+      }
+    })
+    .then(res => {
+      let resp = res.data;
+      this.setState({cart: resp})
+    })
+
   }
 
   render() {
@@ -84,7 +101,7 @@ class Header extends Component {
           <a className="nav-link dropdown-toggle" href="#" id="ddlCart" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <FontAwesomeIcon icon={faShoppingCart} />
             <span className="mr-1"></span>Cart
-            <span className="badge badge-secondary badge-pill">3</span>
+            <span className="badge badge-secondary badge-pill">{this.state.cart?.length}</span>
           </a>
           <div className="dropdown-menu" aria-labelledby="ddlCart">
             <a className="dropdown-item" href="#">Product 1</a>

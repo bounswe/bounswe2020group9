@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import "./productpage.scss"
 import { Redirect } from "react-router-dom";
+import axios from 'axios'
 
 //components
 import StarRatings from '../../../node_modules/react-star-ratings';
@@ -54,6 +55,7 @@ export default class Productpage extends Component {
       this.setState({ isGuest: true })
     }
     else {
+
     }
   }
 

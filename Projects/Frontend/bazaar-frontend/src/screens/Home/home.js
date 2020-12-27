@@ -44,9 +44,7 @@ class Home extends Component {
         }
       }
       this.setState({categoryList: keys})
-      
     })
-
   }
 
   render() {
