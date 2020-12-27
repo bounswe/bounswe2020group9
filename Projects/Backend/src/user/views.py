@@ -189,6 +189,7 @@ class UserSignupAPIView(APIView):
                 if serializer2.is_valid():
                     serializer2.save()
                 else:
+                    user.delete()
                     return Response({"location": ["bad location request."]}, status=status.HTTP_400_BAD_REQUEST)
 
             user.is_active = False
