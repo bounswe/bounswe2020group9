@@ -330,13 +330,10 @@ struct APIManager {
     func getCart(user:Int, completionHandler: @escaping (Result<[CartProduct], Error>) -> Void) {
         do {
             let request = try ApiRouter.getCart(user: user).asURLRequest()
-            print("request:",request)
             AF.request(request).responseJSON { response in
-                print("apimanager, response:", response)
                 if (response.response?.statusCode == 200) {
                     guard let safeData = response.data else {
                         completionHandler(.failure(MyError.runtimeError("Error")))
-                        print("sth")
                         return
                     }
                     if let decodedData: [CartProduct] = APIParse().parseJSON(safeData: safeData) {
@@ -355,10 +352,7 @@ struct APIManager {
     func addToCart(user: Int, productID: Int, amount: Int, completionHandler: @escaping (Result<[CartProduct], Error>) -> Void) {
         do {
             let request = try ApiRouter.addToCart(user: user, productID: productID, amount: amount).asURLRequest()
-            print(request)
             AF.request(request).responseJSON { response in
-                debugPrint(response)
-                //print(response)
                 if (response.response?.statusCode == 200) {
                     guard let safeData = response.data else {
                         completionHandler(.failure(MyError.runtimeError("Error")))
@@ -420,4 +414,28 @@ struct APIManager {
             completionHandler(.failure(error))
         }
     }
+    
+    func search(filterType: String, sortType: String, searchWord: String, completionHandler: @escaping (Result<SearchProductList, Error>) -> Void) {
+        do {
+            let request = try ApiRouter.search(filterType: filterType, sortType: sortType, searchWord: searchWord).asURLRequest()
+            AF.request(request).responseJSON { response in
+                if (response.response?.statusCode != nil) {
+                    guard let safeData = response.data else  {
+                        completionHandler(.failure(MyError.runtimeError("Error-searchapicall-response")))
+                        return
+                    }
+                    if let decodedData:SearchProductList = APIParse().parseJSON(safeData: safeData){
+                        completionHandler(.success(decodedData))
+                    }else {
+                        completionHandler(.failure(MyError.runtimeError("Error-searchapicall-decode")))
+                    }
+                }
+                
+            }
+        } catch let error {
+            completionHandler(.failure(error))
+        }
+    }
+    
+    
 }

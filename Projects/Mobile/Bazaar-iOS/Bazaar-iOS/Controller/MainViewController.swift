@@ -116,6 +116,8 @@ class MainViewController: UIViewController{
             searchResultsVC.searchWord = searchTextField?.text
             let indexpath = searchHistoryTableView.indexPathForSelectedRow
             if indexpath != nil {
+                searchResultsVC.filterType = "none"
+                searchResultsVC.sortType = "none"
                 if indexpath!.row < historyEndIndex {
                     searchResultsVC.isSearchWord = true
                     searchResultsVC.isBrand = false
@@ -230,7 +232,6 @@ extension MainViewController:UITableViewDelegate,UITableViewDataSource {
             searchTextField?.text = searchResults[indexPath.row]
             searchBar.text = searchResults[indexPath.row]
             performSegue(withIdentifier: "mainToSearchResultsSegue", sender: nil)
-            print("f")
         } else {
             let filteredProducts:[ProductData] = allProductsInstance.allProducts.filter{($0.category.parent?.contains(selectedCategoryName!))! || $0.category.name.contains(selectedCategoryName!)}
             let product = filteredProducts[indexPath.row]

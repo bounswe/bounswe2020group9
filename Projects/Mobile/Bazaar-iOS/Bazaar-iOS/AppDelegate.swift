@@ -8,6 +8,7 @@
 import UIKit
 import CoreData
 import GoogleSignIn
+import DropDown
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -17,6 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         GIDSignIn.sharedInstance().clientID = "1037825271400-apm33ju1kr4uiejj11pnv13hc5gugrhg.apps.googleusercontent.com"
+        DropDown.startListeningToKeyboard()
         return true
     }
     
