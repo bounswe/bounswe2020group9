@@ -9,40 +9,55 @@ import Col from 'react-bootstrap/Col'
 import CardDeck from 'react-bootstrap/CardDeck'
 import axios from 'axios'
 import Card from "../../components/ProductCard/productCard"
+import {serverUrl} from '../../utils/get-url'
+import { Link } from 'react-router-dom'
 
 
 
 import './home.scss'
 
-class Home extends React.Component {
+class Home extends Component {
 
   constructor() {
     super();
     this.state = {
       isLogged: 'yes',
       redirect: null,
+      categoryList: [],
       products: []
     }
   }
 
 
   componentDidMount() {
-    axios.get(`http://13.59.236.175:8000/api/product/`)
+    axios.get(serverUrl+`api/product/`)
       .then(res => {
         this.setState({ products: res.data })
       })
+    axios.get(serverUrl+'api/product/categories/')
+    .then(res => {
+      let resp = res.data;
+      let keys = [];
+      for (let i=0;i<resp.length;i++) {
+        if (resp[i]["parent"] == "Categories") {
+          keys.push(resp[i]["name"])
+        }
+      }
+      this.setState({categoryList: keys})
+      
+    })
 
   }
 
   render() {
     let active = 2;
-    let category = ['Books', 'Petshop', 'Clothing', 'Health', 'Home', 'Electronics', 'Consumables']
+    let category = this.state.categoryList
     let items = [];
-    for (let number = 0; number <= 6; number++) {
+    for (let number = 0; number < category.length; number++) {
       items.push(
-        <Pagination.Item key={number} className={"myPaginationItem"}>
+        <Pagination.Item key={number} className={"myPaginationItem"} href={"/category/"+category[number]}>
           {category[number]}
-        </Pagination.Item>,
+        </Pagination.Item>
       );
     }
 

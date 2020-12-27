@@ -4,15 +4,16 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import './App.css';
 
 //screens
-import ProfilePage from "./screens/Profile-page";
-import SignIn from "./screens/Sign-In"
-import SignUp from "./screens/Sign-Up"
+import ProfilePage from "./screens/Profile-page/profile-page";
+import SignIn from "./screens/Sign-In/sign-in"
+import SignUp from "./screens/Sign-Up/sign-up"
 import Home from "./screens/Home/home"
 import ForgotPassword from "./screens/Sign-In/forgot-password"
 import MyList from "./screens/MyList/MyList"
 import AddProduct from "./screens/Add-Product/addproduct"
 import Inventory from "./screens/Inventory/inventory"
 import ProductPage from "./screens/ProductPage/ProductPage"
+import ViewCategory from "./screens/ViewCategory/view-category"
 
 
 //components
@@ -58,6 +59,15 @@ function App() {
           <Inventory />
         </Route>
         <Route path="/product/:id" render={(props) => <ProductPage {...props} />}/> 
+        <Route 
+          path="/category/:id"  
+          render={(props) => 
+              <div>
+                  <Header />
+                  <ViewCategory {...props} />
+              </div> 
+          } 
+      />
       </Switch>
 
       <Footer />

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from 'axios'
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 import Cookies from 'js-cookie';
+import {serverUrl} from '../../utils/get-url'
 
 import "./profilepage.css";
 import { faGlassWhiskey } from "@fortawesome/free-solid-svg-icons";
@@ -79,7 +80,7 @@ export default class ProfilePage extends Component {
         
 
         if (this.handleValidation()) {
-            axios.post(`http://13.59.236.175:8000/api/user/`, body, header)
+            axios.post(serverUrl+'/api/user/', body, header)
             .then(res => {
       
               console.log(res);
@@ -94,7 +95,7 @@ export default class ProfilePage extends Component {
 
       componentDidMount() {
         let myCookie = read_cookie('user')
-        axios.get(`http://13.59.236.175:8000/api/user/${myCookie.user_id}/`)
+        axios.get(serverUrl+`api/user/${myCookie.user_id}/`)
           .then(res => {
               console.log(res.data)
               this.setState({fname : res.data.first_name})
