@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="n1Y-by-cQR">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="n1Y-by-cQR">
     <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -769,7 +769,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rKZ-Cf-yGq">
-                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="769"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SRL-WQ-xqY" userLabel="Content View">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="725.66666666666663"/>
@@ -1023,7 +1023,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="Pw3-Sz-9fZ" userLabel="Stack-sortfilter">
-                                <rect key="frame" x="20" y="142" width="374" height="41"/>
+                                <rect key="frame" x="20" y="98" width="374" height="43.666666666666657"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XOG-NJ-0Hw" userLabel="Filter">
                                         <rect key="frame" x="0.0" y="0.0" width="374" height="43.666666666666664"/>
@@ -1055,7 +1055,7 @@
                                 <color key="tintColor" red="0.26605003240000002" green="0.26605003240000002" blue="0.26605003240000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             </stackView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="150" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="yXi-T4-cbP">
-                                <rect key="frame" x="10" y="193" width="394" height="615"/>
+                                <rect key="frame" x="10" y="151.66666666666669" width="394" height="656.33333333333326"/>
                                 <color key="backgroundColor" white="0.94255672089999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="separatorColor" red="0.75340025909999997" green="0.75340025909999997" blue="0.75340025909999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <color key="sectionIndexBackgroundColor" red="0.75340025909999997" green="0.75340025909999997" blue="0.75340025909999997" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -1430,12 +1430,13 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="|   View Ratings &gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UeA-PW-enn" userLabel="Ratings Label">
-                                                <rect key="frame" x="123.33333333333334" y="7.9999999999999991" width="260.66666666666663" height="15.666666666666664"/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yLz-sF-HaE" userLabel="View Ratings Button">
+                                                <rect key="frame" x="123.33333333333334" y="1" width="260.66666666666663" height="30"/>
+                                                <state key="normal" title="|  View Reviews &gt;"/>
+                                                <connections>
+                                                    <segue destination="A9b-Vt-zF3" kind="show" id="GYE-su-34e"/>
+                                                </connections>
+                                            </button>
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     </stackView>
@@ -3039,13 +3040,9 @@
         </designable>
     </designables>
     <inferredMetricsTieBreakers>
-        <segue reference="NKp-lJ-XIG"/>
-        <segue reference="SrW-kQ-x4p"/>
-        <segue reference="CHd-uw-vgy"/>
-        <segue reference="1FR-vb-eQq"/>
         <segue reference="N4E-qe-Wyq"/>
         <segue reference="NHr-zy-FFi"/>
-        <segue reference="Jgp-et-rMS"/>
+        <segue reference="ybP-Ln-r90"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.96776050329999996" green="0.6416403651" blue="0.1417042017" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
     <resources>
