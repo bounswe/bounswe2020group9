@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom'
 import ReactDOM from 'react-dom'
 import axios from 'axios'
 import "./header.css";
@@ -112,18 +113,20 @@ class Header extends Component {
           <div className="dropdown-menu" aria-labelledby="ddlCart">
             {cartItems}
             <div className="dropdown-divider"></div>
-            <a className="dropdown-item" href="#">Go to Cart</a>
+            <Link to={{pathname: `/cart`, state: {cart: this.state.cart} }} >
+              <span className="dropdown-item" >Go to Cart</span>
+            </Link>
           </div>
         </li>
         <li className="nav-item dropdown">
           <a className="nav-link dropdown-toggle" href="#" id="ddlMessages" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <FontAwesomeIcon icon={faEnvelope} />
-            <span className="mr-1"></span>Massages
+            <span className="mr-1"></span>Messages
             <span className="badge badge-secondary badge-pill">2</span>
           </a>
           <div className="dropdown-menu" aria-labelledby="ddlMessages">
-            <a className="dropdown-item" href="#">Massage 1</a>
-            <a className="dropdown-item" href="#">Massage 2</a>
+            <a className="dropdown-item" href="#">Message 1</a>
+            <a className="dropdown-item" href="#">Message 2</a>
             <div className="dropdown-divider"></div>
             <a className="dropdown-item" href="#">Go to Massages</a>
           </div>

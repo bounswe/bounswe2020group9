@@ -14,7 +14,7 @@ import AddProduct from "./screens/Add-Product/addproduct"
 import Inventory from "./screens/Inventory/inventory"
 import ProductPage from "./screens/ProductPage/ProductPage"
 import ViewCategory from "./screens/ViewCategory/view-category"
-
+import Cart from "./screens/Cart/Cart"
 
 //components
 import Header from "./components/Header/Header"
@@ -58,13 +58,29 @@ function App() {
           <Header />
           <Inventory />
         </Route>
-        <Route path="/product/:id" render={(props) => <ProductPage {...props} />}/> 
+        <Route path="/product/:id" 
+        render={(props) => 
+          <div>
+            <Header />
+            <ProductPage {...props} />
+          </div>
+        }
+        /> 
         <Route 
           path="/category/:id"  
           render={(props) => 
               <div>
                   <Header />
                   <ViewCategory {...props} />
+              </div> 
+          } 
+      />
+      <Route 
+          path="/cart"  
+          render={(props) => 
+              <div>
+                  <Header />
+                  <Cart {...props} />
               </div> 
           } 
       />

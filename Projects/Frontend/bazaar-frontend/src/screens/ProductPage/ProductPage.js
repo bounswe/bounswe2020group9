@@ -9,7 +9,6 @@ import Carousel from 'react-bootstrap/Carousel'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import Header from "../../components/Header/Header"
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 import CommentCard from "./CommentCard/CommentCard"
 
@@ -87,7 +86,6 @@ export default class Productpage extends Component {
 
     return (
       <div>
-        <Header />
         <Container>
           <Row className={"productPart"}>
             <Col>
