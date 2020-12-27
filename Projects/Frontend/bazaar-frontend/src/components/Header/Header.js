@@ -74,6 +74,12 @@ class Header extends Component {
 
     let SignPart
 
+    let cartItems = this.state.cart.map(cartItem => {
+      return (
+        <a className="dropdown-item" href="#">{cartItem.product}</a>
+      )
+  })
+
     if (Object.keys(read_cookie('user')).length !== 0) {
       SignPart = <ul className="navbar-nav navbar-right">
         <li className="nav-item dropdown">
@@ -104,9 +110,7 @@ class Header extends Component {
             <span className="badge badge-secondary badge-pill">{this.state.cart?.length}</span>
           </a>
           <div className="dropdown-menu" aria-labelledby="ddlCart">
-            <a className="dropdown-item" href="#">Product 1</a>
-            <a className="dropdown-item" href="#">Product 2</a>
-            <a className="dropdown-item" href="#">Prodoct 3</a>
+            {cartItems}
             <div className="dropdown-divider"></div>
             <a className="dropdown-item" href="#">Go to Cart</a>
           </div>
