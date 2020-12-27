@@ -17,6 +17,9 @@ import AddToCartIcon from "../../assets/icons/add-to-cart.svg"
 import RemoveFromCartIcon from "../../assets/icons/remove-from-cart.svg"
 import AddToListIcon from "../../assets/icons/add-to-list-hand-drawn-interface-symbol.svg"
 
+//helpers
+import {serverUrl} from '../../utils/get-url'
+
 
 export default class Productpage extends Component {
 
@@ -48,13 +51,30 @@ export default class Productpage extends Component {
   }
 
   onCartButtonClick = () => {
+    const { product } = this.props.location.state;
 
     let myCookie = read_cookie('user');
+
+    const headers = {
+      'Authorization': `Token ${myCookie.token}`
+    }
+
+    const data = {
+      "product_id": product.id,
+      "amount": 1
+    }
+
     if (myCookie.length === 0) {
       this.setState({ isGuest: true })
     }
     else {
+      axios.post(serverUrl+`api/user/cart/`, data,{
+        headers: headers
+      })
+      .then(res => {
 
+        this.setState({ redirect: "/" });
+      })
     }
   }
 
