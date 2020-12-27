@@ -7,6 +7,7 @@ import './App.css';
 import ProfilePage from "./screens/Profile-page/profile-page";
 import SignIn from "./screens/Sign-In/sign-in"
 import SignUp from "./screens/Sign-Up/sign-up"
+import Activate from "./screens/Sign-Up/activate"
 import SignUpVendor from "./screens/Sign-Up/sign-up-vendor"
 import Home from "./screens/Home/home"
 import ForgotPassword from "./screens/Sign-In/forgot-password"
@@ -43,6 +44,15 @@ function App() {
           <Header />
           <SignIn />
         </Route>
+        <Route 
+          path="/activate=:id"  
+          render={(props) => 
+              <div>
+                  <Header />
+                  <Activate {...props} />
+              </div> 
+          } 
+      />
         <Route path="/forgot-password">
           <Header />
           <ForgotPassword />
