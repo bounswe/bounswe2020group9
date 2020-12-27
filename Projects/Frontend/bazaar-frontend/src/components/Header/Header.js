@@ -6,7 +6,7 @@ import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap/dist/js/bootstrap.bundle"
 
-import "./header.css";
+import "./header.scss";
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -18,11 +18,7 @@ import { faShoppingCart } from '@fortawesome/free-solid-svg-icons'
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons'
 import { faWarehouse } from '@fortawesome/free-solid-svg-icons'
 
-
 import bazaarIMG from '../../assets/bazaar-4.png'
-
-
-
 
 
 class Header extends Component {
@@ -31,6 +27,7 @@ class Header extends Component {
 
     this.state = {
       isSignedIn: false,
+      keywords: '',
       user_type: 0
     }
 
@@ -38,6 +35,17 @@ class Header extends Component {
 
   handleClick() {
     delete_cookie("user")
+  }
+
+  handleSearchSubmit = event => {
+    event.preventDefault();
+
+  
+  }
+
+  handleSearchChange = event => {
+    event.preventDefault();
+    this.setState({ [event.target.name]: event.target.value });    
   }
 
 
@@ -147,11 +155,14 @@ class Header extends Component {
           /></a>
 
         <div className="collapse navbar-collapse" id="collapsibleNavId">
-          <ul className="navbar-nav  mr-auto mt-2 mt-lg-0">
-
+          <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
+            <form className="search-form" onSubmit={this.handleSearchSubmit}>
+              <input type="text" className="form-control" name="search" id="search-bar" 
+              placeholder="Search product, brand, category or vendor"
+              onChange={this.handleSearchChange}/>
+            </form>
           </ul>
           {SignPart}
-
         </div>
       </nav>
     );

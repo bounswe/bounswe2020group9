@@ -1,0 +1,18 @@
+.myNavbar{
+    background-color: #41aea9;
+    height: 100px;
+
+    & .search-form {
+
+        margin-left: 250px;
+        width: 400px;
+
+        & #search-bar {
+            float: right;
+
+        }
+
+    }
+
+
+}
