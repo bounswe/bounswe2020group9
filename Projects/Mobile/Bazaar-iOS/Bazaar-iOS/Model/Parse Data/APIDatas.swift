@@ -103,6 +103,7 @@ struct SearchProduct:Codable {
 
 struct SearchProductList:Codable {
     let product_list:[SearchProduct]
+}
 
   struct GoogleSignInData:Codable {
     let id:Int

@@ -58,7 +58,12 @@ class MainViewController: UIViewController{
         searchResults = searchHistory
         historyEndIndex = searchHistory.count
         categoriesEndIndex = searchHistory.count
-            
+        productTableView.tableFooterView = UIView(frame: .zero)
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
     }
     override func viewDidLoad() {
         super.viewDidLoad()
