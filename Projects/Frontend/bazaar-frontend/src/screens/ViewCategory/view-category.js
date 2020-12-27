@@ -19,7 +19,8 @@ class ViewCategory extends Component {
     this.state = {
       isLogged: 'yes',
       redirect: null,
-      categoryList: {"":[]},
+      categoryList: [],
+      categoryStructure: {"":[]},
       products: []
     }
   }
@@ -35,13 +36,14 @@ class ViewCategory extends Component {
       axios.get(serverUrl+'api/product/categories/')
       .then(res => {
         let resp = res.data;
-        let categoryListTemp = {};
+        let categoryStructureTemp = {};
         let keys = [];
         for (let i=0;i<resp.length;i++) {
           if (resp[i]["parent"] === "Categories") {
             keys.push(resp[i]["name"])
           }
         }
+        this.setState({categoryList: keys})
         for (let i=0;i<keys.length;i++) {
           let sublist = []
           for (let j=0;j<resp.length;j++) {
@@ -49,22 +51,22 @@ class ViewCategory extends Component {
               sublist.push(resp[j]["name"]);
             }
           }
-          categoryListTemp[keys[i]] = sublist;
+          categoryStructureTemp[keys[i]] = sublist;
         }
-        categoryListTemp[''] = []
-        this.setState({categoryList: categoryListTemp})
+        categoryStructureTemp[''] = []
+        this.setState({categoryStructure: categoryStructureTemp})
       })
 
   }
 
   render() {
     let active = 2;
-    let categoryList = Object.keys(this.state.categoryList)
+    let category = this.state.categoryList
     let items = [];
     for (let number = 0; number < Object.keys(this.state.categoryList).length; number++) {
       items.push(
-        <Pagination.Item key={number} className={"myPaginationItem"}>
-          {categoryList[number]}
+        <Pagination.Item key={number} className={"myPaginationItem"} href={"/category/"+category[number]}>
+          {category[number]}
         </Pagination.Item>,
       );
     }
