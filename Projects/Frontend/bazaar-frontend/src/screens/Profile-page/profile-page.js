@@ -3,8 +3,9 @@ import axios from 'axios'
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 import Cookies from 'js-cookie';
 import {serverUrl} from '../../utils/get-url'
+import { Button } from "react-bootstrap";
 
-import "./profilepage.css";
+import "./profilepage.scss";
 import { faGlassWhiskey } from "@fortawesome/free-solid-svg-icons";
 
 export default class ProfilePage extends Component {
@@ -174,12 +175,7 @@ export default class ProfilePage extends Component {
                                   </div>
                               </div>
                               <div id="save-changes-div">
-                                {this.state.isEnabled
-                                ? 
-                                <button id="save-changes-profile" type="submit" className="btn btn-block">Confirm changes</button>
-                                :
-                                <button id="save-changes-profile" type="submit" className="btn btn-block" disabled>Confirm changes</button>
-                              }
+                                <Button variant="primary" id="save-changes" type="submit">Save changes</Button>
                               </div>
 
                             </form>

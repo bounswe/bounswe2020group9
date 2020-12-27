@@ -3,6 +3,7 @@ import GoogleButton from 'react-google-button'
 import axios from 'axios'
 import { Redirect } from "react-router-dom";
 import {serverUrl} from '../../utils/get-url'
+import Alert from 'react-bootstrap/Alert'
 
 
 import "./sign-up.scss";
@@ -16,6 +17,7 @@ export default class SignUp extends Component {
           password: '',
           fname: '',
           lname: '',
+          isHidden: true,
           redirect: null,
           errors: {}
         }
@@ -70,7 +72,8 @@ export default class SignUp extends Component {
       
               console.log(res);
               console.log(res.data);
-              this.setState({ redirect: "/signin" });
+              //this.setState({ redirect: "/signin" });
+              this.setState({isHidden: false})
             }).catch((error) => {
               if (error.response) {
                 // Request made and server responded
@@ -99,7 +102,12 @@ export default class SignUp extends Component {
             return <Redirect to={this.state.redirect} />
           }
         return (
+
             <div className="entry-form">
+              <Alert variant="success" hidden={this.state.isHidden}>
+                A confirmation mail has been sent to your account, please check it.
+                You can <Alert.Link href="/signin">sign in</Alert.Link> to your account after the confirmation is done.
+              </Alert>
                 <form onSubmit={this.handleSubmit} >
                     <h3>Sign Up</h3>
                     <div className="row">

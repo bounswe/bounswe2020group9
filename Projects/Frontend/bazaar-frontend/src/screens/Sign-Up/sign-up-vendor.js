@@ -3,6 +3,7 @@ import GoogleButton from 'react-google-button'
 import axios from 'axios'
 import { Redirect } from "react-router-dom";
 import {serverUrl} from '../../utils/get-url'
+import Alert from 'react-bootstrap/Alert'
 
 
 import "./sign-up.scss";
@@ -17,6 +18,10 @@ export default class SignUp extends Component {
           fname: '',
           lname: '',
           company: '',
+          address: '',
+          address_name: '',
+          postal_code: '',
+          isHidden: true,
           redirect: null,
           errors: {}
         }
@@ -36,7 +41,6 @@ export default class SignUp extends Component {
         }
   
         if(this.validateEmail(this.state.username) === false){
-            console.log(this.validateEmail(this.state.username));
           formIsValid = false;
           new_errors["username"] = "Please give a valid email.";      
         }
@@ -56,6 +60,26 @@ export default class SignUp extends Component {
           new_errors["lname"] = "Please enter your last name.";      
         }
 
+        if(this.state.address === ''){
+          formIsValid = false;
+          new_errors["address"] = "Please enter your address.";      
+        }
+
+        if(this.state.address_name === ''){
+          formIsValid = false;
+          new_errors["address_name"] = "Please enter your address name.";      
+        }
+
+        if(this.state.postal_code === ''){
+          formIsValid = false;
+          new_errors["postal_code"] = "Please enter your postal code.";      
+        } else {
+          const parsed = parseInt(this.state.postal_code, 10);
+          if (isNaN(parsed)) {
+            formIsValid = false;
+            new_errors["postal_code"] = "Postal code should be integer.";   
+          }
+        }
         this.setState({errors: new_errors});
         return formIsValid;
       }
@@ -75,18 +99,22 @@ export default class SignUp extends Component {
           data.append("first_name", this.state.fname);
           data.append("last_name", this.state.lname);
           data.append("company", this.state.company);
+          data.append("postal_code", this.state.postal_code);
+          data.append("address", this.state.address);
+          data.append("address_name", this.state.address_name);
           data.append("user_type", 2);
           axios.post(serverUrl+`api/user/signup/`, data)
             .then(res => {
       
               console.log(res);
               console.log(res.data);
-              this.setState({ redirect: "/signin" });
+              this.setState({isHidden: false})
             }).catch((error) => {
               if (error.response) {
                 // Request made and server responded
                 let new_errors = this.state.errors
                 new_errors["username"] = error.response.data["username"][0]
+                //console.log(error.response.data)
                 this.setState({errors: new_errors})
               } else if (error.request) {
                 // The request was made but no response was received
@@ -107,6 +135,10 @@ export default class SignUp extends Component {
           }
         return (
             <div className="entry-form">
+              <Alert variant="success" hidden={this.state.isHidden}>
+                A confirmation mail has been sent to your account, please check it.
+                You can <Alert.Link href="/signin">sign in</Alert.Link> to your account after the confirmation is done.
+              </Alert>
                 <form onSubmit={this.handleSubmit} >
                     <h3>Sign Up as Vendor</h3>
                     <div className="row">
@@ -136,6 +168,25 @@ export default class SignUp extends Component {
                         <input type="text" name="company" className="form-control" placeholder="Enter company"  
                         onChange={this.handleChange}/>
                         <div className="error">{this.state.errors["company"]}</div>
+                    </div>
+
+                    <div className="form-group">
+                        <label>Address</label>
+                        <input type="text" name="address" className="form-control" placeholder="Enter full address"  
+                        onChange={this.handleChange}/>
+                        <div className="error">{this.state.errors["address"]}</div>
+                    </div>
+                    <div className="form-group">
+                        <label>Postal Code</label>
+                        <input type="text" name="postal_code" className="form-control" placeholder="Enter postal code"  
+                        onChange={this.handleChange}/>
+                        <div className="error">{this.state.errors["postal_code"]}</div>
+                    </div>
+                    <div className="form-group">
+                        <label>Address name</label>
+                        <input type="text" name="address_name" className="form-control" placeholder="Enter address name"  
+                        onChange={this.handleChange}/>
+                        <div className="error">{this.state.errors["address_name"]}</div>
                     </div>
 
                     <div className="form-group">

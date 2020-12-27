@@ -253,8 +253,8 @@ export default class AddProduct extends Component {
 
                                   </div>
                               </div>
-                              <div id="save-changes-div">
-                                <Button variant="primary" id="save-changes-product" type="submit">Save Changes</Button>
+                              <div id="add-product-div">
+                                <Button variant="primary" id="add-product" type="submit">Add product</Button>
                               </div>
 
                             </form>
