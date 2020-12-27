@@ -64,7 +64,6 @@ class CategoriesViewController: UIViewController {
          searchResults = searchHistory
          historyEndIndex = searchHistory.count
          categoriesEndIndex = searchHistory.count
-             
      }
      override func viewDidLoad() {
          super.viewDidLoad()
@@ -199,14 +198,12 @@ class CategoriesViewController: UIViewController {
          if tableView == subCategoriesTableView {
             let cell = subCategoriesTableView.dequeueReusableCell(withIdentifier: "SubCategoryCell", for: indexPath) as! SubCategoryCell
             let subCategories=subCategoryDict[selectedCategoryName!]!
+            cell.layer.cornerRadius=5
             //print(indexPath.row)
             
             // look here ***************
             cell.nameLabel?.text = subCategories[indexPath.row]
-            cell.subCategoryImage?.image = UIImage(named: subCategories[indexPath.row].lowercased())
-            
-            
- 
+            cell.subCategoryImage?.image = UIImage(named: subCategories[indexPath.row].lowercased().replacingOccurrences(of: " ", with: ""))
              return cell
          } else {
             let cell = searchHistoryTableView.dequeueReusableCell(withIdentifier: "searchHistoryCell", for: indexPath) as! SearchHistoryTableViewCell
@@ -234,7 +231,7 @@ class CategoriesViewController: UIViewController {
              searchBar.searchTextField.text = searchResults[indexPath.row]
              searchBar.text = searchResults[indexPath.row]
              performSegue(withIdentifier: "categoriesToSearchResultsSegue", sender: nil)
-             print("f")
+             // print("f")
          } else {
             let subCategories=subCategoryDict[selectedCategoryName!]!
             searchBar.searchTextField.text = subCategories[indexPath.row]
