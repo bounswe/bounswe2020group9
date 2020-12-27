@@ -91,6 +91,7 @@ class CategoriesViewController: UIViewController {
         // subCategoriesTableView.register(SubCategoryCell.self, forCellReuseIdentifier: "SubCategoryCell")
          // searchHistoryTableView.register(SearchHistoryTableViewCell.self, forCellReuseIdentifier: "searchHistoryCell")
         subCategoriesTableView.register(UINib(nibName: "SubCategoryCell", bundle: nil), forCellReuseIdentifier: "SubCategoryCell")
+        subCategoriesTableView.layer.cornerRadius=20
          if !(allProductsInstance.dataFetched) {
              print("here")
              self.searchBar.resignFirstResponder()
