@@ -7,6 +7,7 @@ import './App.css';
 import ProfilePage from "./screens/Profile-page/profile-page";
 import SignIn from "./screens/Sign-In/sign-in"
 import SignUp from "./screens/Sign-Up/sign-up"
+import SignUpVendor from "./screens/Sign-Up/sign-up-vendor"
 import Home from "./screens/Home/home"
 import ForgotPassword from "./screens/Sign-In/forgot-password"
 import MyList from "./screens/MyList/MyList"
@@ -33,6 +34,10 @@ function App() {
         <Route path="/signUp">
           <Header />
           <SignUp />
+        </Route>        
+        <Route path="/signUp-vendor">
+          <Header />
+          <SignUpVendor />
         </Route>
         <Route path="/signIn">
           <Header />

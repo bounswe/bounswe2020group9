@@ -16,6 +16,7 @@ export default class SignUp extends Component {
           password: '',
           fname: '',
           lname: '',
+          company: '',
           redirect: null,
           errors: {}
         }
@@ -40,9 +41,19 @@ export default class SignUp extends Component {
           new_errors["username"] = "Please give a valid email.";      
         }
 
-        if(this.state.utype === ''){
+        if(this.state.company === ''){
           formIsValid = false;
-          new_errors["utype"] = "Please select user type.";      
+          new_errors["company"] = "Please enter your company name.";      
+        }
+
+        if(this.state.fname === ''){
+          formIsValid = false;
+          new_errors["fname"] = "Please enter your name.";      
+        }
+
+        if(this.state.lname === ''){
+          formIsValid = false;
+          new_errors["lname"] = "Please enter your last name.";      
         }
 
         this.setState({errors: new_errors});
@@ -63,8 +74,8 @@ export default class SignUp extends Component {
           data.append("password", this.state.password);
           data.append("first_name", this.state.fname);
           data.append("last_name", this.state.lname);
-          data.append("user_type", 1);
-
+          data.append("company", this.state.company);
+          data.append("user_type", 2);
           axios.post(serverUrl+`api/user/signup/`, data)
             .then(res => {
       
@@ -87,11 +98,7 @@ export default class SignUp extends Component {
 
 
           })
-
-        } 
-    
-    
-    
+        }
       }
 
     render() {
@@ -101,17 +108,20 @@ export default class SignUp extends Component {
         return (
             <div className="entry-form">
                 <form onSubmit={this.handleSubmit} >
-                    <h3>Sign Up</h3>
+                    <h3>Sign Up as Vendor</h3>
                     <div className="row">
                         <div className="form-group col">
-                            <label>First Name (Optional)</label>
+                            <label>First Name</label>
                             <input type="text" name="fname" className="form-control" placeholder="Enter first name"  
                             onChange={this.handleChange}/>
+                            <div className="error">{this.state.errors["fname"]}</div>
+
                         </div>
                         <div className="form-group col">
-                            <label>Last name (Optional)</label>
+                            <label>Last name</label>
                             <input type="text" name="lname" className="form-control" placeholder="Enter last name"  
                             onChange={this.handleChange}/>
+                            <div className="error">{this.state.errors["lname"]}</div>
                         </div>
                     </div>
                     <div className="form-group">
@@ -122,6 +132,13 @@ export default class SignUp extends Component {
                     </div>
 
                     <div className="form-group">
+                        <label>Company</label>
+                        <input type="text" name="company" className="form-control" placeholder="Enter company"  
+                        onChange={this.handleChange}/>
+                        <div className="error">{this.state.errors["company"]}</div>
+                    </div>
+
+                    <div className="form-group">
                         <label>Password</label>
                         <input type="password" name="password" className="form-control" placeholder="Enter password"  
                         onChange={this.handleChange}/>
@@ -129,7 +146,7 @@ export default class SignUp extends Component {
                     </div>
 
                     <p className="user-type-change">
-                        Want to <a href="/signup-vendor">sign up as Vendor?</a>
+                        Want to <a href="/signup">sign up as Customer?</a>
                     </p>
 
                     <button id="submit" type="submit" className="btn btn-block">Sign Up</button>
