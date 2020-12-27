@@ -115,12 +115,12 @@ class LoginViewController: UIViewController {
                                         UserDefaults.standard.set(profileInfo.last_name, forKey: K.userLastNameKey)
                                         UserDefaults.standard.set(profileInfo.id, forKey: K.userIdKey)
                                         UserDefaults.standard.set(profileInfo.user_type, forKey: K.userTypeKey)
+                                        UserDefaults.standard.set(email, forKey: K.usernameKey)
+                                        UserDefaults.standard.set(true, forKey: K.isLoggedinKey)
+                                        self.dismiss(animated: false, completion: nil)
                                     case .failure(_): break
                                     }
                                 }
-                                UserDefaults.standard.set(email, forKey: K.usernameKey)
-                                UserDefaults.standard.set(true, forKey: K.isLoggedinKey)
-                                self.dismiss(animated: false, completion: nil)
                             case .failure(_):
                                 alertController.message = "Invalid username or password"
                                 self.present(alertController, animated: true, completion: nil)
@@ -151,19 +151,31 @@ extension LoginViewController: GIDSignInDelegate{
             return
         }
         // Perform any operations on signed in user here.
-        let userId = user.userID                  // For client-side use only!
-        let idToken = user.authentication.idToken // Safe to send to the server
-        let givenName = user.profile.givenName
-        let familyName = user.profile.familyName
-        let email = user.profile.email
-        UserDefaults.standard.setValue(true, forKey: K.isGoogleSignedInKey)
-        UserDefaults.standard.set(userId, forKey: K.userIdKey)
-        UserDefaults.standard.set(familyName, forKey: K.userLastNameKey)
-        UserDefaults.standard.set(givenName, forKey: K.userFirstNameKey)
-        UserDefaults.standard.set(email, forKey: K.usernameKey)
-        UserDefaults.standard.set(true, forKey: K.isLoggedinKey)
-        self.dismiss(animated: true, completion: nil)
-        // ...
+        let idToken = user.authentication.idToken ?? "" // Safe to send to the server
+        let givenName = user.profile.givenName ?? ""
+        let familyName = user.profile.familyName ?? ""
+        let email = user.profile.email ?? ""
+        APIManager().googleSingIn(username: email , token: idToken , firstName: givenName , lastName: familyName) { (result) in
+            switch result {
+            case .success(let id):
+                UserDefaults.standard.set(id, forKey: K.userIdKey)
+                APIManager().getProfileInfo(authorization: idToken ) { (result) in
+                    switch result {
+                    case .success(let profileInfo):
+                        UserDefaults.standard.set(profileInfo.first_name, forKey: K.userFirstNameKey)
+                        UserDefaults.standard.set(profileInfo.last_name, forKey: K.userLastNameKey)
+                        UserDefaults.standard.set(profileInfo.user_type, forKey: K.userTypeKey)
+                        UserDefaults.standard.set(idToken, forKey: K.token)
+                        UserDefaults.standard.setValue(true, forKey: K.isGoogleSignedInKey)
+                        UserDefaults.standard.set(profileInfo.email, forKey: K.usernameKey)
+                        UserDefaults.standard.set(true, forKey: K.isLoggedinKey)
+                        self.dismiss(animated: true, completion: nil)
+                    case .failure(_): break
+                    }
+                }
+            case .failure(_): break
+            }
+        }
     }
     func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!,
               withError error: Error!) {

@@ -27,9 +27,10 @@ enum ApiRouter: URLRequestBuilder {
     case deleteProductFromCart(productID: Int)
     case getProfileInfo(authorization:String)
     case setProfileInfo(authorization:String, firstName:String, lastName:String)
-    
     case getComments(product_id:Int)
     case getUsersComment(product_id:Int, user_id:Int)
+    case search(filterType: String, sortType: String, searchWord: String)
+    case googleSignIn(userName:String, token:String, firstName:String, lastName:String)
 
   // MARK: - Path
     internal var path: String {
@@ -71,6 +72,10 @@ enum ApiRouter: URLRequestBuilder {
             return "api/product/comment/\(product_id)/"
         case .getUsersComment(let product_id, let user_id):
             return "api/product/comment/\(product_id)/\(user_id)/"
+        case .search(let filterType, let sortType, let searchWord):
+            return "api/product/search/\(filterType)/\(sortType)/"
+        case .googleSignIn:
+            return "api/user/googleuser/"
         }
         
     }
@@ -114,6 +119,13 @@ enum ApiRouter: URLRequestBuilder {
             params["user_id"] = userID
             params["old_password"] = currentPassword
             params["new_password"] = newPassword
+        case .search(let filterType, let sortType, let searchWord):
+            params["searched"] = searchWord.lowercased()
+        case .googleSignIn(let userName, let token, let firstName, let lastName):
+            params["username"] = userName
+            params["token"] = token
+            params["first_name"] = firstName
+            params["last_name"] = lastName
         default:
             break
         }
@@ -123,11 +135,7 @@ enum ApiRouter: URLRequestBuilder {
     internal var headers: HTTPHeaders? {
         var headers = HTTPHeaders.init()
         switch self {
-        case .authenticate:
-            headers["Accept"] = "application/json"
-        case .signUp:
-            headers["Accept"] = "application/json"
-        case .resetPasswordEmail:
+        case .authenticate, .googleSignIn, .signUp, .resetPasswordEmail, .updatePassword:
             headers["Accept"] = "application/json"
         case .getCustomerLists(_, let isCustomerLoggedIn):
             if isCustomerLoggedIn {
@@ -143,6 +151,8 @@ enum ApiRouter: URLRequestBuilder {
             headers["Authorization"] = "Token \(authorization)"
         case .updatePassword:
              headers["Accept"] = "application/json"
+        case .search(_, _, _):
+          headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
         default:
             break
         }
@@ -152,31 +162,17 @@ enum ApiRouter: URLRequestBuilder {
     // MARK: - Methods
     internal var method: HTTPMethod {
         switch self {
-        case .authenticate, .addList, .addToList:
+        case .authenticate, .addList,.addToList, .signUp, .resetPasswordEmail, .addToCart,.updatePassword, .googleSignIn:
             return .post
-        case .getCustomerLists, .getComments, .getUsersComment:
+        case .getCustomerLists, .getComments, .getUsersComment, .getCart, .getProfileInfo:
             return .get
-        case .deleteList, .deleteProductFromList:
+        case .deleteList, .deleteProductFromList,.deleteProductFromCart:
             return .delete
-        case .editList:
-            return .put
-        case .signUp:
-            return .post
-        case .resetPasswordEmail:
-            return .post
-        case .getCart:
-            return .get
-        case .addToCart:
-            return .post
-        case .editAmountInCart:
-            return .put
-        case .deleteProductFromCart:
-            return .delete
-        case .getProfileInfo:
-            return .get
-        case .setProfileInfo:
+        case .editList,.editAmountInCart,.setProfileInfo:
             return .put
         case .updatePassword:
+            return .post
+        case .search:
             return .post
         }
     }

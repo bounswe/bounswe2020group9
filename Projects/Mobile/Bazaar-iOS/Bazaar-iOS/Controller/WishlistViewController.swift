@@ -46,7 +46,9 @@ class WishlistViewController: UIViewController {
             }
         }else {
             let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+            alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: {_ in
+                self.stopIndicator()
+            }))
             alertController.message = "Please log in to see your lists!"
             self.present(alertController, animated: true, completion: nil)
             self.listsTableView.isHidden = true
@@ -65,7 +67,12 @@ class WishlistViewController: UIViewController {
         networkFailedAlert.addAction(okButton)
         listsTableView.register(UINib(nibName: "ListCell", bundle: nil), forCellReuseIdentifier: "ReusableListCell")
         let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+        alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: {_ in
+            self.stopIndicator()
+            DispatchQueue.main.async {
+                self.listsTableView.isHidden = true
+            }
+        }))
         if let isLoggedIn = UserDefaults.standard.value(forKey: K.isLoggedinKey) as? Bool{
             if !isLoggedIn {
                 alertController.message = "Please log in to see your lists!"
