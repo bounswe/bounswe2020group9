@@ -183,6 +183,7 @@ class UserSignupAPIView(APIView):
 
             if request.data['user_type'] == 2 or request.data['user_type'] == '2':
                 if not "company" in request.data:
+                    user.delete()
                     return Response({"company": ["This field is required."]}, status=status.HTTP_400_BAD_REQUEST)
                 location_dict['user'] = user.id
                 serializer2 = LocationSerializer(data=location_dict)
