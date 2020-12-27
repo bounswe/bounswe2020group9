@@ -86,6 +86,20 @@ struct UpdatePasswordData:Codable {
     let message:String
 }
 
+struct CommentData: Codable {
+    let id: Int
+    let timestamp: String
+    let body: String
+    let rating: Int
+    let is_anonymous: Bool
+    let customer: Int!
+    let product: Int
+    let first_name: String!
+    let last_name: String!
+    let user_type: Int!
+    let bazaar_point: Int!
+    let company: String!
+}
 struct SearchProduct:Codable {
     let id: Int
     let name: String

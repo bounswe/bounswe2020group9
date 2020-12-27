@@ -15,7 +15,6 @@ class ProductDetailViewController: UIViewController {
     @IBOutlet weak var brandLabel: UILabel!
     @IBOutlet weak var productNameLabel: UILabel!
     @IBOutlet weak var starRatingView: StarRatingView!
-    @IBOutlet weak var rateLabel: UILabel!
     @IBOutlet weak var amountPickerTextField: UITextField!
     @IBOutlet weak var listPickerTextField: UITextField!
     @IBOutlet weak var addToListButton: UIButton!
@@ -123,8 +122,6 @@ class ProductDetailViewController: UIViewController {
         brandLabel.text = product.brand
         productNameLabel.text = product.name
         starRatingView.rating = Float(product.rating)
-        rateLabel.isUserInteractionEnabled = true
-        rateLabel.textColor = #colorLiteral(red: 1, green: 0.6431372549, blue: 0.3568627451, alpha: 1)
         let description = "No description provided for this product."
         descriptionLabel.text = description
         if product.detail != "" {
@@ -207,6 +204,14 @@ class ProductDetailViewController: UIViewController {
                     }
                 })
             }
+        }
+        
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if let reviewsVC = segue.destination as? ReviewsViewController {
+            reviewsVC.productId = product.id
         }
         
     }
