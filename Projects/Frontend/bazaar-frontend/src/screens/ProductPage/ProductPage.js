@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import "./productpage.scss"
+import { Redirect } from "react-router-dom";
 
 //components
 import StarRatings from '../../../node_modules/react-star-ratings';
@@ -8,6 +9,7 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Header from "../../components/Header/Header"
+import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 
 //icons
 import AddToCartIcon from "../../assets/icons/add-to-cart.svg"
@@ -17,9 +19,45 @@ import AddToListIcon from "../../assets/icons/add-to-list-hand-drawn-interface-s
 
 export default class Productpage extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      isGuest: false,
+    };
+  }
+
+  onCartButtonClick = () => {
+
+    let myCookie = read_cookie('user');
+    console.log(myCookie)
+    if (myCookie.length === 0) {
+      this.setState({ isGuest: true })
+    }
+    else {
+    }
+  }
+
+  onListButtonClick = () => {
+
+    let myCookie = read_cookie('user');
+    console.log(myCookie)
+    if (myCookie.length === 0) {
+      this.setState({ isGuest: true })
+    }
+    else {
+    }
+  }
+
+
   render() {
     const { product } = this.props.location.state;
     console.log(product)
+
+    console.log(this.state.isGuest)
+
+    if(this.state.isGuest){
+      return(<Redirect to="/signIn"/>)
+    }
 
     return (
       <div>
@@ -53,10 +91,10 @@ export default class Productpage extends Component {
             </Col>
 
             <Col className={"productInfo"}>
-              <Container style={{display:"flex", flexDirection:"column", height:'100%'}}>
-                <div style={{flex: '1'}}>
+              <Container style={{ display: "flex", flexDirection: "column", height: '100%' }}>
+                <div style={{ flex: '1' }}>
                   <Row>
-                    <Col  style={{width:'max-content'}}>
+                    <Col style={{ width: 'max-content' }}>
                       <h2 className={"productHeader"}>{product.name}</h2>
                     </Col>
                     <Col>
@@ -78,10 +116,10 @@ export default class Productpage extends Component {
                 <div>
                   <Row>
                     <Col>
-                      <button className={"productButton"}><span>Add to Cart</span><img src={AddToCartIcon} /></button>
+                      <button className={"productButton"} onClick={this.onCartButtonClick}><span>Add to Cart</span><img src={AddToCartIcon} /></button>
                     </Col>
                     <Col>
-                      <button className={"productButton"}><span>Add to List</span><img src={AddToListIcon} /></button>
+                      <button className={"productButton"} onClick={this.onListButtonClick}><span>Add to List</span><img src={AddToListIcon} /></button>
                     </Col>
                   </Row>
                 </div>
