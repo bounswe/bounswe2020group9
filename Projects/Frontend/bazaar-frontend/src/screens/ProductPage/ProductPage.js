@@ -10,6 +10,7 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Header from "../../components/Header/Header"
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
+import CommentCard from "./CommentCard/CommentCard"
 
 //icons
 import AddToCartIcon from "../../assets/icons/add-to-cart.svg"
@@ -23,13 +24,32 @@ export default class Productpage extends Component {
     super(props);
     this.state = {
       isGuest: false,
+      comments:[
+        {
+          name: "Hasan Demirkiran",
+          rate: 4.5,
+          date: "20.01.2020",
+          content: "But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure"
+        },
+        {
+          name: "Hasan Demirkiran",
+          rate: 3.0,
+          date: "20.01.2020",
+          content: "But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure"
+        },
+        {
+          name: "Hasan Demirkiran",
+          rate: 5.0,
+          date: "20.01.2020",
+          content: "But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure"
+        }
+      ]
     };
   }
 
   onCartButtonClick = () => {
 
     let myCookie = read_cookie('user');
-    console.log(myCookie)
     if (myCookie.length === 0) {
       this.setState({ isGuest: true })
     }
@@ -40,7 +60,6 @@ export default class Productpage extends Component {
   onListButtonClick = () => {
 
     let myCookie = read_cookie('user');
-    console.log(myCookie)
     if (myCookie.length === 0) {
       this.setState({ isGuest: true })
     }
@@ -51,19 +70,24 @@ export default class Productpage extends Component {
 
   render() {
     const { product } = this.props.location.state;
-    console.log(product)
 
-    console.log(this.state.isGuest)
-
-    if(this.state.isGuest){
-      return(<Redirect to="/signIn"/>)
+    if (this.state.isGuest) {
+      return (<Redirect to="/signIn" />)
     }
+
+    let CommentCards = this.state.comments.map(comment => {
+      return (
+        <Row style={{marginLeft:0}}>
+          <CommentCard comment={comment}></CommentCard>
+        </Row>
+      )
+    })
 
     return (
       <div>
         <Header />
         <Container>
-          <Row>
+          <Row className={"productPart"}>
             <Col>
               <Carousel className={"productCarousel"}>
                 <Carousel.Item interval={1000}>
@@ -126,6 +150,13 @@ export default class Productpage extends Component {
               </Container>
             </Col>
           </Row>
+          <Row className={'commentPart'}>
+            <Col>
+            <h2>Comments</h2>
+            {CommentCards}
+            </Col>
+            </Row>
+
         </Container>
 
       </div>
