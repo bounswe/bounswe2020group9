@@ -160,6 +160,7 @@ export default class Inventory extends Component {
     this.openModal()
     console.log("category: "+event.category["parent"])
     console.log("subcategory: "+event.category["name"])
+    console.log(JSON.stringify(event))
   }
 
   openModal = () => this.setState({ isOpen: true });

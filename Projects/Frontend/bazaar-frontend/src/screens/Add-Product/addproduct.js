@@ -93,18 +93,22 @@ export default class AddProduct extends Component {
         body.append("price", this.state.price);
         body.append("stock", this.state.stock);
         body.append("picture", this.state.image);
+        let categoryList = this.state.categoryList
         if (this.state.subcategory !== ""){
-          body.append("category", "44")
+          body.append("category_id", categoryList[this.state.subcategory])
+
         } else {
-          body.append("category", "44")
+          body.append("category_id", categoryList[this.state.category])
+
         }
-        console.log(body)
+        //console.log(body)
+        //console.log(categoryList[this.state.category])
 
         let myCookie = read_cookie('user');
-        const header = {Authorization: "Token "+myCookie.token};
-        console.log(header)
+        const header = {headers: {Authorization: "Token "+myCookie.token}};
+        //console.log(header)
 
-        console.log(header["Authorization"])
+        //console.log(header["Authorization"])
         if (this.handleValidation()) {
             axios.post(serverUrl+`api/product/`, body, header)
             .then(res => {
@@ -112,6 +116,8 @@ export default class AddProduct extends Component {
               console.log(res);
               console.log(res.data);
   
+            }).catch(error => {
+              console.log(error)
             })
 
         } else {
