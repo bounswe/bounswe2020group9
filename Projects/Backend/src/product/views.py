@@ -13,6 +13,7 @@ from product.models import Product, ProductList, SubOrder, Comment, Category
 from product.serializers import ProductSerializer, ProductListSerializer, CommentSerializer, SubOrderSerializer, \
     SearchHistorySerializer, CategorySerializer
 from product.functions import search_product_db,datamuse_call,filter_func,sort_func
+from django.contrib.sites.shortcuts import get_current_site
 
 
 # Create your views here.
@@ -474,6 +475,7 @@ class SearchAPIView2(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     def post(self,request,filter_type,sort_type):
+        domain = get_current_site(request).domain
         token =request.META.get('HTTP_AUTHORIZATION')[6:]
         if token != "57bcb0493429453fad027bc6552cc1b28d6df955" :
             serializer = SearchHistorySerializer(data={"user":request.user.id,"searched":request.data["searched"]})
@@ -488,7 +490,9 @@ class SearchAPIView2(APIView):
                 product_list = sort_func(sort_type,product_list)
                 product_list2 = []
                 for i in range(len(product_list)):
-                    product_list2.append(ProductSerializer(Product.objects.get(id=product_list[i]["id"])).data)
+                    product = ProductSerializer(Product.objects.get(id=product_list[i]["id"])).data
+                    product["picture"] = "http://" + domain + product["picture"]
+                    product_list2.append(product)
                 product_dict = {}
                 product_dict["product_list"] = product_list2
                 return Response(product_dict, status=status.HTTP_200_OK)
@@ -501,9 +505,10 @@ class SearchAPIView2(APIView):
             filter_types = filter_type.split("&")
             product_list = filter_func(filter_types,product_list)
             product_list = sort_func(sort_type,product_list)
-            product_list2 =[]
             for i in range(len(product_list)):
-                product_list2.append(ProductSerializer(Product.objects.get(id=product_list[i]["id"])).data)
+                product = ProductSerializer(Product.objects.get(id=product_list[i]["id"])).data
+                product["picture"] = "http://" + domain + product["picture"]
+                product_list2.append(product)
             product_dict = {}
-            product_dict["product_list"] = product_list2
+            product_dict["product_list"] = product_list
             return Response(product_dict, status=status.HTTP_200_OK)
