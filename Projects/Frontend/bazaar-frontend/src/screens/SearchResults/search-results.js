@@ -23,8 +23,10 @@ class SearchResults extends Component {
       filter: "none",
       sort: "none",
       categoryList: [],
+      categoryDict: {},
       categoryStructure: {"":[]},
-      products: []
+      products: [],
+      allProducts: []
     }
   }
 
@@ -38,25 +40,30 @@ class SearchResults extends Component {
     } else {
       header = {headers: {Authorization: "Token "}};
     }
+    let myProducts = []
 
     axios.post(serverUrl+'api/product/search/'+this.state.filter+'/'+this.state.sort+'/', body, header)
       .then(res => {
-        let myProducts = res.data["product_list"]
-        console.log("products: "+res.data["product_list"])
+        console.log("products: "+JSON.stringify(res.data["product_list"]))
         console.log(res.data)
+        myProducts = res.data.product_list
 
-        this.setState({ products: res.data["product_list"] })
-        console.log(this.state.products)
+        this.setState({ products: res.data.product_list })
+        
+        console.log("products: "+JSON.stringify(this.state.products))
 
       })
+
       axios.get(serverUrl+'api/product/categories/')
       .then(res => {
         let resp = res.data;
         let categoryStructureTemp = {};
+        let categoryDictTemp = {}
         let keys = [];
         for (let i=0;i<resp.length;i++) {
           if (resp[i]["parent"] === "Categories") {
             keys.push(resp[i]["name"])
+            categoryDictTemp[resp[i]["id"]] = resp[i]["name"]
           }
         }
         this.setState({categoryList: keys})
@@ -72,34 +79,48 @@ class SearchResults extends Component {
         categoryStructureTemp[''] = []
         this.setState({categoryStructure: categoryStructureTemp})
       })
-      console.log(this.state.products)
 
   }
 
   render() {
     let active = 2;
-    let category = this.state.categoryList
-    let items = [];
-    for (let number = 0; number < Object.keys(this.state.categoryList).length; number++) {
-      items.push(
-        <Pagination.Item key={number} className={"myPaginationItem"} href={"/category/"+category[number]}>
-          {category[number]}
-        </Pagination.Item>,
+    let categoryList = this.state.categoryList
+    let categoryStructure = this.state.categoryStructure
+    let categories = [];
+
+    for (let number = 0; number < categoryList.length; number++) {
+      let subs = [];
+      let subList = categoryStructure[categoryList[number]]
+      if (subList){
+        for (let subnumber = 0; subnumber < subList.length; subnumber++){
+          subs.push(
+            <a className="dropdown-item" href={"/category/"+subList[subnumber]}>{subList[subnumber]}</a>
+          )
+        }
+      }
+
+      categories.push(
+        <Pagination.Item key={number} className="myPaginationItem dropdown" href={"/category/"+categoryList[number]}>
+          <a className="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span className="mr-1"></span> {categoryList[number]}
+          </a>
+          <div className="dropdown-menu">
+            {subs}
+          </div>
+          
+        </Pagination.Item>
       );
     }
 
-    let productCards;
-    if (this.state.products !== []){
-      productCards = this.state.products.map(product => {
+    let productCards = this.state.products.map(product => {
         return (
           <Col sm="3">
             <Card product={product}></Card>
           </Col>
         )
-      })
-    } else  {
-      productCards = null
-    }
+    })
+ 
+    
 
 
     return (
@@ -109,7 +130,7 @@ class SearchResults extends Component {
         <div className='home-wrapper'>
           <Container>
             <div className='myPagination'>
-              <Pagination size="lg">{items}</Pagination>
+              <Pagination size="lg">{categories}</Pagination>
             </div>
             <div className="category-heading">
               <h2>

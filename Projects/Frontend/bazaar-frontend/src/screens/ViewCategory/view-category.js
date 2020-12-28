@@ -20,6 +20,7 @@ class ViewCategory extends Component {
       isLogged: 'yes',
       redirect: null,
       categoryList: [],
+      categoryDict: {},
       categoryStructure: {"":[]},
       products: []
     }
@@ -37,10 +38,13 @@ class ViewCategory extends Component {
       .then(res => {
         let resp = res.data;
         let categoryStructureTemp = {};
+        let categoryDictTemp = {}
         let keys = [];
         for (let i=0;i<resp.length;i++) {
           if (resp[i]["parent"] === "Categories") {
             keys.push(resp[i]["name"])
+            categoryDictTemp[resp[i]["id"]] = resp[i]["name"]
+
           }
         }
         this.setState({categoryList: keys})
@@ -61,18 +65,33 @@ class ViewCategory extends Component {
 
   render() {
     let active = 2;
-    let category = this.state.categoryList
-    let items = [];
-    for (let number = 0; number < Object.keys(this.state.categoryList).length; number++) {
-      items.push(
-        <Pagination.Item key={number} className={"myPaginationItem"} href={"/category/"+category[number]}>
-          {category[number]}
-        </Pagination.Item>,
+    let categoryList = this.state.categoryList
+    let categoryStructure = this.state.categoryStructure
+    let categories = [];
+    for (let number = 0; number < categoryList.length; number++) {
+      let subs = [];
+      let subList = categoryStructure[categoryList[number]]
+      if (subList){
+        for (let subnumber = 0; subnumber < subList.length; subnumber++){
+          subs.push(
+            <a className="dropdown-item" href={"/category/"+subList[subnumber]}>{subList[subnumber]}</a>
+          )
+        }
+      }
+
+
+      categories.push(
+        <Pagination.Item key={number} className="myPaginationItem dropdown" href={"/category/"+categoryList[number]}>
+          <a className="nav-link dropdown-toggle" href="#" id="ddlInventory" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span className="mr-1"></span> {categoryList[number]}
+          </a>
+          <div className="dropdown-menu">
+            {subs}
+          </div>
+          
+        </Pagination.Item>
       );
     }
-    console.log(this.props.match.params["id"])
-
-    
 
 
     let productCards = this.state.products.map(product => {
@@ -90,7 +109,7 @@ class ViewCategory extends Component {
         <div className='home-wrapper'>
           <Container>
             <div className='myPagination'>
-              <Pagination size="lg">{items}</Pagination>
+              <Pagination size="lg">{categories}</Pagination>
             </div>
             <div className="category-heading">
               <h2>
