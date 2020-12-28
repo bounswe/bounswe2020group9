@@ -82,17 +82,8 @@ class Header extends Component {
   })
 
     if (Object.keys(read_cookie('user')).length !== 0) {
-      SignPart = <ul className="navbar-nav navbar-right">
-        <li className="nav-item dropdown">
-          <a className="nav-link dropdown-toggle" href="#" id="ddlInventory" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <FontAwesomeIcon icon={faWarehouse} />
-            <span className="mr-1"></span>Inventory
-          </a>
-          <div className="dropdown-menu" aria-labelledby="ddlProfile">
-            <a className="dropdown-item" href="/inventory">My Products</a>
-            <a className="dropdown-item" href="/add-product">Add Product</a>
-          </div>
-        </li>
+      if (read_cookie('user').user_type === 1){
+        SignPart = <ul className="navbar-nav navbar-right">
         <li className="nav-item dropdown">
           <a className="nav-link dropdown-toggle" href="#" id="ddlProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <FontAwesomeIcon icon={faUser} />
@@ -122,11 +113,9 @@ class Header extends Component {
           <a className="nav-link dropdown-toggle" href="#" id="ddlMessages" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <FontAwesomeIcon icon={faEnvelope} />
             <span className="mr-1"></span>Messages
-            <span className="badge badge-secondary badge-pill">2</span>
+            <span className="badge badge-secondary badge-pill"></span>
           </a>
           <div className="dropdown-menu" aria-labelledby="ddlMessages">
-            <a className="dropdown-item" href="#">Message 1</a>
-            <a className="dropdown-item" href="#">Message 2</a>
             <div className="dropdown-divider"></div>
             <a className="dropdown-item" href="#">Go to Massages</a>
           </div>
@@ -140,6 +129,49 @@ class Header extends Component {
         </li>
 
       </ul>
+      } else {
+        SignPart = <ul className="navbar-nav navbar-right">
+        <li className="nav-item dropdown">
+          <a className="nav-link dropdown-toggle" href="#" id="ddlInventory" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <FontAwesomeIcon icon={faWarehouse} />
+            <span className="mr-1"></span>Inventory
+          </a>
+          <div className="dropdown-menu" aria-labelledby="ddlProfile">
+            <a className="dropdown-item" href="/inventory">My Products</a>
+            <a className="dropdown-item" href="/add-product">Add Product</a>
+          </div>
+        </li>
+        <li className="nav-item dropdown">
+          <a className="nav-link dropdown-toggle" href="#" id="ddlProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <FontAwesomeIcon icon={faUser} />
+            <span className="mr-1"></span>Profile
+          </a>
+          <div className="dropdown-menu" aria-labelledby="ddlProfile">
+            <a className="dropdown-item" href="/profile-page">View Profile</a>
+          </div>
+        </li>
+        <li className="nav-item dropdown">
+          <a className="nav-link dropdown-toggle" href="#" id="ddlMessages" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <FontAwesomeIcon icon={faEnvelope} />
+            <span className="mr-1"></span>Messages
+            <span className="badge badge-secondary badge-pill"></span>
+          </a>
+          <div className="dropdown-menu" aria-labelledby="ddlMessages">
+            <div className="dropdown-divider"></div>
+            <a className="dropdown-item" href="#">Go to Massages</a>
+          </div>
+        </li>
+        <li className="nav-item">
+          <a className="nav-link" href="/" onClick={this.handleClick}>
+            <FontAwesomeIcon icon={faSignOutAlt} />
+            <span className="mr-1"></span>Sign Out
+          </a>
+
+        </li>
+
+      </ul>
+      }
+      
 
     }
     else {
