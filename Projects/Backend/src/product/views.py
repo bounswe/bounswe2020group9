@@ -486,10 +486,11 @@ class SearchAPIView2(APIView):
                 filter_types = filter_type.split("&")
                 product_list = filter_func(filter_types,product_list)
                 product_list = sort_func(sort_type,product_list)
+                product_list2 = []
                 for i in range(len(product_list)):
-                    product_list[i] = ProductSerializer(product_list[i])
+                    product_list2.append(ProductSerializer(Product.objects.get(id=product_list[i]["id"])).data)
                 product_dict = {}
-                product_dict["product_list"] = product_list
+                product_dict["product_list"] = product_list2
                 return Response(product_dict, status=status.HTTP_200_OK)
             return Response(serializer._errors, status=status.HTTP_400_BAD_REQUEST)
         else:
@@ -500,8 +501,9 @@ class SearchAPIView2(APIView):
             filter_types = filter_type.split("&")
             product_list = filter_func(filter_types,product_list)
             product_list = sort_func(sort_type,product_list)
+            product_list2 =[]
             for i in range(len(product_list)):
-                product_list[i] = ProductSerializer(product_list[i])
+                product_list2.append(ProductSerializer(Product.objects.get(id=product_list[i]["id"])).data)
             product_dict = {}
-            product_dict["product_list"] = product_list
+            product_dict["product_list"] = product_list2
             return Response(product_dict, status=status.HTTP_200_OK)
