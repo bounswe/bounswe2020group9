@@ -31,7 +31,7 @@ class Category(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=255)
-    detail = models.CharField(max_length=511, blank=True)
+    detail = models.CharField(max_length=1023, blank=True)
     brand = models.CharField(max_length=255)
     price = models.FloatField()
     stock = models.IntegerField(default=0)
