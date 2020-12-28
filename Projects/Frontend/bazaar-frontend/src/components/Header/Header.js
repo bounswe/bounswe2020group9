@@ -183,7 +183,7 @@ class Header extends Component {
           <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
             <form className="search-form" onSubmit={this.handleSearchSubmit}>
               <input type="text" className="form-control" name="search" id="search-bar" 
-              placeholder="Search product, brand, category or vendor"
+              placeholder="Search product or brand"
               onChange={this.handleSearchChange}/>
             </form>
           </ul>
