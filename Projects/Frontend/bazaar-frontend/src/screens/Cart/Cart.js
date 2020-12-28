@@ -3,12 +3,13 @@ import './cart.scss'
 
 //components
 import Col from 'react-bootstrap/Col'
-import Card from "../../components/ProductCard/productCard"
+import ProductCard from "../../components/ProductCard/productCard"
 import Row from 'react-bootstrap/Row'
 import Container from 'react-bootstrap/Container'
-import {serverUrl} from '../../utils/get-url'
+import { serverUrl } from '../../utils/get-url'
 import axios from 'axios'
-
+import Card from 'react-bootstrap/Card'
+import Button from 'react-bootstrap/Button'
 
 export default class Cart extends Component {
 
@@ -21,29 +22,32 @@ export default class Cart extends Component {
 
   }
 
-  componentDidMount(){
-    axios.get(serverUrl+`api/product/`)
-    .then(res => {
-      this.setState({ products: res.data })
-    })
+  componentDidMount() {
+    axios.get(serverUrl + `api/product/`)
+      .then(res => {
+        this.setState({ products: res.data })
+      })
+
   }
 
 
   render() {
 
     const { cart } = this.props.location.state;
-    console.log(cart)
 
     let productIds = cart.map(product => product.product)
     let filteredProducts = this.state.products?.filter(product => productIds.includes(product.id))
 
+    let totalAmount = 0;
+
     let productCards = filteredProducts.map(product => {
+      totalAmount += product.price
       return (
         <Col sm="3">
-          <Card product={product}></Card>
+          <ProductCard product={product}></ProductCard>
         </Col>
       )
-  })
+    })
 
 
 
@@ -54,6 +58,15 @@ export default class Cart extends Component {
             <Row>
               {productCards}
             </Row>
+
+            <Card style={{ width: '18rem' }}>
+              <Card.Body>
+                <Card.Title>Total: ₺{totalAmount}</Card.Title>
+                <Button variant="success" style={{marginRight: "20px"}}>Buy</Button>
+                <Button variant="danger">Empty Cart</Button>
+              </Card.Body>
+            </Card>
+
           </Container>
         </div>
       </div>
