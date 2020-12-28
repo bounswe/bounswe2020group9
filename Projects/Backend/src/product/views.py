@@ -443,9 +443,23 @@ class SearchAPIView(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     def post(self,request,filter_type,sort_type):
-        serializer = SearchHistorySerializer(data={"user":request.user.id,"searched":request.data["searched"]})
-        if serializer.is_valid():
-            serializer.save(user_id=request.user.id)
+        token =request.META.get('HTTP_AUTHORIZATION')[6:]
+        if token != "57bcb0493429453fad027bc6552cc1b28d6df955" :
+            serializer = SearchHistorySerializer(data={"user":request.user.id,"searched":request.data["searched"]})
+            if serializer.is_valid():
+                serializer.save(user_id=request.user.id)
+                word_list = datamuse_call(request.data["searched"])
+                product_list = search_product_db(word_list,request.data["searched"])
+                filter_type = str(filter_type)
+                sort_type = str(sort_type)
+                filter_types = filter_type.split("&")
+                product_list = filter_func(filter_types,product_list)
+                product_list = sort_func(sort_type,product_list)
+                product_dict = {}
+                product_dict["product_list"] = product_list
+                return Response(product_dict, status=status.HTTP_200_OK)
+            return Response(serializer._errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
             word_list = datamuse_call(request.data["searched"])
             product_list = search_product_db(word_list,request.data["searched"])
             filter_type = str(filter_type)
@@ -456,4 +470,3 @@ class SearchAPIView(APIView):
             product_dict = {}
             product_dict["product_list"] = product_list
             return Response(product_dict, status=status.HTTP_200_OK)
-        return Response(serializer._errors, status=status.HTTP_400_BAD_REQUEST)
