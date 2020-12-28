@@ -146,7 +146,7 @@ class SearchResultsViewController: UIViewController {
                         let searchResultIDs = searchResultList.product_list.map{$0.id}
                         self.products = []
                         for id in searchResultIDs {
-                            if self.allProductsInstance.allProducts.filter{$0.id == id}.count > 0 {
+                            if self.allProductsInstance.allProducts.filter({$0.id == id}).count > 0 {
                                 self.products.append(self.allProductsInstance.allProducts.filter{$0.id == id}[0])
                             }
                         }
@@ -219,6 +219,7 @@ extension SearchResultsViewController: UITableViewDelegate, UITableViewDataSourc
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = searchResultsTableView.dequeueReusableCell(withIdentifier: "ReusableProdcutCell", for: indexPath) as! ProductCell
+        cell.productImageView?.image = UIImage(named:"xmark.circle")
         let product = products[indexPath.row]
         cell.productNameLabel.text = product.name
         cell.productNameLabel.font = UIFont.systemFont(ofSize: 15, weight: .black)
