@@ -71,6 +71,19 @@ class ProductDetailAPIView(APIView):
         serializer = ProductSerializer(product, data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
+            if "category" in request.data:
+                product = self.get_product(id)
+                product.category = Category.objects.get(id=request.data["category"])
+                product.save()
+            elif "category_id" in request.data:
+                product = self.get_product(id)
+                product.category = Category.objects.get(id=request.data["category_id"])
+                product.save()
+            if "detail" in request.data:
+                product = self.get_product(id)
+                product.detail = request.data["detail"]
+                product.save()
+            serializer = ProductSerializer(product)
             return Response(serializer.data)
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
@@ -508,7 +521,7 @@ class SearchAPIView2(APIView):
             for i in range(len(product_list)):
                 product = ProductSerializer(Product.objects.get(id=product_list[i]["id"])).data
                 product["picture"] = "http://" + domain + product["picture"]
-                product_list2.append(product)
+                product_list.append(product)
             product_dict = {}
             product_dict["product_list"] = product_list
             return Response(product_dict, status=status.HTTP_200_OK)

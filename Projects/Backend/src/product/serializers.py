@@ -45,7 +45,7 @@ class ProductSerializer(serializers.Serializer):
     name = serializers.CharField(required=True, allow_blank=False, max_length=255)
     brand = serializers.CharField(required=True, allow_blank=False, max_length=255)
     labels = serializers.StringRelatedField(read_only=True, many=True)
-    detail = serializers.CharField(max_length=511, required=False)
+    detail = serializers.CharField(max_length=1023, required=False)
     category = CategorySerializer(read_only=True)
     price = serializers.FloatField()
     stock = serializers.IntegerField()
