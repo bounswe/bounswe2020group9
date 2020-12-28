@@ -36,10 +36,9 @@ class CategoriesViewController: UIViewController {
      var subCategoryDict: [String: [String]] = ["Clothing":["Top", "Bottom", "Outerwear", "Shoes", "Bags", "Accesories", "Activewear"],
                                                 "Home":["Home Textile", "Kitchen", "Bedroom", "Bathroom", "Furniture", "Lighting", "Other"],
                                                 "Selfcare":["Perfumes", "Makeup", "Skincare", "Hair", "Body Care", "Other"],
-                                                "Electronics":["Smartphone", "Tablet", "Computer", "Photography", "Home Appliances", "TV", "Gaming", "Other"],
-                                                "Living":["Books", "Art Supplies", "Musical Devices", "Sports", "Other"],
-                                                "Categories": ["Categories"] ]
-     var categories = ["Clothing", "Home", "Selfcare", "Electronics", "Living" , "Categories"]
+                                                "Electronics":["Mobile Devices", "Tablet", "Computer", "Photography", "Home Appliances", "TV", "Gaming", "Other"],
+                                                "Living":["Books", "Art Supplies", "Musical Devices", "Sports", "Other"]]
+     var categories = ["Clothing", "Home", "Selfcare", "Electronics", "Living"]
      var products: [Product] = []
      let categoriesReuseIdentifier = "CategoriesCollectionViewCell"
      var networkFailedAlert:UIAlertController = UIAlertController(title: "Error while retrieving products", message: "We encountered a problem while retrieving the products, please check your internet connection.", preferredStyle: .alert)
@@ -52,7 +51,7 @@ class CategoriesViewController: UIViewController {
      override func viewWillAppear(_ animated: Bool) {
          searchHistoryTableView.reloadData()
          subCategoriesTableView.reloadData()
-         
+        navigationController?.setNavigationBarHidden(true, animated: true)
          if #available(iOS 13.0, *) {
              searchTextField = searchBar.searchTextField
          } else {
@@ -65,8 +64,11 @@ class CategoriesViewController: UIViewController {
          searchResults = searchHistory
          historyEndIndex = searchHistory.count
          categoriesEndIndex = searchHistory.count
-             
      }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        navigationController?.setNavigationBarHidden(false, animated: true)
+    }
      override func viewDidLoad() {
          super.viewDidLoad()
          searchBar.delegate = self
@@ -93,6 +95,7 @@ class CategoriesViewController: UIViewController {
         // subCategoriesTableView.register(SubCategoryCell.self, forCellReuseIdentifier: "SubCategoryCell")
          // searchHistoryTableView.register(SearchHistoryTableViewCell.self, forCellReuseIdentifier: "searchHistoryCell")
         subCategoriesTableView.register(UINib(nibName: "SubCategoryCell", bundle: nil), forCellReuseIdentifier: "SubCategoryCell")
+        subCategoriesTableView.layer.cornerRadius=20
          if !(allProductsInstance.dataFetched) {
              print("here")
              self.searchBar.resignFirstResponder()
@@ -200,11 +203,12 @@ class CategoriesViewController: UIViewController {
          if tableView == subCategoriesTableView {
             let cell = subCategoriesTableView.dequeueReusableCell(withIdentifier: "SubCategoryCell", for: indexPath) as! SubCategoryCell
             let subCategories=subCategoryDict[selectedCategoryName!]!
+            cell.layer.cornerRadius=5
             //print(indexPath.row)
             
             // look here ***************
             cell.nameLabel?.text = subCategories[indexPath.row]
- 
+            cell.subCategoryImage?.image = UIImage(named: subCategories[indexPath.row].lowercased().replacingOccurrences(of: " ", with: ""))
              return cell
          } else {
             let cell = searchHistoryTableView.dequeueReusableCell(withIdentifier: "searchHistoryCell", for: indexPath) as! SearchHistoryTableViewCell
@@ -232,7 +236,7 @@ class CategoriesViewController: UIViewController {
              searchBar.searchTextField.text = searchResults[indexPath.row]
              searchBar.text = searchResults[indexPath.row]
              performSegue(withIdentifier: "categoriesToSearchResultsSegue", sender: nil)
-             print("f")
+             // print("f")
          } else {
             let subCategories=subCategoryDict[selectedCategoryName!]!
             searchBar.searchTextField.text = subCategories[indexPath.row]

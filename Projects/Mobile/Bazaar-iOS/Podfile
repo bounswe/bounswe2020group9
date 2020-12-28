@@ -7,6 +7,8 @@ target 'Bazaar-iOS' do
 
   # Pods for Bazaar-iOS
   pod 'GoogleSignIn'
+  pod 'MARKRangeSlider'
+  pod 'DropDown'
 
   target 'Bazaar-iOSTests' do
     inherit! :search_paths

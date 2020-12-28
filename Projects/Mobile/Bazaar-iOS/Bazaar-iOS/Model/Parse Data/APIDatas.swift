@@ -46,6 +46,7 @@ struct ProductData: Codable {
   struct Category: Codable {
     let name: String
     let parent: String?
+    let id: Int
   }
 }
 
@@ -85,6 +86,39 @@ struct UpdatePasswordData:Codable {
     let message:String
 }
 
-struct GoogleSignInData:Codable {
+struct CommentData: Codable {
+    let id: Int
+    let timestamp: String
+    let body: String
+    let rating: Int
+    let is_anonymous: Bool
+    let customer: Int!
+    let product: Int
+    let first_name: String!
+    let last_name: String!
+    let user_type: Int!
+    let bazaar_point: Int!
+    let company: String!
+}
+struct SearchProduct:Codable {
+    let id: Int
+    let name: String
+    let detail: String
+    let brand: String
+    let price: Double
+    let stock: Int
+    let rating: Double
+    let sell_counter: Int
+    let release_date: String
+    let picture: String
+    let category_id: Int
+    let vendor_id: Int?
+}
+
+struct SearchProductList:Codable {
+    let product_list:[SearchProduct]
+}
+
+  struct GoogleSignInData:Codable {
     let id:Int
 }

@@ -27,6 +27,9 @@ enum ApiRouter: URLRequestBuilder {
     case deleteProductFromCart(productID: Int)
     case getProfileInfo(authorization:String)
     case setProfileInfo(authorization:String, firstName:String, lastName:String)
+    case getComments(product_id:Int)
+    case getUsersComment(product_id:Int, user_id:Int)
+    case search(filterType: String, sortType: String, searchWord: String)
     case googleSignIn(userName:String, token:String, firstName:String, lastName:String)
 
   // MARK: - Path
@@ -65,6 +68,12 @@ enum ApiRouter: URLRequestBuilder {
             return "api/user/profile/"
         case .updatePassword:
             return "api/user/resetpwprofile/"
+        case .getComments(let product_id):
+            return "api/product/comment/\(product_id)/"
+        case .getUsersComment(let product_id, let user_id):
+            return "api/product/comment/\(product_id)/\(user_id)/"
+        case .search(let filterType, let sortType, let searchWord):
+            return "api/product/search/\(filterType)/\(sortType)/"
         case .googleSignIn:
             return "api/user/googleuser/"
         }
@@ -112,6 +121,8 @@ enum ApiRouter: URLRequestBuilder {
             params["user_id"] = userID
             params["old_password"] = currentPassword
             params["new_password"] = newPassword
+        case .search(let filterType, let sortType, let searchWord):
+            params["searched"] = searchWord.lowercased()
         case .googleSignIn(let userName, let token, let firstName, let lastName):
             params["username"] = userName
             params["token"] = token
@@ -144,7 +155,7 @@ enum ApiRouter: URLRequestBuilder {
             if isCustomerLoggedIn {
                 headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
             }
-        case .addList, .deleteList, .deleteProductFromList , .editList, .addToList:
+        case .addList, .deleteList, .deleteProductFromList , .editList, .addToList, .getUsersComment:
             headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
         case .getCart, .addToCart, .editAmountInCart, .deleteProductFromCart:
             headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
@@ -152,6 +163,12 @@ enum ApiRouter: URLRequestBuilder {
             headers["Authorization"] = "Token \(authorization)"
         case .setProfileInfo(let authorization,_,_):
             headers["Authorization"] = "Token \(authorization)"
+        case .updatePassword:
+             headers["Accept"] = "application/json"
+        case .search(_, _, _):
+          headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
+        default:
+            break
         }
         return headers
     }
@@ -161,12 +178,16 @@ enum ApiRouter: URLRequestBuilder {
         switch self {
         case .authenticate, .addList,.addToList, .signUpCustomer, .signUpVendor, .resetPasswordEmail, .addToCart,.updatePassword, .googleSignIn:
             return .post
-        case .getCustomerLists, .getCart,.getProfileInfo:
+        case .getCustomerLists, .getComments, .getUsersComment, .getCart, .getProfileInfo:
             return .get
         case .deleteList, .deleteProductFromList,.deleteProductFromCart:
             return .delete
         case .editList,.editAmountInCart,.setProfileInfo:
             return .put
+        case .updatePassword:
+            return .post
+        case .search:
+            return .post
         }
     }
 }

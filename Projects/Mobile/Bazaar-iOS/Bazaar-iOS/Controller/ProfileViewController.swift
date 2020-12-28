@@ -27,7 +27,13 @@ class ProfileViewController: UIViewController{
                 performSegue(withIdentifier: "ProfileToLoginSegue", sender: self)
             }else {
                 if let firstName = UserDefaults.standard.value(forKey: K.userFirstNameKey) as? String , let lastName = UserDefaults.standard.value(forKey: K.userLastNameKey) as? String  {
-                    self.userEmailLabel.text = "\(firstName) \(lastName)"
+                    if firstName.count == 0 && lastName.count == 0 {
+                        if let username = UserDefaults.standard.value(forKey: K.usernameKey) as? String  {
+                            self.userEmailLabel.text = username
+                        }
+                    }else {
+                        self.userEmailLabel.text = "\(firstName) \(lastName)"
+                    }
                 }else if let username = UserDefaults.standard.value(forKey: K.usernameKey) as? String  {
                     self.userEmailLabel.text = username
                 }
