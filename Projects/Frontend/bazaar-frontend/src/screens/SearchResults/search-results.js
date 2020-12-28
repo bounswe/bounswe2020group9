@@ -9,16 +9,19 @@ import Col from 'react-bootstrap/Col'
 import axios from 'axios'
 import Card from "../../components/ProductCard/productCard"
 import {serverUrl} from '../../utils/get-url'
+import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 
-import './view-category.scss'
+import './search-results.scss'
 
-class ViewCategory extends Component {
+class SearchResults extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
       isLogged: 'yes',
       redirect: null,
+      filter: "none",
+      sort: "none",
       categoryList: [],
       categoryStructure: {"":[]},
       products: []
@@ -27,11 +30,24 @@ class ViewCategory extends Component {
 
 
   componentDidMount() {
-    axios.get(serverUrl+`api/product/`)
+    const body = {"searched": this.props.match.params["keywords"]}
+    let myCookie = read_cookie("user")
+    let header;
+    if (myCookie){
+      header = {headers: {Authorization: "Token "+myCookie.token}};
+    } else {
+      header = {headers: {Authorization: "Token "}};
+    }
+
+    axios.post(serverUrl+'api/product/search/'+this.state.filter+'/'+this.state.sort+'/', body, header)
       .then(res => {
-        let myProducts = res.data.filter(product => product.category["name"] === this.props.match.params["id"] || 
-        product.category["parent"] === this.props.match.params["id"])
-        this.setState({ products: myProducts })
+        let myProducts = res.data["product_list"]
+        console.log("products: "+res.data["product_list"])
+        console.log(res.data)
+
+        this.setState({ products: res.data["product_list"] })
+        console.log(this.state.products)
+
       })
       axios.get(serverUrl+'api/product/categories/')
       .then(res => {
@@ -56,6 +72,7 @@ class ViewCategory extends Component {
         categoryStructureTemp[''] = []
         this.setState({categoryStructure: categoryStructureTemp})
       })
+      console.log(this.state.products)
 
   }
 
@@ -70,18 +87,20 @@ class ViewCategory extends Component {
         </Pagination.Item>,
       );
     }
-    console.log(this.props.match.params["id"])
 
-    
-
-
-    let productCards = this.state.products.map(product => {
+    let productCards;
+    if (this.state.products !== []){
+      productCards = this.state.products.map(product => {
         return (
           <Col sm="3">
             <Card product={product}></Card>
           </Col>
         )
-    })
+      })
+    } else  {
+      productCards = null
+    }
+
 
     return (
 
@@ -114,4 +133,4 @@ class ViewCategory extends Component {
 }
 
 
-export default ViewCategory;
+export default SearchResults;

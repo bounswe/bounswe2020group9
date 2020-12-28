@@ -2,17 +2,36 @@
     background-color: #41aea9;
     height: 100px;
 
-    & .search-form {
+    & .search-wrapper {
 
-        margin-left: 250px;
-        width: 400px;
+        margin: auto;
 
-        & #search-bar {
-            float: right;
+        & .search-form {
 
+            width: auto;
+    
+            & #search-bar {
+                width: 300px;
+            }
+    
+            #search-button-div{
+                text-align: center;
+                & #search-button {
+                    border-color: #f3ac4f;
+                    background-color: #f3ac4f;
+                
+                    color: black;
+                      &:hover {
+                        background-color: #f1ca1a;
+                
+                        color: black;
+                    }
+                  }
+            }
+    
         }
-
     }
+
 
 
 }
