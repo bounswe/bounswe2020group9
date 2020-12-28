@@ -7,6 +7,7 @@
 
 import UIKit
 import GoogleSignIn
+import MapKit
 
 protocol SignUpViewControllerDelegate {
     func signUpViewControllerDidPressLoginHere()
@@ -17,37 +18,49 @@ enum UserType:Int {
 }
 
 class SignUpViewController: UIViewController {
-    
-    @IBOutlet var signInButton: GIDSignInButton!
+
     @IBOutlet weak var isCustomerButton: RadioButton!
     @IBOutlet weak var isVendorButton: RadioButton!
     @IBOutlet weak var firstNameTextField: UITextField!
     @IBOutlet weak var lastNameTextField: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
+    @IBOutlet weak var companyNameTextField: UITextField!
     @IBOutlet weak var frameView: UIView!
+    @IBOutlet weak var addressTextField: UITextField!
+    @IBOutlet weak var vendorInfoView: UIView!
+    @IBOutlet weak var upDownConstraint: NSLayoutConstraint!
+    
     var signUpUserType: UserType?
     var delegate:SignUpViewControllerDelegate?
     var isPressedLoginHere = false
+    var mapViewController = MapViewController()
+    var latitude:Float?
+    var longitude:Float?
+    var addressAnnotation: MKPointAnnotation?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+       
         passwordTextField.textContentType = .oneTimeCode
         frameView.layer.borderColor = #colorLiteral(red: 1, green: 0.6431372549, blue: 0.3568627451, alpha: 1)
         frameView.layer.shadowColor = UIColor.black.cgColor
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        passwordTextField.textContentType = .oneTimeCode
         isPressedLoginHere = false
-        GIDSignIn.sharedInstance()?.delegate = self
-        GIDSignIn.sharedInstance()?.presentingViewController = self
-        // Automatically sign in the user.
-        //GIDSignIn.sharedInstance()?.restorePreviousSignIn()
+        upDownConstraint.constant = 15
         if let isloggedin = UserDefaults.standard.value(forKey: K.isLoggedinKey){
             if isloggedin as! Bool{
                 self.dismiss(animated: true, completion: nil)
             }
         }
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.vendorInfoView.isHidden = true
+        self.upDownConstraint.constant = 15
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -82,18 +95,55 @@ class SignUpViewController: UIViewController {
                                         self.present(alertController, animated: true, completion: nil)
                                     }else {
                                         if let userType = self.signUpUserType{
-                                            APIManager().signUp(username: email, password: password, userType: "\(userType.rawValue+1)") { (result) in
-                                                switch result{
-                                                case .success(_):
-                                                    let alertController2 = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
-                                                    alertController2.message = "You have successfully signed up! To login, a mail has been sent to your e-mail address, please check and verify your e-mail"
-                                                    alertController2.addAction(UIAlertAction(title: "Go To Login", style: UIAlertAction.Style.default){ (action:UIAlertAction!) in
-                                                        self.dismiss(animated: true, completion: nil)
-                                                    })
-                                                    self.present(alertController2, animated: true, completion: nil)
-                                                case .failure(let err):
-                                                    alertController.message = err.localizedDescription
-                                                    self.present(alertController, animated: true, completion: nil)
+                                            if userType.rawValue == 0 {
+                                                APIManager().signUpCustomer(firstName:firstName,lastName: lastName,username: email, password: password, userType: "\(userType.rawValue+1)") { (result) in
+                                                    switch result{
+                                                    case .success(_):
+                                                        let alertController2 = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
+                                                        alertController2.message = "You have successfully signed up! To login, a mail has been sent to your e-mail address, please check and verify your e-mail"
+                                                        alertController2.addAction(UIAlertAction(title: "Go To Login", style: UIAlertAction.Style.default){ (action:UIAlertAction!) in
+                                                            self.dismiss(animated: true, completion: nil)
+                                                        })
+                                                        self.present(alertController2, animated: true, completion: nil)
+                                                    case .failure(_):
+                                                        alertController.message = "A user with that email already exists."
+                                                        self.present(alertController, animated: true, completion: nil)
+                                                    }
+                                                }
+                                            }else {
+                                                if let companyName = companyNameTextField.text {
+                                                    if companyName.count < 2 {
+                                                        alertController.message = "Company name must be at least 2 characters in length"
+                                                        self.present(alertController, animated: true, completion: nil)
+                                                    }else {
+                                                        if let addressTitle = addressTextField.text {
+                                                            if addressTitle.count < 1 {
+                                                                alertController.message = "Address title must be at least 1 characters in length"
+                                                                self.present(alertController, animated: true, completion: nil)
+                                                            }else {
+                                                                if let latitude = self.latitude, let longitude = self.longitude {
+                                                                    APIManager().signUpVendor(firstName: firstName, lastName: lastName, username: email, password: password, user_type: "\(userType.rawValue+1)", addressName: addressTitle, address: addressTitle, postalCode: userType.rawValue, latitude: latitude, lontitude: longitude, companyName: companyName) { (result) in
+                                                                        switch result {
+                                                                        
+                                                                        case .success(_):
+                                                                            let alertController2 = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
+                                                                            alertController2.message = "You have successfully signed up! To login, a mail has been sent to your e-mail address, please check and verify your e-mail"
+                                                                            alertController2.addAction(UIAlertAction(title: "Go To Login", style: UIAlertAction.Style.default){ (action:UIAlertAction!) in
+                                                                                self.dismiss(animated: true, completion: nil)
+                                                                            })
+                                                                            self.present(alertController2, animated: true, completion: nil)
+                                                                        case .failure(_):
+                                                                            alertController.message = "A user with that email already exists."
+                                                                            self.present(alertController, animated: true, completion: nil)
+                                                                        }
+                                                                    }
+                                                                }else {
+                                                                    alertController.message = "We could not get your address information, please try again! You have to long press when selecting your address."
+                                                                    self.present(alertController, animated: true, completion: nil)
+                                                                }
+                                                            }
+                                                        }
+                                                    }
                                                 }
                                             }
                                         }else {
@@ -121,6 +171,10 @@ class SignUpViewController: UIViewController {
             if (self.signUpUserType != nil) {
                 self.isCustomerButton.sendActions(for: .touchUpInside)
             }
+            DispatchQueue.main.async {
+                self.vendorInfoView.isHidden = false
+                self.upDownConstraint.constant = 120
+            }
             self.signUpUserType = UserType.Vendor
         } else{
             self.signUpUserType = nil
@@ -134,59 +188,45 @@ class SignUpViewController: UIViewController {
                 self.isVendorButton.sendActions(for: .touchUpInside)
             }
             self.signUpUserType = UserType.Customer
+            DispatchQueue.main.async {
+                self.vendorInfoView.isHidden = true
+                self.upDownConstraint.constant = 15
+            }
         } else{
             self.signUpUserType = nil
         }
     }
-}
-//MARK: - Extension GIDSignInDelegate
-extension SignUpViewController: GIDSignInDelegate{
-    @available(iOS 9.0, *)
-    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any]) -> Bool {
-      return GIDSignIn.sharedInstance().handle(url)
+    
+    @IBAction func findCompanyAddressButtonPressed(_ sender: UIButton) {
+        performSegue(withIdentifier: "goToMapSegue", sender: nil)
     }
-    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!,
-              withError error: Error!) {
-      if let error = error {
-        if (error as NSError).code == GIDSignInErrorCode.hasNoAuthInKeychain.rawValue {
-          print("The user has not signed in before or they have since signed out.")
-        } else {
-          print("\(error.localizedDescription)")
-        }
-        return
-      }
-      // Perform any operations on signed in user here.
-        let idToken = user.authentication.idToken ?? "" // Safe to send to the server
-        let givenName = user.profile.givenName ?? ""
-        let familyName = user.profile.familyName ?? ""
-        let email = user.profile.email ?? ""
-        APIManager().googleSingIn(username: email , token: idToken , firstName: givenName , lastName: familyName) { (result) in
-            switch result {
-            case .success(let id):
-                UserDefaults.standard.set(id, forKey: K.userIdKey)
-                APIManager().getProfileInfo(authorization: idToken ) { (result) in
-                    switch result {
-                    case .success(let profileInfo):
-                        UserDefaults.standard.set(profileInfo.first_name, forKey: K.userFirstNameKey)
-                        UserDefaults.standard.set(profileInfo.last_name, forKey: K.userLastNameKey)
-                        UserDefaults.standard.set(profileInfo.user_type, forKey: K.userTypeKey)
-                        UserDefaults.standard.set(idToken, forKey: K.token)
-                        UserDefaults.standard.setValue(true, forKey: K.isGoogleSignedInKey)
-                        UserDefaults.standard.set(profileInfo.email, forKey: K.usernameKey)
-                        UserDefaults.standard.set(true, forKey: K.isLoggedinKey)
-                        self.dismiss(animated: true, completion: nil)
-                    case .failure(_): break
-                    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "goToMapSegue" {
+            if let destinationVC = segue.destination as? MapViewController {
+                destinationVC.delegate = self
+                if let annotation = self.addressAnnotation{
+                    destinationVC.annotations.append(annotation)
                 }
-            case .failure(_): break
             }
         }
     }
-    func sign(_ signIn: GIDSignIn!, didDisconnectWith user: GIDGoogleUser!,
-              withError error: Error!) {
-        UserDefaults.standard.set(false, forKey: K.isLoggedinKey)
-      // Perform any operations when the user disconnects from app here.
-      // ...
+}
+
+extension SignUpViewController:MapViewControllerDelegate{
+    func mapViewControllerDidGetLocation(latitude: Float, longitude: Float, annotation:MKPointAnnotation) {
+        self.latitude=latitude
+        self.longitude = longitude
+        self.addressAnnotation = annotation
+        let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+        alertController.message = "We have successfully received your address."
+        self.present(alertController, animated: true, completion: nil)
     }
     
+    func mapViewControllerDidFail() {
+        let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+        alertController.message = "We could not get your address information, please try again! You have to long press when selecting your address."
+        self.present(alertController, animated: true, completion: nil)
+    }
 }

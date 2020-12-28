@@ -17,8 +17,8 @@ enum ApiRouter: URLRequestBuilder {
     case deleteProductFromList(userId: Int, list_id: String, product_id: String)
     case editList(userId:Int, list: String, newName: String, newIsPrivate: String)
     case addToList(userId:Int, list_id: Int, product_id: Int)
-    
-    case signUp(username:String, password:String, user_type:String)
+    case signUpCustomer(firstName:String,lastName:String,username:String, password:String, user_type:String)
+    case signUpVendor(firstName:String, lastName:String, username:String, password:String, user_type:String,addressName:String, address:String, postalCode:Int, latitude:Float, lontitude:Float, companyName:String)
     case resetPasswordEmail(username:String)
     case updatePassword(userId:Int,currentPassword:String, newPassword:String)
     case getCart(user: Int)
@@ -49,7 +49,7 @@ enum ApiRouter: URLRequestBuilder {
             return "api/user/\(userId)/list/\(list)/"
         case .addToList(let userId, let list_id, _):
             return "api/user/\(userId)/list/\(list_id)/edit/"
-        case .signUp:
+        case .signUpCustomer , .signUpVendor:
             return "api/user/signup/"
         case .resetPasswordEmail:
             return "api/user/resetpwmail/"
@@ -98,7 +98,9 @@ enum ApiRouter: URLRequestBuilder {
             params["is_private"] = isPrivate
         case .addToList(_,_, let product_id):
             params["product_id"] = String(product_id)
-        case .signUp(let username, let password, let user_type):
+        case .signUpCustomer(let firstName, let lastName, let username, let password, let user_type):
+            params["first_name"] = firstName
+            params["last_name"] = lastName
             params["username"] = username
             params["password"] = password
             params["user_type"] = user_type
@@ -126,6 +128,18 @@ enum ApiRouter: URLRequestBuilder {
             params["token"] = token
             params["first_name"] = firstName
             params["last_name"] = lastName
+        case .signUpVendor(let firstName, let lastName, let username, let password, let user_type, let addressName, let address, let postalCode, let latitude, let lontitude, let companyName):
+            params["first_name"] = firstName
+            params["last_name"] = lastName
+            params["username"] = username
+            params["password"] = password
+            params["user_type"] = user_type
+            params["address_name"] = addressName
+            params["address"] = address
+            params["postal_code"] = postalCode
+            params["latitude"] = latitude
+            params["longitude"] = lontitude
+            params["company"] = companyName
         default:
             break
         }
@@ -135,7 +149,7 @@ enum ApiRouter: URLRequestBuilder {
     internal var headers: HTTPHeaders? {
         var headers = HTTPHeaders.init()
         switch self {
-        case .authenticate, .googleSignIn, .signUp, .resetPasswordEmail, .updatePassword:
+        case .authenticate, .googleSignIn, .signUpCustomer, .signUpVendor, .resetPasswordEmail, .updatePassword:
             headers["Accept"] = "application/json"
         case .getCustomerLists(_, let isCustomerLoggedIn):
             if isCustomerLoggedIn {
@@ -162,7 +176,7 @@ enum ApiRouter: URLRequestBuilder {
     // MARK: - Methods
     internal var method: HTTPMethod {
         switch self {
-        case .authenticate, .addList,.addToList, .signUp, .resetPasswordEmail, .addToCart,.updatePassword, .googleSignIn:
+        case .authenticate, .addList,.addToList, .signUpCustomer, .signUpVendor, .resetPasswordEmail, .addToCart,.updatePassword, .googleSignIn:
             return .post
         case .getCustomerLists, .getComments, .getUsersComment, .getCart, .getProfileInfo:
             return .get
