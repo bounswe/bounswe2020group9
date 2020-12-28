@@ -15,7 +15,8 @@ export default class SignIn extends Component {
     this.state = {
       username: '',
       password: '',
-      user_type: 4,
+      isHiddenFail: true,
+      isHiddenUnknown: true,
       redirect: null
     }
   }
@@ -34,7 +35,7 @@ export default class SignIn extends Component {
     // const data = { "username": "omerBenzer61@bazaar.com", "password": "mypw" }
 
 
-    axios.post(serverUrl+`api/user/login/`, { "username": this.state.username, "password": this.state.password })
+    axios.post(serverUrl+'api/user/login/', { "username": this.state.username, "password": this.state.password })
       .then(res => {
         
         const cookie_key = 'user';
@@ -45,7 +46,17 @@ export default class SignIn extends Component {
         console.log(res.data);
 
         this.setState({ redirect: "/" });
-      })
+      }).catch((error) => {
+        if (error.response) {
+          // Request made and server responded
+          this.setState({isHiddenFail: false})
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          this.setState({isHiddenUnknown: false})
+        }
+
+
+    })
 
   }
 
@@ -57,7 +68,13 @@ export default class SignIn extends Component {
     
     return (
       <div className="entry-form">
-        <form>
+        <Alert variant="danger" hidden={this.state.isHiddenFail}>
+          Invalid username or password.
+        </Alert>
+        <Alert variant="danger" hidden={this.state.isHiddenUnknown}>
+          Something went wrong. Please try again later.
+        </Alert>
+        <form onSubmit={this.handleSubmit}>
           <h3>Sign In</h3>
 
           <div className="form-group">
@@ -82,9 +99,11 @@ export default class SignIn extends Component {
           <div id="sign-in-div">
             <Button variant="primary" id="sign-in" type="submit">Sign in</Button>
           </div>
+
           <p className="forgot-password">
             Forgot <a href="/forgot-password">password?</a>
           </p>
+
         </form>
         <GoogleButton className="btn-google"
           onClick={() => { console.log('Google button clicked') }}

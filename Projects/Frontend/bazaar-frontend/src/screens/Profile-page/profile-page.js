@@ -23,7 +23,10 @@ export default class ProfilePage extends Component {
           token: '',
           redirect: null,
           hasError: false,
-          isHidden: true,
+          isHiddenSuccessPw: true,
+          isHiddenSuccess: true,
+          isHiddenFail: true,
+          isHiddenUnknown: true,
           errors: {}
         //   user_id: Cookies.get("user_id")
         }
@@ -83,17 +86,16 @@ export default class ProfilePage extends Component {
               console.log(res);
               console.log(res.data);
               //this.setState({ redirect: "/signin" });
-              this.setState({isHidden: false})
+              this.setState({isHiddenSuccessPw: false})
             }).catch((error) => {
               if (error.response) {
                 // Request made and server responded
+                this.setState({isHiddenFail: false})
     
-              } else if (error.request) {
-                // The request was made but no response was received
-                console.log(error.request);
               } else {
                 // Something happened in setting up the request that triggered an Error
-                console.log('Error', error.message);
+                this.setState({isHiddenUnknown: false})
+
               }
     
     
@@ -108,24 +110,23 @@ export default class ProfilePage extends Component {
         event.preventDefault();
         const body = new FormData();
         body.append("first_name", this.state.fname);
-
         body.append("last_name", this.state.lname);
 
         let myCookie = read_cookie('user');
-        const header = {Authorization: "Token "+myCookie.token};
-        console.log(header)
+        const header = {
+          headers: {
+            Authorization: "Token "+myCookie.token
+          }
+        };
 
         axios.put(serverUrl+'api/user/profile/', body, header)
         .then(res => {
   
-          console.log(res);
-          console.log(res.data);
-          //this.setState({ redirect: "/signin" });
-          this.setState({isHidden: false})
+          this.setState({isHiddenSuccess: false})
         }).catch((error) => {
           if (error.response) {
             // Request made and server responded
-
+            console.log(error.response)
           } else if (error.request) {
             // The request was made but no response was received
             console.log(error.request);
@@ -133,6 +134,7 @@ export default class ProfilePage extends Component {
             // Something happened in setting up the request that triggered an Error
             console.log('Error', error.message);
           }
+          this.setState({isHiddenUnknown: false})
 
 
       })
@@ -166,8 +168,17 @@ export default class ProfilePage extends Component {
       }
         return (
             <div className="profile-form">
-              <Alert variant="success" hidden={this.state.isHidden}>
+              <Alert variant="success" hidden={this.state.isHiddenSuccess}>
                 Profile details updated.
+              </Alert>
+              <Alert variant="success" hidden={this.state.isHiddenSuccessPw}>
+                Password updated.
+              </Alert>
+              <Alert variant="danger" hidden={this.state.isHiddenFail}>
+                Wrong password.
+              </Alert>
+              <Alert variant="danger" hidden={this.state.isHiddenUnknown}>
+                Something went wrong.
               </Alert>
                 <div className="profile-container justify-content-center" id="header3">
                     <h2 className="text-center">Profile Page</h2>

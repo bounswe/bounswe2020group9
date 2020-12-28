@@ -10,6 +10,7 @@ import SignUp from "./screens/Sign-Up/sign-up"
 import Activate from "./screens/Sign-Up/activate"
 import SignUpVendor from "./screens/Sign-Up/sign-up-vendor"
 import Home from "./screens/Home/home"
+import ResetPassword from "./screens/Sign-In/reset-pw"
 import ForgotPassword from "./screens/Sign-In/forgot-password"
 import MyList from "./screens/MyList/MyList"
 import AddProduct from "./screens/Add-Product/addproduct"
@@ -44,6 +45,15 @@ function App() {
           <Header />
           <SignIn />
         </Route>
+        <Route 
+          path="/resetpw=:id"  
+          render={(props) => 
+              <div>
+                  <Header />
+                  <ResetPassword {...props} />
+              </div> 
+          } 
+      />
         <Route 
           path="/activate=:id"  
           render={(props) => 

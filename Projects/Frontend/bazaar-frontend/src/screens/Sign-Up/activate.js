@@ -17,6 +17,7 @@ export default class SignUp extends Component {
 
     componentDidMount() {
       //to do
+      //domain/api/user/activate/<uidb64>/
     }
 
     render() {
