@@ -101,7 +101,7 @@ export default class AddProduct extends Component {
         console.log(body)
 
         let myCookie = read_cookie('user');
-        const header = {headers: {Authorization: "Token "+myCookie.token}};
+        const header = {Authorization: "Token "+myCookie.token};
         console.log(header)
 
         console.log(header["Authorization"])

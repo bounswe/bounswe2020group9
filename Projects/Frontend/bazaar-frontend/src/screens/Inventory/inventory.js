@@ -15,6 +15,7 @@ export default class Inventory extends Component {
     this.state = {
       products: [],
       name: '',
+      id: '',
       brand: '',
       price: '',
       stock: '',
@@ -64,6 +65,73 @@ export default class Inventory extends Component {
 
 
   }
+
+  handleValidation(){
+    let formIsValid = true;
+    let new_errors = {};
+    //Name
+    if (this.state.name === ''){
+      formIsValid = false;
+      new_errors["name"] = "Name can not be empty.";
+    }
+    if (this.state.brand === ''){
+      formIsValid = false;
+      new_errors["brand"] = "Brand can not be empty.";
+    }
+    if (this.state.price === ''){
+      formIsValid = false;
+      new_errors["price"] = "Price can not be empty.";
+    }
+    if (this.state.stock === ''){
+      formIsValid = false;
+      new_errors["stock"] = "Stock can not be empty.";
+    }
+    if (this.state.category === ''){
+      formIsValid = false;
+      new_errors["category"] = "Category can not be empty.";
+    }
+
+
+
+    this.setState({errors: new_errors});
+    return formIsValid;
+  }
+
+
+  handleSubmit = event => {  
+
+    event.preventDefault();
+    const body = new FormData();
+    body.append("name", this.state.name);
+    body.append("detail", this.state.detail);
+    body.append("brand", this.state.brand);
+    body.append("price", this.state.price);
+    body.append("stock", this.state.stock);
+    body.append("picture", this.state.image);
+
+    console.log(body)
+
+    let myCookie = read_cookie('user');
+    const header = {headers: {Authorization: "Token "+myCookie.token}};
+    console.log(header)
+
+    console.log(header["Authorization"])
+    if (this.handleValidation()) {
+        axios.put(serverUrl+`api/product/`+this.state.id, body, header)
+        .then(res => {
+  
+          console.log(res);
+          console.log(res.data);
+
+        }).catch(error => {
+          console.log(error)
+        })
+
+    } else {
+        this.setState({ [this.state.hasError]: true });
+    }
+  }
+
   handleChange = (event) => {
     // You can use setState or dispatch with something like Redux so we can use the retrieved data
     this.setState({ [event.target.name]: event.target.value });
@@ -81,6 +149,7 @@ export default class Inventory extends Component {
   rowClicked = (event) => {
     console.log(event)
     this.setState({name: event.name})
+    this.setState({id: event.id})
     this.setState({brand: event.brand})
     this.setState({price: event.price})
     this.setState({stock: event.stock})
