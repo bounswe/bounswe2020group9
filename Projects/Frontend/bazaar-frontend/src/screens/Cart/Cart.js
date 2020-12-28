@@ -50,7 +50,7 @@ export default class Cart extends Component {
     return (
       <div>
         <div className='homeWrapper'>
-          <Container fluid>
+          <Container >
             <Row>
               {productCards}
             </Row>
