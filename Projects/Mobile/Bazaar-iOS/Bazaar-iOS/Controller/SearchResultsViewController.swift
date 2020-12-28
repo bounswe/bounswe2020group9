@@ -146,7 +146,9 @@ class SearchResultsViewController: UIViewController {
                         let searchResultIDs = searchResultList.product_list.map{$0.id}
                         self.products = []
                         for id in searchResultIDs {
-                            self.products.append(self.allProductsInstance.allProducts.filter{$0.id == id}[0])
+                            if self.allProductsInstance.allProducts.filter{$0.id == id}.count > 0 {
+                                self.products.append(self.allProductsInstance.allProducts.filter{$0.id == id}[0])
+                            }
                         }
                         //self.products = self.allProductsInstance.allProducts.filter{searchResultIDs.contains($0.id)}
                         if(self.products.count == 0) {
@@ -233,11 +235,12 @@ extension SearchResultsViewController: UITableViewDelegate, UITableViewDataSourc
                 print(error)
                 cell.productImageView.image = UIImage(named:"xmark.circle")
                 cell.productImageView.tintColor = UIColor.lightGray
+                cell.productImageView.contentMode = .scaleAspectFit
             }
         } else {
             cell.productImageView.image = UIImage(named:"xmark.circle")
             cell.productImageView.tintColor = UIColor.lightGray
-            cell.productImageView.contentMode = .center
+            cell.productImageView.contentMode = .scaleAspectFit
         }
         return cell
     }

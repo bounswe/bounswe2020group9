@@ -202,15 +202,17 @@ extension MainViewController:UITableViewDelegate,UITableViewDataSource {
             if let url = product.picture {
                 do{
                     try cell.productImageView.loadImageUsingCache(withUrl: url)
+                    cell.productImageView.contentMode = .scaleAspectFit
                 } catch let error {
                     print(error)
                     cell.productImageView.image = UIImage(named:"xmark.circle")
                     cell.productImageView.tintColor = UIColor.lightGray
+                    cell.productImageView.contentMode = .scaleAspectFit
                 }
             } else {
                 cell.productImageView.image = UIImage(named:"xmark.circle")
                 cell.productImageView.tintColor = UIColor.lightGray
-                cell.productImageView.contentMode = .center
+                cell.productImageView.contentMode = .scaleAspectFit
             }
             return cell
         } else {

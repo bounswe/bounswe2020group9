@@ -48,8 +48,8 @@ class ProductDetailViewController: UIViewController {
         
         let arrow = UIImageView(image: UIImage(named: "chevron.down")?.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: -3, bottom: 0, right: -3)))
         
-        arrow.translatesAutoresizingMaskIntoConstraints = true
-        amountPickerTextField.setRightView(arrow, padding: 5)
+        //arrow.translatesAutoresizingMaskIntoConstraints = true
+        amountPickerTextField.setRightView(arrow, padding: 0)
         arrow.contentMode = .scaleAspectFill
         amountPickerTextField.rightView = arrow
         
