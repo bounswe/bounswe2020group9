@@ -143,7 +143,7 @@ class MyAccountViewController: UIViewController {
                                                     self.newPasswordTextField.text = ""
                                                     self.newPasswordAgainTextField.text = ""
                                                 case .failure(_):
-                                                    alertController.message = "Password update failed!"
+                                                    alertController.message = "Wrong current password!"
                                                     self.present(alertController, animated: true, completion: nil)
                                                 }
                                             }

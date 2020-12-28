@@ -163,10 +163,12 @@ enum ApiRouter: URLRequestBuilder {
             headers["Authorization"] = "Token \(authorization)"
         case .setProfileInfo(let authorization,_,_):
             headers["Authorization"] = "Token \(authorization)"
-        case .updatePassword:
-             headers["Accept"] = "application/json"
         case .search(_, _, _):
-          headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
+            if let token = UserDefaults.standard.value(forKey: K.token) as? String {
+                headers["Authorization"] = "Token \(token)"
+            }else {
+                headers["Authorization"] = "Token 57bcb0493429453fad027bc6552cc1b28d6df955"
+            }
         default:
             break
         }
