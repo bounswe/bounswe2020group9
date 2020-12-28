@@ -16,5 +16,6 @@ urlpatterns = [
     path('comment/', AddCommentAPIView.as_view(), name="add-comments"),
     path('vendor/<int:vendor_id>/', vendorProductListView.as_view(), name="vendor-products"),
     path('search/<str:filter_type>/<str:sort_type>/', SearchAPIView.as_view()),
+    path('search2/<str:filter_type>/<str:sort_type>/', SearchAPIView2.as_view()),
 
 ]
