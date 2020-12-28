@@ -145,6 +145,10 @@ class GoogleUserAPIView(APIView):
                 token = Token.objects.create(user=user,key=request.data["token"])
                 user.last_login = timezone.now()
                 user.save()
+                if user.user_type is 1:
+                    Customer.objects.create(user=user)
+                elif user.user_type is 2:
+                    Vendor.objects.create(user=user)
                 return Response({
                 'token': token.key,
                 'id': user.pk,
