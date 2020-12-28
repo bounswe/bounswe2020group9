@@ -8,12 +8,12 @@ import { Button, Alert} from "react-bootstrap";
 
 import "./sign-in.scss";
 
-export default class ForgotPassword extends Component {
+export default class ResetPassword extends Component {
 
   constructor() {
     super();
     this.state = {
-      username: '',
+      password: '',
       errors: {},
       isHiddenSuccess: true,
       isHiddenFail: true,
@@ -25,18 +25,13 @@ export default class ForgotPassword extends Component {
     let formIsValid = true;
     let new_errors = {};
 
-    if(this.state.username.length === 0 || !this.validateEmail()){
+    if(this.state.password.length < 8){
       formIsValid = false;
-      new_errors["username"] = "Please give a valid email.";
+      new_errors["password"] = "Please must be at least 8 characters.";
     }
     this.setState({errors: new_errors});
     console.log(this.state.errors)
     return formIsValid;
-  }
-
-  validateEmail() {
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(this.state.username).toLowerCase());
   }
 
   handleChange = event => {
@@ -52,7 +47,7 @@ export default class ForgotPassword extends Component {
     // const data = { "username": "omerBenzer61@bazaar.com", "password": "mypw" }
 
     if (this.handleValidation()) {
-      axios.post(serverUrl+`api/user/resetpwmail/`, { "username": this.state.username })
+      axios.post(serverUrl+`api/user/resetpw/`, { "new_password": this.state.password })
       .then(res => {
         console.log(res.data)
         this.setState({isHiddenSuccess: false})
@@ -86,23 +81,24 @@ export default class ForgotPassword extends Component {
     return (
       <div className="entry-form">
         <Alert variant="success" hidden={this.state.isHiddenSuccess}>
-          An email has been sent to your account. Please click on the link to reset your password.
+          Your password has been reset.
+          You can <Alert.Link href="/signin">sign in</Alert.Link> to your account.
         </Alert>
         <Alert variant="danger" hidden={this.state.isHiddenFail}>
           Something went wrong. Please try again later.
         </Alert>
         <form onSubmit={this.handleSubmit}>
-          <h3>Forgot Password</h3>
+          <h3>Reset password</h3>
 
           <div className="form-group">
-            <label>Email address</label>
-            <input type="text" name="username" className="form-control" placeholder="Enter email"
+            <label>New Password</label>
+            <input type="password" name="password" className="form-control" placeholder="Enter password"
               onChange={this.handleChange} />
-            <div className="error">{this.state.errors["username"]}</div>
+            <div className="error">{this.state.errors["password"]}</div>
           </div>
 
           <div id="sign-in-div">
-            <Button variant="primary" id="sign-in" type="submit">Send email</Button>
+            <Button variant="primary" id="sign-in" type="submit">Reset password</Button>
           </div>
         </form>
 

@@ -4,8 +4,9 @@ import axios from 'axios'
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 import { Redirect } from "react-router-dom";
 import {serverUrl} from '../../utils/get-url'
+import { Button, Alert} from "react-bootstrap";
 
-import "./sign-in.css";
+import "./sign-in.scss";
 
 export default class SignIn extends Component {
 
@@ -78,8 +79,9 @@ export default class SignIn extends Component {
             </div>
           </div>
 
-          <button id="submit" type="submit" className="btn btn-block" onClick={this.handleSubmit}>Sign in</button>
-
+          <div id="sign-in-div">
+            <Button variant="primary" id="sign-in" type="submit">Sign in</Button>
+          </div>
           <p className="forgot-password">
             Forgot <a href="/forgot-password">password?</a>
           </p>
