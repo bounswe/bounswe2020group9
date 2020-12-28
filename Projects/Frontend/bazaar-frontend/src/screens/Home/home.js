@@ -55,6 +55,7 @@ class Home extends Component {
       items.push(
         <Pagination.Item key={number} className={"myPaginationItem"} href={"/category/"+category[number]}>
           {category[number]}
+          
         </Pagination.Item>
       );
     }
