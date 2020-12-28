@@ -201,7 +201,7 @@ class UserSignupAPIView(APIView):
             domain = get_current_site(request).domain
             #link = reverse('activate', kwargs={'uidb64': uidb64})
 
-            activate_url = 'http://' + domain + "/activate=" + str(uidb64)
+            activate_url = 'http://' + "13.59.236.175:3000" + "/activate=" + str(uidb64)
 
             email_subject = 'Activate'
             email_body = 'Hi,\nPlease use this link to verify your account:\n' + activate_url
@@ -247,7 +247,7 @@ class ResetPasswordMailView(APIView):
         uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
         domain = get_current_site(request).domain
         #link = reverse('resetpw', kwargs={'uidb64': uidb64})
-        reset_url = 'http://' + domain + "/resetpw=" + str(uidb64)
+        reset_url = 'http://' + "13.59.236.175:3000" + "/resetpw=" + str(uidb64)
         email_subject = 'Reset Your Password'
         email_body = 'Hi,\nPlease use this link to reset your password:\n' + reset_url
         email = EmailMessage(
