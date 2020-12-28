@@ -19,9 +19,12 @@ export default class SignIn extends Component {
       user_type: 4,
       redirect: null
     }
+    // this.insertGapiScript = this.insertGapiScript.bind(this);
   }
 
-  insertGapiScript() {
+  insertGapiScript = event => {
+
+      event.preventDefault();
       const script = document.createElement('script')
       script.src = 'https://apis.google.com/js/platform.js'
       script.onload = () => {
@@ -45,28 +48,56 @@ export default class SignIn extends Component {
           onfailure: this.onFailure ,
           }
          
-        window.gapi.signin2.render('SignInButton' , params);
+         window.gapi.signin2.render('SignInButton' , params);
       })
 
     })
 
   }
   onSuccess(googleUser) {
+
+    
+
     const profile = googleUser.getBasicProfile();
     console.log("Name: " + profile.getName());
     console.log("Mail: " + profile.getEmail());
     var id_token = googleUser.getAuthResponse().id_token;
+
+     // let comp = this ;
+
+    
+
+    axios.post(`http://13.59.236.175:8000/api/user/googleuser/`, { "username": profile.getEmail(), 
+                                                                  "token": googleUser.getAuthResponse().id_token, 
+                                                                  "first_name": profile.getGivenName(),
+                                                                  "last_name": profile.getFamilyName() 
+                                                                })
+      .then(res => {
+        
+        const cookie_key = 'user';
+        const cookie_data = res.data;
+        bake_cookie(cookie_key, cookie_data);
+
+        console.log(res);
+        console.log(res.data);
+
+        this.setState({ redirect: "/" });
+      })
+
+
+    
+    
 
   }
   onFailure(googleUser){
     console.log("Failure ");
   }
 
-  componentDidMount() {
-    console.log('loading')
+  /*componentDidMount() {
+    console.log('loading');
+    // this.insertGapiScript() ;
 
-    this.insertGapiScript()
-  }
+  }*/
 
 
   handleChange = event => {
@@ -136,7 +167,7 @@ export default class SignIn extends Component {
             Forgot <a href="/forgot-password">password?</a>
           </p>
         </form>
-        <GoogleButton id= "SignInButton" className= "btn-google"></GoogleButton> 
+        <GoogleButton id= "SignInButton" onClick={this.insertGapiScript}className= "btn-google"></GoogleButton> 
         
       </div>
 
