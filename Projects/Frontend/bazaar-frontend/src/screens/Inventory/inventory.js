@@ -3,7 +3,7 @@ import axios from 'axios'
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 import Cookies from 'js-cookie';
 import DataTable from 'react-data-table-component';
-import { Modal, Button } from "react-bootstrap";
+import { Modal, Button, Alert } from "react-bootstrap";
 import {serverUrl} from '../../utils/get-url'
 
 import "./inventory.scss";
@@ -24,6 +24,8 @@ export default class Inventory extends Component {
       subcategory: '',
       errors: [],
       isOpen: false,
+      isHiddenFail: true,
+      isHiddenSuccess: true,
       categoryList: {"":[]}
     }
     this.handleImageChange = this.handleImageChange.bind(this)
@@ -107,8 +109,8 @@ export default class Inventory extends Component {
     body.append("brand", this.state.brand);
     body.append("price", this.state.price);
     body.append("stock", this.state.stock);
-    //body.append("picture", this.state.image);
-
+    body.append("picture", this.state.image);
+    console.log("state image: "+this.state.image)
     console.log(body)
 
     let myCookie = read_cookie('user');
@@ -121,9 +123,12 @@ export default class Inventory extends Component {
   
           console.log("res: " + res);
           console.log("res.data: "+res.data);
+          this.setState({isHiddenSuccess: false})
 
         }).catch(error => {
           console.log("error: "+JSON.stringify(error))
+          this.setState({isHiddenFail: false})
+
         })
 
     } else {
@@ -140,8 +145,9 @@ export default class Inventory extends Component {
   handleImageChange = event => {
 
     event.preventDefault();
-    this.setState({ image:   URL.createObjectURL(event.target.files[0])
-    })
+    let uploadedImage = URL.createObjectURL(event.target.files[0])
+    this.setState({ image:  uploadedImage })
+    console.log("image: "+ uploadedImage.substring(5))
 
   }
 
@@ -163,7 +169,12 @@ export default class Inventory extends Component {
   }
 
   openModal = () => this.setState({ isOpen: true });
-  closeModal = () => this.setState({ isOpen: false });
+  closeModal = () => {
+    this.setState({ isOpen: false })
+    this.setState({isHiddenFail: true})
+    this.setState({isHiddenSuccess: true})
+
+  };
 
   upload = () => {
     document.getElementById("select-image").click();
@@ -231,6 +242,12 @@ export default class Inventory extends Component {
                 <div className="error">{this.state.errors["image"]}</div>
 
               </div>
+              <Alert variant="success" hidden={this.state.isHiddenSuccess}>
+              Product details updated.
+            </Alert>
+            <Alert variant="danger" hidden={this.state.isHiddenFail}>
+              Something went wrong.
+            </Alert>
 
               <div className="form-group row">
                   <label className="col-4 align-middle">Name:</label>
