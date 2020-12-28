@@ -134,6 +134,7 @@ class GoogleUserAPIView(APIView):
                     return Response({"password": ["This field is required."]}, status=status.HTTP_400_BAD_REQUEST)
                 serializer.save()
                 user_temp = User.objects.get(username=request.data["username"])
+                Customer.objects.create(user=user_temp)
                 Token.objects.get(user=user_temp.id).delete()
                 token = Token.objects.create(user=user_temp,key=request.data["token"])
                 return Response(serializer.data, status=status.HTTP_200_OK)
@@ -145,10 +146,6 @@ class GoogleUserAPIView(APIView):
                 token = Token.objects.create(user=user,key=request.data["token"])
                 user.last_login = timezone.now()
                 user.save()
-                if user.user_type is 1:
-                    Customer.objects.create(user=user)
-                elif user.user_type is 2:
-                    Vendor.objects.create(user=user)
                 return Response({
                 'token': token.key,
                 'id': user.pk,
