@@ -488,12 +488,10 @@ struct APIManager {
                         completionHandler(.failure(MyError.runtimeError("Error")))
                         return
                     }
-                    print("hi")
                     if let decodedData: [CommentData] = APIParse().parseJSON(safeData: safeData) {
                         if decodedData.isEmpty {
                             completionHandler(.failure(MyError.runtimeError("Error")))
                         } else {
-                            print("hey", decodedData[0].body)
                             completionHandler(.success(decodedData[0]))
                         }
                     } else {
