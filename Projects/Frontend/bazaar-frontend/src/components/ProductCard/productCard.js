@@ -25,7 +25,7 @@ export default class CardComponent extends Component {
             </Card.Body>
             <Card.Footer className={"productCardFooter"}>
               <small className="text-muted">{this.props.product.brand},  </small>
-              <small className="text-muted productCardPrice">${this.props.product.price}</small>
+              <small className="text-muted productCardPrice">₺{this.props.product.price}</small>
             </Card.Footer>
           </Card>
         </Link>

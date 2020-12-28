@@ -99,7 +99,7 @@ export default class Inventory extends Component {
 
 
   handleSubmit = event => {  
-
+    console.log("im at handlesubmit")
     event.preventDefault();
     const body = new FormData();
     body.append("name", this.state.name);
@@ -107,7 +107,7 @@ export default class Inventory extends Component {
     body.append("brand", this.state.brand);
     body.append("price", this.state.price);
     body.append("stock", this.state.stock);
-    body.append("picture", this.state.image);
+    //body.append("picture", this.state.image);
 
     console.log(body)
 
@@ -115,16 +115,15 @@ export default class Inventory extends Component {
     const header = {headers: {Authorization: "Token "+myCookie.token}};
     console.log(header)
 
-    console.log(header["Authorization"])
     if (this.handleValidation()) {
-        axios.put(serverUrl+`api/product/`+this.state.id, body, header)
+        axios.put(serverUrl+`api/product/`+this.state.id+"/", body, header)
         .then(res => {
   
-          console.log(res);
-          console.log(res.data);
+          console.log("res: " + res);
+          console.log("res.data: "+res.data);
 
         }).catch(error => {
-          console.log(error)
+          console.log("error: "+JSON.stringify(error))
         })
 
     } else {
@@ -160,7 +159,7 @@ export default class Inventory extends Component {
     this.openModal()
     console.log("category: "+event.category["parent"])
     console.log("subcategory: "+event.category["name"])
-    console.log(JSON.stringify(event))
+    console.log("event: "+JSON.stringify(event))
   }
 
   openModal = () => this.setState({ isOpen: true });

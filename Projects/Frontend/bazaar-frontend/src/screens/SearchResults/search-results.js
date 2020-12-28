@@ -42,7 +42,7 @@ class SearchResults extends Component {
     }
     let myProducts = []
 
-    axios.post(serverUrl+'api/product/search/'+this.state.filter+'/'+this.state.sort+'/', body, header)
+    axios.post(serverUrl+'api/product/search2/'+this.state.filter+'/'+this.state.sort+'/', body, header)
       .then(res => {
         console.log("products: "+JSON.stringify(res.data["product_list"]))
         console.log(res.data)
