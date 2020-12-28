@@ -19,7 +19,6 @@ class ReviewsViewController: UIViewController {
         super.viewDidLoad()
         reviewsTableView.delegate = self
         reviewsTableView.dataSource = self
-        
         reviewsTableView.register(UINib(nibName: "ReviewTableViewCell", bundle: nil), forCellReuseIdentifier: "ReusableReviewCell")
         
         self.reviewsTableView.backgroundColor = UIColor.systemBackground
@@ -27,28 +26,49 @@ class ReviewsViewController: UIViewController {
         if let isLoggedIn = UserDefaults.standard.value(forKey: K.isLoggedinKey) as? Bool{
             if isLoggedIn {
                 if let userId = UserDefaults.standard.value(forKey: K.userIdKey) as? Int {
-                    APIManager().getUsersComment(productID: productId, userID: userId, completionHandler: { result in
-                        switch result{
-                        case .success(let comment):
-                            self.myComment = comment
-                            return
-                        case .failure(_):
-                            self.myComment = nil
-                        }
-                    })
+                        self.getUserReview(userId: userId)
                 }
             }
         }
-        
-        APIManager().getComments(productID: productId, completionHandler: { result in
+        self.getReviews()
+        reviewsTableView.reloadData()
+    }
+    
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if let isLoggedIn = UserDefaults.standard.value(forKey: K.isLoggedinKey) as? Bool{
+            if isLoggedIn {
+                if let userId = UserDefaults.standard.value(forKey: K.userIdKey) as? Int {
+                        self.getUserReview(userId: userId)
+                }
+            }
+        }
+        self.getReviews()
+        reviewsTableView.reloadData()
+    }
+    
+    func getUserReview(userId: Int) {
+        APIManager().getUsersComment(productID: self.productId, userID: userId, completionHandler: { result in
+            switch result{
+            case .success(let comment):
+                self.myComment = comment
+                return
+            case .failure(_):
+                self.myComment = nil
+            }
+        })
+    }
+    
+    func getReviews() {
+        APIManager().getComments(productID: self.productId, completionHandler: { result in
             switch result{
             case .success(let comments):
                 if let myComm = self.myComment {
-                    self.commentsArray = comments.filter{$0.id != myComm.id}
+                    self.commentsArray = comments.filter{$0.id != myComm.id && $0.timestamp != myComm.timestamp}
                 } else {
                     self.commentsArray = comments
                 }
-                self.reviewsTableView.reloadData()
                 return
             case .failure(_):
                 let alertController = UIAlertController(title: "Problem", message: "The comments cannot be fetched", preferredStyle: .alert)
@@ -56,19 +76,18 @@ class ReviewsViewController: UIViewController {
                 self.present(alertController, animated:true, completion: nil)
             }
         })
-        
-        
-        
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        self.reviewsTableView.reloadData()
+    @IBAction func backButtonPressed(_ sender: Any) {
+        self.navigationController?.popViewController(animated: true)
     }
-    
 }
 
 extension ReviewsViewController: UITableViewDelegate, UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
             if let _ = myComment {
@@ -96,10 +115,14 @@ extension ReviewsViewController: UITableViewDelegate, UITableViewDataSource {
                 cell.layer.cornerRadius = 10
                 cell.layer.shadowColor = UIColor.black.cgColor
             }
-        } else {
-            let comment = commentsArray[indexPath.row]
+        } else if indexPath.section == 1 {
+            let comment = self.commentsArray[indexPath.row]
             if !comment.is_anonymous {
-                cell.customerNameLabel.text = "\(comment.first_name) \(comment.last_name)"
+                if let fName = comment.first_name , let lName = comment.last_name {
+                    cell.customerNameLabel.text = "\(fName) \(lName)"
+                }
+            } else {
+                cell.customerNameLabel.text = ""
             }
             cell.commentTimeLabel.text = comment.timestamp.formatDate + "  |"
             cell.commentBody.text = comment.body
