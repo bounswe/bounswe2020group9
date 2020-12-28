@@ -162,7 +162,7 @@ def search_product_db(word_array,word_searched):
 def datamuse_call(word):
     result = []
     word_array = word.split()
-    max_word = int(120/len(word_array))
+    max_word = int(60/len(word_array))
     words_string = ""
     for i in range(len(word_array)):
         words_string+=word_array[i]
