@@ -12,20 +12,37 @@ export default class SignUp extends Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+          isHiddenFail: true,
+          isHiddenSuccess: true
+        }
 
       }
 
     componentDidMount() {
       //to do
+      //domain/api/user/activate/<uidb64>/
+      axios.get(serverUrl+'api/user/activate/'+this.props.match.params["id"]+"/")
+      .then(res => {
+
+        this.setState({ isHiddenSuccess: false });
+      }).catch((error) => {
+
+        this.setState({isHiddenFail: false})
+      })
+
     }
 
     render() {
 
         return (
           <div className="empty-space">
-            <Alert variant="success">
+            <Alert variant="success" hidden={this.state.isHiddenSuccess}>
               Your account has been activated.
-              You {this.props.match.params["id"]} can <Alert.Link href="/signin">sign in</Alert.Link> to your account.
+              You can <Alert.Link href="/signin">sign in</Alert.Link> to your account.
+            </Alert>
+            <Alert variant="danger" hidden={this.state.isHiddenFail}>
+              Something went wrong.
             </Alert>
           </div>
 

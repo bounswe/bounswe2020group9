@@ -46,7 +46,7 @@ export default class ResetPassword extends Component {
 
     // const data = { "username": "omerBenzer61@bazaar.com", "password": "mypw" }
 
-    if (this.handleValidation()) {
+    if (this.handleValidation()) {//id ekle
       axios.post(serverUrl+`api/user/resetpw/`, { "new_password": this.state.password })
       .then(res => {
         console.log(res.data)
