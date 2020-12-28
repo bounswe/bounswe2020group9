@@ -11,8 +11,8 @@ import "./sign-in.css";
 
 export default class SignIn extends Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       username: '',
       password: '',
@@ -36,7 +36,8 @@ export default class SignIn extends Component {
   initializeGoogleSignIn() {
     window.gapi.load('auth2', () => {
       window.gapi.auth2.init({
-        client_id: '668711281350-36g6p1rlp9doabsb79lktm95hpa56qcj.apps.googleusercontent.com'
+        client_id: '668711281350-36g6p1rlp9doabsb79lktm95hpa56qcj.apps.googleusercontent.com',
+        cookiepolicy: 'single_host_origin'
       })
 
       console.log('api init')
@@ -44,7 +45,7 @@ export default class SignIn extends Component {
       window.gapi.load('signin2', ()=> {
         const params = {
           
-          onsuccess: this.onSuccess ,
+          onsuccess: this.onSuccess.bind(this) ,
           onfailure: this.onFailure ,
           }
          
@@ -83,6 +84,8 @@ export default class SignIn extends Component {
 
         this.setState({ redirect: "/" });
       })
+
+      
 
 
     
