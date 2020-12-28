@@ -2,11 +2,14 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 import ReactDOM from 'react-dom'
 import axios from 'axios'
-import "./header.css";
+import { Button } from "react-bootstrap";
+import { Redirect } from "react-router-dom";
+
 
 import "bootstrap/dist/css/bootstrap.min.css"
 import "bootstrap/dist/js/bootstrap.bundle"
 
+import "./header.scss";
 
 
 
@@ -27,23 +30,35 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 
 
-
-
-
 class Header extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
       isSignedIn: false,
+      keywords: '',
       user_type: 0,
       cart: [],
+      redirect: null
     }
 
   }
 
   handleClick() {
     delete_cookie("user")
+  }
+
+  handleSearchSubmit = event => {
+    event.preventDefault();
+    const keywords = this.state.keywords
+    const redirectTo = "/search="+keywords
+    this.setState({redirect: redirectTo})
+  
+  }
+
+  handleSearchChange = event => {
+    event.preventDefault();
+    this.setState({ [event.target.name]: event.target.value }); 
   }
 
 
@@ -192,7 +207,9 @@ class Header extends Component {
 
     }
 
-
+    if (this.state.redirect) {
+      return <Redirect to={this.state.redirect} />
+    }
     return (
       <nav className="navbar navbar-expand-md navbar-light myNavbar">
         <a className="navbar-brand" href="/" >
@@ -203,11 +220,21 @@ class Header extends Component {
           /></a>
 
         <div className="collapse navbar-collapse" id="collapsibleNavId">
-          <ul className="navbar-nav  mr-auto mt-2 mt-lg-0">
-
+          <ul className="navbar-nav mr-auto mt-2 mt-lg-0 search-wrapper">
+            <form className="search-form justify-content-center" onSubmit={this.handleSearchSubmit}>
+              <div className="form-row align-items-center">
+                <div className="col">
+                  <input type="text" className="form-control" name="keywords" id="search-bar" 
+                  placeholder="Search product or brand"
+                  onChange={this.handleSearchChange}/>
+                </div>
+                <div id="search-button-div" className="col">
+                  <Button variant="primary" id="search-button" type="submit">Search</Button>
+                </div>
+              </div>
+            </form>
           </ul>
           {SignPart}
-
         </div>
       </nav>
     );

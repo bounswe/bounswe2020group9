@@ -9,31 +9,51 @@ import Col from 'react-bootstrap/Col'
 import axios from 'axios'
 import Card from "../../components/ProductCard/productCard"
 import {serverUrl} from '../../utils/get-url'
+import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 
-import './view-category.scss'
+import './search-results.scss'
 
-class ViewCategory extends Component {
+class SearchResults extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
       isLogged: 'yes',
       redirect: null,
+      filter: "none",
+      sort: "none",
       categoryList: [],
       categoryDict: {},
       categoryStructure: {"":[]},
-      products: []
+      products: [],
+      allProducts: []
     }
   }
 
 
   componentDidMount() {
-    axios.get(serverUrl+`api/product/`)
+    const body = {"searched": this.props.match.params["keywords"]}
+    let myCookie = read_cookie("user")
+    let header;
+    if (myCookie){
+      header = {headers: {Authorization: "Token "+myCookie.token}};
+    } else {
+      header = {headers: {Authorization: "Token "}};
+    }
+    let myProducts = []
+
+    axios.post(serverUrl+'api/product/search/'+this.state.filter+'/'+this.state.sort+'/', body, header)
       .then(res => {
-        let myProducts = res.data.filter(product => product.category["name"] === this.props.match.params["id"] || 
-        product.category["parent"] === this.props.match.params["id"])
-        this.setState({ products: myProducts })
+        console.log("products: "+JSON.stringify(res.data["product_list"]))
+        console.log(res.data)
+        myProducts = res.data.product_list
+
+        this.setState({ products: res.data.product_list })
+        
+        console.log("products: "+JSON.stringify(this.state.products))
+
       })
+
       axios.get(serverUrl+'api/product/categories/')
       .then(res => {
         let resp = res.data;
@@ -44,7 +64,6 @@ class ViewCategory extends Component {
           if (resp[i]["parent"] === "Categories") {
             keys.push(resp[i]["name"])
             categoryDictTemp[resp[i]["id"]] = resp[i]["name"]
-
           }
         }
         this.setState({categoryList: keys})
@@ -68,6 +87,7 @@ class ViewCategory extends Component {
     let categoryList = this.state.categoryList
     let categoryStructure = this.state.categoryStructure
     let categories = [];
+
     for (let number = 0; number < categoryList.length; number++) {
       let subs = [];
       let subList = categoryStructure[categoryList[number]]
@@ -79,10 +99,9 @@ class ViewCategory extends Component {
         }
       }
 
-
       categories.push(
         <Pagination.Item key={number} className="myPaginationItem dropdown" href={"/category/"+categoryList[number]}>
-          <a className="nav-link dropdown-toggle" href="#" id="ddlInventory" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a className="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span className="mr-1"></span> {categoryList[number]}
           </a>
           <div className="dropdown-menu">
@@ -93,7 +112,6 @@ class ViewCategory extends Component {
       );
     }
 
-
     let productCards = this.state.products.map(product => {
         return (
           <Col sm="3">
@@ -101,6 +119,9 @@ class ViewCategory extends Component {
           </Col>
         )
     })
+ 
+    
+
 
     return (
 
@@ -133,4 +154,4 @@ class ViewCategory extends Component {
 }
 
 
-export default ViewCategory;
+export default SearchResults;

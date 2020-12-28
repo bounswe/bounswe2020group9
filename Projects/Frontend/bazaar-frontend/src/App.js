@@ -18,6 +18,7 @@ import Inventory from "./screens/Inventory/inventory"
 import ProductPage from "./screens/ProductPage/ProductPage"
 import ViewCategory from "./screens/ViewCategory/view-category"
 import Cart from "./screens/Cart/Cart"
+import SearchResults from "./screens/SearchResults/search-results"
 
 //components
 import Header from "./components/Header/Header"
@@ -83,14 +84,24 @@ function App() {
           <Header />
           <Inventory />
         </Route>
-        <Route path="/product/:id" 
-        render={(props) => 
-          <div>
-            <Header />
-            <ProductPage {...props} />
-          </div>
+        <Route 
+          path="/product/:id" 
+          render={(props) => 
+            <div>
+              <Header />
+              <ProductPage {...props} />
+            </div>
         }
         /> 
+        <Route 
+          path="/search=:keywords"  
+          render={(props) => 
+              <div>
+                  <Header />
+                  <SearchResults {...props} />
+              </div> 
+          } 
+        />
         <Route 
           path="/category/:id"  
           render={(props) => 
@@ -99,8 +110,8 @@ function App() {
                   <ViewCategory {...props} />
               </div> 
           } 
-      />
-      <Route 
+        />
+        <Route 
           path="/cart"  
           render={(props) => 
               <div>
@@ -108,7 +119,7 @@ function App() {
                   <Cart {...props} />
               </div> 
           } 
-      />
+        />
       </Switch>
 
       <Footer />

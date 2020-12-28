@@ -77,7 +77,7 @@ export default class ProfilePage extends Component {
 
         let myCookie = read_cookie('user');
         body.append("user_id", myCookie.user_id)
-        const header = {Authorization: "Token "+myCookie.token};
+        const header = {headers: {Authorization: "Token "+myCookie.token}};
         
         if (this.handlePasswordValidation()) {
             axios.post(serverUrl+'api/user/resetpwprofile/', body, header)
