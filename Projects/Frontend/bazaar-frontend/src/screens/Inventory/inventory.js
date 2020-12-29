@@ -22,10 +22,13 @@ export default class Inventory extends Component {
       detail: '',
       category: '',
       subcategory: '',
+      delete: false,
       errors: [],
       isOpen: false,
       isHiddenFail: true,
       isHiddenSuccess: true,
+      isHiddenDeleteSuccess: true,
+      isHiddenDeleteFail: true,
       categoryList: {"":[]}
     }
     this.handleImageChange = this.handleImageChange.bind(this)
@@ -103,37 +106,58 @@ export default class Inventory extends Component {
   handleSubmit = event => {  
     console.log("im at handlesubmit")
     event.preventDefault();
-    const body = new FormData();
-    body.append("name", this.state.name);
-    body.append("detail", this.state.detail);
-    body.append("brand", this.state.brand);
-    body.append("price", this.state.price);
-    body.append("stock", this.state.stock);
-    body.append("picture", this.state.image);
-    console.log("state image: "+this.state.image)
-    console.log(body)
-
+      
     let myCookie = read_cookie('user');
     const header = {headers: {Authorization: "Token "+myCookie.token}};
     console.log(header)
 
-    if (this.handleValidation()) {
-        axios.put(serverUrl+`api/product/`+this.state.id+"/", body, header)
+    if (!this.state.delete) {
+      const body = new FormData();
+      body.append("name", this.state.name);
+      body.append("detail", this.state.detail);
+      body.append("brand", this.state.brand);
+      body.append("price", this.state.price);
+      body.append("stock", this.state.stock);
+      body.append("picture", this.state.image);
+      console.log("state image: "+this.state.image)
+      console.log(body)
+
+      if (this.handleValidation()) {
+          axios.put(serverUrl+`api/product/`+this.state.id+"/", body, header)
+          .then(res => {
+    
+            console.log("res: " + res);
+            console.log("res.data: "+res.data);
+            this.setState({isHiddenSuccess: false})
+  
+          }).catch(error => {
+            console.log("error: "+JSON.stringify(error))
+            this.setState({isHiddenFail: false})
+  
+          })
+  
+      } else {
+          this.setState({ [this.state.hasError]: true });
+      }
+    } else {
+        axios.delete(serverUrl+`api/product/`+this.state.id+"/", header)
         .then(res => {
   
           console.log("res: " + res);
           console.log("res.data: "+res.data);
-          this.setState({isHiddenSuccess: false})
+          this.setState({isHiddenDeleteSuccess: false})
+          let myProducts = this.state.products.filter(product => product.id !== this.state.id)
+          this.setState({products: myProducts})
+          this.closeModal()
 
         }).catch(error => {
           console.log("error: "+JSON.stringify(error))
-          this.setState({isHiddenFail: false})
+          this.setState({isHiddenDeleteFail: false})
 
         })
-
-    } else {
-        this.setState({ [this.state.hasError]: true });
+        this.setState({delete: false})
     }
+
   }
 
   handleChange = (event) => {
@@ -168,12 +192,16 @@ export default class Inventory extends Component {
     console.log("event: "+JSON.stringify(event))
   }
 
-  openModal = () => this.setState({ isOpen: true });
+  deleteProduct = () => this.setState({ delete: true });
+  openModal = () => {
+    this.setState({ isOpen: true });
+    this.setState({isHiddenDeleteSuccess: true})
+  }
   closeModal = () => {
     this.setState({ isOpen: false })
     this.setState({isHiddenFail: true})
     this.setState({isHiddenSuccess: true})
-
+    this.setState({isHiddenDeleteFail: true})
   };
 
   upload = () => {
@@ -243,12 +271,14 @@ export default class Inventory extends Component {
 
               </div>
               <Alert variant="success" hidden={this.state.isHiddenSuccess}>
-              Product details updated.
-            </Alert>
-            <Alert variant="danger" hidden={this.state.isHiddenFail}>
-              Something went wrong.
-            </Alert>
-
+                Product details updated.
+              </Alert>
+              <Alert variant="danger" hidden={this.state.isHiddenFail}>
+                Something went wrong.
+              </Alert>
+              <Alert variant="danger" hidden={this.state.isHiddenDeleteFail}>
+                Something went wrong.
+              </Alert>
               <div className="form-group row">
                   <label className="col-4 align-middle">Name:</label>
                   <div className="col-6">
@@ -317,6 +347,7 @@ export default class Inventory extends Component {
 
             <Modal.Footer>
                 <Button variant="primary" id="save-changes-product" type="submit">Save Changes</Button>
+                <Button variant="danger" id="delete-product" type="submit" onClick={this.deleteProduct} >Delete</Button>
                 <Button variant="secondary" onClick={this.closeModal}>Close</Button>
             </Modal.Footer>
           </form>
@@ -334,14 +365,15 @@ export default class Inventory extends Component {
         }
 
 
-
+        <Alert variant="success" hidden={this.state.isHiddenDeleteSuccess}>
+          Product successfully deleted.
+        </Alert>
         <DataTable
           title="My Inventory"
           columns={columns}
           data={this.state.products}
           defaultSortField="title"
           pagination
-          selectableRows
           onRowClicked={this.rowClicked}
           highlightOnHover
           pointerOnHover

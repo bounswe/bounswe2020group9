@@ -25,8 +25,7 @@ class SearchResults extends Component {
       categoryList: [],
       categoryDict: {},
       categoryStructure: {"":[]},
-      products: [],
-      allProducts: []
+      products: null
     }
   }
 
@@ -35,22 +34,24 @@ class SearchResults extends Component {
     const body = {"searched": this.props.match.params["keywords"]}
     let myCookie = read_cookie("user")
     let header;
-    if (myCookie){
+    if (myCookie.length > 0){
       header = {headers: {Authorization: "Token "+myCookie.token}};
+      //console.log("ttehere")
+
     } else {
-      header = {headers: {Authorization: "Token "}};
+      header = {headers: {Authorization: "Token 57bcb0493429453fad027bc6552cc1b28d6df955"}};
+      //console.log("here")
     }
     let myProducts = []
 
     axios.post(serverUrl+'api/product/search2/'+this.state.filter+'/'+this.state.sort+'/', body, header)
       .then(res => {
-        console.log("products: "+JSON.stringify(res.data["product_list"]))
-        console.log(res.data)
         myProducts = res.data.product_list
+        console.log("HEREEE")
 
-        this.setState({ products: res.data.product_list })
-        
-        console.log("products: "+JSON.stringify(this.state.products))
+        this.setState({ products: myProducts })
+        console.log("products: "+JSON.stringify(res.data["product_list"]))
+        //console.log("products: "+JSON.stringify(this.state.products))
 
       })
 
@@ -112,7 +113,9 @@ class SearchResults extends Component {
       );
     }
 
-    let productCards = this.state.products.map(product => {
+    
+    let productCards = this.state.products?.map(product => {
+      console.log(product)
         return (
           <Col sm="3">
             <Card product={product}></Card>
