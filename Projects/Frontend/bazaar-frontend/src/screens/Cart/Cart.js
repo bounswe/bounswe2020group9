@@ -75,6 +75,7 @@ export default class Cart extends Component {
           <Button
             variant="danger"
             onClick={() => this.deleteFromCart(product.id)}
+            style={{ marginBottom: "2rem" }}
           >
             Delete From Cart
           </Button>
