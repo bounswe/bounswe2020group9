@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import axios from 'axios'
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 import Cookies from 'js-cookie';
-import { Modal, Button } from "react-bootstrap";
+import { Modal, Button, Alert} from "react-bootstrap";
+import {serverUrl} from '../../utils/get-url'
 
 
 import "./addproduct.scss";
@@ -26,7 +27,12 @@ export default class AddProduct extends Component {
           token: '',
           redirect: null,
           hasError: false,
-          errors: {}
+          errors: {},
+          categoryStructure: {"":[]},
+          categoryList: {},
+          subHidden: true,
+          isHiddenSuccess: true,
+          isHiddenFail: true
         //   user_id: Cookies.get("user_id")
         }
       }
@@ -34,7 +40,10 @@ export default class AddProduct extends Component {
       handleChange = event => {
     
         event.preventDefault();
-        this.setState({ [event.target.name]: event.target.value });        
+        this.setState({ [event.target.name]: event.target.value });    
+        if (event.target.name == "category"){
+          this.setState({subHidden: false})
+        }   
       }
 
       handleImageChange = event => {
@@ -86,50 +95,75 @@ export default class AddProduct extends Component {
         body.append("price", this.state.price);
         body.append("stock", this.state.stock);
         body.append("picture", this.state.image);
+        let categoryList = this.state.categoryList
         if (this.state.subcategory !== ""){
-          body.append("category", {"name": this.state.subcategory, "parent": this.state.category})
-        } else {
-          body.append("category", {"name": this.state.category, "parent": "Categories"})
-        }
+          body.append("category_id", categoryList[this.state.subcategory])
 
+        } else {
+          body.append("category_id", categoryList[this.state.category])
+
+        }
+        //console.log(body)
+        //console.log(categoryList[this.state.category])
 
         let myCookie = read_cookie('user');
         const header = {headers: {Authorization: "Token "+myCookie.token}};
+        //console.log(header)
 
-
-        console.log(header["Authorization"])
+        //console.log(header["Authorization"])
         if (this.handleValidation()) {
-            axios.post(`http://13.59.236.175:8000/api/product/`, body, header)
+            axios.post(serverUrl+`api/product/`, body, header)
             .then(res => {
       
+              this.setState({isHiddenSuccess: false})
               console.log(res);
               console.log(res.data);
   
+            }).catch(error => {
+              console.log(error)
             })
 
         } else {
             this.setState({ [this.state.hasError]: true });
+            this.setState({isHiddenFail: false})
         }
       }
 
       componentDidMount() {
         let myCookie = read_cookie('user')
-
+        axios.get(serverUrl+'api/product/categories/')
+        .then(res => {
+          let resp = res.data;
+          let categoryStructureTemp = {};
+          let categoryListTemp = {}
+          let keys = [];
+          for (let i=0;i<resp.length;i++) {
+            if (resp[i]["parent"] == "Categories") {
+              keys.push(resp[i]["name"])
+            }
+            categoryListTemp[resp[i]["name"]] = resp[i]["id"]
+          }
+          for (let i=0;i<keys.length;i++) {
+            let sublist = []
+            for (let j=0;j<resp.length;j++) {
+              if (resp[j]["parent"] == keys[i]) {
+                sublist.push(resp[j]["name"]);
+              }
+            }
+            categoryStructureTemp[keys[i]] = sublist;
+          }
+          categoryStructureTemp[''] = []
+          this.setState({categoryList: categoryListTemp})
+          this.setState({categoryStructure: categoryStructureTemp})
+        })
 
       }
 
 
     render() {
-      let categoryList = {"Home": ["Home Textile", "Bedroom", "Bathroom", "Kitchen", "Lighting", "Furniture", "Home/Other"],
-                          "Electronics": ["Tablets", "Smartphones", "Computers", "TV", "Gaming", "Home Appliances", "Electronics/Other"], 
-                          "Clothing": ["Top", "Bottom", "Outerwear", "Shoes", "Bags", "Accessories", "Activewear", "Clothing/Other"], 
-                          "Living": ["Art Supplies", "Musical Devices", "Sports", "Living/Other", "Living/Other"], 
-                          "Selfcare": ["Perfumes", "Makeup", "Skincare", "Hair", "Body Care", "Selfcare/Other"],
-                          "Books": ["Books/Other"],
-                          "": []
-                        }
+      let categoryStructure = this.state.categoryStructure
 
-      let categories = Object.keys(categoryList).map(category => {
+      let categories = Object.keys(categoryStructure).map(category => {
         if (category !== ""){
           return (
             <option value={category}>{category}</option>
@@ -137,7 +171,7 @@ export default class AddProduct extends Component {
         }
       })
 
-      let subcategories = categoryList[this.state.category].map(subcategory => {
+      let subcategories = categoryStructure[this.state.category].map(subcategory => {
         return (
           <option value={subcategory}>{subcategory}</option>
         )
@@ -153,6 +187,12 @@ export default class AddProduct extends Component {
                     <h3 className="text-center">Add Product</h3>
                 </div>
                 <div className="profile-container">
+                <Alert variant="success" hidden={this.state.isHiddenSuccess}>
+                  Product successfully added.
+                </Alert>
+                <Alert variant="danger" hidden={this.state.isHiddenFail}>
+                  Something went wrong.
+                </Alert>
 
                     <div className="col-lg-12 col-md-12 col-sm-12 no-padding-left ">
                         <div className="account-update">
@@ -192,7 +232,7 @@ export default class AddProduct extends Component {
                                     <div className="error">{this.state.errors["category"]}</div>
                                   </div>
                               </div>
-                              <div className="form-group row">
+                              <div className="form-group row" hidden={this.state.subHidden}>
                                   <label className="col-4 align-middle">Subcategory:</label>
                                   <div className="col-4">
                                     <select className="form-control col" name="subcategory" id="category2"
@@ -229,8 +269,8 @@ export default class AddProduct extends Component {
 
                                   </div>
                               </div>
-                              <div id="save-changes-div">
-                                <Button variant="primary" id="save-changes-product" type="submit">Save Changes</Button>
+                              <div id="add-product-div">
+                                <Button variant="primary" id="add-product" type="submit">Add product</Button>
                               </div>
 
                             </form>

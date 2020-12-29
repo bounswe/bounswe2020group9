@@ -9,53 +9,102 @@ import Col from 'react-bootstrap/Col'
 import CardDeck from 'react-bootstrap/CardDeck'
 import axios from 'axios'
 import Card from "../../components/ProductCard/productCard"
+import {serverUrl} from '../../utils/get-url'
+import { Link } from 'react-router-dom'
 
 
 
 import './home.scss'
 
-class Home extends React.Component {
+class Home extends Component {
 
   constructor() {
     super();
     this.state = {
       isLogged: 'yes',
       redirect: null,
+      categoryList: [],
+      categoryHidden: true,
+      categoryDict: {},
+      categoryStructure: {'': []},
       products: []
     }
   }
 
 
   componentDidMount() {
-    axios.get(`http://13.59.236.175:8000/api/product/`)
+    axios.get(serverUrl+`api/product/`)
       .then(res => {
-        console.log(res.data[1].brand)
         this.setState({ products: res.data })
-        console.log(this.state.products[0])
       })
+    axios.get(serverUrl+'api/product/categories/')
+    .then(res => {
+      let resp = res.data;
+      let categoryStructureTemp = {};
+      let keys = [];
+      let categoryDictTemp = {}
+      for (let i=0;i<resp.length;i++) {
+        if (resp[i]["parent"] == "Categories") {
+          keys.push(resp[i]["name"])
+          categoryDictTemp[resp[i]["id"]] = resp[i]["name"]
+        }
+      }
+      this.setState({categoryList: keys})
+      this.setState({categoryDict: categoryDictTemp})
+      for (let i=0;i<keys.length;i++) {
+        let sublist = []
+        for (let j=0;j<resp.length;j++) {
+          if (resp[j]["parent"] == keys[i]) {
+            sublist.push(resp[j]["name"]);
+          }
+        }
+        categoryStructureTemp[keys[i]] = sublist;
+      }
+      categoryStructureTemp[''] = []
+      console.log("category strructure: "+categoryStructureTemp)
 
+      this.setState({categoryStructure: categoryStructureTemp})
+    })
   }
 
   render() {
     let active = 2;
-    let category = ['Books', 'Petshop', 'Clothing', 'Health', 'Home', 'Electronics', 'Consumables']
-    let items = [];
-    for (let number = 0; number <= 6; number++) {
-      items.push(
-        <Pagination.Item key={number} className={"myPaginationItem"}>
-          {category[number]}
-        </Pagination.Item>,
+    let categoryList = this.state.categoryList
+    let categoryStructure = this.state.categoryStructure
+    let categories = [];
+    for (let number = 0; number < categoryList.length; number++) {
+      let subs = [];
+      let subList = categoryStructure[categoryList[number]]
+      if (subList){
+        for (let subnumber = 0; subnumber < subList.length; subnumber++){
+          subs.push(
+            <a className="dropdown-item" href={"/category/"+subList[subnumber]}>{subList[subnumber]}</a>
+          )
+        }
+      }
+
+
+      categories.push(
+        <Pagination.Item key={number} className="myPaginationItem dropdown" href={"/category/"+categoryList[number]}>
+          <a className="nav-link dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span className="mr-1"></span> {categoryList[number]}
+          </a>
+          <div className="dropdown-menu">
+            {subs}
+          </div>
+          
+        </Pagination.Item>
       );
     }
 
 
-
+    let categoryDict = this.state.categoryDict
     let productCards = this.state.products.map(product => {
-        return (
-          <Col sm="3">
-            <Card product={product}></Card>
-          </Col>
-        )
+      return (
+        <Col sm="3">
+          <Card product={product}></Card>
+        </Col>
+      )
     })
 
     return (
@@ -64,7 +113,7 @@ class Home extends React.Component {
         <div className='homeWrapper'>
           <Container>
             <div className='myPagination'>
-              <Pagination size="lg">{items}</Pagination>
+              <Pagination size="lg">{categories}</Pagination>
             </div>
             <div className='row homeJumbotron'>
               <Jumbotron style={{background:"transparent"}}>

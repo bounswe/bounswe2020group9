@@ -15,7 +15,19 @@
     }
     
 }
-#save-changes-div{
+#add-product-div{
     text-align: center;
     margin-left: 20px;
+    & #add-product {
+        border-color: #F4A133;
+        background-color: #F4A133;
+    
+        color: black;
+          &:hover {
+            background-color: #f1ca1a;
+    
+            color: black;
+        }
+      }
 }
+

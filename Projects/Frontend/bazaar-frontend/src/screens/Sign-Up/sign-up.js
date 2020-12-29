@@ -2,9 +2,11 @@ import React, { Component, useState } from "react";
 import GoogleButton from 'react-google-button'
 import axios from 'axios'
 import { Redirect } from "react-router-dom";
+import {serverUrl} from '../../utils/get-url'
+import Alert from 'react-bootstrap/Alert'
 
 
-import "./sign-up.css";
+import "./sign-up.scss";
 
 export default class SignUp extends Component {
 
@@ -15,7 +17,7 @@ export default class SignUp extends Component {
           password: '',
           fname: '',
           lname: '',
-          utype: 'Customer',
+          isHidden: true,
           redirect: null,
           errors: {}
         }
@@ -51,31 +53,43 @@ export default class SignUp extends Component {
     
       handleChange = event => {
         this.setState({ [event.target.name]: event.target.value });
-        console.log(this.state.utype)
       }
 
       handleSubmit = event => {
     
         event.preventDefault();
-        const data = new FormData();
-        data.append("username", this.state.username);
-        data.append("password", this.state.password);
-        data.append("first_name", this.state.fname);
-        data.append("last_name", this.state.lname);
-        if (this.state.utype === 'Customer') {
-            data.append("user_type", 1);
-        } else {
-            data.append("user_type", 2);
-        }
+
         if (this.handleValidation()){
-            console.log(this.state.username);
-            axios.post(`http://13.59.236.175:8000/api/user/signup/`, data)
-              .then(res => {
-        
-                console.log(res);
-                console.log(res.data);
-                this.setState({ redirect: "/signin" });
-              })
+          const data = new FormData();
+          data.append("username", this.state.username);
+          data.append("password", this.state.password);
+          data.append("first_name", this.state.fname);
+          data.append("last_name", this.state.lname);
+          data.append("user_type", 1);
+
+          axios.post(serverUrl+`api/user/signup/`, data)
+            .then(res => {
+      
+              console.log(res);
+              console.log(res.data);
+              //this.setState({ redirect: "/signin" });
+              this.setState({isHidden: false})
+            }).catch((error) => {
+              if (error.response) {
+                // Request made and server responded
+                let new_errors = this.state.errors
+                new_errors["username"] = error.response.data["username"][0]
+                this.setState({errors: new_errors})
+              } else if (error.request) {
+                // The request was made but no response was received
+                console.log(error.request);
+              } else {
+                // Something happened in setting up the request that triggered an Error
+                console.log('Error', error.message);
+              }
+
+
+          })
 
         } 
     
@@ -88,7 +102,12 @@ export default class SignUp extends Component {
             return <Redirect to={this.state.redirect} />
           }
         return (
+
             <div className="entry-form">
+              <Alert variant="success" hidden={this.state.isHidden}>
+                A confirmation mail has been sent to your account, please check it.
+                You can <Alert.Link href="/signin">sign in</Alert.Link> to your account after the confirmation is done.
+              </Alert>
                 <form onSubmit={this.handleSubmit} >
                     <h3>Sign Up</h3>
                     <div className="row">
@@ -116,31 +135,14 @@ export default class SignUp extends Component {
                         onChange={this.handleChange}/>
                         <div className="error">{this.state.errors["password"]}</div>
                     </div>
-                    
-                    <div className="form-group row">
-                        <label className="col-6 align-middle">User type</label>
-                        <div className="form-check form-check-inline">
-                            <input className="form-check-input align-middle" type="radio" name="utype" id="gridRadios1" value="Customer" 
-                            onClick={this.handleChange} defaultChecked></input>
-                            <label className="form-check-label" for="gridRadios1">
-                                Customer
-                            </label>
-                        </div>
-                        <div className="form-check form-check-inline">
-                            <input className="form-check-input align-middle" type="radio" name="utype" id="gridRadios2" value="Vendor"
-                            onClick={this.handleChange}></input>
-                            <label className="form-check-label" for="gridRadios2">
-                                Vendor
-                            </label>
-                        </div>
-                        <div className="error">{this.state.errors["utype"]}</div>
-                        
-                        
-                    </div>
+
+                    <p className="user-type-change">
+                        Want to <a href="/signup-vendor">sign up as Vendor?</a>
+                    </p>
 
                     <button id="submit" type="submit" className="btn btn-block">Sign Up</button>
 
-                    <p className="forgot-password">
+                    <p className="sign-in-redirect">
                         Already registered <a href="/signin">sign in?</a>
                     </p>
                 </form>

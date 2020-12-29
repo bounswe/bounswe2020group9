@@ -21,8 +21,10 @@
 #save-changes-product {
   border-color: #F4A133;
   background-color: #F4A133;
-  color: white;
+  color: black;
     &:hover {
-      background-color: #da8415;
+      background-color: #f1ca1a;
+
+      color: black;
   }
 }

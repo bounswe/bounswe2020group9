@@ -1,7 +1,7 @@
 .entry-form {
     align-content: center;
     margin: auto;
-    max-width: 35rem;
+    max-width: 50rem;
     padding: 15px;
   }
   
@@ -9,16 +9,13 @@
     margin: auto;
     margin-top: 15px;
     color: #F4A133;
+  
   }
   
   #submit {
     background-color: #F4A133;
     font-weight: 650;
   }
- 
-.error {
-  color: red;
-}
   
   .forgot-password{
     text-align: right;
@@ -31,3 +28,18 @@
   .forgot-password a {
     color: #167bff;
   }
+
+  #sign-in-div{
+    text-align: center;
+    & #sign-in {
+        border-color: #F4A133;
+        background-color: #F4A133;
+        width: 100%;
+        color: black;
+          &:hover {
+            background-color: #f1ca1a;
+    
+            color: black;
+        }
+      }
+}
