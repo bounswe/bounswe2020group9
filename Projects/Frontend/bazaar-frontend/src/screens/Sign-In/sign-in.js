@@ -6,12 +6,14 @@ import { Redirect } from "react-router-dom";
 import {serverUrl} from '../../utils/get-url'
 import { Button, Alert} from "react-bootstrap";
 
+import { GoogleLogin } from 'react-google-login';
+
 import "./sign-in.scss";
 
 export default class SignIn extends Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       username: '',
       password: '',
@@ -19,7 +21,88 @@ export default class SignIn extends Component {
       isHiddenUnknown: true,
       redirect: null
     }
+    // this.insertGapiScript = this.insertGapiScript.bind(this);
   }
+
+  insertGapiScript = event => {
+
+      event.preventDefault();
+      const script = document.createElement('script')
+      script.src = 'https://apis.google.com/js/platform.js'
+      script.onload = () => {
+        this.initializeGoogleSignIn()
+      }
+      document.body.appendChild(script)
+  }
+
+  initializeGoogleSignIn() {
+    window.gapi.load('auth2', () => {
+      window.gapi.auth2.init({
+        client_id: '668711281350-36g6p1rlp9doabsb79lktm95hpa56qcj.apps.googleusercontent.com',
+        cookiepolicy: 'single_host_origin'
+      })
+
+      console.log('api init')
+
+      window.gapi.load('signin2', ()=> {
+        const params = {
+          
+          onsuccess: this.onSuccess.bind(this) ,
+          onfailure: this.onFailure ,
+          }
+         
+         window.gapi.signin2.render('SignInButton' , params);
+      })
+
+    })
+
+  }
+  onSuccess(googleUser) {
+
+    
+
+    const profile = googleUser.getBasicProfile();
+    console.log("Name: " + profile.getName());
+    console.log("Mail: " + profile.getEmail());
+    var id_token = googleUser.getAuthResponse().id_token;
+
+     // let comp = this ;
+
+    
+
+    axios.post(`http://13.59.236.175:8000/api/user/googleuser/`, { "username": profile.getEmail(), 
+                                                                  "token": googleUser.getAuthResponse().id_token, 
+                                                                  "first_name": profile.getGivenName(),
+                                                                  "last_name": profile.getFamilyName() 
+                                                                })
+      .then(res => {
+        
+        const cookie_key = 'user';
+        const cookie_data = res.data;
+        bake_cookie(cookie_key, cookie_data);
+
+        console.log(res);
+        console.log(res.data);
+
+        this.setState({ redirect: "/" });
+      })
+
+      
+
+
+    
+    
+
+  }
+  onFailure(googleUser){
+    console.log("Failure ");
+  }
+
+  /*componentDidMount() {
+    console.log('loading');
+    // this.insertGapiScript() ;
+
+  }*/
 
 
   handleChange = event => {
@@ -27,6 +110,7 @@ export default class SignIn extends Component {
     this.setState({ [event.target.name]: event.target.value });
 
   }
+
 
   handleSubmit = event => {
 
@@ -105,9 +189,8 @@ export default class SignIn extends Component {
           </p>
 
         </form>
-        <GoogleButton className="btn-google"
-          onClick={() => { console.log('Google button clicked') }}
-        />
+        <GoogleButton id= "SignInButton" onClick={this.insertGapiScript}className= "btn-google"></GoogleButton> 
+        
       </div>
 
     );
