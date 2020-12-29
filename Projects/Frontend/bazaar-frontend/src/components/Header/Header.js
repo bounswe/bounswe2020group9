@@ -14,7 +14,7 @@ import "./header.scss";
 
 
 //components
-import {serverUrl} from '../../utils/get-url'
+import { serverUrl } from '../../utils/get-url'
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 
 //utils
@@ -39,7 +39,8 @@ class Header extends Component {
       keywords: '',
       user_type: 0,
       cart: [],
-      redirect: null
+      redirect: null,
+      cartProducts: [],
     }
 
   }
@@ -51,14 +52,14 @@ class Header extends Component {
   handleSearchSubmit = event => {
     event.preventDefault();
     const keywords = this.state.keywords
-    const redirectTo = "/search="+keywords
-    this.setState({redirect: redirectTo})
-  
+    const redirectTo = "/search=" + keywords
+    this.setState({ redirect: redirectTo })
+
   }
 
   handleSearchChange = event => {
     event.preventDefault();
-    this.setState({ [event.target.name]: event.target.value }); 
+    this.setState({ [event.target.name]: event.target.value });
   }
 
 
@@ -70,123 +71,133 @@ class Header extends Component {
     }
     else {
       this.setState({ isSignedIn: true })
-      this.setState({ user_type: myCookie.user_type})
+      this.setState({ user_type: myCookie.user_type })
     }
 
-    
-    axios.get(serverUrl+'api/user/cart/', {
-      headers:{
+
+    axios.get(serverUrl + 'api/user/cart/', {
+      headers: {
         'Authorization': `Token ${myCookie.token}`
       }
     })
-    .then(res => {
-      let resp = res.data;
-      this.setState({cart: resp})
-    })
+      .then(res => {
+        let resp = res.data;
+        this.setState({ cart: resp })
+        return (resp)
+      }).then(list => {
+        let productIds = list.map(product => product.product)
+        let productNamesPromises = productIds.map(productId => axios.get(serverUrl + `api/product/${productId}/`))
+        return (Promise.all(productNamesPromises))
+
+      }).then(list => {
+        let cartProducts = list.map(res => res.data)
+        this.setState({ cartProducts })
+      }
+      )
 
   }
 
   render() {
 
+
+    let cartItems = this.state.cartProducts.map(product => {
+      return (
+        <Link className="dropdown-item" to={{ pathname: `/product/${product.id}`, state: {product} }}>{product.name}</Link>
+      )
+    })
     let SignPart
 
-    let cartItems = this.state.cart.map(cartItem => {
-      return (
-        <a className="dropdown-item" href="#">{cartItem.product}</a>
-      )
-  })
-
     if (Object.keys(read_cookie('user')).length !== 0) {
-      if (read_cookie('user').user_type === 1){
+      if (read_cookie('user').user_type === 1) {
         SignPart = <ul className="navbar-nav navbar-right">
-        <li className="nav-item dropdown">
-          <a className="nav-link dropdown-toggle" href="#" id="ddlProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <FontAwesomeIcon icon={faUser} />
-            <span className="mr-1"></span>Profile
+          <li className="nav-item dropdown">
+            <a className="nav-link dropdown-toggle" href="#" id="ddlProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <FontAwesomeIcon icon={faUser} />
+              <span className="mr-1"></span>Profile
           </a>
-          <div className="dropdown-menu" aria-labelledby="ddlProfile">
-            <a className="dropdown-item" href="/profile-page">View Profile</a>
-            <a className="dropdown-item" href="/my-list">My List</a>
-            <a className="dropdown-item" href="#">My Orders</a>
-          </div>
-        </li>
-        <li className="nav-item dropdown">
-          <a className="nav-link dropdown-toggle" href="#" id="ddlCart" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <FontAwesomeIcon icon={faShoppingCart} />
-            <span className="mr-1"></span>Cart
+            <div className="dropdown-menu" aria-labelledby="ddlProfile">
+              <a className="dropdown-item" href="/profile-page">View Profile</a>
+              <a className="dropdown-item" href="/my-list">My List</a>
+              <a className="dropdown-item" href="#">My Orders</a>
+            </div>
+          </li>
+          <li className="nav-item dropdown">
+            <a className="nav-link dropdown-toggle" href="#" id="ddlCart" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <FontAwesomeIcon icon={faShoppingCart} />
+              <span className="mr-1"></span>Cart
             <span className="badge badge-secondary badge-pill">{this.state.cart?.length}</span>
-          </a>
-          <div className="dropdown-menu" aria-labelledby="ddlCart">
-            {cartItems}
-            <div className="dropdown-divider"></div>
-            <Link to={{pathname: `/cart`, state: {cart: this.state.cart} }} >
-              <span className="dropdown-item" >Go to Cart</span>
-            </Link>
-          </div>
-        </li>
-        <li className="nav-item dropdown">
-          <a className="nav-link dropdown-toggle" href="#" id="ddlMessages" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <FontAwesomeIcon icon={faEnvelope} />
-            <span className="mr-1"></span>Messages
+            </a>
+            <div className="dropdown-menu" aria-labelledby="ddlCart">
+              {cartItems}
+              <div className="dropdown-divider"></div>
+              <Link to={{ pathname: `/cart`, state: { cart: this.state.cart } }} >
+                <span className="dropdown-item" >Go to Cart</span>
+              </Link>
+            </div>
+          </li>
+          <li className="nav-item dropdown">
+            <a className="nav-link dropdown-toggle" href="#" id="ddlMessages" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <FontAwesomeIcon icon={faEnvelope} />
+              <span className="mr-1"></span>Messages
             <span className="badge badge-secondary badge-pill"></span>
-          </a>
-          <div className="dropdown-menu" aria-labelledby="ddlMessages">
-            <div className="dropdown-divider"></div>
-            <a className="dropdown-item" href="#">Go to Massages</a>
-          </div>
-        </li>
-        <li className="nav-item">
-          <a className="nav-link" href="/" onClick={this.handleClick}>
-            <FontAwesomeIcon icon={faSignOutAlt} />
-            <span className="mr-1"></span>Sign Out
+            </a>
+            <div className="dropdown-menu" aria-labelledby="ddlMessages">
+              <div className="dropdown-divider"></div>
+              <a className="dropdown-item" href="#">Go to Massages</a>
+            </div>
+          </li>
+          <li className="nav-item">
+            <a className="nav-link" href="/" onClick={this.handleClick}>
+              <FontAwesomeIcon icon={faSignOutAlt} />
+              <span className="mr-1"></span>Sign Out
           </a>
 
-        </li>
+          </li>
 
-      </ul>
+        </ul>
       } else {
         SignPart = <ul className="navbar-nav navbar-right">
-        <li className="nav-item dropdown">
-          <a className="nav-link dropdown-toggle" href="#" id="ddlInventory" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <FontAwesomeIcon icon={faWarehouse} />
-            <span className="mr-1"></span>Inventory
+          <li className="nav-item dropdown">
+            <a className="nav-link dropdown-toggle" href="#" id="ddlInventory" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <FontAwesomeIcon icon={faWarehouse} />
+              <span className="mr-1"></span>Inventory
           </a>
-          <div className="dropdown-menu" aria-labelledby="ddlProfile">
-            <a className="dropdown-item" href="/inventory">My Products</a>
-            <a className="dropdown-item" href="/add-product">Add Product</a>
-          </div>
-        </li>
-        <li className="nav-item dropdown">
-          <a className="nav-link dropdown-toggle" href="#" id="ddlProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <FontAwesomeIcon icon={faUser} />
-            <span className="mr-1"></span>Profile
+            <div className="dropdown-menu" aria-labelledby="ddlProfile">
+              <a className="dropdown-item" href="/inventory">My Products</a>
+              <a className="dropdown-item" href="/add-product">Add Product</a>
+            </div>
+          </li>
+          <li className="nav-item dropdown">
+            <a className="nav-link dropdown-toggle" href="#" id="ddlProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <FontAwesomeIcon icon={faUser} />
+              <span className="mr-1"></span>Profile
           </a>
-          <div className="dropdown-menu" aria-labelledby="ddlProfile">
-            <a className="dropdown-item" href="/profile-page">View Profile</a>
-          </div>
-        </li>
-        <li className="nav-item dropdown">
-          <a className="nav-link dropdown-toggle" href="#" id="ddlMessages" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <FontAwesomeIcon icon={faEnvelope} />
-            <span className="mr-1"></span>Messages
+            <div className="dropdown-menu" aria-labelledby="ddlProfile">
+              <a className="dropdown-item" href="/profile-page">View Profile</a>
+            </div>
+          </li>
+          <li className="nav-item dropdown">
+            <a className="nav-link dropdown-toggle" href="#" id="ddlMessages" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <FontAwesomeIcon icon={faEnvelope} />
+              <span className="mr-1"></span>Messages
             <span className="badge badge-secondary badge-pill"></span>
-          </a>
-          <div className="dropdown-menu" aria-labelledby="ddlMessages">
-            <div className="dropdown-divider"></div>
-            <a className="dropdown-item" href="#">Go to Massages</a>
-          </div>
-        </li>
-        <li className="nav-item">
-          <a className="nav-link" href="/" onClick={this.handleClick}>
-            <FontAwesomeIcon icon={faSignOutAlt} />
-            <span className="mr-1"></span>Sign Out
+            </a>
+            <div className="dropdown-menu" aria-labelledby="ddlMessages">
+              <div className="dropdown-divider"></div>
+              <a className="dropdown-item" href="#">Go to Massages</a>
+            </div>
+          </li>
+          <li className="nav-item">
+            <a className="nav-link" href="/" onClick={this.handleClick}>
+              <FontAwesomeIcon icon={faSignOutAlt} />
+              <span className="mr-1"></span>Sign Out
           </a>
 
-        </li>
+          </li>
 
-      </ul>
+        </ul>
       }
-      
+
 
     }
     else {
@@ -224,9 +235,9 @@ class Header extends Component {
             <form className="search-form justify-content-center" onSubmit={this.handleSearchSubmit}>
               <div className="form-row align-items-center">
                 <div className="col">
-                  <input type="text" className="form-control" name="keywords" id="search-bar" 
-                  placeholder="Search product or brand"
-                  onChange={this.handleSearchChange}/>
+                  <input type="text" className="form-control" name="keywords" id="search-bar"
+                    placeholder="Search product or brand"
+                    onChange={this.handleSearchChange} />
                 </div>
                 <div id="search-button-div" className="col">
                   <Button variant="primary" id="search-button" type="submit">Search</Button>
