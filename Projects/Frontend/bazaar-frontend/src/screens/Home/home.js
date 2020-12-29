@@ -100,12 +100,11 @@ class Home extends Component {
 
     let categoryDict = this.state.categoryDict
     let productCards = this.state.products.map(product => {
-      console.log(JSON.stringify(product))
-        return (
-          <Col sm="3">
-            <Card product={product}></Card>
-          </Col>
-        )
+      return (
+        <Col sm="3">
+          <Card product={product}></Card>
+        </Col>
+      )
     })
 
     return (

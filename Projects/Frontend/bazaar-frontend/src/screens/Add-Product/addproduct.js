@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import axios from 'axios'
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 import Cookies from 'js-cookie';
-import { Modal, Button } from "react-bootstrap";
+import { Modal, Button, Alert} from "react-bootstrap";
 import {serverUrl} from '../../utils/get-url'
 
 
@@ -30,7 +30,9 @@ export default class AddProduct extends Component {
           errors: {},
           categoryStructure: {"":[]},
           categoryList: {},
-          subHidden: true
+          subHidden: true,
+          isHiddenSuccess: true,
+          isHiddenFail: true
         //   user_id: Cookies.get("user_id")
         }
       }
@@ -113,6 +115,7 @@ export default class AddProduct extends Component {
             axios.post(serverUrl+`api/product/`, body, header)
             .then(res => {
       
+              this.setState({isHiddenSuccess: false})
               console.log(res);
               console.log(res.data);
   
@@ -122,6 +125,7 @@ export default class AddProduct extends Component {
 
         } else {
             this.setState({ [this.state.hasError]: true });
+            this.setState({isHiddenFail: false})
         }
       }
 
@@ -183,6 +187,12 @@ export default class AddProduct extends Component {
                     <h3 className="text-center">Add Product</h3>
                 </div>
                 <div className="profile-container">
+                <Alert variant="success" hidden={this.state.isHiddenSuccess}>
+                  Product successfully added.
+                </Alert>
+                <Alert variant="danger" hidden={this.state.isHiddenFail}>
+                  Something went wrong.
+                </Alert>
 
                     <div className="col-lg-12 col-md-12 col-sm-12 no-padding-left ">
                         <div className="account-update">
