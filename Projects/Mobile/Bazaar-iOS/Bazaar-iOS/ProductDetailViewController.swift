@@ -193,7 +193,7 @@ class ProductDetailViewController: UIViewController {
                 APIManager().addToList(userId: user, list_id: list_id!, product_id: product.id, completionHandler: { result in
                     switch result{
                     case .success(_):
-                        let alertController = UIAlertController(title: "Problem", message: "The Item is added to the list \"\(self.listPickerTextField.text!)\"", preferredStyle: .alert)
+                        let alertController = UIAlertController(title: "Success", message: "The Item is added to the list \"\(self.listPickerTextField.text!)\"", preferredStyle: .alert)
                         alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
                         self.present(alertController, animated:true, completion: nil)
                         return

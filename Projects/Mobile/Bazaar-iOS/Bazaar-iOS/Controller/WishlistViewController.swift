@@ -94,6 +94,8 @@ class WishlistViewController: UIViewController {
             self.listsTableView.isHidden = true
             return
         }
+        
+        self.listsTableView.backgroundColor = UIColor.systemBackground
     }
 
     
