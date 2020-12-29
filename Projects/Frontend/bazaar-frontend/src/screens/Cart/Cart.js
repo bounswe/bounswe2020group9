@@ -1,15 +1,19 @@
 import React, { Component } from "react";
 import "./cart.scss";
+import axios from "axios";
+import { Redirect } from "react-router-dom";
 
 //components
 import Col from "react-bootstrap/Col";
 import ProductCard from "../../components/ProductCard/productCard";
 import Row from "react-bootstrap/Row";
 import Container from "react-bootstrap/Container";
-import { serverUrl } from "../../utils/get-url";
-import axios from "axios";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
+
+//helpers
+import { serverUrl } from "../../utils/get-url";
+import { bake_cookie, read_cookie, delete_cookie } from "sfcookies";
 
 export default class Cart extends Component {
   constructor(props) {
@@ -17,6 +21,8 @@ export default class Cart extends Component {
 
     this.state = {
       products: [],
+      cartItemDeleted: false,
+      cart: [],
     };
   }
 
@@ -24,10 +30,35 @@ export default class Cart extends Component {
     axios.get(serverUrl + `api/product/`).then((res) => {
       this.setState({ products: res.data });
     });
+
+    const { cart } = this.props.location.state;
+
+    this.setState({ cart });
+  }
+
+  deleteFromCart(id) {
+    console.log("I am HERE");
+    let myCookie = read_cookie("user");
+
+    const headers = {
+      Authorization: `Token ${myCookie.token}`,
+    };
+
+    const data = {
+      product_id: id,
+    };
+    axios
+      .delete(serverUrl + `api/user/cart/`, {
+        headers: headers,
+        data: data,
+      })
+      .then((res) => {
+        this.setState({ cart: res.data });
+      });
   }
 
   render() {
-    const { cart } = this.props.location.state;
+    const { cart } = this.state;
 
     let productIds = cart.map((product) => product.product);
     let filteredProducts = this.state.products?.filter((product) =>
@@ -41,6 +72,12 @@ export default class Cart extends Component {
       return (
         <Col sm="3">
           <ProductCard product={product}></ProductCard>
+          <Button
+            variant="danger"
+            onClick={() => this.deleteFromCart(product.id)}
+          >
+            Delete From Cart
+          </Button>
         </Col>
       );
     });
