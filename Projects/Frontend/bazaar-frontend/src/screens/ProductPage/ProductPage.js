@@ -104,6 +104,14 @@ export default class Productpage extends Component {
       )
     })
 
+    let categoryName = ""
+    let categoryParent = ""
+
+    if (product.category){
+      categoryName = product.category.name
+      categoryParent = product.category.parent
+    }
+
     return (
       <div>
         <Container>
@@ -142,7 +150,7 @@ export default class Productpage extends Component {
                       <h2 className={"productHeader"}>{product.name}</h2>
                     </Col>
                     <Col>
-                      <h5 className={"productCategory"}><span className={'productCategoryName'}>{product.category.name}</span> <span className={'productCategoryParent'}>{product.category.parent}</span></h5>
+                      <h5 className={"productCategory"}><span className={'productCategoryName'}>{categoryName}</span> <span className={'productCategoryParent'}>{categoryParent}</span></h5>
                     </Col>
                   </Row>
                   <h5 className={"productBrand"}>{product.brand}</h5>

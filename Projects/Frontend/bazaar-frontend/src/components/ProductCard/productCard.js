@@ -23,6 +23,7 @@ export default class CardComponent extends Component {
     } else {
       imageLink = "";
     }
+    this.props.product.picture = imageLink
     let categoryName = ""
     if (this.props.product.category){
       categoryName = this.props.product.category["name"]
@@ -36,7 +37,7 @@ export default class CardComponent extends Component {
         <Link to={{pathname: `/product/${this.props.product.id}`, state: {product: this.props.product} }} >
           <Card className={"productCard"}>
             <div className={"productImgWrapper"}>
-              <Card.Img className={"productCardImage"} variant="top" src={imageLink} />
+              <Card.Img className={"productCardImage"} variant="top" src={this.props.product.picture} />
             </div>
             <Card.Body className={"productCardBody"}>
               <Card.Title>{this.props.product.name}</Card.Title>
