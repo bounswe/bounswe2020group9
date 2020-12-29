@@ -19,8 +19,12 @@ export default class ProfilePage extends Component {
           confpw: '',
           fname: '',
           lname: '',
+          fullAddress: '',
+          addressName: '',
+          postalCode: '',
           utype: '',
           token: '',
+          isCustomer: true,
           redirect: null,
           hasError: false,
           isHiddenSuccessPw: true,
@@ -77,6 +81,7 @@ export default class ProfilePage extends Component {
 
         let myCookie = read_cookie('user');
         body.append("user_id", myCookie.user_id)
+        this.setState({utype: myCookie.user_type})
         const header = {headers: {Authorization: "Token "+myCookie.token}};
         
         if (this.handlePasswordValidation()) {
@@ -105,6 +110,44 @@ export default class ProfilePage extends Component {
             this.setState({ [this.state.hasError]: true });
         }
       }
+
+      handleVendorValidation(){
+        let formIsValid = true;
+        let new_errors = {};
+
+        if(this.state.fname.length === 0){
+          formIsValid = false;
+          new_errors["fname"] = "Please provide your name.";
+        }
+  
+        if(this.state.lname.length === 0){
+          formIsValid = false;
+          new_errors["lname"] = "Please provide your last name";      
+        }
+   
+        if(this.state.company.length === 0){
+          formIsValid = false;
+          new_errors["company"] = "Please provide your company";      
+        }
+
+        if (this.state.addressName.length === 0){
+          formIsValid = false;
+          new_errors["addressName"] = "Please provide your address name";      
+        }
+        
+        if (this.state.fullAddress.length === 0){
+          formIsValid = false;
+          new_errors["fullAddress"] = "Please provide your full address";      
+        }
+
+        if (this.state.postalCode.length === 0){
+          formIsValid = false;
+          new_errors["postalCode"] = "Please provide your postal code.";      
+        }
+
+        this.setState({errors: new_errors});
+        return formIsValid;
+      }
     
       handleSubmit = event => {  
         event.preventDefault();
@@ -118,26 +161,53 @@ export default class ProfilePage extends Component {
             Authorization: "Token "+myCookie.token
           }
         };
+        if (this.state.utype === 2 && this.handleVendorValidation()){
+          body.append("address", this.state.fullAddress);
+          body.append("address_name", this.state.addressName);
+          body.append("company", this.state.company);
+          body.append("postal_code", this.state.postalCode);
 
-        axios.put(serverUrl+'api/user/profile/', body, header)
-        .then(res => {
+          axios.put(serverUrl+'api/user/profile/', body, header)
+          .then(res => {
+    
+            this.setState({isHiddenSuccess: false})
+          }).catch((error) => {
+            if (error.response) {
+              // Request made and server responded
+              console.log(error.response)
+            } else if (error.request) {
+              // The request was made but no response was received
+              console.log(error.request);
+            } else {
+              // Something happened in setting up the request that triggered an Error
+              console.log('Error', error.message);
+            }
+            this.setState({isHiddenUnknown: false})
   
-          this.setState({isHiddenSuccess: false})
-        }).catch((error) => {
-          if (error.response) {
-            // Request made and server responded
-            console.log(error.response)
-          } else if (error.request) {
-            // The request was made but no response was received
-            console.log(error.request);
-          } else {
-            // Something happened in setting up the request that triggered an Error
-            console.log('Error', error.message);
-          }
-          this.setState({isHiddenUnknown: false})
+  
+        })
+        } else if (this.state.utype === 1){
+          axios.put(serverUrl+'api/user/profile/', body, header)
+          .then(res => {
+    
+            this.setState({isHiddenSuccess: false})
+          }).catch((error) => {
+            if (error.response) {
+              // Request made and server responded
+              console.log(error.response)
+            } else if (error.request) {
+              // The request was made but no response was received
+              console.log(error.request);
+            } else {
+              // Something happened in setting up the request that triggered an Error
+              console.log('Error', error.message);
+            }
+            this.setState({isHiddenUnknown: false})
+  
+  
+        })
+        }
 
-
-      })
 
 
       }
@@ -151,9 +221,12 @@ export default class ProfilePage extends Component {
               this.setState({lname : res.data.last_name})
               
               if (res.data.user_type === 1){
-                this.setState({utype: "Customer"});
+                this.setState({user_type: "Customer"});
               } else {
-                this.setState({utype: "Vendor"});
+                this.setState({user_type: "Vendor"});
+                this.setState({company : res.data.company})
+                this.setState({isCustomer : false})
+
               }
 
           })
@@ -194,6 +267,7 @@ export default class ProfilePage extends Component {
                                   <div className="col">
                                     <input type="text" name="fname"className="form-control col" value = {this.state.fname}
                                     onChange={this.handleChange} required/>
+                                    <div className="error">{this.state.errors["fname"]}</div>                                
                                   </div>
                               </div>
                               <div className="form-group row">
@@ -201,12 +275,21 @@ export default class ProfilePage extends Component {
                                   <div className="col">
                                     <input type="text" name="lname"className="form-control col" value = {this.state.lname}
                                     onChange={this.handleChange} required/>
+                                    <div className="error">{this.state.errors["lname"]}</div>
+                                  </div>
+                              </div>
+                              <div className="form-group row" hidden={this.state.isCustomer}>
+                                  <label className="col-4 align-middle">Company</label>
+                                  <div className="col">
+                                    <input type="text" name="company" className="form-control col" value = {this.state.company}
+                                    onChange={this.handleChange}/>
+                                    <div className="error">{this.state.errors["company"]}</div>
                                   </div>
                               </div>
                               <div className="form-group row">
                                   <label className="col-4 align-middle">User Type</label>
                                   <div className="col">
-                                    <input type="text" name="lname"className="form-control col" value = {this.state.utype}
+                                    <input type="text" name="lname"className="form-control col" value = {this.state.user_type}
                                     onChange={this.handleChange} disabled/>
                                   </div>
                               </div>
