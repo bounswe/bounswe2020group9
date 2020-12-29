@@ -200,7 +200,7 @@ extension MainViewController:UITableViewDelegate,UITableViewDataSource {
             cell.productDescriptionLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
             cell.productPriceLabel.text = "₺"+String(product.price) 
             cell.productPriceLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
-            if let url = product.picture {
+            /*if let url = product.picture {
                 do{
                     try cell.productImageView.loadImageUsingCache(withUrl: url)
                     cell.productImageView.contentMode = .scaleAspectFit
@@ -214,7 +214,32 @@ extension MainViewController:UITableViewDelegate,UITableViewDataSource {
                 cell.productImageView.image = UIImage(named:"xmark.circle")
                 cell.productImageView.tintColor = UIColor.lightGray
                 cell.productImageView.contentMode = .scaleAspectFit
+            }*/
+            /*if let index = allProductsInstance.allProducts.firstIndex(of:product) {
+                print("ind:",index, product.name)
+                cell.productImageView.image = allProductsInstance.allImages[index]
+            } else {
+                cell.productImageView.image = UIImage(named: "xmark.circle")
+            }*/
+            if allProductsInstance.allImages.keys.contains(product.id) {
+                cell.productImageView.image = allProductsInstance.allImages[product.id]
+                cell.productImageView.contentMode = .scaleAspectFit
+                print("1: \(product.name)")
+            } else {
+                print("2: \(product.name)")
+                if let url = product.picture {
+                    do{
+                        try cell.productImageView.loadImageUsingCache(withUrl: url, forProduct: product)
+                        cell.productImageView.contentMode = .scaleAspectFit
+                    } catch let error {
+                        print(error)
+                        cell.productImageView.image = UIImage(named:"xmark.circle")
+                        cell.productImageView.tintColor = UIColor.lightGray
+                        cell.productImageView.contentMode = .center
+                    }
+                }
             }
+            
             return cell
         } else {
             let cell = searchHistoryTableView.dequeueReusableCell(withIdentifier: "searchHistoryCell", for: indexPath) as! SearchHistoryTableViewCell
@@ -329,12 +354,12 @@ extension MainViewController:CellDelegate {
 
 extension MainViewController: AllProductsFetchDelegate {
     func allProductsAreFetched() {
-        stopIndicator()
+        self.stopIndicator()
         self.productTableView.reloadData()
         self.searchBar.isUserInteractionEnabled = true
         //DispatchQueue.main.async {
-          //  self.productTableView.reloadData()
-           // self.searchBar.isUserInteractionEnabled = true
+        //  self.productTableView.reloadData()
+        // self.searchBar.isUserInteractionEnabled = true
         //}
     }
     
@@ -366,11 +391,11 @@ extension MainViewController: UISearchBarDelegate, UISearchControllerDelegate {
         }
         historyEndIndex = searchResults.count
         searchResults.append(contentsOf: categories.filter{(query:String) -> (Bool) in
-            return query.range(of:searchText, options: .caseInsensitive, range:nil, locale: nil) != nil})
+                                return query.range(of:searchText, options: .caseInsensitive, range:nil, locale: nil) != nil})
         categoriesEndIndex = searchResults.count
         let brands = Array(Set(allProductsInstance.allProducts.map{$0.brand}))
         searchResults.append(contentsOf: brands.filter{(query:String) -> (Bool) in
-        return query.range(of:searchText, options: .caseInsensitive, range:nil, locale: nil) != nil})
+                                return query.range(of:searchText, options: .caseInsensitive, range:nil, locale: nil) != nil})
         searchHistoryTableView.reloadData()
     }
     
@@ -423,7 +448,7 @@ extension MainViewController {
         activityIndicator.startAnimating()
         productTableView.isHidden = true
     }
-
+    
     func createIndicatorView() {
         loadingView.isHidden = false
         activityIndicator.isHidden = false
@@ -440,6 +465,11 @@ extension MainViewController {
             self.productTableView.isHidden = false
             self.productTableView.isUserInteractionEnabled = true
             self.productTableView.reloadData()
+            
+            /*for i in 0...(self.allProductsInstance.allProducts.count-1) {
+                print(self.allProductsInstance.allProducts[i].name)
+                print(self.allProductsInstance.allImageNames[i])
+            }*/
         }
     }
 }
@@ -453,6 +483,8 @@ protocol AllProductsFetchDelegate {
 class AllProducts {
     static let shared = AllProducts()
     var allProducts: [ProductData]
+    var allImages: Dictionary<Int, UIImage>
+    var allImageNames: [String]
     private let saveKey = "AllProducts"
     
     var delegate: AllProductsFetchDelegate?
@@ -471,14 +503,61 @@ class AllProducts {
     
     init(){
         self.allProducts = []
+        self.allImages = Dictionary()
+        self.allImageNames = []
     }
     
-    func fetchAllProducts() {
+    func fetchAllProducts2() {
         dispatchGroup.enter()
         APIManager().getAllProducts(completionHandler: { products in
             if products != nil {
                 self.dataFetched = true
                 self.allProducts = products!
+                print("heree")
+                //var count = 0
+                //var img = UIImage(named: "xmark.circle")
+                //var name = "xmark.circle"
+                //let dispatchgroup = DispatchGroup()
+                /*dispatchgroup.notify(queue: DispatchQueue.global()) {
+                    count = count + 1
+                    self.allImages.append(img!)
+                    self.allImageNames.append(name)
+                    img = UIImage(named: "xmark.circle")
+                    name = "xmark.circle"
+                }*/
+                print("hereee")
+                print("hereeee \(self.allProducts.count)")
+                for prod in self.allProducts {
+                    //dispatchgroup.enter()
+                    print("ll",prod.id, prod.name)
+                    if prod.picture == nil || prod.picture == "" {
+                        print("err1")
+                        //self.allImages.append(UIImage(named: "xmark.circle")!)
+                        //self.allImageNames.append("xmark.circle")
+                        //dispatchgroup.leave()
+                        self.allImages[prod.id] = UIImage(named: "xmark.circle")
+                    } else {
+                        let url = URL(string: prod.picture!)
+                        do {
+                            let data = try Data(contentsOf: url!)
+                            if let newimg = UIImage(data: data) {
+                                //img = newimg
+                                //name = prod.picture ?? "of"
+                                //dispatchgroup.leave()
+                                self.allImages[prod.id] = newimg
+                            } else {
+                                //dispatchgroup.leave()
+                                self.allImages[prod.id] = UIImage(named: "xmark.circle")
+                            }
+                        } catch let err {
+                            print("error: ", err)
+                            //dispatchgroup.leave()
+                            self.allImages[prod.id] = UIImage(named: "xmark.circle")
+                        }
+                       
+                    }
+                }
+               // dispatchgroup.wait()
                 self.delegate?.allProductsAreFetched()
             } else {
                 self.dataFetched = false
@@ -488,6 +567,94 @@ class AllProducts {
         })
         dispatchGroup.leave()
         dispatchGroup.wait()
+        /*URLSession.shared.dataTask(with:url!, completionHandler: { (data, response, error) in
+            if error != nil {
+                print(error ?? "errr")
+                //self.allImages.append(UIImage(named: "xmark.circle")!)
+                //self.allImageNames.append("xmark.circle")
+                dispatchgroup.leave()
+            } else {
+                if let newimage = UIImage(data: data!) {
+                    //self.allImages.append(newimage)
+                    //self.allImageNames.append(prod.picture!)
+                    img = newimage
+                    name = prod.picture
+                    dispatchgroup.leave()
+                    print("\(count) of \(self.allProducts.count)")
+                } else {
+                    //self.allImages.append(UIImage(named: "xmark.circle")!)
+                    //self.allImageNames.append("xmark.circle")
+                    dispatchgroup.leave()
+                    print("sth")
+                }
+            }
+        }).resume()*/
+    }
+    
+    func fetchAllProducts() {
+        dispatchGroup.enter()
+        APIManager().getAllProducts(completionHandler: { products in
+            if products != nil {
+                self.dataFetched = true
+                self.allProducts = products!
+                let group = DispatchGroup()
+                let serialQueue = DispatchQueue(label: "serialQueue")
+                for prod in self.allProducts {
+                    group.enter()
+                    if let pic = prod.picture {
+                        print(prod.name, pic)
+                        let url = URL(string: prod.picture!)
+                        URLSession(configuration: .default).dataTask(with: url!) { (data, response, error) in
+                            guard let data = data, let image = UIImage(data: data), error == nil else { group.leave(); return }
+                            
+                            // ***************************************************************************
+                            // creates a synchronized access to the images array
+                            serialQueue.async {
+                                self.allImages[prod.id] = image
+                                
+                                // ****************************************************
+                                // tells the group a pending process has been completed
+                                print(prod.id, "done")
+                                group.leave()
+                            }
+                        }.resume()
+                    } else {
+                        group.leave()
+                    }
+                    
+                }
+                group.wait()
+                self.delegate?.allProductsAreFetched()
+            } else {
+                self.dataFetched = false
+                self.allProducts = []
+                self.delegate?.productsCannotBeFetched()
+            }
+        })
+        dispatchGroup.leave()
+        dispatchGroup.wait()
+        /*URLSession.shared.dataTask(with:url!, completionHandler: { (data, response, error) in
+            if error != nil {
+                print(error ?? "errr")
+                //self.allImages.append(UIImage(named: "xmark.circle")!)
+                //self.allImageNames.append("xmark.circle")
+                dispatchgroup.leave()
+            } else {
+                if let newimage = UIImage(data: data!) {
+                    //self.allImages.append(newimage)
+                    //self.allImageNames.append(prod.picture!)
+                    img = newimage
+                    name = prod.picture
+                    dispatchgroup.leave()
+                    print("\(count) of \(self.allProducts.count)")
+                } else {
+                    //self.allImages.append(UIImage(named: "xmark.circle")!)
+                    //self.allImageNames.append("xmark.circle")
+                    dispatchgroup.leave()
+                    print("sth")
+                }
+            }
+        }).resume()*/
     }
         
 }

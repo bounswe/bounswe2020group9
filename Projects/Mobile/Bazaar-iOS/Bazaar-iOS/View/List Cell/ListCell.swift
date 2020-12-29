@@ -34,7 +34,7 @@ class ListCell: UITableViewCell {
                 if listID == pictureUrls.keys.first {
                     DispatchQueue.main.async {
                         do {
-                            try theImageView.loadImageUsingCache(withUrl: pics[i])
+                            try theImageView.loadImageUsingCache(withUrl: pics[i], forProduct: nil)
                         } catch let error {
                             print(error)
                         }

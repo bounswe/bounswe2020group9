@@ -137,6 +137,49 @@ class SearchResultsViewController: UIViewController {
                 self.stopIndicator()
             }
             self.searchResultsTableView.isHidden = false */
+        } else if (isBrand){
+            self.searchResultsTableView.isHidden = true
+            self.products = allProductsInstance.allProducts.filter{$0.brand.lowercased().contains(searchWord!.lowercased())}
+            if filterType != "none" {
+                let filters = filterType.split(separator: "&")
+                let filtersValues = filters.map {$0.split(separator: "=")}
+                for filter in filtersValues {
+                    print("... ", filter)
+                    if filter[0] == "pr" {
+                        self.products = self.products.filter {$0.rating >= Double(filter[1])!}
+                    } else if filter[0] == "prc" {
+                        print("1")
+                        let priceRange = filter[1].split(separator: "-")
+                        print(priceRange[0], priceRange[1])
+                        self.products = self.products.filter {(Int($0.price.rounded(.down)) >= Int(priceRange[0])!) && (Int($0.price.rounded(.down)) <= Int(priceRange[1])!)}
+                    } else if filter[0] == "br" {
+                        self.products = self.products.filter{$0.brand.lowercased() == filter[1].lowercased()}
+                    }
+                }
+            }
+            
+            if sortType == "bs" {
+                self.products = self.products.sorted(by: {$0.sell_counter > $1.sell_counter})
+            } else if sortType == "mf" {
+                self.products = self.products.sorted(by: {$0.rating > $1.rating})
+            } else if sortType == "pr_des" {
+                self.products = self.products.sorted(by: {$0.price > $1.price})
+            } else if sortType == "pr_asc" {
+                self.products = self.products.sorted(by: {$0.price < $1.price})
+            }
+            if(self.products.count == 0) {
+                self.searchResultsTableView.isHidden = true
+                self.searchResultsEmptyLabel.isHidden = false
+            } else {
+                self.searchResultsTableView.isHidden = false
+                self.searchResultsEmptyLabel.isHidden = true
+                self.searchResultsTableView.reloadData()
+            }
+            self.searchResultsTableView.reloadData()
+            self.searchResultsTableView.isHidden = false
+            DispatchQueue.main.async {
+                self.stopIndicator()
+            }
         } else {
             self.searchResultsTableView.isHidden = true
             APIManager().search(filterType: filterType, sortType: sortType, searchWord: searchWord, completionHandler: { result in
@@ -228,7 +271,7 @@ extension SearchResultsViewController: UITableViewDelegate, UITableViewDataSourc
         cell.productPriceLabel.text = "₺\(product.price)"
         cell.productPriceLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         //cell.productImageView.image = UIImage(named: "iphone12")
-        if let url = product.picture {
+        /*if let url = product.picture {
             do{
                 try cell.productImageView.loadImageUsingCache(withUrl: url)
                 cell.productImageView.contentMode = .scaleAspectFit
@@ -242,6 +285,24 @@ extension SearchResultsViewController: UITableViewDelegate, UITableViewDataSourc
             cell.productImageView.image = UIImage(named:"xmark.circle")
             cell.productImageView.tintColor = UIColor.lightGray
             cell.productImageView.contentMode = .scaleAspectFit
+        }*/
+        if allProductsInstance.allImages.keys.contains(product.id) {
+            cell.productImageView.image = allProductsInstance.allImages[product.id]
+            cell.productImageView.contentMode = .scaleAspectFit
+            print("1: \(product.name)")
+        } else {
+            print("2: \(product.name)")
+            if let url = product.picture {
+                do{
+                    try cell.productImageView.loadImageUsingCache(withUrl: url, forProduct: product)
+                    cell.productImageView.contentMode = .scaleAspectFit
+                } catch let error {
+                    print(error)
+                    cell.productImageView.image = UIImage(named:"xmark.circle")
+                    cell.productImageView.tintColor = UIColor.lightGray
+                    cell.productImageView.contentMode = .center
+                }
+            }
         }
         return cell
     }

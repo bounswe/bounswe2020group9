@@ -30,7 +30,11 @@ struct ResetPassWordEmailData:Codable {
 }
 
 
-struct ProductData: Codable {
+struct ProductData: Codable, Equatable {
+    static func == (lhs: ProductData, rhs: ProductData) -> Bool {
+        return lhs.id == rhs.id
+    }
+    
   let id:Int
   let name: String
   let brand: String

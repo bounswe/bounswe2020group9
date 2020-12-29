@@ -186,19 +186,37 @@ extension MyCartViewController: UITableViewDelegate, UITableViewDataSource {
         cell.productPriceLabel.text = "₺"+String(product.price)
         cell.amountStepper.value = Double(userCart[indexPath.row].amount)
         cell.amountTextField.text = String(userCart[indexPath.row].amount)
-        if let url = product.picture {
-            do{
-                try cell.productImageView.loadImageUsingCache(withUrl: url)
-            } catch let error {
-                print(error)
-                cell.productImageView.image = UIImage(named:"xmark.circle")
-                cell.productImageView.tintColor = UIColor.lightGray
-            }
+        if AllProducts.shared.allImages.keys.contains(product.id) {
+            cell.productImageView.image = AllProducts.shared.allImages[product.id]
+            cell.productImageView.contentMode = .scaleAspectFit
+            print("1: \(product.name)")
         } else {
-            cell.productImageView.image = UIImage(named:"xmark.circle")
-            cell.productImageView.tintColor = UIColor.lightGray
-            cell.productImageView.contentMode = .center
+            print("2: \(product.name)")
+            if let url = product.picture {
+                do{
+                    try cell.productImageView.loadImageUsingCache(withUrl: url, forProduct: product)
+                    cell.productImageView.contentMode = .scaleAspectFit
+                } catch let error {
+                    print(error)
+                    cell.productImageView.image = UIImage(named:"xmark.circle")
+                    cell.productImageView.tintColor = UIColor.lightGray
+                    cell.productImageView.contentMode = .center
+                }
+            }
         }
+//        if let url = product.picture {
+//            do{
+//                try cell.productImageView.loadImageUsingCache(withUrl: url, forProduct: product)
+//            } catch let error {
+//                print(error)
+//                cell.productImageView.image = UIImage(named:"xmark.circle")
+//                cell.productImageView.tintColor = UIColor.lightGray
+//            }
+//        } else {
+//            cell.productImageView.image = UIImage(named:"xmark.circle")
+//            cell.productImageView.tintColor = UIColor.lightGray
+//            cell.productImageView.contentMode = .center
+//        }
         return cell
         
     }

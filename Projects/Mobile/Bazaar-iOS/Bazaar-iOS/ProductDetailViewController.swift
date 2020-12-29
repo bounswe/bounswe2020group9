@@ -131,9 +131,13 @@ class ProductDetailViewController: UIViewController {
         descriptionLabel.sizeToFit()
         descriptionLabel.textColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
         priceLabel.text = "₺" + String(product.price)
-        if let url = product.picture {
+        if product.picture != nil {
+            if let img = AllProducts.shared.allImages[product.id] {
+                productImageView.image = img
+                return
+            }
             do{
-                try productImageView.loadImageUsingCache(withUrl: product.picture ?? "")
+                try productImageView.loadImageUsingCache(withUrl: product.picture ?? "", forProduct: product)
             } catch let error {
                 print(error)
                 productImageView.image = UIImage(named:"xmark.circle")
@@ -311,7 +315,7 @@ extension UITextField {
 let imageCache = NSCache<NSString, UIImage>()
 
 extension UIImageView {
-    func loadImageUsingCache(withUrl urlString : String) throws -> String {
+    func loadImageUsingCache(withUrl urlString : String, forProduct prod: ProductData?) throws -> String {
         let url = URL(string: urlString)
         if url == nil { return "url nil" }
         self.image = nil
@@ -330,7 +334,7 @@ extension UIImageView {
         // if not, download image from url
         URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
             if error != nil {
-                print(error!)
+                print(error ?? "errr")
                 return
             }
 
@@ -338,6 +342,9 @@ extension UIImageView {
                 if let image = UIImage(data: data!) {
                     imageCache.setObject(image, forKey: urlString as NSString)
                     self.image = image
+                    if let product = prod {
+                        AllProducts.shared.allImages[product.id] = image
+                    }
                     activityIndicator.removeFromSuperview()
                 }
             }
