@@ -9,77 +9,77 @@ function Footer() {
           <Col>
             <h4>Electronics</h4>
             <ul class="list-unstyled quick-links">
-              <li><a href="/category/Tablets"><i class="fa fa-angle-double-right"></i>Tablets</a></li>
-              <li><a href="/category/Computers"><i class="fa fa-angle-double-right"></i>Computers</a></li>
-              <li><a href="/category/Photography"><i class="fa fa-angle-double-right"></i>Photography</a></li>
-              <li><a href="/category/Home Appliances"><i class="fa fa-angle-double-right"></i>Home Appliances</a></li>
-              <li><a href="/category/TV"><i class="fa fa-angle-double-right"></i>TV</a></li>
-              <li><a href="/category/Gaming"><i class="fa fa-angle-double-right"></i>Gaming</a></li>
-              <li><a href="/category/Electronics/Other"><i class="fa fa-angle-double-right"></i>Other</a></li>
-              <li><a href="/category/Mobile Devices"><i class="fa fa-angle-double-right"></i>Mobile Devices</a></li>
+              <li><a href="/category/Tablets"><DoubleAngle/>Tablets</a></li>
+              <li><a href="/category/Computers"><DoubleAngle/>Computers</a></li>
+              <li><a href="/category/Photography"><DoubleAngle/>Photography</a></li>
+              <li><a href="/category/Home Appliances"><DoubleAngle/>Home Appliances</a></li>
+              <li><a href="/category/TV"><DoubleAngle/>TV</a></li>
+              <li><a href="/category/Gaming"><DoubleAngle/>Gaming</a></li>
+              <li><a href="/category/Electronics/Other"><DoubleAngle/>Other</a></li>
+              <li><a href="/category/Mobile Devices"><DoubleAngle/>Mobile Devices</a></li>
             </ul>
           </Col>
 
           <Col>
             <h4>Home</h4>
             <ul class="list-unstyled quick-links">
-              <li><a href="/"><i class="fa fa-angle-double-right"></i>Home Textile</a></li>
-              <li><a href="/category/Kitchen"><i class="fa fa-angle-double-right"></i>Kitchen</a></li>
-              <li><a href="/category/Bedroom"><i class="fa fa-angle-double-right"></i>Bedroom</a></li>
-              <li><a href="/category/Bathroom"><i class="fa fa-angle-double-right"></i>Bathroom</a></li>
-              <li><a href="/category/Furniture"><i class="fa fa-angle-double-right"></i>Furniture</a></li>
-              <li><a href="/category/Lighting"><i class="fa fa-angle-double-right"></i>Lighting</a></li>
-              <li><a href="/category/Home/Other"><i class="fa fa-angle-double-right"></i>Other</a></li>
-              <li><a href="/category/Petshop"><i class="fa fa-angle-double-right"></i>Petshop</a></li>
+              <li><a href="/"><DoubleAngle/>Home Textile</a></li>
+              <li><a href="/category/Kitchen"><DoubleAngle/>Kitchen</a></li>
+              <li><a href="/category/Bedroom"><DoubleAngle/>Bedroom</a></li>
+              <li><a href="/category/Bathroom"><DoubleAngle/>Bathroom</a></li>
+              <li><a href="/category/Furniture"><DoubleAngle/>Furniture</a></li>
+              <li><a href="/category/Lighting"><DoubleAngle/>Lighting</a></li>
+              <li><a href="/category/Home/Other"><DoubleAngle/>Other</a></li>
+              <li><a href="/category/Petshop"><DoubleAngle/>Petshop</a></li>
             </ul>
           </Col>
 
           <Col>
             <h4>Clothing</h4>
             <ul class="list-unstyled quick-links">
-              <li><a href="/category/Top"><i class="fa fa-angle-double-right"></i>Top</a></li>
-              <li><a href="/category/Bottom"><i class="fa fa-angle-double-right"></i>Bottom</a></li>
-              <li><a href="/category/Outerwear"><i class="fa fa-angle-double-right"></i>Outerwear</a></li>
-              <li><a href="/category/Shoes"><i class="fa fa-angle-double-right"></i>Shoes</a></li>
-              <li><a href="/category/Bags"><i class="fa fa-angle-double-right"></i>Bags</a></li>
-              <li><a href="/category/Accessories"><i class="fa fa-angle-double-right"></i>Accessories</a></li>
-              <li><a href="/category/Activewear"><i class="fa fa-angle-double-right"></i>Activewear</a></li>
+              <li><a href="/category/Top"><DoubleAngle/>Top</a></li>
+              <li><a href="/category/Bottom"><DoubleAngle/>Bottom</a></li>
+              <li><a href="/category/Outerwear"><DoubleAngle/>Outerwear</a></li>
+              <li><a href="/category/Shoes"><DoubleAngle/>Shoes</a></li>
+              <li><a href="/category/Bags"><DoubleAngle/>Bags</a></li>
+              <li><a href="/category/Accessories"><DoubleAngle/>Accessories</a></li>
+              <li><a href="/category/Activewear"><DoubleAngle/>Activewear</a></li>
             </ul>
           </Col>
 
           <Col>
             <h4>Books</h4>
             <ul class="list-unstyled quick-links">
-              <li><a href="/category/Books"><i class="fa fa-angle-double-right"></i>Books</a></li>
+              <li><a href="/category/Books"><DoubleAngle/>Books</a></li>
             </ul>
           </Col>
 
           <Col>
             <h4>Living</h4>
             <ul class="list-unstyled quick-links">
-              <li><a href="/category/Art Supplies"><i class="fa fa-angle-double-right"></i>Art Supplies</a></li>
-              <li><a href="/category/Musical Devices"><i class="fa fa-angle-double-right"></i>Musical Devices</a></li>
-              <li><a href="/category/Sports"><i class="fa fa-angle-double-right"></i>Sports</a></li>
-              <li><a href="/category/Living/Other"><i class="fa fa-angle-double-right"></i>Other</a></li>
+              <li><a href="/category/Art Supplies"><DoubleAngle/>Art Supplies</a></li>
+              <li><a href="/category/Musical Devices"><DoubleAngle/>Musical Devices</a></li>
+              <li><a href="/category/Sports"><DoubleAngle/>Sports</a></li>
+              <li><a href="/category/Living/Other"><DoubleAngle/>Other</a></li>
             </ul>
           </Col>
 
           <Col>
             <h4>Selfcare</h4>
             <ul class="list-unstyled quick-links">
-              <li><a href="/category/Perfumes"><i class="fa fa-angle-double-right"></i>Perfumes</a></li>
-              <li><a href="/category/Makeup"><i class="fa fa-angle-double-right"></i>Makeup</a></li>
-              <li><a href="/category/Skincare"><i class="fa fa-angle-double-right"></i>Skincare</a></li>
-              <li><a href="/category/Hair"><i class="fa fa-angle-double-right"></i>Hair</a></li>
-              <li><a href="/category/Body Care"><i class="fa fa-angle-double-right"></i>Body Care</a></li>
-              <li><a href="/category/Selfcare/Other"><i class="fa fa-angle-double-right"></i>Other</a></li>
+              <li><a href="/category/Perfumes"><DoubleAngle/>Perfumes</a></li>
+              <li><a href="/category/Makeup"><DoubleAngle/>Makeup</a></li>
+              <li><a href="/category/Skincare"><DoubleAngle/>Skincare</a></li>
+              <li><a href="/category/Hair"><DoubleAngle/>Hair</a></li>
+              <li><a href="/category/Body Care"><DoubleAngle/>Body Care</a></li>
+              <li><a href="/category/Selfcare/Other"><DoubleAngle/>Other</a></li>
             </ul>
           </Col>
 
           <Col>
             <h4>Health</h4>
             <ul class="list-unstyled quick-links">
-              <li><a href="/category/Health"><i class="fa fa-angle-double-right"></i>Health</a></li>
+              <li><a href="/category/Health"><DoubleAngle/>Health</a></li>
             </ul>
           </Col>
         </Row>
@@ -110,13 +110,13 @@ function Footer() {
             <a href="/faq">FAQ</a>
             </Col>
             <Col>
-              <Decoration/>
+              <Minus/>
             </Col>
             <Col sm="auto">
             <a href="/aboutUs">About Us</a>
             </Col>
             <Col>
-              <Decoration/>
+              <Minus/>
             </Col>
             <Col>
             <a href="/career">Career</a>
@@ -130,9 +130,15 @@ function Footer() {
   );
 }
 
-function Decoration() {
+function Minus() {
   return (
     <i class="fa fa-minus"></i>
+  );
+}
+
+function DoubleAngle() {
+  return (
+    <i class="fa fa-angle-double-right"></i>
   );
 }
 
