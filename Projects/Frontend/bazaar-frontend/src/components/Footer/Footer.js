@@ -57,7 +57,7 @@ function Footer() {
           <Col>
             <h4>Living</h4>
             <ul class="list-unstyled quick-links">
-              <li><a href="/"><i class="fa fa-angle-double-right"></i>Art Supplies</a></li>
+              <li><a href="/category/Art Supplies"><i class="fa fa-angle-double-right"></i>Art Supplies</a></li>
               <li><a href="/category/Musical Devices"><i class="fa fa-angle-double-right"></i>Musical Devices</a></li>
               <li><a href="/category/Sports"><i class="fa fa-angle-double-right"></i>Sports</a></li>
               <li><a href="/category/Living/Other"><i class="fa fa-angle-double-right"></i>Other</a></li>
@@ -93,17 +93,46 @@ function Footer() {
               <li class="list-inline-item"><a href="mailto:info@bazaar.com.tr" target="_blank"><i class="fa fa-envelope"></i></a></li>
             </ul>
           </Col>
-          <hr />
         </Row>
 
-        <Row>
-          <Col className="footerLower text-center">
+        <Row className="text-center footerLower">
+          <Col>
             <p>34342, Bebek, Besiktas, Istanbul/Turkey<br />
 					© {new Date().getFullYear()} <a href="/">Bazaar Inc.</a> All rights reserved</p>
           </Col>
-          <hr size="20px"/>
         </Row>
+
+        <Row className="bottomLine text-center">
+          <Col>
+          </Col>
+          <Row>
+            <Col>
+            <a href="/faq">FAQ</a>
+            </Col>
+            <Col>
+              <Decoration/>
+            </Col>
+            <Col sm="auto">
+            <a href="/aboutUs">About Us</a>
+            </Col>
+            <Col>
+              <Decoration/>
+            </Col>
+            <Col>
+            <a href="/career">Career</a>
+            </Col>
+          </Row>
+          <Col>
+          </Col>
+        </Row>
+
     </Container>
+  );
+}
+
+function Decoration() {
+  return (
+    <i class="fa fa-minus"></i>
   );
 }
 
