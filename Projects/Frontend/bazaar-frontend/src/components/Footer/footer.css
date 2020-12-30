@@ -1,28 +1,15 @@
 /* Footer */
 @import url('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css');
-span {
-    padding: 60px 0;
-}
 
-.footerWrapper{
-  background-color: #213e3b;
-  padding-top: 3rem;
-  padding-bottom: 2rem;
-}
-
-span .span-title {
-    text-align: center;
-    color: #007b5e;
-    margin-bottom: 50px;
-    text-transform: uppercase;
-}
 #footer {
     background: #007b5e !important;
+    padding: 40px;
 }
-#footer h5{
+
+#footer h4 {
 	padding-left: 10px;
     padding-bottom: 6px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     color:#e8ffff;
 }
 #footer a {
@@ -60,7 +47,7 @@ span .span-title {
 }
 #footer ul.quick-links li:hover{
 	padding: 3px 0;
-	margin-left:5px;
+	margin-left:2px;
 	font-weight:700;
 }
 #footer ul.quick-links li a i{
@@ -68,15 +55,6 @@ span .span-title {
 }
 #footer ul.quick-links li:hover a i {
     font-weight: 700;
-}
-
-@media (max-width:767px){
-	#footer h5 {
-    padding-left: 0;
-    border-left: transparent;
-    padding-bottom: 0px;
-    margin-bottom: 10px;
-}
 }
 
 .footerLower{
