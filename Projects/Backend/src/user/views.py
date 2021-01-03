@@ -19,7 +19,8 @@ from product.serializers import ProductSerializer
 from user.models import Customer, Admin, Vendor
 from .models import User
 from .serializers import UserSerializer
-
+from location.models import Location
+from location.serializers import LocationSerializer
 
 class UserListAPIView(APIView):
 
@@ -59,8 +60,8 @@ class VendorListAPIView(APIView):
 
 class UserDetailAPIView(APIView):
 
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
+    #authentication_classes = [TokenAuthentication]
+    #permission_classes = [IsAuthenticated]
 
     def get_user(self, id):
 
@@ -80,7 +81,7 @@ class UserDetailAPIView(APIView):
     def put(self, request, id):
 
         user = self.get_user(id)
-        serializer = UserSerializer(user, data=request.data)
+        serializer = UserSerializer(user, data=request.data, context={'request': request}, partial=True)
 
         if serializer.is_valid():
             serializer.save()
@@ -113,12 +114,60 @@ class UserLoginAPIView(ObtainAuthToken):
             'user_type': user.user_type
         })
 
+class GoogleUserAPIView(APIView):
+    def post(self,request):
+        request.data["password"] = "googlepassword"
+        try:
+            user = User.objects.get(username=request.data["username"])
+        except:
+            user = None
+        if user == None:
+            request.data["user_type"] = 1
+            serializer = UserSerializer(data=request.data)
+            if serializer.is_valid():
+            # There error handling part might not be required, additional test is needed
+                if not "user_type" in serializer.validated_data.keys():
+                    return Response({"user_type": ["This field is required."]}, status=status.HTTP_400_BAD_REQUEST)
+                if not "username" in serializer.validated_data.keys():
+                    return Response({"username": ["This field is required."]}, status=status.HTTP_400_BAD_REQUEST)
+                if not "password" in serializer.validated_data.keys():
+                    return Response({"password": ["This field is required."]}, status=status.HTTP_400_BAD_REQUEST)
+                serializer.save()
+                user_temp = User.objects.get(username=request.data["username"])
+                Customer.objects.create(user=user_temp)
+                Token.objects.get(user=user_temp.id).delete()
+                token = Token.objects.create(user=user_temp,key=request.data["token"])
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response(serializer._errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            Token.objects.get(user=user.id).delete()
+            try:
+                token = Token.objects.create(user=user,key=request.data["token"])
+                user.last_login = timezone.now()
+                user.save()
+                return Response({
+                'token': token.key,
+                'id': user.pk,
+                # 'email': user.email,
+                # 'password': password,
+                'user_type': user.user_type
+                })
+            except:
+                return Response({"token": ["token is not valid"]}, status=status.HTTP_400_BAD_REQUEST)
 
 class UserSignupAPIView(APIView):
 
     def post(self, request):
-
-        serializer = UserSerializer(data=request.data)
+        user_field = ['id',  'username', 'password', 'email', 'first_name', 'last_name', 'date_joined', 'last_login', 'user_type', 'bazaar_point','company']
+        user_dict = {}
+        location_dict = {}
+        for fields in request.data:
+            if fields in user_field:
+                user_dict[fields] = request.data[fields]
+            else:
+                location_dict[fields] = request.data[fields]
+        serializer = UserSerializer(data=user_dict)
 
         if serializer.is_valid():
             # There error handling part might not be required, additional test is needed
@@ -129,17 +178,31 @@ class UserSignupAPIView(APIView):
             if not "password" in serializer.validated_data.keys():
                 return Response({"password": ["This field is required."]}, status=status.HTTP_400_BAD_REQUEST)
             email = serializer.validated_data['username']
+
             serializer.save()
             user = User.objects.get(username=email)
+
+            if request.data['user_type'] == 2 or request.data['user_type'] == '2':
+                if not "company" in request.data:
+                    user.delete()
+                    return Response({"company": ["This field is required."]}, status=status.HTTP_400_BAD_REQUEST)
+                location_dict['user'] = user.id
+                serializer2 = LocationSerializer(data=location_dict)
+                if serializer2.is_valid():
+                    serializer2.save()
+                else:
+                    user.delete()
+                    return Response({"location": ["bad location request."]}, status=status.HTTP_400_BAD_REQUEST)
+
             user.is_active = False
             user.save()
 
             uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
 
             domain = get_current_site(request).domain
-            link = reverse('activate', kwargs={'uidb64': uidb64})
+            #link = reverse('activate', kwargs={'uidb64': uidb64})
 
-            activate_url = 'http://' + domain + link
+            activate_url = 'http://' + "13.59.236.175:3000" + "/activate=" + str(uidb64)
 
             email_subject = 'Activate'
             email_body = 'Hi,\nPlease use this link to verify your account:\n' + activate_url
@@ -184,8 +247,8 @@ class ResetPasswordMailView(APIView):
         email = request.data["username"]
         uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
         domain = get_current_site(request).domain
-        link = reverse('resetpw', kwargs={'uidb64': uidb64})
-        reset_url = 'http://' + domain + link
+        #link = reverse('resetpw', kwargs={'uidb64': uidb64})
+        reset_url = 'http://' + "13.59.236.175:3000" + "/resetpw=" + str(uidb64)
         email_subject = 'Reset Your Password'
         email_body = 'Hi,\nPlease use this link to reset your password:\n' + reset_url
         email = EmailMessage(
@@ -205,10 +268,25 @@ class ResetPasswordView(APIView):
         return Response({"message":"true"})
     def post(self, request, uidb64):
         user_temp = self.get_object(request,uidb64)
+        try:
+            user_temp.set_password(request.data["new_password"])
+            user_temp.save()
+            response = {
+                'status': 'success',
+                'code': status.HTTP_200_OK,
+                'message': 'Password updated successfully',
+            }
+        except:
+            return Response({"message":"Couldn't reset password"}, status=status.HTTP_400_BAD_REQUEST)
+        return Response(response,status=status.HTTP_201_CREATED)
+class ResetPasswordProfileView(APIView):
+    def post(self,request):
+        user_temp = User.objects.get(id = request.data["user_id"])
         # Check old password
-        #if not user_temp.check_password(request.data["old_password"]):
-            #return Response({"old_password": ["Wrong password."]}, status=status.HTTP_400_BAD_REQUEST)
-            # set_password also hashes the password that the user will get
+        if "old_password" in request.data.keys():
+            if not user_temp.check_password(request.data["old_password"]):
+                return Response({"old_password": ["Wrong password."]}, status=status.HTTP_400_BAD_REQUEST)
+                # set_password also hashes the password that the user will get
         try:
             user_temp.set_password(request.data["new_password"])
             user_temp.save()

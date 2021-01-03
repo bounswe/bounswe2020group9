@@ -16,14 +16,13 @@ class User(AbstractUser):
     )
     user_type = models.PositiveSmallIntegerField(choices=USER_TYPES, default=1)
     bazaar_point = models.PositiveSmallIntegerField(default=0)
-
+    company = models.CharField(max_length=255, blank=True)
     def __str__(self):
         return self.email + ", (" + str(self.USER_TYPES[self.user_type - 1][1]) + ")"
 
 
 class Vendor(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-
     def __str__(self):
         return self.user.email
 

@@ -13,6 +13,7 @@ from product.models import Product, ProductList, SubOrder, Comment, Category
 from product.serializers import ProductSerializer, ProductListSerializer, CommentSerializer, SubOrderSerializer, \
     SearchHistorySerializer, CategorySerializer
 from product.functions import search_product_db,datamuse_call,filter_func,sort_func
+from django.contrib.sites.shortcuts import get_current_site
 
 
 # Create your views here.
@@ -67,9 +68,22 @@ class ProductDetailAPIView(APIView):
 
     def put(self, request, id):
         product = self.get_product(id)
-        serializer = ProductSerializer(product, data=request.data)
+        serializer = ProductSerializer(product, data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
+            if "category" in request.data:
+                product = self.get_product(id)
+                product.category = Category.objects.get(id=request.data["category"])
+                product.save()
+            elif "category_id" in request.data:
+                product = self.get_product(id)
+                product.category = Category.objects.get(id=request.data["category_id"])
+                product.save()
+            if "detail" in request.data:
+                product = self.get_product(id)
+                product.detail = request.data["detail"]
+                product.save()
+            serializer = ProductSerializer(product)
             return Response(serializer.data)
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
@@ -442,10 +456,24 @@ class CommentsOfProductAPIView(APIView):
 class SearchAPIView(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
-    def get(self,request,filter_type,sort_type):
-        serializer = SearchHistorySerializer(data={"user":request.user.id,"searched":request.data["searched"]})
-        if serializer.is_valid():
-            serializer.save()
+    def post(self,request,filter_type,sort_type):
+        token =request.META.get('HTTP_AUTHORIZATION')[6:]
+        if token != "57bcb0493429453fad027bc6552cc1b28d6df955" :
+            serializer = SearchHistorySerializer(data={"user":request.user.id,"searched":request.data["searched"]})
+            if serializer.is_valid():
+                serializer.save(user_id=request.user.id)
+                word_list = datamuse_call(request.data["searched"])
+                product_list = search_product_db(word_list,request.data["searched"])
+                filter_type = str(filter_type)
+                sort_type = str(sort_type)
+                filter_types = filter_type.split("&")
+                product_list = filter_func(filter_types,product_list)
+                product_list = sort_func(sort_type,product_list)
+                product_dict = {}
+                product_dict["product_list"] = product_list
+                return Response(product_dict, status=status.HTTP_200_OK)
+            return Response(serializer._errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
             word_list = datamuse_call(request.data["searched"])
             product_list = search_product_db(word_list,request.data["searched"])
             filter_type = str(filter_type)
@@ -453,5 +481,47 @@ class SearchAPIView(APIView):
             filter_types = filter_type.split("&")
             product_list = filter_func(filter_types,product_list)
             product_list = sort_func(sort_type,product_list)
-            return Response(product_list, status=status.HTTP_200_OK)
-        return Response(serializer._errors, status=status.HTTP_400_BAD_REQUEST)
+            product_dict = {}
+            product_dict["product_list"] = product_list
+            return Response(product_dict, status=status.HTTP_200_OK)
+class SearchAPIView2(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    def post(self,request,filter_type,sort_type):
+        domain = get_current_site(request).domain
+        token =request.META.get('HTTP_AUTHORIZATION')[6:]
+        if token != "57bcb0493429453fad027bc6552cc1b28d6df955" :
+            serializer = SearchHistorySerializer(data={"user":request.user.id,"searched":request.data["searched"]})
+            if serializer.is_valid():
+                serializer.save(user_id=request.user.id)
+                word_list = datamuse_call(request.data["searched"])
+                product_list = search_product_db(word_list,request.data["searched"])
+                filter_type = str(filter_type)
+                sort_type = str(sort_type)
+                filter_types = filter_type.split("&")
+                product_list = filter_func(filter_types,product_list)
+                product_list = sort_func(sort_type,product_list)
+                product_list2 = []
+                for i in range(len(product_list)):
+                    product = ProductSerializer(Product.objects.get(id=product_list[i]["id"])).data
+                    product["picture"] = "http://" + domain + product["picture"]
+                    product_list2.append(product)
+                product_dict = {}
+                product_dict["product_list"] = product_list2
+                return Response(product_dict, status=status.HTTP_200_OK)
+            return Response(serializer._errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            word_list = datamuse_call(request.data["searched"])
+            product_list = search_product_db(word_list,request.data["searched"])
+            filter_type = str(filter_type)
+            sort_type = str(sort_type)
+            filter_types = filter_type.split("&")
+            product_list = filter_func(filter_types,product_list)
+            product_list = sort_func(sort_type,product_list)
+            for i in range(len(product_list)):
+                product = ProductSerializer(Product.objects.get(id=product_list[i]["id"])).data
+                product["picture"] = "http://" + domain + product["picture"]
+                product_list.append(product)
+            product_dict = {}
+            product_dict["product_list"] = product_list
+            return Response(product_dict, status=status.HTTP_200_OK)

@@ -20,3 +20,4 @@ Projects/Backend/src/*/migrations
 *.sqlite3
 Projects/Backend/src/api/static/
 Projects/Backend/src/pictures/
+Projects/Backend/src/media/

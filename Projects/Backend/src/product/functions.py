@@ -137,25 +137,32 @@ def delete_payment(payment_id):
     deleting_payment = Payment.objects.get(pk=payment_id)
     Payment.delete(deleting_payment)
 
-    
+def remove_duplicates(dict_list):
+    seen = set()
+    new_list = []
+    for dictionary in dict_list:
+        t = tuple(dictionary.items())
+        if t not in seen:
+            seen.add(t)
+            new_list.append(dictionary)
+    return new_list
+
 def search_product_db(word_array,word_searched):
     results = []
     results = results + list(Product.objects.filter(name__icontains = word_searched).values())
     results = results + list(Product.objects.filter(detail__icontains = word_searched).values())
     results = results + list(Product.objects.filter(brand__icontains = word_searched).values())
-    print(results)
     for words in word_array:
         results = results + list(Product.objects.filter(name__icontains = words).values())
         results = results + list(Product.objects.filter(detail__icontains = words).values())
         results = results + list(Product.objects.filter(brand__icontains = word_searched).values())
-    res_set = set(results)
-    results = list(res_set)
+    results = remove_duplicates(results)
     return results
 
 def datamuse_call(word):
     result = []
     word_array = word.split()
-    max_word = int(60/len(word_array))
+    max_word = int(24/len(word_array))
     words_string = ""
     for i in range(len(word_array)):
         words_string+=word_array[i]
@@ -194,7 +201,12 @@ def filter_func(filter_types,product_list):
             product_list=filtered_array
         elif filter_type[:3] == "br=" : # brand name filter
             filtered_array = []
-            brand = str(filter_type[3:])
+            brand_arr = filter_type[3:].split("-")
+            brand = ""
+            for i in range(len(brand_arr)):
+                brand = brand +brand_arr[i]
+                if i != len(brand_arr) -1:
+                    brand += " "
             for element in product_list:
                 if str(element["brand"]) == brand:
                     filtered_array.append(element)
@@ -216,9 +228,9 @@ def sort_func(sort_type,product_list):
     elif sort_type == "mf":
         return sorted(product_list, key = lambda i: i['rating'],reverse=True)
     elif sort_type == "pr_des":
-        return sorted(product_list, key = lambda i: i['rating'],reverse=True)
+        return sorted(product_list, key = lambda i: i['price'],reverse=True)
     elif sort_type == "pr_asc":
-        return sorted(product_list, key = lambda i: i['rating'])
+        return sorted(product_list, key = lambda i: i['price'])
     #TODO release date, comment num
     else:
         return product_list
