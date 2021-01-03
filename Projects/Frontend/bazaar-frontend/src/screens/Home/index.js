@@ -6,23 +6,33 @@ import Image from 'react-bootstrap/Image'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import CardDeck from 'react-bootstrap/CardDeck'
+import axios from 'axios'
+import Card from "../../components/Card"
 
 import myImage from '../../assets/productFiller.svg'
 
 import './home.css'
 
 class Home extends React.Component {
-
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {date: new active(2)};
-  //   let items = [];
-  // }
-
+  
+  constructor() {
+    super();
+    this.state = {
+      isLogged: 'yes',
+      redirect: null,
+      products: []
+    }
+  }
 
 
   componentDidMount() {
-
+    axios.get(`http://13.59.236.175:8000/api/product/`)
+    .then(res => {
+        console.log(res.data[1].brand)
+        this.setState({products : res.data})
+        console.log(this.state.products[0])
+    })
 
   }
 
@@ -38,9 +48,22 @@ class Home extends React.Component {
         </Pagination.Item>,
       );
     }
+    
+
+
+    let productCards = this.state.products.map(product => {
+      return (
+        <Col sm="3">
+          <Card product={product}></Card>
+        </Col>
+      )
+    })
 
     return (
+
       <div>
+        <div className='row'>
+        <Container>
         <div className='row'>
         <Pagination size="lg">{items}</Pagination>
         </div>
@@ -59,120 +82,11 @@ class Home extends React.Component {
             </p>
           </Jumbotron>
         </div>
-        <div className='row'>
-        <Container>
-          <Row className="justify-content-md-center myRow">
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
+        <Container fluid>
+          <Row>
+          {productCards}
           </Row>
-          <Row className="justify-content-md-center  myRow">
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-          </Row>
-          <Row className="justify-content-md-center  myRow">
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-          </Row>
-          <Row className="justify-content-md-center  myRow">
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-          </Row>
-          <Row className="justify-content-md-center  myRow">
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-          </Row>
-          <Row className="justify-content-md-center  myRow">
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-          </Row>
-          <Row className="justify-content-md-center  myRow">
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-          </Row>
-          <Row className="justify-content-md-center  myRow">
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-            <Col>
-              <Image src={myImage} rounded />
-            </Col>
-          </Row>
+        </Container>
         </Container>
         </div>
       </div>
