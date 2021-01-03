@@ -1,10 +1,8 @@
 from django.urls import path
 
-
 from user.views import vendorProductListView
 from .views import ProductDetailAPIView, ProductListAPIView, UserCommentAPIView, CommentsOfProductAPIView, \
     AddCommentAPIView, UpdateCommentAPIView, CategoryListAPIView, SearchAPIView, SearchAPIView2
-
 
 urlpatterns = [
     path('', ProductListAPIView.as_view(), name="product-list"),

@@ -1,10 +1,8 @@
 from rest_framework import status
-from rest_framework.response import Response
-from rest_framework.views import APIView
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-
-
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from .models import Location
 from .serializers import LocationSerializer
@@ -55,8 +53,8 @@ class LocationDetailAPIView(APIView):
         location.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-class UserLocationListAPIView(APIView):
 
+class UserLocationListAPIView(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
@@ -76,7 +74,7 @@ class UserLocationListAPIView(APIView):
         for location in locations:
             location = parent.get_location(location.id)
             serializers.append(LocationSerializer(location).data)
-        
+
         return Response(serializers)
 
     def post(self, request):
@@ -96,9 +94,7 @@ class UserLocationListAPIView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-
 class UserLocationDetailAPIView(APIView):
-
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
@@ -117,7 +113,6 @@ class UserLocationDetailAPIView(APIView):
             else:
                 return Response({"message": "Token and user id didn't match"}, status=status.HTTP_401_UNAUTHORIZED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
 
     def delete(self, request, id):
         try:
@@ -134,5 +129,4 @@ class UserLocationDetailAPIView(APIView):
         if location.user.id == user_id:
             location.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
-        return Response({"message": "Token and user id didn't match"}, status=status.HTTP_401_UNAUTHORIZED) 
-
+        return Response({"message": "Token and user id didn't match"}, status=status.HTTP_401_UNAUTHORIZED)

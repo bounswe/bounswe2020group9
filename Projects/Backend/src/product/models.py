@@ -10,8 +10,8 @@ from user.models import Vendor, Customer, User
 class ProductList(models.Model):
     name = models.CharField(max_length=255)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    is_private = models.BooleanField(default=True) # private can only seen by owner
-    is_alert_list = models.BooleanField(default=False) # True if it is an alert list
+    is_private = models.BooleanField(default=True)  # private can only seen by owner
+    is_alert_list = models.BooleanField(default=False)  # True if it is an alert list
 
     def __str__(self):
         return self.customer.user.username + " - " + self.name
@@ -106,6 +106,7 @@ class Payment(models.Model):
     date_year = models.CharField(max_length=2)
     cvv = models.CharField(max_length=3)
 
+
 class SearchHistory(models.Model):
-    user =  models.ForeignKey(User, on_delete=models.CASCADE)
-    searched = models.CharField(max_length=255,default="")
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    searched = models.CharField(max_length=255, default="")
