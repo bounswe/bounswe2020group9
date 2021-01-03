@@ -1,24 +1,21 @@
+from django.contrib.sites.shortcuts import get_current_site
 from django.http import HttpResponse, Http404
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
-
 from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_204_NO_CONTENT, \
-    HTTP_200_OK, HTTP_202_ACCEPTED
+    HTTP_202_ACCEPTED
 from rest_framework.views import APIView
-from django.utils import timezone
 
+from product.functions import search_product_db, datamuse_call, filter_func, sort_func
 from product.models import Product, ProductList, SubOrder, Comment, Category
 from product.serializers import ProductSerializer, ProductListSerializer, CommentSerializer, SubOrderSerializer, \
     SearchHistorySerializer, CategorySerializer
-from product.functions import search_product_db,datamuse_call,filter_func,sort_func
-from django.contrib.sites.shortcuts import get_current_site
-
-
 # Create your views here.
 from user.models import User, Customer, Vendor
 from user.serializers import UserSerializer
+
 
 class ProductListAPIView(APIView):
 
@@ -29,7 +26,8 @@ class ProductListAPIView(APIView):
 
     def post(self, request):
         if not Vendor.objects.filter(user_id=request.user.id).exists():
-            return Response({"message":"you must be logged in as a Vendor to add product"}, status=HTTP_400_BAD_REQUEST)
+            return Response({"message": "you must be logged in as a Vendor to add product"},
+                            status=HTTP_400_BAD_REQUEST)
         serializer = ProductSerializer(data=request.data, context={'request': request})
         try:
             file = request.data['file']
@@ -56,7 +54,7 @@ class ProductDetailAPIView(APIView):
         try:
             return Product.objects.get(id=id)
         except Product.DoesNotExist:
-            return HttpResponse("product id "+ str(id) + " not found", status=HTTP_404_NOT_FOUND)
+            return HttpResponse("product id " + str(id) + " not found", status=HTTP_404_NOT_FOUND)
 
     def get(self, request, id):
         product = self.get_product(id)
@@ -64,7 +62,7 @@ class ProductDetailAPIView(APIView):
         try:
             return Response(serializer.data)
         except:
-            return HttpResponse("product id "+ str(id) + " not found", status=HTTP_404_NOT_FOUND)
+            return HttpResponse("product id " + str(id) + " not found", status=HTTP_404_NOT_FOUND)
 
     def put(self, request, id):
         product = self.get_product(id)
@@ -90,15 +88,16 @@ class ProductDetailAPIView(APIView):
     def delete(self, request, id):
         product = Product.objects.filter(id=id)
         if not product.exists():
-            return Response({"message":"product not found"}, status=HTTP_404_NOT_FOUND)
+            return Response({"message": "product not found"}, status=HTTP_404_NOT_FOUND)
         product = product[0]
         if not product.vendor_id == request.user.id:
-            return Response({"message":"you must be the owner to delete product"}, status=HTTP_400_BAD_REQUEST)
+            return Response({"message": "you must be the owner to delete product"}, status=HTTP_400_BAD_REQUEST)
         product = self.get_product(id)
         product.delete()
-        return Response({"message":"product id "+ str(id) + " deleted"}, status=HTTP_204_NO_CONTENT)
+        return Response({"message": "product id " + str(id) + " deleted"}, status=HTTP_204_NO_CONTENT)
 
 
+# return public lists of user, if user is token user, also return private lists. Do not return cart/alerted list
 class ListListAPIView(APIView):
     # authentication_classes = [TokenAuthentication]
     # permission_classes = [IsAuthenticated]
@@ -116,13 +115,15 @@ class ListListAPIView(APIView):
         except:
             raise Http404
 
+    # GET(if not private)
     def get(self, request, id):
-        if len(Customer.objects.filter(pk=id)) == 0: # is user does not exist
+        if len(Customer.objects.filter(pk=id)) == 0:  # is user does not exist
             raise Http404
         product_lists = self.get_list_list(request, id)
         serializer = ProductListSerializer(product_lists, many=True, context={'request': request})
         return Response(serializer.data)
 
+    # POST(same user)
     def post(self, request, id):
         if not self.is_user(request, id):
             return Response({"message": "bad request"}, status=status.HTTP_400_BAD_REQUEST)
@@ -133,6 +134,8 @@ class ListListAPIView(APIView):
             return Response(serializer.data, status=HTTP_201_CREATED)
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
+
+# return specific list of user, if private, check user is token user
 class ListDetailAPIView(APIView):
 
     def check_user(self, request, id, list_id):
@@ -157,6 +160,7 @@ class ListDetailAPIView(APIView):
         except:
             raise Http404
 
+    # GET(if not private)
     def get(self, request, id, list_id):
         if not self.check_user(request, id, list_id):
             return Response({"message": "bad request"}, status=status.HTTP_400_BAD_REQUEST)
@@ -167,10 +171,11 @@ class ListDetailAPIView(APIView):
         serializer = ProductListSerializer(list, context={'request': request})
         return Response(serializer.data)
 
+    # PUT(same user)
     def put(self, request, id, list_id):
         if not self.check_user(request, id, list_id):
             return Response({"message": "bad request"}, status=status.HTTP_400_BAD_REQUEST)
-        if "is_private" in request.data and request.data["is_private"] not in ["true","false"]:
+        if "is_private" in request.data and request.data["is_private"] not in ["true", "false"]:
             return Response({"is_private": ["return either 'true' or 'false'."]}, status=status.HTTP_400_BAD_REQUEST)
         list = self.get_list(request, list_id)
         if not self.is_owner(request, id, list_id):
@@ -185,8 +190,9 @@ class ListDetailAPIView(APIView):
             serializer = ProductListSerializer(list)
             return Response(serializer.data)
         except:
-            return Response({"message":"bad request"}, status=HTTP_400_BAD_REQUEST)
+            return Response({"message": "bad request"}, status=HTTP_400_BAD_REQUEST)
 
+    # DELETE(same user)
     def delete(self, request, id, list_id):
         if not self.check_user(request, id, list_id):
             return Response({"message": "bad request"}, status=status.HTTP_400_BAD_REQUEST)
@@ -195,8 +201,10 @@ class ListDetailAPIView(APIView):
             return Response({"message": "not allowed to access"}, status=status.HTTP_401_UNAUTHORIZED)
         # error handling done above
         list.delete()
-        return Response({"message":"list, id: "+ str(list_id) + ", is deleted"}, status=HTTP_204_NO_CONTENT)
+        return Response({"message": "list, id: " + str(list_id) + ", is deleted"}, status=HTTP_204_NO_CONTENT)
 
+
+# return alerted list of user, note it is private
 class AlertListAPIView(APIView):
     def get_alert_list(self, id):
         try:
@@ -208,6 +216,7 @@ class AlertListAPIView(APIView):
     def check_private_access(self, request, id):
         return id == request.user.id
 
+    # GET(private)
     def get(self, request, id):
         if not self.check_private_access(request, id):
             return Response({"message": "not allowed to access"}, status=status.HTTP_401_UNAUTHORIZED)
@@ -215,6 +224,8 @@ class AlertListAPIView(APIView):
         serializer = ProductListSerializer(a_list, context={'request': request})
         return Response(serializer.data)
 
+
+# add/remove product to/from list
 class AddProductToListAPIView(APIView):
     def get_list(self, id):
         try:
@@ -226,6 +237,7 @@ class AddProductToListAPIView(APIView):
     def check_authorization(self, request, id, list_id):
         return id == request.user.id and id == request.data[""]
 
+    # POST(private)
     def post(self, request, id, list_id):
         try:
             product = Product.objects.get(id=request.data["product_id"])
@@ -247,11 +259,12 @@ class AddProductToListAPIView(APIView):
         if product not in list.product_set.all():
             list.product_set.add(product)
             serializer = ProductListSerializer(list, context={'request': request})
-            return Response(serializer.data, status= HTTP_202_ACCEPTED)
+            return Response(serializer.data, status=HTTP_202_ACCEPTED)
         else:
             serializer = ProductListSerializer(list, context={'request': request})
-            return Response(serializer.data, status= HTTP_204_NO_CONTENT)
+            return Response(serializer.data, status=HTTP_204_NO_CONTENT)
 
+    # DELETE(private)
     def delete(self, request, id, list_id):
         try:
             product = Product.objects.get(id=request.data["product_id"])
@@ -273,12 +286,13 @@ class AddProductToListAPIView(APIView):
         if product in list.product_set.all():
             list.product_set.remove(product)
             serializer = ProductListSerializer(list, context={'request': request})
-            return Response(serializer.data, status= HTTP_202_ACCEPTED)
+            return Response(serializer.data, status=HTTP_202_ACCEPTED)
         else:
             serializer = ProductListSerializer(list, context={'request': request})
-            return Response(serializer.data, status= HTTP_204_NO_CONTENT)
+            return Response(serializer.data, status=HTTP_204_NO_CONTENT)
 
 
+# return cart of user, note it is private
 class CartAPIView(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
@@ -301,6 +315,7 @@ class CartAPIView(APIView):
         serializer = SubOrderSerializer(cart, many=True, context={'request': request})
         return Response(serializer.data)
 
+    # GET(private)
     def get(self, request):
         return self.cart_serializer_response(request)
 
@@ -310,27 +325,31 @@ class CartAPIView(APIView):
         except Http404:
             raise Http404
         except:
-            return Response({"message": "bad request body, 'product_id' and 'amount' required"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": "bad request body, 'product_id' and 'amount' required"},
+                            status=status.HTTP_400_BAD_REQUEST)
         return self.cart_serializer_response(request)
 
     def put(self, request):
         try:
-            subOrder = SubOrder.objects.get(customer_id=request.user.id, product_id=request.data["product_id"], purchased=False)
+            subOrder = SubOrder.objects.get(customer_id=request.user.id, product_id=request.data["product_id"],
+                                            purchased=False)
             subOrder.amount = request.data["amount"]
             subOrder.save()
         except:
-            return Response({"message": "bad request body, 'product_id' and 'amount' required"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"message": "bad request body, 'product_id' and 'amount' required"},
+                            status=status.HTTP_400_BAD_REQUEST)
         return self.cart_serializer_response(request)
 
     def delete(self, request):
         try:
-            suborder = SubOrder.objects.filter(customer_id=request.user.id, product_id=request.data["product_id"], purchased=False)
+            suborder = SubOrder.objects.filter(customer_id=request.user.id, product_id=request.data["product_id"],
+                                               purchased=False)
             if suborder:
                 suborder = suborder[0]
                 suborder.delete()
             else:
                 response = self.cart_serializer_response(request)
-                response.status_code=HTTP_204_NO_CONTENT
+                response.status_code = HTTP_204_NO_CONTENT
                 return response
         except:
             return Response({"message": "bad request body, 'product_id' required"}, status=status.HTTP_400_BAD_REQUEST)
@@ -345,7 +364,6 @@ class CategoryListAPIView(APIView):
 
 
 class AddCommentAPIView(APIView):
-
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
@@ -356,28 +374,29 @@ class AddCommentAPIView(APIView):
             return Response({"message": "Token is not valid."}, status=status.HTTP_401_UNAUTHORIZED)
         serializer = CommentSerializer(data=request.data)
         if serializer.is_valid():
-            comment = Comment.objects.filter(product_id=serializer.validated_data['product'].id, customer_id=serializer.validated_data['customer'].user_id)
+            comment = Comment.objects.filter(product_id=serializer.validated_data['product'].id,
+                                             customer_id=serializer.validated_data['customer'].user_id)
             if comment:
                 return Response({"message": "A comment of you already exists"}, status=status.HTTP_400_BAD_REQUEST)
             if serializer.validated_data['customer'].user_id == user_id:
                 # update the rating of the product
                 product = serializer.validated_data['product']
                 rating = request.data['rating']
-                rateCounter =len(Comment.objects.filter(product_id=product.id))
+                rateCounter = len(Comment.objects.filter(product_id=product.id))
                 if rateCounter:
-                    product.rating = (rating + product.rating*rateCounter)/(rateCounter+1)
+                    product.rating = (rating + product.rating * rateCounter) / (rateCounter + 1)
                 else:
                     product.rating = rating
                 product.save()
-                
+
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             else:
                 return Response({"message": "Token and user id didn't match"}, status=status.HTTP_401_UNAUTHORIZED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class UserCommentAPIView(APIView):
 
+class UserCommentAPIView(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
@@ -392,8 +411,8 @@ class UserCommentAPIView(APIView):
             return Response(serializer.data)
         return Response({"message": "Token and user id didn't match"}, status=status.HTTP_401_UNAUTHORIZED)
 
-class UpdateCommentAPIView(APIView):
 
+class UpdateCommentAPIView(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
@@ -411,9 +430,9 @@ class UpdateCommentAPIView(APIView):
                     # update the rating of the product
                     product = serializer.validated_data['product']
                     rating = request.data['rating']
-                    rateCounter =len(Comment.objects.filter(product_id=product.id))
+                    rateCounter = len(Comment.objects.filter(product_id=product.id))
                     if rateCounter:
-                        product.rating = (rating - oldComment.rating + product.rating*(rateCounter))/rateCounter
+                        product.rating = (rating - oldComment.rating + product.rating * (rateCounter)) / rateCounter
                     else:
                         product.rating = rating
                     product.save()
@@ -437,7 +456,7 @@ class UpdateCommentAPIView(APIView):
         if comment.customer.user_id == user_id:
             comment.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
-        return Response({"message": "Token and user id didn't match"}, status=status.HTTP_401_UNAUTHORIZED) 
+        return Response({"message": "Token and user id didn't match"}, status=status.HTTP_401_UNAUTHORIZED)
 
 
 class CommentsOfProductAPIView(APIView):
@@ -449,58 +468,64 @@ class CommentsOfProductAPIView(APIView):
                 comment.customer = None
                 serializers.append(CommentSerializer(comment).data)
             else:
-                serializer = {**CommentSerializer(comment).data, **UserSerializer(User.objects.get(id = comment.customer.user_id)).data}
+                serializer = {**CommentSerializer(comment).data,
+                              **UserSerializer(User.objects.get(id=comment.customer.user_id)).data}
                 serializers.append(serializer)
         return Response(serializers)
+
 
 class SearchAPIView(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
-    def post(self,request,filter_type,sort_type):
-        token =request.META.get('HTTP_AUTHORIZATION')[6:]
-        if token != "57bcb0493429453fad027bc6552cc1b28d6df955" :
-            serializer = SearchHistorySerializer(data={"user":request.user.id,"searched":request.data["searched"]})
+
+    def post(self, request, filter_type, sort_type):
+        token = request.META.get('HTTP_AUTHORIZATION')[6:]
+        if token != "57bcb0493429453fad027bc6552cc1b28d6df955":
+            serializer = SearchHistorySerializer(data={"user": request.user.id, "searched": request.data["searched"]})
             if serializer.is_valid():
                 serializer.save(user_id=request.user.id)
                 word_list = datamuse_call(request.data["searched"])
-                product_list = search_product_db(word_list,request.data["searched"])
+                product_list = search_product_db(word_list, request.data["searched"])
                 filter_type = str(filter_type)
                 sort_type = str(sort_type)
                 filter_types = filter_type.split("&")
-                product_list = filter_func(filter_types,product_list)
-                product_list = sort_func(sort_type,product_list)
+                product_list = filter_func(filter_types, product_list)
+                product_list = sort_func(sort_type, product_list)
                 product_dict = {}
                 product_dict["product_list"] = product_list
                 return Response(product_dict, status=status.HTTP_200_OK)
             return Response(serializer._errors, status=status.HTTP_400_BAD_REQUEST)
         else:
             word_list = datamuse_call(request.data["searched"])
-            product_list = search_product_db(word_list,request.data["searched"])
+            product_list = search_product_db(word_list, request.data["searched"])
             filter_type = str(filter_type)
             sort_type = str(sort_type)
             filter_types = filter_type.split("&")
-            product_list = filter_func(filter_types,product_list)
-            product_list = sort_func(sort_type,product_list)
+            product_list = filter_func(filter_types, product_list)
+            product_list = sort_func(sort_type, product_list)
             product_dict = {}
             product_dict["product_list"] = product_list
             return Response(product_dict, status=status.HTTP_200_OK)
+
+
 class SearchAPIView2(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
-    def post(self,request,filter_type,sort_type):
+
+    def post(self, request, filter_type, sort_type):
         domain = get_current_site(request).domain
-        token =request.META.get('HTTP_AUTHORIZATION')[6:]
-        if token != "57bcb0493429453fad027bc6552cc1b28d6df955" :
-            serializer = SearchHistorySerializer(data={"user":request.user.id,"searched":request.data["searched"]})
+        token = request.META.get('HTTP_AUTHORIZATION')[6:]
+        if token != "57bcb0493429453fad027bc6552cc1b28d6df955":
+            serializer = SearchHistorySerializer(data={"user": request.user.id, "searched": request.data["searched"]})
             if serializer.is_valid():
                 serializer.save(user_id=request.user.id)
                 word_list = datamuse_call(request.data["searched"])
-                product_list = search_product_db(word_list,request.data["searched"])
+                product_list = search_product_db(word_list, request.data["searched"])
                 filter_type = str(filter_type)
                 sort_type = str(sort_type)
                 filter_types = filter_type.split("&")
-                product_list = filter_func(filter_types,product_list)
-                product_list = sort_func(sort_type,product_list)
+                product_list = filter_func(filter_types, product_list)
+                product_list = sort_func(sort_type, product_list)
                 product_list2 = []
                 for i in range(len(product_list)):
                     product = ProductSerializer(Product.objects.get(id=product_list[i]["id"])).data
@@ -512,12 +537,12 @@ class SearchAPIView2(APIView):
             return Response(serializer._errors, status=status.HTTP_400_BAD_REQUEST)
         else:
             word_list = datamuse_call(request.data["searched"])
-            product_list = search_product_db(word_list,request.data["searched"])
+            product_list = search_product_db(word_list, request.data["searched"])
             filter_type = str(filter_type)
             sort_type = str(sort_type)
             filter_types = filter_type.split("&")
-            product_list = filter_func(filter_types,product_list)
-            product_list = sort_func(sort_type,product_list)
+            product_list = filter_func(filter_types, product_list)
+            product_list = sort_func(sort_type, product_list)
             for i in range(len(product_list)):
                 product = ProductSerializer(Product.objects.get(id=product_list[i]["id"])).data
                 product["picture"] = "http://" + domain + product["picture"]
