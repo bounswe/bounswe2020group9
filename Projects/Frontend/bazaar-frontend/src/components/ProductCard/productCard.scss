@@ -1,0 +1,39 @@
+
+.productCard{
+    max-width: 12rem;
+    margin-bottom: 3rem;
+    height: 27rem;
+    & .productImgWrapper{
+        height: 14rem !important;
+        display: flex;
+            & .productCardImage{
+            max-width: 9rem!important;
+            display: block;
+            margin: auto;
+        }
+    }
+
+    & .productCardBody{
+        & .card-title{
+            text-align: center;
+            height: 5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+        }
+        p{
+            text-align: center;
+            color: #42AEA8;
+        }
+    }
+
+    & .productCardFooter{
+        & .productCardPrice{
+            color: black!important;
+            font-size: medium;
+            font-weight: bold;
+
+        }
+    }
+}

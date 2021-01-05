@@ -5,7 +5,7 @@ span {
 }
 
 .footerWrapper{
-  background-color: #f4d9c6;
+  background-color: #213e3b;
   padding-top: 3rem;
   padding-bottom: 2rem;
 }
@@ -23,10 +23,10 @@ span .span-title {
 	padding-left: 10px;
     padding-bottom: 6px;
     margin-bottom: 20px;
-    color:black;
+    color:#e8ffff;
 }
 #footer a {
-    color: black;
+    color: #e8ffff;
     text-decoration: none !important;
     background-color: transparent;
     -webkit-text-decoration-skip: objects;
@@ -47,10 +47,10 @@ span .span-title {
 }
 #footer ul.social li a,
 #footer ul.quick-links li a{
-	color:black;
+	color:#e8ffff;
 }
 #footer ul.social li a:hover{
-	color:black;
+	color:#e8ffff;
 }
 #footer ul.quick-links li{
 	padding: 3px 0;
@@ -77,4 +77,8 @@ span .span-title {
     padding-bottom: 0px;
     margin-bottom: 10px;
 }
+}
+
+.footerLower{
+    color: white;
 }

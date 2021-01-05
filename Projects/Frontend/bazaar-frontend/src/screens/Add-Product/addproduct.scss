@@ -1,0 +1,33 @@
+
+.form-group {
+    & label {
+        text-align: right;
+        font-size: 100%;
+        font-weight: 500;
+    }
+
+    & select {
+        background-color: #f6f6f6;
+    }
+
+    & .error {
+        color: red;
+    }
+    
+}
+#add-product-div{
+    text-align: center;
+    margin-left: 20px;
+    & #add-product {
+        border-color: #F4A133;
+        background-color: #F4A133;
+    
+        color: black;
+          &:hover {
+            background-color: #f1ca1a;
+    
+            color: black;
+        }
+      }
+}
+
