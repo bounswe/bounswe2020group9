@@ -55,7 +55,7 @@ class Home extends Component {
         categoryStructureTemp[keys[i]] = sublist;
       }
       categoryStructureTemp[""] = [];
-      console.log("category strructure: " + categoryStructureTemp);
+      console.log("category structure: " + categoryStructureTemp);
 
       this.setState({ categoryStructure: categoryStructureTemp });
     });
@@ -86,7 +86,7 @@ class Home extends Component {
         <Pagination.Item
           key={number}
           className="myPaginationItem dropdown"
-          href={"/category/" + categoryList[number]}
+          href = {"/category/" + categoryList[number]}
         >
           <a
             className="nav-link dropdown-toggle"

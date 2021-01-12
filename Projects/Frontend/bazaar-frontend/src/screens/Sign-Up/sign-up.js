@@ -19,6 +19,7 @@ export default class SignUp extends Component {
           lname: '',
           isHidden: true,
           redirect: null,
+          terms_accepted: false,
           errors: {}
         }
       }
@@ -29,7 +30,7 @@ export default class SignUp extends Component {
 
       handleValidation(){
         let formIsValid = true;
-        let new_errors = {passwprd: '', username: ''};
+        let new_errors = {password: '', username: ''};
 
         if(this.state.password.length < 8){
           formIsValid = false;
@@ -47,12 +48,21 @@ export default class SignUp extends Component {
           new_errors["utype"] = "Please select user type.";      
         }
 
+        if(this.state.terms_accepted === false){
+          formIsValid = false;
+          new_errors["termsCheck"] = "This is required.";
+        }
+
         this.setState({errors: new_errors});
         return formIsValid;
       }
     
       handleChange = event => {
         this.setState({ [event.target.name]: event.target.value });
+      }
+
+      handleTermsChange = event => {
+        this.setState({terms_accepted: event.target.checked});
       }
 
       handleSubmit = event => {
@@ -139,6 +149,14 @@ export default class SignUp extends Component {
                     <p className="user-type-change">
                         Want to <a href="/signup-vendor">sign up as Vendor?</a>
                     </p>
+
+                    <div className="form-check">
+                        <input type="checkbox" className="form-check-input" name="termsCheck"
+                               value="" onChange={this.handleTermsChange}/>
+                        <label className="form-check-label" htmlFor="termsCheck">
+                            I agree to the <a href="#">Terms and Conditions</a></label>
+                    </div>
+                    <div className="error">{this.state.errors["termsCheck"]}</div>
 
                     <button id="submit" type="submit" className="btn btn-block">Sign Up</button>
 
