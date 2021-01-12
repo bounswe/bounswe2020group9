@@ -9,6 +9,7 @@ import UIKit
 
 class MainViewController: UIViewController{
 
+    @IBOutlet weak var logoImageView: UIImageView!
     @IBOutlet weak var productTableView: UITableView!
     @IBOutlet weak var categoryCollectionView: UICollectionView!
     @IBOutlet weak var searchBar: UISearchBar!
@@ -442,7 +443,7 @@ extension MainViewController: UISearchBarDelegate, UISearchControllerDelegate {
 // MARK: - IndicatorView
 extension MainViewController {
     func startIndicator() {
-        self.view.bringSubviewToFront(loadingView)
+        //self.view.bringSubviewToFront(loadingView)
         loadingView.isHidden = false
         activityIndicator.isHidden = false
         activityIndicator.startAnimating()
@@ -458,6 +459,7 @@ extension MainViewController {
     
     func stopIndicator() {
         DispatchQueue.main.async {
+            self.logoImageView.isHidden = true
             self.loadingView.isHidden = true
             self.activityIndicator.isHidden = true
             self.activityIndicator.stopAnimating()
@@ -507,90 +509,6 @@ class AllProducts {
         self.allImageNames = []
     }
     
-    func fetchAllProducts2() {
-        dispatchGroup.enter()
-        APIManager().getAllProducts(completionHandler: { products in
-            if products != nil {
-                self.dataFetched = true
-                self.allProducts = products!
-                print("heree")
-                //var count = 0
-                //var img = UIImage(named: "xmark.circle")
-                //var name = "xmark.circle"
-                //let dispatchgroup = DispatchGroup()
-                /*dispatchgroup.notify(queue: DispatchQueue.global()) {
-                    count = count + 1
-                    self.allImages.append(img!)
-                    self.allImageNames.append(name)
-                    img = UIImage(named: "xmark.circle")
-                    name = "xmark.circle"
-                }*/
-                print("hereee")
-                print("hereeee \(self.allProducts.count)")
-                for prod in self.allProducts {
-                    //dispatchgroup.enter()
-                    print("ll",prod.id, prod.name)
-                    if prod.picture == nil || prod.picture == "" {
-                        print("err1")
-                        //self.allImages.append(UIImage(named: "xmark.circle")!)
-                        //self.allImageNames.append("xmark.circle")
-                        //dispatchgroup.leave()
-                        self.allImages[prod.id] = UIImage(named: "xmark.circle")
-                    } else {
-                        let url = URL(string: prod.picture!)
-                        do {
-                            let data = try Data(contentsOf: url!)
-                            if let newimg = UIImage(data: data) {
-                                //img = newimg
-                                //name = prod.picture ?? "of"
-                                //dispatchgroup.leave()
-                                self.allImages[prod.id] = newimg
-                            } else {
-                                //dispatchgroup.leave()
-                                self.allImages[prod.id] = UIImage(named: "xmark.circle")
-                            }
-                        } catch let err {
-                            print("error: ", err)
-                            //dispatchgroup.leave()
-                            self.allImages[prod.id] = UIImage(named: "xmark.circle")
-                        }
-                       
-                    }
-                }
-               // dispatchgroup.wait()
-                self.delegate?.allProductsAreFetched()
-            } else {
-                self.dataFetched = false
-                self.allProducts = []
-                self.delegate?.productsCannotBeFetched()
-            }
-        })
-        dispatchGroup.leave()
-        dispatchGroup.wait()
-        /*URLSession.shared.dataTask(with:url!, completionHandler: { (data, response, error) in
-            if error != nil {
-                print(error ?? "errr")
-                //self.allImages.append(UIImage(named: "xmark.circle")!)
-                //self.allImageNames.append("xmark.circle")
-                dispatchgroup.leave()
-            } else {
-                if let newimage = UIImage(data: data!) {
-                    //self.allImages.append(newimage)
-                    //self.allImageNames.append(prod.picture!)
-                    img = newimage
-                    name = prod.picture
-                    dispatchgroup.leave()
-                    print("\(count) of \(self.allProducts.count)")
-                } else {
-                    //self.allImages.append(UIImage(named: "xmark.circle")!)
-                    //self.allImageNames.append("xmark.circle")
-                    dispatchgroup.leave()
-                    print("sth")
-                }
-            }
-        }).resume()*/
-    }
-    
     func fetchAllProducts() {
         dispatchGroup.enter()
         APIManager().getAllProducts(completionHandler: { products in
@@ -633,80 +551,6 @@ class AllProducts {
         })
         dispatchGroup.leave()
         dispatchGroup.wait()
-        /*URLSession.shared.dataTask(with:url!, completionHandler: { (data, response, error) in
-            if error != nil {
-                print(error ?? "errr")
-                //self.allImages.append(UIImage(named: "xmark.circle")!)
-                //self.allImageNames.append("xmark.circle")
-                dispatchgroup.leave()
-            } else {
-                if let newimage = UIImage(data: data!) {
-                    //self.allImages.append(newimage)
-                    //self.allImageNames.append(prod.picture!)
-                    img = newimage
-                    name = prod.picture
-                    dispatchgroup.leave()
-                    print("\(count) of \(self.allProducts.count)")
-                } else {
-                    //self.allImages.append(UIImage(named: "xmark.circle")!)
-                    //self.allImageNames.append("xmark.circle")
-                    dispatchgroup.leave()
-                    print("sth")
-                }
-            }
-        }).resume()*/
     }
         
 }
-
-
-/*
- func generateProducts() {
-     
-     products.append(Product(title: "Made in France Crewneck Organic Cotton Sweathsirt", brand: "Lacoste", category: CLOTHING, price: "$175.00", photo: "2"))
-     products.append(Product(title: "12.12 Chronograph Watch with Black Silicone Strap", brand: "Lacoste", category: CLOTHING, price: "$160.00", photo: "1"))
-     products.append(Product(title: "Court Slam Tonal Leather Trainers", brand: "Lacoste", category: CLOTHING, price: "$115.00", photo: "3"))
-     products.append(Product(title: "Brushed Checkered Scarf", brand: "Urban Outfitters", category: CLOTHING, price: "$34.00", photo: "4"))
-     products.append(Product(title: "Hand Painted Denim Trucker Jacket", brand: "Veni Vidi Vici", category: CLOTHING, price: "$299.00", photo: "5"))
-     products.append(Product(title: "Back 2 Back Crewneck Sweatshirt", brand: "Chinatown Market", category: CLOTHING, price: "$89.00", photo: "6"))
-     products.append(Product(title: "Vintage Spliced Graphic Tee", brand: "Urban Renewal", category: CLOTHING, price: "$49.00", photo: "7"))
-     products.append(Product(title: "Long Sleeve Football Tee", brand: "Champion", category: CLOTHING, price: "$49.00", photo: "8"))
-     products.append(Product(title: "2976 Bex Chelsea Boots", brand: "Dr. Martens", category: CLOTHING, price: "$160.00", photo: "9"))
-     products.append(Product(title: "Player Bucket Hat", brand: "Polo Ralph Lauren", category: CLOTHING, price: "$59.50", photo: "10"))
-     products.append(Product(title: "Celestial Tie-Dye Placement", brand: "Urban Outfitters", category: HOME, price: "$12.00", photo: "11"))
-     products.append(Product(title: "Standing Mixer", brand: "SMEG", category: HOME, price: "$529.50", photo: "12"))
-     products.append(Product(title: "Matin Table Lamp", brand: "HAY", category: HOME, price: "$146.00", photo: "13"))
-     products.append(Product(title: "Runa Pouf", brand: "Urban Outfitters", category: HOME, price: "$99.00", photo: "14"))
-     products.append(Product(title: "Small White Ceramic Vase Set", brand: "Sullivans", category: HOME, price: "$24.99", photo: "15"))
-     products.append(Product(title: "Modern Ashlar Accent Chair", brand: "Studio Designs", category: HOME, price: "$259.99", photo: "16"))
-     products.append(Product(title: "3-Shelf Bookcase", brand: "Mainstay", category: HOME, price: "$99.50", photo: "17"))
-     products.append(Product(title: "Office Desktop Bookshelf", brand: "Ticktecklab", category: HOME, price: "$26.59", photo: "18"))
-     products.append(Product(title: "Tamarack Folding Wooden Outdoor Chair", brand: "CleverMade", category: HOME, price: "$159.99", photo: "19"))
-     products.append(Product(title: "Reading Frog Family", brand: "SPI", category: HOME, price: "$187.00", photo: "20"))
-     products.append(Product(title: "Win-Win Good Genes Duo Gift Set", brand: "Sunday Riley", category: BEAUTY, price: "$122.00", photo: "21"))
-     products.append(Product(title: "Le Mini Macaron Gel Manicure Set", brand: "Urban Outfitters", category: BEAUTY, price: "$30.00", photo: "22"))
-     products.append(Product(title: "Highlighting Duo Pencil", brand: "Anastasia Beverly Hills", category: BEAUTY, price: "$23.00", photo: "23"))
-     products.append(Product(title: "Stimulating Scalp Scrub", brand: "Frank Body", category: BEAUTY, price: "$19.00", photo: "24"))
-     products.append(Product(title: "Hoola Matte Bronzer", brand: "Benefit Cosmetics", category: BEAUTY, price: "$44.00", photo: "25"))
-     products.append(Product(title: "Drying Lotion", brand: "Mario Badescu", category: BEAUTY, price: "$17.00", photo: "26"))
-     products.append(Product(title: "Matte Softwear Brush", brand: "Lime Crime", category: BEAUTY, price: "$22.00", photo: "27"))
-     products.append(Product(title: "Facial Spray With Aloe, Cucumber and Green Tea", brand: "Mario Badescu", category: BEAUTY, price: "$7.00", photo: "28"))
-     products.append(Product(title: "Dew It For The Glow Gift Set", brand: "Mario Badescu", category: BEAUTY, price: "$28.00", photo: "29"))
-     products.append(Product(title: "Roller Lash Curling Mascara", brand: "Benefit", category: BEAUTY, price: "$25.00", photo: "30"))
-     products.append(Product(title: "Allure Voice-Activated Home Speaker with Alexa", brand: "Harman Kardon", category: ELECTRONICS, price: "$119.00", photo: "32"))
-     products.append(Product(title: "Stanmore II Wireless Smart Speaker", brand: "Marshall", category: ELECTRONICS, price: "$395.99", photo: "31"))
-     products.append(Product(title: "Nintendo Switch Lite", brand: "Nintendo", category: ELECTRONICS, price: "249.00", photo: "33"))
-     products.append(Product(title: "Wireless Charger", brand: "Anker", category: ELECTRONICS, price: "$12.99", photo: "34"))
-     products.append(Product(title: "USB-C Charge Cable (2m)", brand: "Apple", category: ELECTRONICS, price: "$19.00", photo: "39"))
-     products.append(Product(title: "Laptop Stand", brand: "Soundance", category: ELECTRONICS, price: "$29.90", photo: "35"))
-     products.append(Product(title: "DualShock 4 Wireless Controller for PS4", brand: "Playstation", category: ELECTRONICS, price: "$64.99", photo: "36"))
-     products.append(Product(title: "USB-C to HDMI Adapter", brand: "QGeeM", category: ELECTRONICS, price: "$10.99", photo: "37"))
-     products.append(Product(title: "Wireless Bluetooth Karaoke Microphone", brand: "Bonaok", category: ELECTRONICS, price: "$30.99", photo: "38"))
-     products.append(Product(title: "iPhone 12 64 GB", brand: "Apple", category: ELECTRONICS, price: "$829.00", photo: "iphone12"))
-     
-     
-
-     
-
- }
- */
