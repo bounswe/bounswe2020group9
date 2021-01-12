@@ -185,7 +185,7 @@ struct APIManager {
     }
     
     func getAllProducts(completionHandler: @escaping ([ProductData]?) -> Void) {
-        let callURL = "http://13.59.236.175:8000/api/product/"
+        let callURL = "http://3.121.223.52:8000/api/product/"
         if let url = URL(string: callURL){
             AF.request(url).responseJSON(completionHandler: {
                 response in

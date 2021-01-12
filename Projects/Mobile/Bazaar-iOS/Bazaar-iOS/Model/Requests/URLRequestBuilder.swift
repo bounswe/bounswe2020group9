@@ -37,7 +37,7 @@ extension URLRequestBuilder {
     }
     
     var mainURL: URL  {
-        return URL(string: "http://13.59.236.175:8000/")!
+        return URL(string: "http://3.121.223.52:8000/")!
     }
     
     var requestURL: URL {
