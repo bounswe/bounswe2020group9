@@ -8,23 +8,16 @@ This is the repository of group 9 in course CMPE451 PROJECT DEVELOPMENT IN SOFTW
 
 ## Group Members
 
-### Frontend Team
 - [**Hasan Demirkiran**(Communicator)](https://github.com/bounswe/bounswe2020group9/wiki/Hasan-Demirkiran)
-- [Ahmet Bilal Uçan](https://github.com/bounswe/bounswe2020group9/wiki/abu)
-- [Fırat Bulut](https://github.com/bounswe/bounswe2020group9/wiki/F%C4%B1rat-Bulut)
-- [Mehmet Can Ünal](https://github.com/bounswe/bounswe2020group9/wiki/Mehmet-Can-%C3%9Cnal) 
-
-### Backend Team
-- [Ömer Cihan Benzer](https://github.com/bounswe/bounswe2020group9/wiki/%C3%96mer-Cihan-Benzer)
-- [Halil İbrahim Orhan](https://github.com/bounswe/bounswe2020group9/wiki/Halil-İbrahim-Orhan)
-- [Mehmet Berk Kemaloğlu](https://github.com/bounswe/bounswe2020group9/wiki/Mehmet-Berk-Kemalo%C4%9Flu)
-- [Gökhan Tekel](https://github.com/gkhntkl)
-
-### Mobile(IOS) Team
 - [Muhsin ETKİ](https://github.com/bounswe/bounswe2020group9/wiki/Muhsin-ETKİ)
 - [Şadi Uysal](https://github.com/bounswe/bounswe2020group9/wiki/Şadi-Uysal)
+- [Ömer Cihan Benzer](https://github.com/bounswe/bounswe2020group9/wiki/%C3%96mer-Cihan-Benzer)
+- [Ahmet Bilal Uçan](https://github.com/bounswe/bounswe2020group9/wiki/Ahmet-Bilal-U%C3%A7an)
 - [Beste Göger](https://github.com/bounswe/bounswe2020group9/wiki/Beste-Göger)
+- [Halil İbrahim Orhan](https://github.com/bounswe/bounswe2020group9/wiki/Halil-İbrahim-Orhan)
 - [Emine Alcan Unsal](https://github.com/bounswe/bounswe2020group9/wiki/Emine-Alcan-Unsal)
-
-
+- [Mehmet Berk Kemaloğlu](https://github.com/bounswe/bounswe2020group9/wiki/Mehmet-Berk-Kemalo%C4%9Flu)
+- [Fırat Bulut](https://github.com/bounswe/bounswe2020group9/wiki/F%C4%B1rat-Bulut)
+- [Mehmet Can Ünal](https://github.com/bounswe/bounswe2020group9/wiki/Mehmet-Can-%C3%9Cnal) 
+- [Gökhan Tekel](https://github.com/gkhntkl)
 
