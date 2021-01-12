@@ -113,7 +113,7 @@ class Home extends Component {
 
     return (
       <div>
-        <div className="homeWrapper">
+        <div className="background">
           <Container>
             <div className="myPagination">
               <Pagination size="lg">{categories}</Pagination>

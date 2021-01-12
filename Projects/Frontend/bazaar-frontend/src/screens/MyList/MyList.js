@@ -101,7 +101,7 @@ export default class MyList extends Component {
 
 
     return (
-      <div>
+      <div className='background'>
 
         <Row className={"listWrapper"}>
           <Col xs={3} className={'lists'}>

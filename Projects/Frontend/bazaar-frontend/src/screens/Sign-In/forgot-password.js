@@ -84,7 +84,7 @@ export default class ForgotPassword extends Component {
     }
     
     return (
-      <div className="entry-form">
+      <div className="entry-form background">
         <Alert variant="success" hidden={this.state.isHiddenSuccess}>
           An email has been sent to your account. Please click on the link to reset your password.
         </Alert>

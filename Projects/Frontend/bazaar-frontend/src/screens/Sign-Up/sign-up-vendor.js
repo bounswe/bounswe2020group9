@@ -134,7 +134,8 @@ export default class SignUp extends Component {
             return <Redirect to={this.state.redirect} />
           }
         return (
-            <div className="entry-form">
+          <div className='background'>
+            <div className="signup-form">
               <Alert variant="success" hidden={this.state.isHidden}>
                 A confirmation mail has been sent to your account, please check it.
                 You can <Alert.Link href="/signin">sign in</Alert.Link> to your account after the confirmation is done.
@@ -211,6 +212,8 @@ export default class SignUp extends Component {
                 /> 
                
             </div>
+          </div>
+
 
         );
     }

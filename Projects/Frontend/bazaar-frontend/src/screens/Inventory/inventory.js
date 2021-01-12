@@ -250,7 +250,7 @@ export default class Inventory extends Component {
     })
 
     return (
-      <div className="profile-form">
+      <div className="profile-form background">
 
         <Modal show={this.state.isOpen} onHide={this.closeModal}>
           <Modal.Header closeButton>

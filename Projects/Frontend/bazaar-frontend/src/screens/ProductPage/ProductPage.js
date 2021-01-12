@@ -110,7 +110,7 @@ export default class Productpage extends Component {
     }
 
     return (
-      <div>
+      <div className='background'>
         <Container>
           <Row className={"productPart"}>
             <Col>

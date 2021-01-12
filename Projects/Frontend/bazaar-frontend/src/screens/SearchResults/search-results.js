@@ -130,7 +130,7 @@ class SearchResults extends Component {
 
       <div>
 
-        <div className='home-wrapper'>
+        <div className='background'>
           <Container>
             <div className='myPagination'>
               <Pagination size="lg">{categories}</Pagination>

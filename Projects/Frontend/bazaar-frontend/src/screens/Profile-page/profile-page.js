@@ -240,7 +240,8 @@ export default class ProfilePage extends Component {
         return <h1>{this.validate.message}</h1>;
       }
         return (
-            <div className="profile-form">
+          <div className='background'>
+            <div className="profile-container">
               <Alert variant="success" hidden={this.state.isHiddenSuccess}>
                 Profile details updated.
               </Alert>
@@ -253,10 +254,10 @@ export default class ProfilePage extends Component {
               <Alert variant="danger" hidden={this.state.isHiddenUnknown}>
                 Something went wrong.
               </Alert>
-                <div className="profile-container justify-content-center" id="header3">
+                <div className="justify-content-center" id="header3">
                     <h2 className="text-center">Profile Page</h2>
                 </div>
-                <div className="profile-container row">
+                <div className="profile-form row">
 
                     <div className=" col-lg-6 col-md-6 col-sm-6 no-padding-left border-right">
                         <h3 className="text-center heading-2">Change Details</h3>
@@ -340,6 +341,7 @@ export default class ProfilePage extends Component {
                 </div>
                   
             </div>
+          </div>
             
 
         );
