@@ -51,7 +51,7 @@ export default class SignUp extends Component {
 
         if(this.state.terms_accepted === false){
           formIsValid = false;
-          new_errors["termsCheck"] = "This is required.";
+          new_errors["termsCheck"] = "Terms and Conditions must be accepted.";
         }
 
         this.setState({errors: new_errors});
@@ -173,10 +173,6 @@ export default class SignUp extends Component {
                         <div className="error">{this.state.errors["password"]}</div>
                     </div>
 
-                    <p className="user-type-change">
-                        Want to <a href="/signup-vendor">sign up as Vendor?</a>
-                    </p>
-
                     <div className="form-check">
                         <input type="checkbox" className="form-check-input" name="termsCheck"
                                value="" onChange={this.handleTermsChange}/>
@@ -184,6 +180,10 @@ export default class SignUp extends Component {
                             I agree to the <a href="#" onClick={this.openModal}>Terms and Conditions</a></label>
                     </div>
                     <div className="error">{this.state.errors["termsCheck"]}</div>
+
+                    <p className="user-type-change">
+                      Want to <a href="/signup-vendor">sign up as Vendor?</a>
+                    </p>
 
                     <button id="submit" type="submit" className="btn btn-block">Sign Up</button>
 
