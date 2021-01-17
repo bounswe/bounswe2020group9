@@ -4,6 +4,8 @@ import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 import Cookies from 'js-cookie';
 import {serverUrl} from '../../utils/get-url'
 import { Button , Alert} from "react-bootstrap";
+import CategoryBar from "../../components/category-bar/category-bar";
+
 
 import "./profilepage.scss";
 import { faGlassWhiskey } from "@fortawesome/free-solid-svg-icons";
@@ -230,120 +232,118 @@ export default class ProfilePage extends Component {
               }
 
           })
+        
 
       }
 
 
     render() {
-      if (this.state.hasError) {
-        // You can render any custom fallback UI
-        return <h1>{this.validate.message}</h1>;
-      }
-        return (
-          <div className='background'>
-            <div className="profile-container">
-              <Alert variant="success" hidden={this.state.isHiddenSuccess}>
-                Profile details updated.
-              </Alert>
-              <Alert variant="success" hidden={this.state.isHiddenSuccessPw}>
-                Password updated.
-              </Alert>
-              <Alert variant="danger" hidden={this.state.isHiddenFail}>
-                Wrong password.
-              </Alert>
-              <Alert variant="danger" hidden={this.state.isHiddenUnknown}>
-                Something went wrong.
-              </Alert>
-                <div className="justify-content-center" id="header3">
-                    <h2 className="text-center">Profile Page</h2>
-                </div>
-                <div className="profile-form row">
+      return (
+        <div className='background'>
+          <CategoryBar></CategoryBar>
+          <div className="profile-container">
+            <Alert variant="success" hidden={this.state.isHiddenSuccess}>
+              Profile details updated.
+            </Alert>
+            <Alert variant="success" hidden={this.state.isHiddenSuccessPw}>
+              Password updated.
+            </Alert>
+            <Alert variant="danger" hidden={this.state.isHiddenFail}>
+              Wrong password.
+            </Alert>
+            <Alert variant="danger" hidden={this.state.isHiddenUnknown}>
+              Something went wrong.
+            </Alert>
+              <div className="justify-content-center" id="header3">
+                  <h2 className="text-center">Profile Page</h2>
+              </div>
+              <div className="profile-form row">
 
-                    <div className=" col-lg-6 col-md-6 col-sm-6 no-padding-left border-right">
-                        <h3 className="text-center heading-2">Change Details</h3>
-                        <div className="account-update">
-                            <form className='needs-validation' onSubmit={this.handleSubmit} noValidate>
-                              <div className="form-group row">
-                                  <label className="col-4 align-middle">First Name</label>
-                                  <div className="col">
-                                    <input type="text" name="fname"className="form-control col" value = {this.state.fname}
-                                    onChange={this.handleChange} required/>
-                                    <div className="error">{this.state.errors["fname"]}</div>                                
-                                  </div>
-                              </div>
-                              <div className="form-group row">
-                                  <label className="col-4 align-middle">Last Name</label>
-                                  <div className="col">
-                                    <input type="text" name="lname"className="form-control col" value = {this.state.lname}
-                                    onChange={this.handleChange} required/>
-                                    <div className="error">{this.state.errors["lname"]}</div>
-                                  </div>
-                              </div>
-                              <div className="form-group row" hidden={this.state.isCustomer}>
-                                  <label className="col-4 align-middle">Company</label>
-                                  <div className="col">
-                                    <input type="text" name="company" className="form-control col" value = {this.state.company}
-                                    onChange={this.handleChange}/>
-                                    <div className="error">{this.state.errors["company"]}</div>
-                                  </div>
-                              </div>
-                              <div className="form-group row">
-                                  <label className="col-4 align-middle">User Type</label>
-                                  <div className="col">
-                                    <input type="text" name="lname"className="form-control col" value = {this.state.user_type}
-                                    onChange={this.handleChange} disabled/>
-                                  </div>
-                              </div>
+                  <div className=" col-lg-6 col-md-6 col-sm-6 no-padding-left border-right">
+                      <h3 className="text-center heading-2">Change Details</h3>
+                      <div className="account-update">
+                          <form className='needs-validation' onSubmit={this.handleSubmit} noValidate>
+                            <div className="form-group row">
+                                <label className="col-4 align-middle">First Name</label>
+                                <div className="col">
+                                  <input type="text" name="fname"className="form-control col" value = {this.state.fname}
+                                  onChange={this.handleChange} required/>
+                                  <div className="error">{this.state.errors["fname"]}</div>                                
+                                </div>
+                            </div>
+                            <div className="form-group row">
+                                <label className="col-4 align-middle">Last Name</label>
+                                <div className="col">
+                                  <input type="text" name="lname"className="form-control col" value = {this.state.lname}
+                                  onChange={this.handleChange} required/>
+                                  <div className="error">{this.state.errors["lname"]}</div>
+                                </div>
+                            </div>
+                            <div className="form-group row" hidden={this.state.isCustomer}>
+                                <label className="col-4 align-middle">Company</label>
+                                <div className="col">
+                                  <input type="text" name="company" className="form-control col" value = {this.state.company}
+                                  onChange={this.handleChange}/>
+                                  <div className="error">{this.state.errors["company"]}</div>
+                                </div>
+                            </div>
+                            <div className="form-group row">
+                                <label className="col-4 align-middle">User Type</label>
+                                <div className="col">
+                                  <input type="text" name="lname"className="form-control col" value = {this.state.user_type}
+                                  onChange={this.handleChange} disabled/>
+                                </div>
+                            </div>
 
-                              <div id="save-changes-div">
-                                <Button variant="primary" id="save-changes" type="submit">Save changes</Button>
-                              </div>
+                            <div id="save-changes-div">
+                              <Button variant="primary" id="save-changes" type="submit">Save changes</Button>
+                            </div>
 
-                            </form>
-                        </div>
-                    </div>
-                    <div className=" col-lg-6 col-md-6 col-sm-6 no-padding-left">
-                    <h3 className="text-center heading-2">Change Password</h3>
-                        <div className="password-update">
-                            <form className='needs-validation' onSubmit={this.handlePasswordSubmit} noValidate>
-                              <div className="form-group row">
-                                  <label className="col-4 align-middle">Password</label>
-                                  <div className="col password-input">
-                                    <input type="password" name="currpw" className="form-control col" placeholder="Password" 
-                                    onChange={this.handleChange}/>
-                                    <div className="error">{this.state.errors["currpw"]}</div>
-                                  </div>
-                              </div>                    
-                              <div className="form-group row">
-                                  <label className="col-4 align-middle">New Password</label>
-                                  <div className="col password-input">
-                                    <input type="password" name="newpw" className="form-control col" placeholder="New password" 
-                                    onChange={this.handleChange}/>
-                                    <div className="error">{this.state.errors["newpw"]}</div>
-                                  </div>
-                              </div>
-                              <div className="form-group row">
-                                  <label className="col-4 align-middle">New Password(again)</label>
-                                  <div className="col password-input">
-                                    <input type="password" name="confpw" className="form-control col" placeholder="New password(again)" 
-                                    onChange={this.handleChange}/>
-                                    <div className="error">{this.state.errors["confpw"]}</div>
+                          </form>
+                      </div>
+                  </div>
+                  <div className=" col-lg-6 col-md-6 col-sm-6 no-padding-left">
+                  <h3 className="text-center heading-2">Change Password</h3>
+                      <div className="password-update">
+                          <form className='needs-validation' onSubmit={this.handlePasswordSubmit} noValidate>
+                            <div className="form-group row">
+                                <label className="col-4 align-middle">Password</label>
+                                <div className="col password-input">
+                                  <input type="password" name="currpw" className="form-control col" placeholder="Password" 
+                                  onChange={this.handleChange}/>
+                                  <div className="error">{this.state.errors["currpw"]}</div>
+                                </div>
+                            </div>                    
+                            <div className="form-group row">
+                                <label className="col-4 align-middle">New Password</label>
+                                <div className="col password-input">
+                                  <input type="password" name="newpw" className="form-control col" placeholder="New password" 
+                                  onChange={this.handleChange}/>
+                                  <div className="error">{this.state.errors["newpw"]}</div>
+                                </div>
+                            </div>
+                            <div className="form-group row">
+                                <label className="col-4 align-middle">New Password(again)</label>
+                                <div className="col password-input">
+                                  <input type="password" name="confpw" className="form-control col" placeholder="New password(again)" 
+                                  onChange={this.handleChange}/>
+                                  <div className="error">{this.state.errors["confpw"]}</div>
 
-                                  </div>
-                              </div>
-                              <div id="save-changes-div">
-                                <Button variant="primary" id="save-changes" type="submit">Save changes</Button>
-                              </div>
+                                </div>
+                            </div>
+                            <div id="save-changes-div">
+                              <Button variant="primary" id="save-changes" type="submit">Save changes</Button>
+                            </div>
 
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                  
-            </div>
+                          </form>
+                      </div>
+                  </div>
+              </div>
+                
           </div>
-            
+        </div>
+          
 
-        );
+      );
     }
 }

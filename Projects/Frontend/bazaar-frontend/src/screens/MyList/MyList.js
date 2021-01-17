@@ -11,6 +11,7 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import ListGroup from 'react-bootstrap/ListGroup'
+import CategoryBar from "../../components/category-bar/category-bar";
 
 //helpers
 import {serverUrl} from '../../utils/get-url'
@@ -102,7 +103,7 @@ export default class MyList extends Component {
 
     return (
       <div className='background'>
-
+        <CategoryBar></CategoryBar>
         <Row className={"listWrapper"}>
           <Col xs={3} className={'lists'}>
             <h2>My Lists</h2>

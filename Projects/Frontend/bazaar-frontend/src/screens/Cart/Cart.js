@@ -10,6 +10,8 @@ import Row from "react-bootstrap/Row";
 import Container from "react-bootstrap/Container";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
+import CategoryBar from "../../components/category-bar/category-bar";
+
 
 //helpers
 import { serverUrl } from "../../utils/get-url";
@@ -85,6 +87,8 @@ export default class Cart extends Component {
 
     return (
       <div>
+        <CategoryBar></CategoryBar>
+
         <div className="cartWrapper">
           <Container>
             <Row>{productCards}</Row>
