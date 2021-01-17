@@ -795,7 +795,7 @@
                                                     <color key="titleColor" red="1" green="0.62352941179999999" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 </state>
                                                 <connections>
-                                                    <segue destination="2QG-Vt-anv" kind="presentation" modalPresentationStyle="fullScreen" id="sl6-q4-8Qx"/>
+                                                    <segue destination="2QG-Vt-anv" kind="presentation" identifier="goToVendorSide" modalPresentationStyle="fullScreen" id="sl6-q4-8Qx"/>
                                                 </connections>
                                             </button>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="VdA-nE-iRy">
@@ -2596,7 +2596,7 @@
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="413-h0-cDD">
                                         <rect key="frame" x="60" y="20" width="274" height="0.0"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                        <color key="textColor" red="1" green="0.62352941179999999" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="textColor" red="0.25490196078431371" green="0.68235294117647061" blue="0.66274509803921566" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
@@ -2622,6 +2622,7 @@
                     <tabBarItem key="tabBarItem" title="Profile" image="person" catalog="system" selectedImage="person.fill" id="fuZ-aS-dOg"/>
                     <connections>
                         <outlet property="menuView" destination="TZ4-zO-Vtp" id="Oh6-il-cQx"/>
+                        <outlet property="vendorNameLabel" destination="413-h0-cDD" id="wBn-zr-2vr"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DpS-w9-1Zg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

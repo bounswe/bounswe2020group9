@@ -121,9 +121,14 @@ class LoginViewController: UIViewController {
                                         UserDefaults.standard.set(profileInfo.id, forKey: K.userIdKey)
                                         UserDefaults.standard.set(profileInfo.user_type, forKey: K.userTypeKey)
                                         UserDefaults.standard.set(email, forKey: K.usernameKey)
-                                        UserDefaults.standard.set(true, forKey: K.isLoggedinKey)
-                                        self.isLoggedIn = true
-                                        self.dismiss(animated: false, completion: nil)
+                                        if profileInfo.user_type == 2 {
+                                            UserDefaults.standard.set(true, forKey: K.isVendorLoggedIn)
+                                            self.performSegue(withIdentifier: "goToVendorSide", sender: nil)
+                                        }else{
+                                            UserDefaults.standard.set(true, forKey: K.isLoggedinKey)
+                                            self.isLoggedIn = true
+                                            self.dismiss(animated: false, completion: nil)
+                                        }
                                     case .failure(_): break
                                     }
                                 }
