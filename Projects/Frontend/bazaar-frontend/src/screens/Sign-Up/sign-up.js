@@ -3,7 +3,7 @@ import GoogleButton from 'react-google-button'
 import axios from 'axios'
 import { Redirect } from "react-router-dom";
 import {serverUrl} from '../../utils/get-url'
-import Alert from 'react-bootstrap/Alert'
+import { Modal, Button, Alert } from "react-bootstrap";
 
 
 import "./sign-up.scss";
@@ -19,6 +19,8 @@ export default class SignUp extends Component {
           lname: '',
           isHidden: true,
           redirect: null,
+          isOpen: false,
+          terms_accepted: false,
           errors: {}
         }
       }
@@ -29,7 +31,7 @@ export default class SignUp extends Component {
 
       handleValidation(){
         let formIsValid = true;
-        let new_errors = {passwprd: '', username: ''};
+        let new_errors = {password: '', username: ''};
 
         if(this.state.password.length < 8){
           formIsValid = false;
@@ -47,6 +49,11 @@ export default class SignUp extends Component {
           new_errors["utype"] = "Please select user type.";      
         }
 
+        if(this.state.terms_accepted === false){
+          formIsValid = false;
+          new_errors["termsCheck"] = "This is required.";
+        }
+
         this.setState({errors: new_errors});
         return formIsValid;
       }
@@ -54,6 +61,25 @@ export default class SignUp extends Component {
       handleChange = event => {
         this.setState({ [event.target.name]: event.target.value });
       }
+
+      handleTermsChange = event => {
+        this.setState({terms_accepted: event.target.checked});
+      }
+
+
+      openModal = () => {
+        this.setState({ isOpen: true })
+        this.setState({isHiddenFail: false})
+        this.setState({isHiddenSuccess: false})
+        this.setState({isHiddenDeleteFail: false})
+      };
+
+      closeModal = () => {
+        this.setState({ isOpen: false })
+        this.setState({isHiddenFail: true})
+        this.setState({isHiddenSuccess: true})
+        this.setState({isHiddenDeleteFail: true})
+      };
 
       handleSubmit = event => {
     
@@ -103,6 +129,17 @@ export default class SignUp extends Component {
           }
         return (
           <div className='background'>
+
+            <Modal show={this.state.isOpen} onHide={this.closeModal}>
+              <Modal.Header closeButton>
+                <Modal.Title>Terms and Conditions</Modal.Title>
+              </Modal.Header>
+                <Modal.Body>Lorem ipsum dolor sit amet</Modal.Body>
+                <Modal.Footer>
+                  <Button variant="secondary" onClick={this.closeModal}>Close</Button>
+                </Modal.Footer>
+            </Modal>
+
             <div className="signup-form ">
               <Alert variant="success" hidden={this.state.isHidden}>
                 A confirmation mail has been sent to your account, please check it.
@@ -139,6 +176,14 @@ export default class SignUp extends Component {
                     <p className="user-type-change">
                         Want to <a href="/signup-vendor">sign up as Vendor?</a>
                     </p>
+
+                    <div className="form-check">
+                        <input type="checkbox" className="form-check-input" name="termsCheck"
+                               value="" onChange={this.handleTermsChange}/>
+                        <label className="form-check-label" htmlFor="termsCheck">
+                            I agree to the <a href="#" onClick={this.openModal}>Terms and Conditions</a></label>
+                    </div>
+                    <div className="error">{this.state.errors["termsCheck"]}</div>
 
                     <button id="submit" type="submit" className="btn btn-block">Sign Up</button>
 
