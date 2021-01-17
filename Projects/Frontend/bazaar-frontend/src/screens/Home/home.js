@@ -123,7 +123,7 @@ class Home extends Component {
                 <h1>Welcome to Bazaar!</h1>
                 <p>
                   Bazaar is a compatile, fast and user-friendly e-commerce
-                  Website. It's been developed by group of people who concern
+                  website. It's been developed by group of people who concern
                   about good user experience and better design because we care
                   people's eyes!
                 </p>
