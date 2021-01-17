@@ -2013,21 +2013,38 @@
                                                                 </subviews>
                                                             </stackView>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jse-4x-j3M">
-                                                                <rect key="frame" x="49.666666666666686" y="54" width="275" height="30"/>
-                                                                <state key="normal" title="Find Your Company Address on the Map"/>
+                                                                <rect key="frame" x="138" y="54" width="98" height="30"/>
+                                                                <state key="normal" title=" Find Address "/>
+                                                                <userDefinedRuntimeAttributes>
+                                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                                        <integer key="value" value="10"/>
+                                                                    </userDefinedRuntimeAttribute>
+                                                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                                                        <integer key="value" value="2"/>
+                                                                    </userDefinedRuntimeAttribute>
+                                                                </userDefinedRuntimeAttributes>
                                                                 <connections>
                                                                     <action selector="findCompanyAddressButtonPressed:" destination="w39-Ll-aUk" eventType="touchUpInside" id="TrR-Ch-eWX"/>
                                                                 </connections>
                                                             </button>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J6g-dl-2rV">
+                                                                <rect key="frame" x="20" y="94" width="334" height="0.0"/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                                <nil key="textColor"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
                                                         </subviews>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <constraints>
                                                             <constraint firstItem="jse-4x-j3M" firstAttribute="top" secondItem="irC-FR-Agk" secondAttribute="bottom" constant="10" id="E1n-bf-Go1"/>
-                                                            <constraint firstItem="jse-4x-j3M" firstAttribute="centerX" secondItem="dTc-ss-scW" secondAttribute="centerX" id="OrR-pV-Dhq"/>
                                                             <constraint firstItem="irC-FR-Agk" firstAttribute="top" secondItem="dTc-ss-scW" secondAttribute="top" constant="10" id="Yjs-Gu-9BG"/>
                                                             <constraint firstAttribute="trailing" secondItem="irC-FR-Agk" secondAttribute="trailing" constant="20" id="aFA-bv-5H2"/>
                                                             <constraint firstItem="irC-FR-Agk" firstAttribute="leading" secondItem="dTc-ss-scW" secondAttribute="leading" constant="20" id="dsA-QV-gp0"/>
+                                                            <constraint firstItem="jse-4x-j3M" firstAttribute="centerX" secondItem="dTc-ss-scW" secondAttribute="centerX" id="fQA-6L-OeC"/>
+                                                            <constraint firstItem="J6g-dl-2rV" firstAttribute="leading" secondItem="dTc-ss-scW" secondAttribute="leading" constant="20" id="oHa-G4-vVO"/>
+                                                            <constraint firstAttribute="trailing" secondItem="J6g-dl-2rV" secondAttribute="trailing" constant="20" id="q7C-qh-VAA"/>
                                                             <constraint firstAttribute="height" constant="90" id="tCW-A3-ufy"/>
+                                                            <constraint firstItem="J6g-dl-2rV" firstAttribute="top" secondItem="jse-4x-j3M" secondAttribute="bottom" constant="10" id="vAt-c0-TiH"/>
                                                         </constraints>
                                                     </view>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="By signing up, you agree to our Terms , Data Policy and Cookies Policy ." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VSW-l6-VGK">
@@ -2239,6 +2256,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="izZ-Yx-3wu"/>
                     <connections>
+                        <outlet property="addressLabel" destination="J6g-dl-2rV" id="MYK-gy-6bY"/>
                         <outlet property="addressTextField" destination="K1r-OR-WNK" id="K3B-iC-TSs"/>
                         <outlet property="companyNameTextField" destination="R2n-3V-tyO" id="Z7f-VY-XoA"/>
                         <outlet property="emailTextField" destination="0XM-DC-Wp1" id="7Ui-AO-PN9"/>

@@ -11,6 +11,7 @@ import GoogleSignIn
 protocol LoginViewControllerDelegate {
     func loginViewControllerDidPressSignUp()
     func loginViewControllerDidPressContinueAsGuest()
+    func loginViewControllerDidloggedIn()
 }
 
 class LoginViewController: UIViewController {
@@ -22,6 +23,7 @@ class LoginViewController: UIViewController {
     var delegate:LoginViewControllerDelegate?
     var isSignUpPressed = false
     var isContinueAsGuestPressed = false
+    var isLoggedIn = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,6 +35,7 @@ class LoginViewController: UIViewController {
         super.viewDidAppear(animated)
         isContinueAsGuestPressed = false
         isSignUpPressed = false
+        isLoggedIn = false
         GIDSignIn.sharedInstance()?.delegate = self
         GIDSignIn.sharedInstance()?.presentingViewController = self
         // Automatically sign in the user.
@@ -52,7 +55,9 @@ class LoginViewController: UIViewController {
         if isContinueAsGuestPressed{
             delegate?.loginViewControllerDidPressContinueAsGuest()
         }
-        
+        if isLoggedIn {
+            delegate?.loginViewControllerDidloggedIn()
+        }
     }
     
     @IBAction func signUpButtonPressed(_ sender: UIButton) {
@@ -117,6 +122,7 @@ class LoginViewController: UIViewController {
                                         UserDefaults.standard.set(profileInfo.user_type, forKey: K.userTypeKey)
                                         UserDefaults.standard.set(email, forKey: K.usernameKey)
                                         UserDefaults.standard.set(true, forKey: K.isLoggedinKey)
+                                        self.isLoggedIn = true
                                         self.dismiss(animated: false, completion: nil)
                                     case .failure(_): break
                                     }
@@ -169,6 +175,7 @@ extension LoginViewController: GIDSignInDelegate{
                         UserDefaults.standard.setValue(true, forKey: K.isGoogleSignedInKey)
                         UserDefaults.standard.set(profileInfo.email, forKey: K.usernameKey)
                         UserDefaults.standard.set(true, forKey: K.isLoggedinKey)
+                        self.isLoggedIn = true
                         self.dismiss(animated: true, completion: nil)
                     case .failure(_): break
                     }

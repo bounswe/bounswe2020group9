@@ -60,6 +60,10 @@ class ProfileViewController: UIViewController{
 
 //MARK: - Extension LoginViewControllerDelegate
 extension ProfileViewController: LoginViewControllerDelegate{
+    func loginViewControllerDidloggedIn() {
+        self.tabBarController?.selectedViewController = self.tabBarController?.children[0]
+    }
+    
     func loginViewControllerDidPressSignUp() {
         performSegue(withIdentifier:"ProfileToSignUpSegue" , sender: nil)
     }

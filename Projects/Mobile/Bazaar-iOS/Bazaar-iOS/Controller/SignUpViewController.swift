@@ -18,7 +18,7 @@ enum UserType:Int {
 }
 
 class SignUpViewController: UIViewController {
-
+    
     @IBOutlet weak var isCustomerButton: RadioButton!
     @IBOutlet weak var isVendorButton: RadioButton!
     @IBOutlet weak var firstNameTextField: UITextField!
@@ -30,6 +30,7 @@ class SignUpViewController: UIViewController {
     @IBOutlet weak var addressTextField: UITextField!
     @IBOutlet weak var vendorInfoView: UIView!
     @IBOutlet weak var upDownConstraint: NSLayoutConstraint!
+    @IBOutlet weak var addressLabel: UILabel!
     
     var signUpUserType: UserType?
     var delegate:SignUpViewControllerDelegate?
@@ -38,10 +39,11 @@ class SignUpViewController: UIViewController {
     var latitude:Float?
     var longitude:Float?
     var addressAnnotation: MKPointAnnotation?
+    var openAddress:String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       
+        
         passwordTextField.textContentType = .oneTimeCode
         frameView.layer.borderColor = #colorLiteral(red: 1, green: 0.6431372549, blue: 0.3568627451, alpha: 1)
         frameView.layer.shadowColor = UIColor.black.cgColor
@@ -50,6 +52,7 @@ class SignUpViewController: UIViewController {
         super.viewDidAppear(animated)
         passwordTextField.textContentType = .oneTimeCode
         isPressedLoginHere = false
+        openAddress = nil
         upDownConstraint.constant = 15
         if let isloggedin = UserDefaults.standard.value(forKey: K.isLoggedinKey){
             if isloggedin as! Bool{
@@ -73,7 +76,7 @@ class SignUpViewController: UIViewController {
     @IBAction func signUpButtonPressed(_ sender: UIButton) {
         let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
-
+        
         if let firstName = firstNameTextField.text{
             if !firstName.isName {
                 alertController.message = "Your First Name is invalid. Please enter a valid First Name."
@@ -121,8 +124,8 @@ class SignUpViewController: UIViewController {
                                                                 alertController.message = "Address title must be at least 1 characters in length"
                                                                 self.present(alertController, animated: true, completion: nil)
                                                             }else {
-                                                                if let latitude = self.latitude, let longitude = self.longitude {
-                                                                    APIManager().signUpVendor(firstName: firstName, lastName: lastName, username: email, password: password, user_type: "\(userType.rawValue+1)", addressName: addressTitle, address: addressTitle, postalCode: userType.rawValue, latitude: latitude, lontitude: longitude, companyName: companyName) { (result) in
+                                                                if let latitude = self.latitude, let longitude = self.longitude, let openAddress = self.openAddress {
+                                                                    APIManager().signUpVendor(firstName: firstName, lastName: lastName, username: email, password: password, user_type: "\(userType.rawValue+1)", addressName: addressTitle, address: openAddress, postalCode: userType.rawValue, latitude: latitude, longitude: longitude, companyName: companyName) { (result) in
                                                                         switch result {
                                                                         
                                                                         case .success(_):
@@ -173,7 +176,7 @@ class SignUpViewController: UIViewController {
             }
             DispatchQueue.main.async {
                 self.vendorInfoView.isHidden = false
-                self.upDownConstraint.constant = 120
+                self.upDownConstraint.constant = 130+self.addressLabel.frame.height
             }
             self.signUpUserType = UserType.Vendor
         } else{
@@ -210,6 +213,51 @@ class SignUpViewController: UIViewController {
             }
         }
     }
+    func getAddressFromLatLon(pdblLatitude: String, withLongitude pdblLongitude: String) {
+        var center : CLLocationCoordinate2D = CLLocationCoordinate2D()
+        let lat: Double = Double("\(pdblLatitude)")!
+        //21.228124
+        let lon: Double = Double("\(pdblLongitude)")!
+        //72.833770
+        let ceo: CLGeocoder = CLGeocoder()
+        center.latitude = lat
+        center.longitude = lon
+        
+        let loc: CLLocation = CLLocation(latitude:center.latitude, longitude: center.longitude)
+        
+        
+        ceo.reverseGeocodeLocation(loc, completionHandler:{(placemarks, error) in
+            if (error != nil)
+            {
+                print("reverse geodcode fail: \(error!.localizedDescription)")
+            }
+            let pm = placemarks! as [CLPlacemark]
+            
+            if pm.count > 0 {
+                let pm = placemarks![0]
+                var addressString : String = ""
+                if pm.subLocality != nil {
+                    addressString = addressString + pm.subLocality! + ", "
+                }
+                if pm.thoroughfare != nil {
+                    addressString = addressString + pm.thoroughfare! + ", "
+                }
+                if pm.locality != nil {
+                    addressString = addressString + pm.locality! + ", "
+                }
+                if pm.country != nil {
+                    addressString = addressString + pm.country! + ", "
+                }
+                if pm.postalCode != nil {
+                    addressString = addressString + pm.postalCode! + " "
+                }
+                if addressString.count != 0 {
+                    self.openAddress = addressString
+                }
+                self.addressLabel.text = "Address: \(addressString)"
+            }
+        })
+    }
 }
 
 extension SignUpViewController:MapViewControllerDelegate{
@@ -217,13 +265,18 @@ extension SignUpViewController:MapViewControllerDelegate{
         self.latitude=latitude
         self.longitude = longitude
         self.addressAnnotation = annotation
-        let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
-        alertController.message = "We have successfully received your address."
-        self.present(alertController, animated: true, completion: nil)
+        getAddressFromLatLon(pdblLatitude: "\(latitude)", withLongitude: "\(longitude)")
+        DispatchQueue.main.async {
+            self.upDownConstraint.constant = 140+self.addressLabel.frame.height
+        }
     }
     
     func mapViewControllerDidFail() {
+        self.addressLabel.text = "Address: "
+        self.openAddress = nil
+        DispatchQueue.main.async {
+            self.upDownConstraint.constant = 140+self.addressLabel.frame.height
+        }
         let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
         alertController.message = "We could not get your address information, please try again! You have to long press when selecting your address."
