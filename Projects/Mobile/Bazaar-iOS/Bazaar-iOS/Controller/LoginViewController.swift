@@ -123,6 +123,8 @@ class LoginViewController: UIViewController {
                                         UserDefaults.standard.set(email, forKey: K.usernameKey)
                                         if profileInfo.user_type == 2 {
                                             UserDefaults.standard.set(true, forKey: K.isVendorLoggedIn)
+                                            self.emailTextField.text = ""
+                                            self.passwordTextField.text = ""
                                             self.performSegue(withIdentifier: "goToVendorSide", sender: nil)
                                         }else{
                                             UserDefaults.standard.set(true, forKey: K.isLoggedinKey)

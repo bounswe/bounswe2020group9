@@ -17,20 +17,28 @@ class VendorProfileViewController: UIViewController {
         menuView.layer.shadowColor = UIColor.black.cgColor
         super.viewDidLoad()
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if let firstName = UserDefaults.standard.value(forKey: K.userFirstNameKey) as? String , let lastName = UserDefaults.standard.value(forKey: K.userLastNameKey) as? String  {
-            if firstName.count == 0 && lastName.count == 0 {
-                if let username = UserDefaults.standard.value(forKey: K.usernameKey) as? String  {
-                    self.vendorNameLabel.text = username
-                }
+        if let isVendorLoggedIn =  UserDefaults.standard.value(forKey: K.isVendorLoggedIn) as? Bool {
+            if !isVendorLoggedIn {
+                self.dismiss(animated: true, completion: nil)
             }else {
-                self.vendorNameLabel.text = "\(firstName) \(lastName)"
+                if let firstName = UserDefaults.standard.value(forKey: K.userFirstNameKey) as? String , let lastName = UserDefaults.standard.value(forKey: K.userLastNameKey) as? String  {
+                    if firstName.count == 0 && lastName.count == 0 {
+                        if let username = UserDefaults.standard.value(forKey: K.usernameKey) as? String  {
+                            self.vendorNameLabel.text = username
+                        }
+                    }else {
+                        self.vendorNameLabel.text = "\(firstName) \(lastName)"
+                    }
+                }else if let username = UserDefaults.standard.value(forKey: K.usernameKey) as? String  {
+                    self.vendorNameLabel.text = username
+                    
+                }
             }
-        }else if let username = UserDefaults.standard.value(forKey: K.usernameKey) as? String  {
-            self.vendorNameLabel.text = username
-            
+        }else{
+            self.dismiss(animated: true, completion: nil)
         }
     }
 }
