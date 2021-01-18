@@ -56,10 +56,102 @@ class VendorMyAccountViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     @IBAction func saveButtonPressed(_ sender: UIButton) {
+        let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+        if let firstName = firstNameTextField.text {
+            if !firstName.isName {
+                alertController.message = "Your First Name is invalid. Please enter a valid First Name."
+                self.present(alertController, animated: true, completion: nil)
+                return
+            }
+            self.firstName = firstName
+        }
+        if let lastName = lastNameTextField.text{
+            if !lastName.isName {
+                alertController.message = "Your Last Name is invalid. Please enter a valid Last Name."
+                self.present(alertController, animated: true, completion: nil)
+                return
+            }
+            self.lastName = lastName
+        }
         
+        if let authorization = UserDefaults.standard.value(forKey: K.token) as? String,let firstName = self.firstName,let lastName = self.lastName{
+            APIManager().setProfileInfo(authorization: authorization, firstName: firstName, lastName: lastName) { (result) in
+                switch result {
+                case .success(_):
+                    UserDefaults.standard.setValue(firstName, forKey: K.userFirstNameKey)
+                    UserDefaults.standard.setValue(lastName, forKey: K.userLastNameKey)
+                    alertController.message = "Your profile information has been successfully updated!"
+                    self.present(alertController, animated: true, completion: nil)
+                case .failure(_):
+                    alertController.message = "Your profile information could not be updated!"
+                    self.present(alertController, animated: true, completion: nil)
+                }
+            }
+        }else {
+            alertController.message = "Your profile information could not be updated!"
+            self.present(alertController, animated: true, completion: nil)
+        }
     }
     @IBAction func updateButtonPressed(_ sender: UIButton) {
+        let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+        if let _ = UserDefaults.standard.value(forKey: K.isGoogleSignedInKey) as? Bool {
+            alertController.message = "You cannot update your password because you are logged in with a Google account!"
+            self.present(alertController, animated: true, completion: nil)
+        }else {
+            if let currentPassword = currentPasswordTextField.text {
+                if currentPassword.count != 0 {
+                    if let newPassword = newPasswordTextField.text {
+                        if newPassword.count != 0 {
+                            if newPassword.count < 8 || newPassword.count > 20 {
+                                alertController.message = "New password must be at least 8 , at most 20 characters in length."
+                                self.present(alertController, animated: true, completion: nil)
+                                return
+                            }else if let newPasswordAgain = newPasswordAgainTextField.text{
+                                if newPasswordAgain.count != 0 {
+                                    if newPassword != newPasswordAgain {
+                                        alertController.message = "New passwords do not match!"
+                                        self.present(alertController, animated: true, completion: nil)
+                                        return
+                                    }else {
+                                        if let userId = UserDefaults.standard.value(forKey: K.userIdKey) as? Int{
+                                            APIManager().updatePassword(userId:userId,currentPassword: currentPassword, newPassword: newPassword) { (result) in
+                                                switch result{
+                                                case .success(_):
+                                                    alertController.message = "Your password has been successfully updated!"
+                                                    self.present(alertController, animated: true, completion: nil)
+                                                    self.currentPasswordTextField.text=""
+                                                    self.newPasswordTextField.text = ""
+                                                    self.newPasswordAgainTextField.text = ""
+                                                case .failure(_):
+                                                    alertController.message = "Wrong current password!"
+                                                    self.present(alertController, animated: true, completion: nil)
+                                                }
+                                            }
+                                        }else {
+                                            alertController.message = "Password update failed!"
+                                            self.present(alertController, animated: true, completion: nil)
+                                        }
+                                    }
+                                }else {
+                                    alertController.message = "Please, enter new password again!"
+                                    self.present(alertController, animated: true, completion: nil)
+                                }
+                            }
+                        }else{
+                            alertController.message = "Please, enter new password!"
+                            self.present(alertController, animated: true, completion: nil)
+                        }
+                    }
+                }else {
+                    alertController.message = "Please, enter current password!"
+                    self.present(alertController, animated: true, completion: nil)
+                }
+            }
+        }
     }
+
     @IBAction func logoutButtonPressed(_ sender: UIButton) {
         UserDefaults.standard.setValue(nil, forKey: K.searchHistoryKey)
         UserDefaults.standard.setValue(nil, forKey: K.userTypeKey)
