@@ -47,7 +47,7 @@ class MyAccountViewController: UIViewController {
         if let email = UserDefaults.standard.value(forKey: K.usernameKey) as? String{
             emailLabel.text = email
         }else {
-            lastNameTextField.text = ""
+            emailLabel.text = ""
         }
     }
     

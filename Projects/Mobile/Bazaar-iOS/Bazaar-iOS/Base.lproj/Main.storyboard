@@ -3523,6 +3523,9 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="noe-gC-tvC">
                                         <rect key="frame" x="20" y="45" width="50" height="50"/>
                                         <state key="normal" image="left_arrow_icon"/>
+                                        <connections>
+                                            <action selector="backButtonPressed:" destination="Dhh-Hn-nyM" eventType="touchUpInside" id="Qla-81-nis"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemGray6Color"/>
@@ -3935,9 +3938,12 @@
                         <outlet property="currentPasswordTextField" destination="IOL-Hx-1ud" id="EhI-yP-NXl"/>
                         <outlet property="emailLabel" destination="8hK-k5-4xs" id="tjW-vb-jlw"/>
                         <outlet property="firstNameTextField" destination="Qo1-nd-CJs" id="fab-UF-hZO"/>
+                        <outlet property="infoView" destination="Aq7-l0-bIy" id="U7L-GL-KNh"/>
                         <outlet property="lastNameTextField" destination="ust-9x-ris" id="KiL-xS-KbL"/>
+                        <outlet property="myAddressView" destination="LBo-CM-0Z8" id="dxH-e0-PdR"/>
                         <outlet property="newPasswordAgainTextField" destination="AEH-hL-4dK" id="iSm-c5-fVc"/>
                         <outlet property="newPasswordTextField" destination="EIZ-fM-cgy" id="bUh-8J-rYW"/>
+                        <outlet property="passwordView" destination="mu8-Dk-v2i" id="AeZ-FV-VcB"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d3O-qg-LfS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
