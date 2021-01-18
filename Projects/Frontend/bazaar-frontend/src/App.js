@@ -19,6 +19,7 @@ import ProductPage from "./screens/ProductPage/ProductPage"
 import ViewCategory from "./screens/ViewCategory/view-category"
 import Cart from "./screens/Cart/Cart"
 import SearchResults from "./screens/SearchResults/search-results"
+import Messages from "./screens/Messages/messages";
 
 //components
 import Header from "./components/Header/Header"
@@ -71,6 +72,10 @@ function App() {
         <Route path="/profile-page">
           <Header />
           <ProfilePage />
+        </Route>
+        <Route path="/messages">
+          <Header />
+          <Messages />
         </Route>
         <Route path="/my-list">
           <Header />
