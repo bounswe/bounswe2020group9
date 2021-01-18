@@ -3503,10 +3503,10 @@
             </objects>
             <point key="canvasLocation" x="3219" y="2373"/>
         </scene>
-        <!--My Account View Controller-->
+        <!--Vendor My Account View Controller-->
         <scene sceneID="F3r-2j-OZo">
             <objects>
-                <viewController id="Dhh-Hn-nyM" customClass="MyAccountViewController" customModule="Bazaar_iOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Dhh-Hn-nyM" customClass="VendorMyAccountViewController" customModule="Bazaar_iOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ugz-6s-pJl">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -3523,9 +3523,6 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="noe-gC-tvC">
                                         <rect key="frame" x="20" y="45" width="50" height="50"/>
                                         <state key="normal" image="left_arrow_icon"/>
-                                        <connections>
-                                            <action selector="backButtonPressed:" destination="Dhh-Hn-nyM" eventType="touchUpInside" id="IqW-uk-yBR"/>
-                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemGray6Color"/>
@@ -3563,7 +3560,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <action selector="saveButtonPressed:" destination="Dhh-Hn-nyM" eventType="touchUpInside" id="2EB-yD-XnK"/>
+                                            <action selector="saveButtonPressed:" destination="Dhh-Hn-nyM" eventType="touchUpInside" id="5ci-hU-DOi"/>
                                         </connections>
                                     </button>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" alignment="top" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="xbd-X8-Nsx">
@@ -3702,7 +3699,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <action selector="updatePasswordButtonPressed:" destination="Dhh-Hn-nyM" eventType="touchUpInside" id="gHZ-I9-wh6"/>
+                                            <action selector="updateButtonPressed:" destination="Dhh-Hn-nyM" eventType="touchUpInside" id="jXL-FY-PzB"/>
                                         </connections>
                                     </button>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" alignment="top" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="dLs-ul-RzP">
@@ -3878,7 +3875,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sm9-Ng-hGg">
                                         <rect key="frame" x="0.0" y="0.0" width="187" height="46.666666666666664"/>
                                         <connections>
-                                            <action selector="logoutButtonPressed:" destination="Dhh-Hn-nyM" eventType="touchUpInside" id="8vT-MY-PuD"/>
+                                            <action selector="logoutButtonPressed:" destination="Dhh-Hn-nyM" eventType="touchUpInside" id="bKE-Ny-3EU"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -3935,15 +3932,12 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="currentPasswordTextField" destination="IOL-Hx-1ud" id="85X-je-k32"/>
-                        <outlet property="emailLabel" destination="8hK-k5-4xs" id="9kU-SR-5cY"/>
-                        <outlet property="firstNameTextField" destination="Qo1-nd-CJs" id="OjO-c4-g8F"/>
-                        <outlet property="frameView" destination="Aq7-l0-bIy" id="mAw-Qs-e4s"/>
-                        <outlet property="lastNameTextField" destination="ust-9x-ris" id="z8e-e7-MZN"/>
-                        <outlet property="myAddressView" destination="LBo-CM-0Z8" id="OWD-pp-XUn"/>
-                        <outlet property="newPasswordAgainTextField" destination="AEH-hL-4dK" id="h9e-2R-r0e"/>
-                        <outlet property="newPasswordTextField" destination="EIZ-fM-cgy" id="mHl-Hm-oGn"/>
-                        <outlet property="passwordUpdateView" destination="mu8-Dk-v2i" id="gds-Ey-8Bs"/>
+                        <outlet property="currentPasswordTextField" destination="IOL-Hx-1ud" id="EhI-yP-NXl"/>
+                        <outlet property="emailLabel" destination="8hK-k5-4xs" id="tjW-vb-jlw"/>
+                        <outlet property="firstNameTextField" destination="Qo1-nd-CJs" id="fab-UF-hZO"/>
+                        <outlet property="lastNameTextField" destination="ust-9x-ris" id="KiL-xS-KbL"/>
+                        <outlet property="newPasswordAgainTextField" destination="AEH-hL-4dK" id="iSm-c5-fVc"/>
+                        <outlet property="newPasswordTextField" destination="EIZ-fM-cgy" id="bUh-8J-rYW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d3O-qg-LfS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
