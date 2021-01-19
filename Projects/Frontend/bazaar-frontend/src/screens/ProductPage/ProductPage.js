@@ -11,6 +11,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { bake_cookie, read_cookie, delete_cookie } from "sfcookies";
 import CommentCard from "./CommentCard/CommentCard";
+import CategoryBar from "../../components/category-bar/category-bar";
 
 //icons
 import AddToCartIcon from "../../assets/icons/add-to-cart.svg";
@@ -112,6 +113,7 @@ export default class Productpage extends Component {
     return (
       <div className='background'>
         <Container>
+        <CategoryBar></CategoryBar>
           <Row className={"productPart"}>
             <Col>
               <Carousel className={"productCarousel"}>

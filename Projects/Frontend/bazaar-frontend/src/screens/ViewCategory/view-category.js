@@ -52,7 +52,7 @@ class ViewCategory extends Component {
 
       <div>
 
-        <div className='background'>
+        <div className='view-category-wrapper'>
           <Container>
             <CategoryBar></CategoryBar>
             <div className="category-heading">
@@ -62,7 +62,7 @@ class ViewCategory extends Component {
             </div>
             <div id="product-cards">
               <Container fluid >
-                <Row >
+                <Row>
                   {productCards}
                 </Row>
               </Container>
