@@ -10,10 +10,10 @@ class MessageSerializer(serializers.ModelSerializer):
  
 class ConversationSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Message
+        model = Conversation
         fields = '__all__'
 
 class NotificationSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Message
+        model = Notification
         fields = '__all__'

@@ -10,7 +10,7 @@ from rest_framework.views import APIView
 
 
 from message.models import Message, Conversation, Notification
-from message.serializers import MessageSerializer
+from message.serializers import MessageSerializer, NotificationSerializer
 from user.models import User, Customer, Vendor
 from user.serializers import UserSerializer
 
@@ -23,7 +23,6 @@ class Conversations(APIView):
             user_id = request.user.id
         except:
             return Response({"message": "Token is not valid."}, status=status.HTTP_401_UNAUTHORIZED)
-        print("sadsadsadas")
         conversations = Conversation.objects.filter(user1_id=user_id) | Conversation.objects.filter(user2_id=user_id)
         number_of_unseen = 0
        	responseList = []
@@ -81,7 +80,6 @@ class Messages(APIView):
         conversation = Conversation.objects.filter(user1_id=user_id, user2_id=receiver_user_id) | Conversation.objects.filter(user2_id=user_id, user1_id=receiver_user_id)
         if len(conversation):
             conversation = conversation[0]
-            print(conversation)
         else:
             conversation = Conversation()
             conversation.user1=user
@@ -98,7 +96,6 @@ class Messages(APIView):
         else:
             message.is_visited_by_user2 = True
         message.save()
-        #messages = Message.objects.filter(conversation_id_conversation.id)
         return Response(status=status.HTTP_201_CREATED)
 
 
@@ -135,3 +132,41 @@ class GetConversation(APIView):
         	messageList.append(serializer)
         
         return Response(messageList)
+
+
+class Notifications(APIView):
+
+    def get(self, request):
+        try:
+            user_id = request.user.id
+        except:
+            return Response({"message": "Token is not valid."}, status=status.HTTP_401_UNAUTHORIZED)
+
+        notifications = Notification.objects.filter(user_id=user_id)
+        number_of_unseen = 0
+        responseList = []
+        for notification in notifications:
+        	responseList.append(NotificationSerializer(notification).data)
+        	if not notification.is_visited:
+        		number_of_unseen = number_of_unseen + 1
+
+        response = {}
+        response["new_notifications"] = number_of_unseen
+        response["notifications"] = responseList
+        return Response(response)
+
+    def post(self, request):
+        try:
+            user_id = request.user.id
+        except:
+            return Response({"message": "Token is not valid."}, status=status.HTTP_401_UNAUTHORIZED)
+
+        notifications = Notification.objects.filter(user_id=user_id, is_visited=False)
+        for notification in notifications:
+        	notification.is_visited = True
+        	notification.save()
+
+        return Response(status=status.HTTP_202_ACCEPTED)
+
+
+
