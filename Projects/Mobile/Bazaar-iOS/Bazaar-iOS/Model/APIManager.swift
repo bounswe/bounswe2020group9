@@ -503,4 +503,29 @@ struct APIManager {
             completionHandler(.failure(error))
         }
     }
+    
+    func getAllVendors(str:String, completionHandler: @escaping (Result<[VendorData], Error>) -> Void) {
+        do {
+            let request = try ApiRouter.getAllVendors(str: str).asURLRequest()
+            AF.request(request).responseJSON { response in
+                if (response.response?.statusCode != nil) {
+                    guard let safeData = response.data else {
+                        completionHandler(.failure(MyError.runtimeError("Error")))
+                        return
+                    }
+                    if let decodedData: [VendorData] = APIParse().parseJSON(safeData: safeData) {
+                        if decodedData.isEmpty {
+                            completionHandler(.failure(MyError.runtimeError("Error")))
+                        } else {
+                            completionHandler(.success(decodedData))
+                        }
+                    } else {
+                        completionHandler(.failure(MyError.runtimeError("Error")))
+                    }
+                }
+            }
+        } catch let error {
+            completionHandler(.failure(error))
+        }
+    }
 }

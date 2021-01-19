@@ -126,3 +126,15 @@ struct SearchProductList:Codable {
   struct GoogleSignInData:Codable {
     let id:Int
 }
+
+struct VendorData: Codable {
+    let id:Int
+    let email:String
+    let first_name:String
+    let last_name:String
+    let date_joined:String
+    let last_login:String
+    let user_type:Int
+    let bazaar_point:Double
+    let company:String
+}

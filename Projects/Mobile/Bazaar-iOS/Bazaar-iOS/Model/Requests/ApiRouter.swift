@@ -31,6 +31,7 @@ enum ApiRouter: URLRequestBuilder {
     case getUsersComment(product_id:Int, user_id:Int)
     case search(filterType: String, sortType: String, searchWord: String)
     case googleSignIn(userName:String, token:String, firstName:String, lastName:String)
+    case getAllVendors(str:String)
 
   // MARK: - Path
     internal var path: String {
@@ -76,6 +77,8 @@ enum ApiRouter: URLRequestBuilder {
             return "api/product/search/\(filterType)/\(sortType)/"
         case .googleSignIn:
             return "api/user/googleuser/"
+        case .getAllVendors:
+            return "api/user/vendor/"
         }
         
     }
@@ -180,7 +183,7 @@ enum ApiRouter: URLRequestBuilder {
         switch self {
         case .authenticate, .addList,.addToList, .signUpCustomer, .signUpVendor, .resetPasswordEmail, .addToCart,.updatePassword, .googleSignIn:
             return .post
-        case .getCustomerLists, .getComments, .getUsersComment, .getCart, .getProfileInfo:
+        case .getCustomerLists, .getComments, .getUsersComment, .getCart, .getProfileInfo, .getAllVendors:
             return .get
         case .deleteList, .deleteProductFromList,.deleteProductFromCart:
             return .delete
