@@ -33,16 +33,17 @@ class Conversations(APIView):
         	message = Message.objects.filter(conversation_id=conversation.id).order_by('-timestamp')[0]
         	d["id"] = conversation.id
         	d["last_message_body"] = message.body
+        	d["last_message_timestamp"] = message.timestamp
         	if is_user1:
         		d["user_id"] = conversation.user2.id
         		d = {**d, **UserSerializer(conversation.user2).data}
-        		d["visited"] = message.is_visited_by_user1
+        		d["is_visited"] = message.is_visited_by_user1
         		if not message.is_visited_by_user1:
         			number_of_unseen = number_of_unseen + 1
         	else:
         		d["user_id"] = conversation.user1.id
         		d = {**d, **UserSerializer(conversation.user1).data}
-        		d["visited"] = message.is_visited_by_user2
+        		d["is_visited"] = message.is_visited_by_user2
         		if not message.is_visited_by_user2:
         			number_of_unseen = number_of_unseen + 1
 
