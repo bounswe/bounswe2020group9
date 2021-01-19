@@ -1,23 +1,23 @@
 //
-//  MyAccountViewController.swift
+//  VendorMyAccountViewController.swift
 //  Bazaar-iOS
 //
-//  Created by Muhsin Etki on 13.12.2020.
+//  Created by Muhsin Etki on 18.01.2021.
 //
 
 import UIKit
-import GoogleSignIn
 
-class MyAccountViewController: UIViewController {
+class VendorMyAccountViewController: UIViewController {
+    
     @IBOutlet weak var firstNameTextField: UITextField!
     @IBOutlet weak var lastNameTextField: UITextField!
     @IBOutlet weak var emailLabel: UILabel!
-    @IBOutlet weak var frameView: UIView!
-    @IBOutlet weak var passwordUpdateView: UIView!
-    @IBOutlet weak var myAddressView: UIView!
     @IBOutlet weak var currentPasswordTextField: UITextField!
     @IBOutlet weak var newPasswordTextField: UITextField!
     @IBOutlet weak var newPasswordAgainTextField: UITextField!
+    @IBOutlet weak var infoView: UIView!
+    @IBOutlet weak var passwordView: UIView!
+    @IBOutlet weak var myAddressView: UIView!
     var firstName:String?
     var lastName:String?
     
@@ -27,9 +27,9 @@ class MyAccountViewController: UIViewController {
         newPasswordTextField.textContentType = .oneTimeCode
         currentPasswordTextField.textContentType = .oneTimeCode
         newPasswordAgainTextField.textContentType = .oneTimeCode
-        frameView.layer.borderColor = #colorLiteral(red: 1, green: 0.6235294118, blue: 0, alpha: 1)
-        passwordUpdateView.layer.borderColor = #colorLiteral(red: 1, green: 0.6235294118, blue: 0, alpha: 1)
-        myAddressView.layer.borderColor = #colorLiteral(red: 1, green: 0.6235294118, blue: 0, alpha: 1)
+        infoView.layer.borderColor = #colorLiteral(red: 0.2549019608, green: 0.6823529412, blue: 0.662745098, alpha: 1)
+        passwordView.layer.borderColor = #colorLiteral(red: 0.2549019608, green: 0.6823529412, blue: 0.662745098, alpha: 1)
+        myAddressView.layer.borderColor = #colorLiteral(red: 0.2549019608, green: 0.6823529412, blue: 0.662745098, alpha: 1)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -51,10 +51,10 @@ class MyAccountViewController: UIViewController {
         }
     }
     
+    
     @IBAction func backButtonPressed(_ sender: UIButton) {
         self.dismiss(animated: true, completion: nil)
     }
-    
     @IBAction func saveButtonPressed(_ sender: UIButton) {
         let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
@@ -93,25 +93,7 @@ class MyAccountViewController: UIViewController {
             self.present(alertController, animated: true, completion: nil)
         }
     }
-    
-    @IBAction func logoutButtonPressed(_ sender: UIButton) {
-        UserDefaults.standard.setValue(nil, forKey: K.searchHistoryKey)
-        UserDefaults.standard.setValue(nil, forKey: K.userTypeKey)
-        UserDefaults.standard.setValue(nil, forKey: K.token)
-        UserDefaults.standard.setValue(nil, forKey: K.userIdKey)
-        UserDefaults.standard.setValue(nil, forKey: K.isGoogleSignedInKey)
-        UserDefaults.standard.setValue(nil, forKey: K.userFirstNameKey)
-        UserDefaults.standard.setValue(nil, forKey: K.userLastNameKey)
-        UserDefaults.standard.setValue(nil, forKey: K.usernameKey)
-        UserDefaults.standard.setValue(nil, forKey: K.userAddressKey)
-        UserDefaults.standard.setValue(nil, forKey: K.userPhoneNumKey)
-        UserDefaults.standard.setValue(false, forKey: K.isLoggedinKey)
-        GIDSignIn.sharedInstance().signOut()
-        self.dismiss(animated: true, completion: nil)
-    }
-    
-    @IBAction func updatePasswordButtonPressed(_ sender: UIButton) {
-        
+    @IBAction func updateButtonPressed(_ sender: UIButton) {
         let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
         if let _ = UserDefaults.standard.value(forKey: K.isGoogleSignedInKey) as? Bool {
@@ -168,5 +150,21 @@ class MyAccountViewController: UIViewController {
                 }
             }
         }
+    }
+
+    @IBAction func logoutButtonPressed(_ sender: UIButton) {
+        UserDefaults.standard.setValue(nil, forKey: K.searchHistoryKey)
+        UserDefaults.standard.setValue(nil, forKey: K.userTypeKey)
+        UserDefaults.standard.setValue(nil, forKey: K.token)
+        UserDefaults.standard.setValue(nil, forKey: K.userIdKey)
+        UserDefaults.standard.setValue(nil, forKey: K.isGoogleSignedInKey)
+        UserDefaults.standard.setValue(nil, forKey: K.userFirstNameKey)
+        UserDefaults.standard.setValue(nil, forKey: K.userLastNameKey)
+        UserDefaults.standard.setValue(nil, forKey: K.usernameKey)
+        UserDefaults.standard.setValue(nil, forKey: K.userAddressKey)
+        UserDefaults.standard.setValue(nil, forKey: K.userPhoneNumKey)
+        UserDefaults.standard.setValue(false, forKey: K.isLoggedinKey)
+        UserDefaults.standard.setValue(nil, forKey: K.isVendorLoggedIn)
+        self.dismiss(animated: true, completion: nil)
     }
 }

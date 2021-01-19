@@ -41,6 +41,7 @@
 		93E99DDF2577E91B00BCFDAD /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E99DDE2577E91B00BCFDAD /* RadioButton.swift */; };
 		93E99DE42577E93300BCFDAD /* APIManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E99DE32577E93300BCFDAD /* APIManager.swift */; };
 		93E99DE92577F3F700BCFDAD /* ProductDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E99DE82577F3F700BCFDAD /* ProductDetailViewController.swift */; };
+		93ED20CA25B5F10C00F5A320 /* VendorMyAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93ED20C925B5F10C00F5A320 /* VendorMyAccountViewController.swift */; };
 		93EE3CA32558822500B504DF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EE3CA22558822500B504DF /* AppDelegate.swift */; };
 		93EE3CA52558822500B504DF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EE3CA42558822500B504DF /* SceneDelegate.swift */; };
 		93EE3CA72558822500B504DF /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93EE3CA62558822500B504DF /* MainViewController.swift */; };
@@ -121,6 +122,7 @@
 		93E99DDE2577E91B00BCFDAD /* RadioButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadioButton.swift; sourceTree = "<group>"; };
 		93E99DE32577E93300BCFDAD /* APIManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIManager.swift; sourceTree = "<group>"; };
 		93E99DE82577F3F700BCFDAD /* ProductDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProductDetailViewController.swift; path = "Bazaar-iOS/ProductDetailViewController.swift"; sourceTree = SOURCE_ROOT; };
+		93ED20C925B5F10C00F5A320 /* VendorMyAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VendorMyAccountViewController.swift; sourceTree = "<group>"; };
 		93EE3C9F2558822500B504DF /* Bazaar-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Bazaar-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		93EE3CA22558822500B504DF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		93EE3CA42558822500B504DF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -405,6 +407,7 @@
 				9377BEB325AD0D7100AE8CC2 /* VendorProfileViewController.swift */,
 				9377BEB825AD0D8600AE8CC2 /* VendorMyOrdersViewController.swift */,
 				9377BEBD25AD0DA300AE8CC2 /* VendorMyProductsViewController.swift */,
+				93ED20C925B5F10C00F5A320 /* VendorMyAccountViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -738,6 +741,7 @@
 				FCE56DDA25855C5800A119FA /* SubCategoryCell.swift in Sources */,
 				93D91AC625867A3B007B238C /* MyAccountViewController.swift in Sources */,
 				9377BEB425AD0D7100AE8CC2 /* VendorProfileViewController.swift in Sources */,
+				93ED20CA25B5F10C00F5A320 /* VendorMyAccountViewController.swift in Sources */,
 				99DE0AEF25967E10004BAFDA /* ReviewTableViewCell.swift in Sources */,
 				9333667C25794FDB0010E82F /* Constants.swift in Sources */,
 				93E99DE42577E93300BCFDAD /* APIManager.swift in Sources */,
