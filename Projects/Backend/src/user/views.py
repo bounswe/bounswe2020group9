@@ -94,9 +94,6 @@ class UserDetailAPIView(APIView):
 class UserLoginAPIView(ObtainAuthToken):
 
     def post(self, request, *args, **kwargs):
-        user2 = User.objects.get(username="ibrahimorhan190328@gmail.com")
-        user2.is_active = True
-        print(urlsafe_base64_encode(force_bytes(user2.id)))
         serializer = self.serializer_class(data=request.data,
                                            context={'request': request})
         serializer.is_valid(raise_exception=True)
