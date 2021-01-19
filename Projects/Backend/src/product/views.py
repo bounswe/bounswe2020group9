@@ -8,7 +8,7 @@ from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_4
     HTTP_202_ACCEPTED
 from rest_framework.views import APIView
 
-from product.functions import search_product_db, datamuse_call, filter_func, sort_func
+from product.functions import search_product_db, datamuse_call, filter_func, sort_func, calculate_rating
 from product.models import Product, ProductList, SubOrder, Comment, Category
 from product.serializers import ProductSerializer, ProductListSerializer, CommentSerializer, SubOrderSerializer, \
     SearchHistorySerializer, CategorySerializer
@@ -381,15 +381,10 @@ class AddCommentAPIView(APIView):
             if serializer.validated_data['customer'].user_id == user_id:
                 # update the rating of the product
                 product = serializer.validated_data['product']
-                rating = request.data['rating']
-                rateCounter = len(Comment.objects.filter(product_id=product.id))
-                if rateCounter:
-                    product.rating = (rating + product.rating * rateCounter) / (rateCounter + 1)
-                else:
-                    product.rating = rating
-                product.save()
-
                 serializer.save()
+                avg_rating = calculate_rating(product.id)
+                product.rating = avg_rating
+                product.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
             else:
                 return Response({"message": "Token and user id didn't match"}, status=status.HTTP_401_UNAUTHORIZED)
@@ -427,17 +422,11 @@ class UpdateCommentAPIView(APIView):
                 oldComment = Comment.objects.get(id=id)
                 serializer = CommentSerializer(oldComment, data=request.data)
                 if serializer.is_valid():
-                    # update the rating of the product
                     product = serializer.validated_data['product']
-                    rating = request.data['rating']
-                    rateCounter = len(Comment.objects.filter(product_id=product.id))
-                    if rateCounter:
-                        product.rating = (rating - oldComment.rating + product.rating * (rateCounter)) / rateCounter
-                    else:
-                        product.rating = rating
-                    product.save()
-
                     serializer.save()
+                    avg_rating = calculate_rating(product.id)
+                    product.rating = avg_rating
+                    product.save()
                     return Response(serializer.data)
             else:
                 return Response({"message": "Token and user id didn't match"}, status=status.HTTP_401_UNAUTHORIZED)
@@ -450,11 +439,14 @@ class UpdateCommentAPIView(APIView):
             return Response({"message": "Token is not valid."}, status=status.HTTP_401_UNAUTHORIZED)
         try:
             comment = Comment.objects.get(id=id)
-
+            product = comment.product
         except Comment.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
         if comment.customer.user_id == user_id:
             comment.delete()
+            avg_rating = calculate_rating(product.id)
+            product.rating = avg_rating
+            product.save()
             return Response(status=status.HTTP_204_NO_CONTENT)
         return Response({"message": "Token and user id didn't match"}, status=status.HTTP_401_UNAUTHORIZED)
 
