@@ -7,6 +7,7 @@ import Alert from 'react-bootstrap/Alert'
 
 
 import "./sign-up.scss";
+import {Button, Modal} from "react-bootstrap";
 
 export default class SignUp extends Component {
 
@@ -23,6 +24,8 @@ export default class SignUp extends Component {
           postal_code: '',
           isHidden: true,
           redirect: null,
+          isOpen: false,
+          terms_accepted: false,
           errors: {}
         }
       }
@@ -80,6 +83,12 @@ export default class SignUp extends Component {
             new_errors["postal_code"] = "Postal code should be integer.";   
           }
         }
+
+        if(this.state.terms_accepted === false){
+          formIsValid = false;
+          new_errors["termsCheck"] = "Terms and Conditions must be accepted.";
+        }
+
         this.setState({errors: new_errors});
         return formIsValid;
       }
@@ -87,6 +96,20 @@ export default class SignUp extends Component {
       handleChange = event => {
         this.setState({ [event.target.name]: event.target.value });
       }
+
+      openModal = () => {
+        this.setState({ isOpen: true })
+        this.setState({isHiddenFail: false})
+        this.setState({isHiddenSuccess: false})
+        this.setState({isHiddenDeleteFail: false})
+      };
+
+      closeModal = () => {
+        this.setState({ isOpen: false })
+        this.setState({isHiddenFail: true})
+        this.setState({isHiddenSuccess: true})
+        this.setState({isHiddenDeleteFail: true})
+      };
 
       handleSubmit = event => {
     
@@ -135,6 +158,44 @@ export default class SignUp extends Component {
           }
         return (
           <div className='background'>
+
+            <Modal show={this.state.isOpen} onHide={this.closeModal}>
+              <Modal.Header closeButton>
+                <Modal.Title>Terms and Conditions</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <p>
+                  By signing up, you agree to be bound by these Terms.
+                </p>
+                <h6> Content </h6>
+                <p>
+                  Our service allows you to post, link, store, share and otherwise make available certain
+                  information of any content. You are responsible for the content you share, and Bazaar
+                  reserves to manage any kind of information, at any time. If you wish to purchase or service
+                  made available through the platform, please contact us for further information.
+                </p>
+                <h6> Purchases </h6>
+                <p>
+                  Bazaar assumes no responsibility for, the content, privacy policies, or practices
+                  of any kind of third-party services. You further acknowledge and agree that Bazaar
+                  shall not be responsible or liable, directly or indirectly, for any damage or loss
+                  caused or alleged to be caused by or in connection with use of or reliance on any
+                  such content, goods or services available on or through any such web sites or services.
+                </p>
+                <h6> Changes </h6>
+                <p>
+                  We reserve the right, at our sole discretion, to modify or replace these Terms at any time.
+                </p>
+                <h6> Contact Us </h6>
+                <p>
+                  If you have any questions about these terms, please contact us.
+                </p>
+              </Modal.Body>
+              <Modal.Footer>
+                <Button variant="secondary" onClick={this.closeModal}>Close</Button>
+              </Modal.Footer>
+            </Modal>
+
             <div className="signup-form">
               <Alert variant="success" hidden={this.state.isHidden}>
                 A confirmation mail has been sent to your account, please check it.
@@ -196,6 +257,15 @@ export default class SignUp extends Component {
                         onChange={this.handleChange}/>
                         <div className="error">{this.state.errors["password"]}</div>
                     </div>
+
+
+                    <div className="form-check">
+                      <input type="checkbox" className="form-check-input" name="termsCheck"
+                             value="" onChange={this.handleTermsChange}/>
+                      <label className="form-check-label" htmlFor="termsCheck">
+                        I agree to the <a href="#" onClick={this.openModal}>Terms and Conditions</a></label>
+                    </div>
+                    <div className="error">{this.state.errors["termsCheck"]}</div>
 
                     <p className="user-type-change">
                         Want to <a href="/signup">sign up as Customer?</a>
