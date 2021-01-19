@@ -42,6 +42,7 @@ class MainViewController: UIViewController{
     var searchResults:[String] = []
     var historyEndIndex:Int = 0
     var categoriesEndIndex: Int = 0
+    var brandsEndIndex: Int = 0
     var searchTextField: UITextField?
     
     override func viewWillAppear(_ animated: Bool) {
@@ -59,6 +60,7 @@ class MainViewController: UIViewController{
         searchResults = searchHistory
         historyEndIndex = searchHistory.count
         categoriesEndIndex = searchHistory.count
+        brandsEndIndex = searchHistory.count
         productTableView.tableFooterView = UIView(frame: .zero)
         self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
@@ -132,10 +134,12 @@ class MainViewController: UIViewController{
                     searchResultsVC.isSearchWord = false
                     searchResultsVC.isBrand = false
                     searchResultsVC.isCategory = true
-                } else {
+                } else if indexpath!.row < brandsEndIndex {
                     searchResultsVC.isSearchWord = false
                     searchResultsVC.isBrand = true
                     searchResultsVC.isCategory = false
+                } else {
+                    // send to vendor profile
                 }
             } else {
                 searchResultsVC.isSearchWord = true
@@ -150,6 +154,12 @@ class MainViewController: UIViewController{
                 let products = allProductsInstance.allProducts.filter{$0.category.parent!.contains(selectedCategoryName!) || $0.category.name.contains(selectedCategoryName!)}
                 productDetailVC.product = products[indexPath!.row]
             }
+        } else if let vendorProfileVC = segue.destination as? VendorProfileViewController {
+            let indexPath = self.productTableView.indexPathForSelectedRow
+            if indexPath != nil {
+                let vendor = 1
+                vendorProfileVC.vendorID = vendor
+            }
         }
     }
     
@@ -158,6 +168,9 @@ class MainViewController: UIViewController{
             return !(searchTextField?.text == "")
         } else if identifier == "mainToProductDetailSegue" {
              return self.productTableView.indexPathForSelectedRow != nil
+        } else if identifier == "mainToVendorProfileSegue" {
+            return !(searchTextField?.text == "")
+            // check if the vendor exists and return true if does
         }
         return false
     }
@@ -252,10 +265,14 @@ extension MainViewController:UITableViewDelegate,UITableViewDataSource {
                 cell.hideClock()
                 cell.showType()
                 cell.typeLabel.text = "Category"
-            } else {
+            } else if indexPath.row < brandsEndIndex {
                 cell.hideClock()
                 cell.showType()
                 cell.typeLabel.text = "Brand"
+            } else {
+                cell.hideClock()
+                cell.showType()
+                cell.typeLabel.text = "Vendor"
             }
             return cell
         }
@@ -265,7 +282,14 @@ extension MainViewController:UITableViewDelegate,UITableViewDataSource {
         if tableView == searchHistoryTableView {
             searchTextField?.text = searchResults[indexPath.row]
             searchBar.text = searchResults[indexPath.row]
-            performSegue(withIdentifier: "mainToSearchResultsSegue", sender: nil)
+            if indexPath.row < brandsEndIndex {
+                performSegue(withIdentifier: "mainToSearchResultsSegue", sender: nil)
+            } else {
+                if(shouldPerformSegue(withIdentifier: "mainToVendorProfileSegue", sender: nil)){
+                    performSegue(withIdentifier: "mainToVendorProfileSegue", sender: nil)
+                }
+            }
+            
         } else {
             let filteredProducts:[ProductData] = allProductsInstance.allProducts.filter{($0.category.parent?.contains(selectedCategoryName!))! || $0.category.name.contains(selectedCategoryName!)}
             let product = filteredProducts[indexPath.row]
@@ -397,6 +421,8 @@ extension MainViewController: UISearchBarDelegate, UISearchControllerDelegate {
         let brands = Array(Set(allProductsInstance.allProducts.map{$0.brand}))
         searchResults.append(contentsOf: brands.filter{(query:String) -> (Bool) in
                                 return query.range(of:searchText, options: .caseInsensitive, range:nil, locale: nil) != nil})
+        brandsEndIndex = searchResults.count
+        searchResults.append(contentsOf: [])
         searchHistoryTableView.reloadData()
     }
     

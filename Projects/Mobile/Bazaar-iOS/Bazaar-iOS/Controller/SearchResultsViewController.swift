@@ -13,6 +13,7 @@ class SearchResultsViewController: UIViewController {
     var isSearchWord: Bool!
     var isCategory: Bool!
     var isBrand: Bool!
+    var isVendor: Bool!
     var searchResults:[ProductData] = []
     var filterType:String!
     var sortType:String!
@@ -79,7 +80,7 @@ class SearchResultsViewController: UIViewController {
             self.title = "Search Results for: \""+searchWord + "\""
         } else if (isCategory) {
             self.title = searchWord
-        } else {
+        } else if (isBrand){
             self.title = searchWord
         }
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.darkGray]

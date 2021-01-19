@@ -8,6 +8,9 @@
 import UIKit
 
 class VendorProfileViewController: UIViewController {
+    
+    var vendorID: Int!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
