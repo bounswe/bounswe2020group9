@@ -165,11 +165,11 @@ class MainViewController: UIViewController{
                 let products = allProductsInstance.allProducts.filter{$0.category.parent!.contains(selectedCategoryName!) || $0.category.name.contains(selectedCategoryName!)}
                 productDetailVC.product = products[indexPath!.row]
             }
-        } else if let vendorProfileVC = segue.destination as? VendorProfileViewController {
+        } else if let vendorProfileVC = segue.destination as? VendorProfileForUserViewController {
             let indexPath = self.productTableView.indexPathForSelectedRow
             if indexPath != nil {
                 let vendor = allVendorsInstance.allVendors.filter{$0.company.contains(searchResults[indexPath!.row])}
-                vendorProfileVC.vendorID = vendor[0]
+                vendorProfileVC.vendor = vendor[0]
             }
         }
     }

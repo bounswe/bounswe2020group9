@@ -488,10 +488,10 @@
             </objects>
             <point key="canvasLocation" x="2929" y="376"/>
         </scene>
-        <!--Vendor Profile View Controller-->
+        <!--Vendor Profile For User View Controller-->
         <scene sceneID="xxh-zN-onU">
             <objects>
-                <viewController id="UIx-Vc-fWz" customClass="VendorProfileViewController" customModule="Bazaar_iOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="UIx-Vc-fWz" customClass="VendorProfileForUserViewController" customModule="Bazaar_iOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="nuv-mh-4Io">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
