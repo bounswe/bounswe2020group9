@@ -143,8 +143,8 @@ USE_TZ = True
 
 # Email stuff
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'bazaar.app451@gmail.com'
+EMAIL_HOST_USER = 'bazaar.app2451@gmail.com'
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'bazaar.app451@gmail.com'
+DEFAULT_FROM_EMAIL = 'bazaar.app2451@gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_PASSWORD = '451group9'
+EMAIL_HOST_PASSWORD = 'bazaar451'

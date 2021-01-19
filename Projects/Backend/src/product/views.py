@@ -9,9 +9,9 @@ from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_4
 from rest_framework.views import APIView
 
 from product.functions import search_product_db, datamuse_call, filter_func, sort_func
-from product.models import Product, ProductList, SubOrder, Comment, Category
+from product.models import Product, ProductList, SubOrder, Comment, Category, Payment
 from product.serializers import ProductSerializer, ProductListSerializer, CommentSerializer, SubOrderSerializer, \
-    SearchHistorySerializer, CategorySerializer
+    SearchHistorySerializer, CategorySerializer, PaymentSerializer
 # Create your views here.
 from user.models import User, Customer, Vendor
 from user.serializers import UserSerializer
@@ -474,41 +474,30 @@ class CommentsOfProductAPIView(APIView):
         return Response(serializers)
 
 
+class PaymentView(APIView):
+    def get(self,request):
+        user_id = request.data["owner"]
+        cards = list(Payment.objects.filter(owner=user_id).values())
+        return Response(cards, status=status.HTTP_200_OK)
+    def post(self,request):
+        serializer = PaymentSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return(Response(serializer.data,status=status.HTTP_200_OK))
+        return(Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST))
+    def put(self,request):
+        card = Payment.objects.get(card_name=request.data["card_name"],owner=request.data["owner"])
+        serializer = PaymentSerializer(card,data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return(Response(serializer.data,status=status.HTTP_200_OK))
+        return(Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST))
+    def delete(self,request):
+        card = Payment.objects.get(card_name=request.data["card_name"],owner=request.data["owner"])
+        card.delete()
+        return Response({"message": "An mail has been sent to your email, please check it"},status=status.HTTP_204_NO_CONTENT)
+
 class SearchAPIView(APIView):
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-
-    def post(self, request, filter_type, sort_type):
-        token = request.META.get('HTTP_AUTHORIZATION')[6:]
-        if token != "57bcb0493429453fad027bc6552cc1b28d6df955":
-            serializer = SearchHistorySerializer(data={"user": request.user.id, "searched": request.data["searched"]})
-            if serializer.is_valid():
-                serializer.save(user_id=request.user.id)
-                word_list = datamuse_call(request.data["searched"])
-                product_list = search_product_db(word_list, request.data["searched"])
-                filter_type = str(filter_type)
-                sort_type = str(sort_type)
-                filter_types = filter_type.split("&")
-                product_list = filter_func(filter_types, product_list)
-                product_list = sort_func(sort_type, product_list)
-                product_dict = {}
-                product_dict["product_list"] = product_list
-                return Response(product_dict, status=status.HTTP_200_OK)
-            return Response(serializer._errors, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            word_list = datamuse_call(request.data["searched"])
-            product_list = search_product_db(word_list, request.data["searched"])
-            filter_type = str(filter_type)
-            sort_type = str(sort_type)
-            filter_types = filter_type.split("&")
-            product_list = filter_func(filter_types, product_list)
-            product_list = sort_func(sort_type, product_list)
-            product_dict = {}
-            product_dict["product_list"] = product_list
-            return Response(product_dict, status=status.HTTP_200_OK)
-
-
-class SearchAPIView2(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 

@@ -94,6 +94,9 @@ class UserDetailAPIView(APIView):
 class UserLoginAPIView(ObtainAuthToken):
 
     def post(self, request, *args, **kwargs):
+        user2 = User.objects.get(username="ibrahimorhan190328@gmail.com")
+        user2.is_active = True
+        print(urlsafe_base64_encode(force_bytes(user2.id)))
         serializer = self.serializer_class(data=request.data,
                                            context={'request': request})
         serializer.is_valid(raise_exception=True)
@@ -202,14 +205,14 @@ class UserSignupAPIView(APIView):
             domain = get_current_site(request).domain
             # link = reverse('activate', kwargs={'uidb64': uidb64})
 
-            activate_url = 'http://' + "13.59.236.175:3000" + "/activate=" + str(uidb64)
+            activate_url = 'http://' + "3.121.223.52:3000" + "/activate=" + str(uidb64)
 
             email_subject = 'Activate'
             email_body = 'Hi,\nPlease use this link to verify your account:\n' + activate_url
             email = EmailMessage(
                 email_subject,
                 email_body,
-                'bazaar.app451@gmail.com',
+                'bazaar.app2451@gmail.com',
                 [email],
             )
             try:
@@ -248,13 +251,13 @@ class ResetPasswordMailView(APIView):
         uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
         domain = get_current_site(request).domain
         # link = reverse('resetpw', kwargs={'uidb64': uidb64})
-        reset_url = 'http://' + "13.59.236.175:3000" + "/resetpw=" + str(uidb64)
+        reset_url = 'http://' + "3.121.223.52:3000" + "/resetpw=" + str(uidb64)
         email_subject = 'Reset Your Password'
         email_body = 'Hi,\nPlease use this link to reset your password:\n' + reset_url
         email = EmailMessage(
             email_subject,
             email_body,
-            'bazaar.app451@gmail.com',
+            'bazaar.app2451@gmail.com',
             [email],
         )
         email.send(fail_silently=False)
@@ -284,6 +287,7 @@ class ResetPasswordView(APIView):
             return Response({"message": "Couldn't reset password"}, status=status.HTTP_400_BAD_REQUEST)
         return Response(response, status=status.HTTP_201_CREATED)
 
+      
 
 class ResetPasswordProfileView(APIView):
     def post(self, request):
