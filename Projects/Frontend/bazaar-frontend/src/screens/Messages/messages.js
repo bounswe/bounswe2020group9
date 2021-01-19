@@ -25,34 +25,75 @@ export default class Messages extends Component {
       hasError: false,
       isHiddenMessageSent: true,
       isHiddenUnknown: true,
+      newMessageMenu: true,
       userHistory: [
         {
           name: "kenan",
-          messages:{
-            title:"Greetings",
-            body:"Lorem ipsum from kenan"
-          }
+          messages: [
+            {
+              body: "Hello world kenan!",
+              user1:true
+            },
+            {
+              body: "Hello world2 kenan!",
+              user1:false
+            },
+            {
+              body: "Hello world3 kenan!",
+              user1:true
+            }
+          ]
         },
         {
           name: "sinan",
-          messages:{
-            title:"Greetings",
-            body:"Lorem ipsum from sinan"
-          }
+          messages: [
+            {
+              body: "Hello world sinan!",
+              user1:true
+            },
+            {
+              body: "Hello world2 sinan!",
+              user1:false
+            },
+            {
+              body: "Hello world3 sinan!",
+              user1:true
+            }
+          ]
         },
         {
           name: "bilal",
-          messages:{
-            title:"Greetings",
-            body:"Lorem ipsum from bilal"
-          }
+          messages: [
+            {
+              body: "Hello world bilal!",
+              user1:true
+            },
+            {
+              body: "Hello world2 bilal!",
+              user1:false
+            },
+            {
+              body: "Hello world3 bilal!",
+              user1:true
+            }
+          ]
         },
         {
           name: "bora",
-          messages:{
-            title:"Greetings",
-            body:"Lorem ipsum from bora"
-          }
+          messages: [
+            {
+              body: "Hello world bora!",
+              user1:true
+            },
+            {
+              body: "Hello world2 bora!",
+              user1:false
+            },
+            {
+              body: "Hello world3 bora!",
+              user1:true
+            }
+          ]
         },
       ],
       errors: {}
@@ -70,11 +111,35 @@ export default class Messages extends Component {
 
   render() {
 
-    let AccountList = this.state.userHistory.map((user) => {
+    let Conversation = (messages) => {
+      return messages.map((message)=>{
+        return (
+          <div className={"row justify-content-"+ (message.user1 ? "start" : "end")}>
+            <div className="col-4">
+              {message.body}
+            </div>
+          </div>
+        )});
+    }
+
+    let Conversations = this.state.userHistory.map((user) => {
       return (
-        <NavItem>
-          <NavLink eventKey={user.name}>{user.name}</NavLink>
-        </NavItem>
+        <div className="tab-pane fade" id={"v-pills-"+user.name} role="tabpanel" aria-labelledby={"v-pills-"+user.name+"-tab"}>
+          <h4 className="text-center">{user.name}</h4>
+          <div className="container">{Conversation(user.messages)}</div>
+          <form>
+            <div className="form-group">
+              <textarea className="form-control" id="form_body" rows="2" placeholder="Enter Message"/>
+            </div>
+            <button type="submit" className="btn btn-primary">Send</button>
+          </form>
+        </div>
+      )});
+
+    let LeftCol = this.state.userHistory.map((user) => {
+      return (
+        <a className="nav-link" id={"v-pills-"+user.name+"-tab"} data-toggle="pill" href={"#v-pills-"+user.name} role="tab"
+           aria-controls={"v-pills-"+user.name} aria-selected="false">{user.name}</a>
       );
     });
 
@@ -88,41 +153,33 @@ export default class Messages extends Component {
           <Alert variant="danger" hidden={this.state.isHiddenUnknown}>
             Something went wrong.
           </Alert>
-          <div>
-            <h2 className="text-center">Messages</h2>
+          <h2 className="text-center">Messages</h2>
+          <div className="container">
+            <div className="row">
+              <div className="nav flex-column nav-pills col-4 no-padding-left" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <h4>Conversation History</h4>
+                <a className="nav-link active" id="v-pills-new_conversation-tab" data-toggle="pill" href="#v-pills-new_conversation" role="tab"
+                   aria-controls="v-pills-new_conversation" aria-selected="true">New Conversation</a>
+                {LeftCol}
+              </div>
+              <div className="tab-content col-8 no-padding-left" id="v-pills-tabContent">
+                <div className="tab-pane fade show active" id="v-pills-new_conversation" role="tabpanel"
+                     aria-labelledby="v-pills-new_conversation-tab">
+                  <h4 className="text-center">New Conversation</h4>
+                  <form>
+                    <div className="form-group">
+                      <input type="email" className="form-control" id="form-username" placeholder="Enter Username"/>
+                    </div>
+                    <div className="form-group">
+                      <textarea className="form-control" id="form_body" rows="2" placeholder="Enter Message"/>
+                    </div>
+                    <button type="submit" className="btn btn-primary">Send</button>
+                  </form>
+                </div>
+                {Conversations}
+              </div>
+            </div>
           </div>
-          <Row>
-            <div className=" col-sm-4 text-center">
-              <h3>Message History</h3>
-              <TabContainer id="message-history" defaultActiveKey="new_message">
-                <Row>
-                  <Col>
-                    <Nav variant="pills" className="flex-column">
-                      <NavItem>
-                        <NavLink eventKey="new_message">New Message</NavLink>
-                      </NavItem>
-                      {AccountList}
-                    </Nav>
-                  </Col>
-                </Row>
-              </TabContainer>
-            </div>
-            <div className="col-sm">
-              <h3 className="text-center">New Message</h3>
-              <form>
-                <div className="form-group">
-                  <input type="email" className="form-control" id="form_username" placeholder="Enter Username"/>
-                </div>
-                <div className="form-group">
-                  <input type="text" className="form-control" id="form_title" placeholder="Enter Title"/>
-                </div>
-                <div className="form-group">
-                  <textarea className="form-control" id="form_body" rows="3"/>
-                </div>
-                <button type="submit" className="btn btn-primary">Send</button>
-              </form>
-            </div>
-          </Row>
         </div>
       </div>
 
