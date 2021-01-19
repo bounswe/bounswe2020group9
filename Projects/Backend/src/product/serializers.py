@@ -2,7 +2,7 @@ from pygments.lexers import get_all_lexers
 from pygments.styles import get_all_styles
 from rest_framework import serializers
 
-from .models import Product, Label, Category, ProductList, Comment, SubOrder, SearchHistory
+from .models import Product, Label, Category, ProductList, Comment, SubOrder, SearchHistory, Payment
 
 LEXERS = [item for item in get_all_lexers() if item[1]]
 LANGUAGE_CHOICES = sorted([(item[1][0], item[0]) for item in LEXERS])
@@ -107,3 +107,15 @@ class SubOrderSerializer(serializers.ModelSerializer):
         model = SubOrder
         fields = '__all__'
         extra_kwargs = {'purchased': {'write_only': True}}
+
+class PaymentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Payment
+        fields = '__all__'
+    def create(self, validated_data):
+        return Payment.objects.create(**validated_data)
+    def update(self, instance, validated_data):
+        for (key, value) in validated_data.items():
+            setattr(instance, key, value)
+        instance.save()
+        return instance
