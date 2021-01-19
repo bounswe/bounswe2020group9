@@ -9,6 +9,7 @@ import TabContainer from "react-bootstrap/TabContainer";
 import Nav from "react-bootstrap/Nav";
 import NavItem from "react-bootstrap/NavItem";
 import NavLink from "react-bootstrap/NavLink";
+import {read_cookie} from "sfcookies";
 
 
 
@@ -102,11 +103,24 @@ export default class Messages extends Component {
   }
 
   componentDidMount() {
-    /*
-    axios.get(serverUrl + `api/message/`).then((res) => {
-      this.setState({ messages: res.data });
+    let myCookie = read_cookie("user");
+
+    const headers = {
+      Authorization: `Token ${myCookie.token}`,
+    };
+
+    axios.get(serverUrl + `api/message/conversations/`,{
+      headers:headers
+    }).then((res) => {
+      res.data.conversations.forEach((conversation)=>{
+        console.log(conversation);
+        axios.get(serverUrl + `api/message/${conversation.id}/`,{
+          headers:headers
+        }).then((res)=>{
+          console.log(res);
+        });
+      });
     });
-    */
   }
 
   render() {
