@@ -19,6 +19,7 @@ class MainViewController: UIViewController{
     
     
     var allProductsInstance = AllProducts.shared
+    var allVendorsInstance = AllVendors.shared
     var selectedCategoryName: String?
 
     var selectedCategoryButton: UIButton? {
@@ -36,6 +37,7 @@ class MainViewController: UIViewController{
     
     let categories = ["Clothing", "Home", "Selfcare", "Electronics", "Living"]
     var products: [Product] = []
+    var vendors:[VendorData] = []
     let categoriesReuseIdentifier = "CategoriesCollectionViewCell"
     var networkFailedAlert:UIAlertController = UIAlertController(title: "Error while retrieving products", message: "We encountered a problem while retrieving the products, please check your internet connection.", preferredStyle: .alert)
     var searchHistory:[String] = (UserDefaults.standard.value(forKey: K.searchHistoryKey) as? [String] ?? [])
@@ -66,8 +68,11 @@ class MainViewController: UIViewController{
     }
     
     override func viewWillDisappear(_ animated: Bool) {
+        searchResults = searchHistory
+        searchBar.searchTextField.text = ""
         self.navigationController?.setNavigationBarHidden(false, animated: true)
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         searchBar.delegate = self
@@ -78,6 +83,7 @@ class MainViewController: UIViewController{
         self.categoryCollectionView.dataSource = self
         self.categoryCollectionView.delegate = self
         allProductsInstance.delegate = self
+        allVendorsInstance.delegate = self
         searchHistoryTableView.isHidden = true
         self.view.sendSubviewToBack(searchHistoryTableView)
         self.view.sendSubviewToBack(searchHistoryTableView)
@@ -93,11 +99,16 @@ class MainViewController: UIViewController{
         productTableView.register(UINib(nibName: "ProductCell", bundle: nil), forCellReuseIdentifier: "ReusableProdcutCell")
         //searchHistoryTableView.register(SearchHistoryTableViewCell.self, forCellReuseIdentifier: "searchHistoryCell")
         if !(allProductsInstance.dataFetched) {
-            print("here")
             self.searchBar.resignFirstResponder()
             self.searchBar.isUserInteractionEnabled = false
             startIndicator()
             self.allProductsInstance.fetchAllProducts()
+        }
+        if !(allVendorsInstance.dataFetched) {
+            self.searchBar.resignFirstResponder()
+            self.searchBar.isUserInteractionEnabled = false
+            startIndicator()
+            self.allVendorsInstance.fetchAllVendors()
         }
         searchResults = searchHistory
         historyEndIndex = searchHistory.count
@@ -119,7 +130,7 @@ class MainViewController: UIViewController{
         dismiss(animated: true, completion: nil)
         self.view.sendSubviewToBack(searchHistoryTableView)
         self.view.sendSubviewToBack(searchHistoryTableView)
-        searchResults = searchHistory
+        //searchResults = searchHistory
         if let searchResultsVC = segue.destination as? SearchResultsViewController {
             searchResultsVC.searchWord = searchTextField?.text
             let indexpath = searchHistoryTableView.indexPathForSelectedRow
@@ -157,8 +168,8 @@ class MainViewController: UIViewController{
         } else if let vendorProfileVC = segue.destination as? VendorProfileViewController {
             let indexPath = self.productTableView.indexPathForSelectedRow
             if indexPath != nil {
-                let vendor = 1
-                vendorProfileVC.vendorID = vendor
+                let vendor = allVendorsInstance.allVendors.filter{$0.company.contains(searchResults[indexPath!.row])}
+                vendorProfileVC.vendorID = vendor[0]
             }
         }
     }
@@ -170,24 +181,12 @@ class MainViewController: UIViewController{
              return self.productTableView.indexPathForSelectedRow != nil
         } else if identifier == "mainToVendorProfileSegue" {
             return !(searchTextField?.text == "")
-            // check if the vendor exists and return true if does
         }
         return false
     }
 
 
 }
-
-//extension MainViewController: UIScrollViewDelegate {
-//  func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        if scrollView.contentOffset.y != 0 {
-//            scrollView.contentOffset.y = 0
-//            scrollView.
-//        }
-//    }
-    
-
-//}
 
 extension MainViewController:UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -407,6 +406,18 @@ extension MainViewController: AllProductsFetchDelegate {
     }
 }
 
+extension MainViewController: AllVendorsFetchDelegate {
+    func allVendorsAreFetched() {
+        self.stopIndicator()
+        self.vendors = self.allVendorsInstance.allVendors
+        self.searchBar.isUserInteractionEnabled = true
+    }
+    
+    func vendorsCannotBeFetched() {
+        startIndicator()
+    }
+}
+
 // MARK: - SearchBar
 extension MainViewController: UISearchBarDelegate, UISearchControllerDelegate {
     
@@ -414,15 +425,21 @@ extension MainViewController: UISearchBarDelegate, UISearchControllerDelegate {
         searchResults = searchText.isEmpty ? searchHistory : searchHistory.filter{(query:String) -> (Bool) in
             return query.range(of:searchText, options: .caseInsensitive, range:nil, locale: nil) != nil
         }
+        print("1",searchResults.count)
         historyEndIndex = searchResults.count
         searchResults.append(contentsOf: categories.filter{(query:String) -> (Bool) in
                                 return query.range(of:searchText, options: .caseInsensitive, range:nil, locale: nil) != nil})
         categoriesEndIndex = searchResults.count
+        print("2",searchResults.count)
         let brands = Array(Set(allProductsInstance.allProducts.map{$0.brand}))
         searchResults.append(contentsOf: brands.filter{(query:String) -> (Bool) in
                                 return query.range(of:searchText, options: .caseInsensitive, range:nil, locale: nil) != nil})
         brandsEndIndex = searchResults.count
-        searchResults.append(contentsOf: [])
+        print("3",searchResults.count)
+        let vendorlist = Array(Set(allVendorsInstance.allVendors.map{$0.company}))
+        searchResults.append(contentsOf: vendorlist.filter{(query:String) -> (Bool) in
+                                return query.range(of:searchText, options: .caseInsensitive, range:nil, locale: nil) != nil})
+        print("4",searchResults.count)
         searchHistoryTableView.reloadData()
     }
     
@@ -443,7 +460,6 @@ extension MainViewController: UISearchBarDelegate, UISearchControllerDelegate {
                 searchHistory.append(searchBar.text!)
             }
             UserDefaults.standard.set(searchHistory, forKey: K.searchHistoryKey)
-            //searchHistoryTableView.reloadData()
         }
         searchHistoryTableView.setValue(0, forKeyPath: "alpha")
         if (shouldPerformSegue(withIdentifier: "mainToSearchResultsSegue", sender: nil)) {
@@ -580,3 +596,53 @@ class AllProducts {
     }
         
 }
+
+class AllVendors {
+    static let shared = AllVendors()
+    var allVendors: [VendorData]
+    private let saveKey = "AllVendors"
+    
+    var delegate: AllVendorsFetchDelegate?
+    let dispatchGroup = DispatchGroup()
+    var dataFetched = false {
+        didSet{
+            if self.dataFetched{
+                delegate?.allVendorsAreFetched()
+            } else {
+                delegate?.vendorsCannotBeFetched()
+            }
+        }
+    }
+    var apiFetchError = false
+    var jsonParseError = false
+    
+    init(){
+        self.allVendors = []
+    }
+    
+    func fetchAllVendors() {
+        dispatchGroup.enter()
+        APIManager().getAllVendors(str:"", completionHandler: { result in
+            switch result {
+            case .success(let vendors):
+                self.dataFetched = true
+                self.allVendors = vendors
+                self.delegate?.allVendorsAreFetched()
+            case .failure(let err):
+                self.dataFetched = false
+                self.allVendors = []
+                self.delegate?.vendorsCannotBeFetched()
+                print(err)
+            }
+        })
+        dispatchGroup.leave()
+        dispatchGroup.wait()
+    }
+        
+}
+
+protocol AllVendorsFetchDelegate {
+    func allVendorsAreFetched()
+    func vendorsCannotBeFetched()
+}
+

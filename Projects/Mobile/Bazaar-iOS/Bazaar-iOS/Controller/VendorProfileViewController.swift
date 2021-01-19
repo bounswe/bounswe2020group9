@@ -9,7 +9,7 @@ import UIKit
 
 class VendorProfileViewController: UIViewController {
     
-    var vendorID: Int!
+    var vendorID: VendorData!
     
     override func viewDidLoad() {
         super.viewDidLoad()

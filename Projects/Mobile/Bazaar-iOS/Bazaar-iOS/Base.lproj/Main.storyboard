@@ -128,7 +128,6 @@
                                             <outlet property="clockImage" destination="vgt-30-i9G" id="cG5-CW-SUp"/>
                                             <outlet property="resultLabel" destination="hak-eK-yP2" id="TzO-np-Qab"/>
                                             <outlet property="typeLabel" destination="QSg-5L-QuQ" id="0gl-0S-PRa"/>
-                                            <segue destination="UIx-Vc-fWz" kind="show" identifier="mainToVendorProfileSegue" id="N3p-ga-SwM"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -188,6 +187,7 @@
                         <outlet property="searchHistoryTableView" destination="Igs-5V-SRe" id="0mt-aj-XBD"/>
                         <segue destination="bKq-Op-bwT" kind="show" identifier="mainToSearchResultsSegue" id="NHr-zy-FFi"/>
                         <segue destination="RgT-CZ-30c" kind="show" identifier="mainToProductDetailSegue" id="N4E-qe-Wyq"/>
+                        <segue destination="UIx-Vc-fWz" kind="show" identifier="mainToVendorProfileSegue" id="AcT-yO-dty"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
@@ -3295,8 +3295,8 @@
         <image name="plus" catalog="system" width="128" height="113"/>
         <image name="right_arrow" width="64" height="64"/>
         <image name="settings_icon" width="50" height="50"/>
-        <image name="xmark.circle" width="13" height="13"/>
         <image name="xmark.circle" catalog="system" width="128" height="121"/>
+        <image name="xmark.circle" width="13" height="13"/>
         <namedColor name="AccentColor">
             <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
