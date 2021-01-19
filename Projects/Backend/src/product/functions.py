@@ -241,3 +241,11 @@ def sort_func(sort_type, product_list):
     # TODO release date, comment num
     else:
         return product_list
+
+
+def calculate_rating(product_id):
+    commentsOfProduct = Comment.objects.filter(product_id=product_id)
+    sum_of_ratings = 0
+    for comment in commentsOfProduct:
+        sum_of_ratings = sum_of_ratings + comment.rating
+    return (sum_of_ratings/1.0)/len(commentsOfProduct)
