@@ -28,9 +28,9 @@ class Conversations(APIView):
        	responseList = []
         for conversation in conversations:
         	d = {} 
+        	d["id"] = conversation.id
         	is_user1 = conversation.user1.id == user_id
         	message = Message.objects.filter(conversation_id=conversation.id).order_by('-timestamp')[0]
-        	d["id"] = conversation.id
         	d["last_message_body"] = message.body
         	d["last_message_timestamp"] = message.timestamp
         	if is_user1:
@@ -46,6 +46,7 @@ class Conversations(APIView):
         		if not message.is_visited_by_user2:
         			number_of_unseen = number_of_unseen + 1
 
+        	d["id"] = conversation.id
         	responseList.append(d)
         response = {}
         response["new_messages"] = number_of_unseen
