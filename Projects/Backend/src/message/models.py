@@ -10,6 +10,7 @@ from user.models import User
 class Conversation(models.Model):
     user1 = models.ForeignKey(User, related_name="user1", on_delete=models.CASCADE)
     user2 = models.ForeignKey(User, related_name="user2", on_delete=models.CASCADE)
+    last_message_timestamp = models.DateTimeField(default=timezone.now)
 
 
 class Message(models.Model):

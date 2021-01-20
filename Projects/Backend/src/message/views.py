@@ -7,12 +7,58 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_204_NO_CONTENT, \
     HTTP_202_ACCEPTED
 from rest_framework.views import APIView
+from django.utils import timezone
 
 
 from message.models import Message, Conversation, Notification
-from message.serializers import MessageSerializer, NotificationSerializer
+from message.serializers import MessageSerializer, NotificationSerializer, ConversationSerializer
 from user.models import User, Customer, Vendor
 from user.serializers import UserSerializer
+
+
+
+class AllMessages(APIView):
+    def get(self, request):
+        try:
+            user_id = request.user.id
+        except:
+            return Response({"message": "Token is not valid."}, status=status.HTTP_401_UNAUTHORIZED)
+        conversations = Conversation.objects.filter(user1_id=user_id) | Conversation.objects.filter(user2_id=user_id)
+        conversations = conversations.order_by('last_message_timestamp')
+        number_of_unseen = 0
+       	responseList = []
+        for conversation in conversations:
+        	d = {} 
+        	d["id"] = conversation.id
+        	is_user1 = conversation.user1.id == user_id
+        	messages = Message.objects.filter(conversation_id=conversation.id).order_by('-timestamp')
+        	message = messages[0]
+        	d["last_message_body"] = message.body
+        	d["last_message_timestamp"] = message.timestamp
+        	d["am_I_user1"] = is_user1
+        	if is_user1:
+        		d["user_id"] = conversation.user2.id
+        		d = {**d, **UserSerializer(conversation.user2).data}
+        		d["is_visited"] = message.is_visited_by_user1
+        		if not message.is_visited_by_user1:
+        			number_of_unseen = number_of_unseen + 1
+        	else:
+        		d["user_id"] = conversation.user1.id
+        		d = {**d, **UserSerializer(conversation.user1).data}
+        		d["is_visited"] = message.is_visited_by_user2
+        		if not message.is_visited_by_user2:
+        			number_of_unseen = number_of_unseen + 1
+        	messageList = []
+        	for message_ in messages:
+        		messageList.append(MessageSerializer(message_).data)
+        	d["messages"] = messageList
+
+        	d["id"] = conversation.id
+        	responseList.append(d)
+        response = {}
+        response["new_messages"] = number_of_unseen
+        response["conversations"] = responseList
+        return Response(response)
 
 
 
@@ -24,13 +70,14 @@ class Conversations(APIView):
         except:
             return Response({"message": "Token is not valid."}, status=status.HTTP_401_UNAUTHORIZED)
         conversations = Conversation.objects.filter(user1_id=user_id) | Conversation.objects.filter(user2_id=user_id)
+        conversations = conversations.order_by('last_message_timestamp')
         number_of_unseen = 0
        	responseList = []
         for conversation in conversations:
         	d = {} 
+        	d["id"] = conversation.id
         	is_user1 = conversation.user1.id == user_id
         	message = Message.objects.filter(conversation_id=conversation.id).order_by('-timestamp')[0]
-        	d["id"] = conversation.id
         	d["last_message_body"] = message.body
         	d["last_message_timestamp"] = message.timestamp
         	if is_user1:
@@ -46,6 +93,7 @@ class Conversations(APIView):
         		if not message.is_visited_by_user2:
         			number_of_unseen = number_of_unseen + 1
 
+        	d["id"] = conversation.id
         	responseList.append(d)
         response = {}
         response["new_messages"] = number_of_unseen
@@ -80,6 +128,7 @@ class Messages(APIView):
         conversation = Conversation.objects.filter(user1_id=user_id, user2_id=receiver_user_id) | Conversation.objects.filter(user2_id=user_id, user1_id=receiver_user_id)
         if len(conversation):
             conversation = conversation[0]
+            conversation.last_message_timestamp = timezone.now
         else:
             conversation = Conversation()
             conversation.user1=user
