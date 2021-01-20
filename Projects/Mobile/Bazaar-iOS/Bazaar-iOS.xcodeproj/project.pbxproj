@@ -28,6 +28,7 @@
 		930C1FAF256C0D9D0086E1DC /* APIDatas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930C1FAE256C0D9D0086E1DC /* APIDatas.swift */; };
 		930C1FB4256C12A00086E1DC /* APIParse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 930C1FB3256C12A00086E1DC /* APIParse.swift */; };
 		930C1FC6256C140B0086E1DC /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 930C1FC5256C140B0086E1DC /* Alamofire */; };
+		9315419625B8B40E001549AC /* MyCreditCardsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9315419525B8B40E001549AC /* MyCreditCardsViewController.swift */; };
 		9333667C25794FDB0010E82F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9333667B25794FDB0010E82F /* Constants.swift */; };
 		9377BEB425AD0D7100AE8CC2 /* VendorProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9377BEB325AD0D7100AE8CC2 /* VendorProfileViewController.swift */; };
 		9377BEB925AD0D8600AE8CC2 /* VendorMyOrdersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9377BEB825AD0D8600AE8CC2 /* VendorMyOrdersViewController.swift */; };
@@ -110,6 +111,7 @@
 		930C1FA5256C09FC0086E1DC /* ApiRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiRouter.swift; sourceTree = "<group>"; };
 		930C1FAE256C0D9D0086E1DC /* APIDatas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIDatas.swift; sourceTree = "<group>"; };
 		930C1FB3256C12A00086E1DC /* APIParse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIParse.swift; sourceTree = "<group>"; };
+		9315419525B8B40E001549AC /* MyCreditCardsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyCreditCardsViewController.swift; sourceTree = "<group>"; };
 		9333667B25794FDB0010E82F /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		9377BEB325AD0D7100AE8CC2 /* VendorProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VendorProfileViewController.swift; sourceTree = "<group>"; };
 		9377BEB825AD0D8600AE8CC2 /* VendorMyOrdersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VendorMyOrdersViewController.swift; sourceTree = "<group>"; };
@@ -411,6 +413,7 @@
 				9377BEBD25AD0DA300AE8CC2 /* VendorMyProductsViewController.swift */,
 				93ED20C925B5F10C00F5A320 /* VendorMyAccountViewController.swift */,
 				69B21FBC25B7117600BC4E0D /* VendorProfileForUserViewController.swift */,
+				9315419525B8B40E001549AC /* MyCreditCardsViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -763,6 +766,7 @@
 				99F6E84D257EBDBB0045C7BD /* ListCell.swift in Sources */,
 				93E99DDF2577E91B00BCFDAD /* RadioButton.swift in Sources */,
 				930C1FB4256C12A00086E1DC /* APIParse.swift in Sources */,
+				9315419625B8B40E001549AC /* MyCreditCardsViewController.swift in Sources */,
 				696B5E21258E988800CF1FB8 /* CartTableViewCell.swift in Sources */,
 				93EE3CAD2558822500B504DF /* Bazaar_iOS.xcdatamodeld in Sources */,
 				93EE3CA52558822500B504DF /* SceneDelegate.swift in Sources */,
