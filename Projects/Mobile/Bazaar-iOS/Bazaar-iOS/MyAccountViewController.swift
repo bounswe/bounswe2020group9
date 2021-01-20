@@ -17,6 +17,7 @@ class MyAccountViewController: UIViewController {
     @IBOutlet weak var myAddressView: UIView!
     @IBOutlet weak var currentPasswordTextField: UITextField!
     @IBOutlet weak var newPasswordTextField: UITextField!
+    @IBOutlet weak var myCreditCardsView: UIView!
     @IBOutlet weak var newPasswordAgainTextField: UITextField!
     var firstName:String?
     var lastName:String?
@@ -27,6 +28,7 @@ class MyAccountViewController: UIViewController {
         newPasswordTextField.textContentType = .oneTimeCode
         currentPasswordTextField.textContentType = .oneTimeCode
         newPasswordAgainTextField.textContentType = .oneTimeCode
+        myCreditCardsView.layer.borderColor = #colorLiteral(red: 1, green: 0.6235294118, blue: 0, alpha: 1)
         frameView.layer.borderColor = #colorLiteral(red: 1, green: 0.6235294118, blue: 0, alpha: 1)
         passwordUpdateView.layer.borderColor = #colorLiteral(red: 1, green: 0.6235294118, blue: 0, alpha: 1)
         myAddressView.layer.borderColor = #colorLiteral(red: 1, green: 0.6235294118, blue: 0, alpha: 1)
