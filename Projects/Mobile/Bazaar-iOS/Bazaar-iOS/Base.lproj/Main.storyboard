@@ -3675,6 +3675,9 @@
                                                                 <constraint firstAttribute="width" constant="29" id="LnH-Sw-6KN"/>
                                                             </constraints>
                                                             <state key="normal" title="Button" image="trash_icon"/>
+                                                            <connections>
+                                                                <action selector="cellDeleteButtonPressed:" destination="y4s-Xk-1Gp" eventType="touchUpInside" id="pao-2g-XcL"/>
+                                                            </connections>
                                                         </button>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="13" translatesAutoresizingMaskIntoConstraints="NO" id="zPc-Fd-48i" userLabel="CVV">
                                                             <rect key="frame" x="40" y="64" width="0.0" height="35"/>
@@ -3719,6 +3722,14 @@
                                                 <constraint firstItem="VWL-xG-cGq" firstAttribute="top" secondItem="wAX-IU-Xy3" secondAttribute="top" constant="6" id="y7G-f7-5Mc"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="cardNumberLabel" destination="C5z-Gk-b7h" id="XOy-dW-Jc1"/>
+                                            <outlet property="cellDeleteButton" destination="9yp-yr-itu" id="RtX-bJ-apf"/>
+                                            <outlet property="creditCardCellView" destination="VWL-xG-cGq" id="20C-G9-yOR"/>
+                                            <outlet property="cvvLabel" destination="zPc-Fd-48i" id="Ocu-T4-ftK"/>
+                                            <outlet property="deadlineLabel" destination="A2l-cl-pGb" id="4Cd-su-5Ls"/>
+                                            <outlet property="nameLabel" destination="o12-EJ-6gs" id="4ra-Ht-Xy2"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <userDefinedRuntimeAttributes>
