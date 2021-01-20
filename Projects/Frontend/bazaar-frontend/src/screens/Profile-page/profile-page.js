@@ -24,13 +24,14 @@ export default class ProfilePage extends Component {
           fullAddress: '',
           addressName: '',
           postalCode: '',
-          utype: '',
+          user_type: 0,
           token: '',
           isCustomer: true,
           redirect: null,
           hasError: false,
-          isHiddenSuccessPw: true,
+          isHiddenStates: [true, true, true, true],
           isHiddenSuccess: true,
+          isHiddenSuccessPw: true,
           isHiddenFail: true,
           isHiddenUnknown: true,
           errors: {}
@@ -43,6 +44,14 @@ export default class ProfilePage extends Component {
         event.preventDefault();
         this.setState({ [event.target.name]: event.target.value });
         
+      }
+
+      setHiddenStates(showNumber) {
+        let tempStates = this.state.isHiddenStates;
+        for (let i=0;i<tempStates.length;i++) {
+          tempStates[i] = !(i == showNumber);
+        }
+        this.setState({isHiddenStates: tempStates});
       }
 
       handlePasswordValidation(){
@@ -83,7 +92,7 @@ export default class ProfilePage extends Component {
 
         let myCookie = read_cookie('user');
         body.append("user_id", myCookie.user_id)
-        this.setState({utype: myCookie.user_type})
+        this.setState({user_type: myCookie.user_type})
         const header = {headers: {Authorization: "Token "+myCookie.token}};
         
         if (this.handlePasswordValidation()) {
@@ -93,15 +102,15 @@ export default class ProfilePage extends Component {
               console.log(res);
               console.log(res.data);
               //this.setState({ redirect: "/signin" });
-              this.setState({isHiddenSuccessPw: false})
+              this.setHiddenStates(1);
             }).catch((error) => {
               if (error.response) {
                 // Request made and server responded
-                this.setState({isHiddenFail: false})
+                this.setHiddenStates(2);
     
               } else {
                 // Something happened in setting up the request that triggered an Error
-                this.setState({isHiddenUnknown: false})
+                this.setHiddenStates(3);
 
               }
     
@@ -154,8 +163,7 @@ export default class ProfilePage extends Component {
       handleSubmit = event => {  
         event.preventDefault();
         const body = new FormData();
-        body.append("first_name", this.state.fname);
-        body.append("last_name", this.state.lname);
+        console.log("user_type: "+this.state.user_type)
 
         let myCookie = read_cookie('user');
         const header = {
@@ -163,7 +171,7 @@ export default class ProfilePage extends Component {
             Authorization: "Token "+myCookie.token
           }
         };
-        if (this.state.utype === 2 && this.handleVendorValidation()){
+        if (this.state.user_type === 2 && this.handleVendorValidation()){
           body.append("address", this.state.fullAddress);
           body.append("address_name", this.state.addressName);
           body.append("company", this.state.company);
@@ -171,40 +179,49 @@ export default class ProfilePage extends Component {
 
           axios.put(serverUrl+'api/user/profile/', body, header)
           .then(res => {
-    
-            this.setState({isHiddenSuccess: false})
+            this.setHiddenStates(0);
+
           }).catch((error) => {
             if (error.response) {
               // Request made and server responded
+              this.setHiddenStates(2);
               console.log(error.response)
             } else if (error.request) {
+              this.setHiddenStates(3);
               // The request was made but no response was received
               console.log(error.request);
             } else {
               // Something happened in setting up the request that triggered an Error
               console.log('Error', error.message);
             }
-            this.setState({isHiddenUnknown: false})
+            this.setHiddenStates(3);
+
   
   
         })
-        } else if (this.state.utype === 1){
+        } else if (this.state.user_type === 1){
+          body.append("first_name", this.state.fname);
+          body.append("last_name", this.state.lname);
+          console.log("here")
           axios.put(serverUrl+'api/user/profile/', body, header)
           .then(res => {
-    
-            this.setState({isHiddenSuccess: false})
+            this.setHiddenStates(0);
           }).catch((error) => {
             if (error.response) {
               // Request made and server responded
+              this.setHiddenStates(2);
               console.log(error.response)
             } else if (error.request) {
               // The request was made but no response was received
+              this.setHiddenStates(3);
               console.log(error.request);
             } else {
               // Something happened in setting up the request that triggered an Error
+              this.setHiddenStates(3);
               console.log('Error', error.message);
             }
-            this.setState({isHiddenUnknown: false})
+            this.setHiddenStates(3);
+
   
   
         })
@@ -218,19 +235,22 @@ export default class ProfilePage extends Component {
         let myCookie = read_cookie('user')
         axios.get(serverUrl+`api/user/${myCookie.user_id}/`)
           .then(res => {
-              console.log(res.data)
+              console.log("res data:  "+res.data.user_type)
               this.setState({fname : res.data.first_name})
               this.setState({lname : res.data.last_name})
               
               if (res.data.user_type === 1){
-                this.setState({user_type: "Customer"});
+
+                this.setState({user_type: 1});
               } else {
-                this.setState({user_type: "Vendor"});
+                this.setState({user_type: 2});
                 this.setState({company : res.data.company})
                 this.setState({isCustomer : false})
 
               }
 
+          }).catch(err => {
+            console.log("error:  "+err)
           })
         
 
@@ -242,16 +262,16 @@ export default class ProfilePage extends Component {
         <div className='background'>
           <CategoryBar></CategoryBar>
           <div className="profile-container">
-            <Alert variant="success" hidden={this.state.isHiddenSuccess}>
+            <Alert variant="success" hidden={this.state.isHiddenStates[0]}>
               Profile details updated.
             </Alert>
-            <Alert variant="success" hidden={this.state.isHiddenSuccessPw}>
+            <Alert variant="success" hidden={this.state.isHiddenStates[1]}>
               Password updated.
             </Alert>
-            <Alert variant="danger" hidden={this.state.isHiddenFail}>
+            <Alert variant="danger" hidden={this.state.isHiddenStates[2]}>
               Wrong password.
             </Alert>
-            <Alert variant="danger" hidden={this.state.isHiddenUnknown}>
+            <Alert variant="danger" hidden={this.state.isHiddenStates[3]}>
               Something went wrong.
             </Alert>
               <div className="justify-content-center" id="header3">

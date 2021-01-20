@@ -19,6 +19,7 @@ import ProductPage from "./screens/ProductPage/ProductPage"
 import ViewCategory from "./screens/ViewCategory/view-category"
 import Cart from "./screens/Cart/Cart"
 import SearchResults from "./screens/SearchResults/search-results"
+import Checkout from "./screens/Cart/Checkout/checkout"
 
 //components
 import Header from "./components/Header/Header"
@@ -45,6 +46,10 @@ function App() {
         <Route path="/signIn">
           <Header />
           <SignIn />
+        </Route>
+        <Route path="/checkout">
+          <Header />
+          <Checkout />
         </Route>
         <Route 
           path="/resetpw=:id"  
