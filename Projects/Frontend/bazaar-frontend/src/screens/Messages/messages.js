@@ -3,13 +3,8 @@ import CategoryBar from "../../components/category-bar/category-bar";
 import {Alert, Button} from "react-bootstrap";
 import axios from "axios";
 import {serverUrl} from "../../utils/get-url";
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
-import TabContainer from "react-bootstrap/TabContainer";
-import Nav from "react-bootstrap/Nav";
-import NavItem from "react-bootstrap/NavItem";
-import NavLink from "react-bootstrap/NavLink";
 import {read_cookie} from "sfcookies";
+import "./messages.scss";
 
 
 
@@ -27,120 +22,68 @@ export default class Messages extends Component {
       isHiddenMessageSent: true,
       isHiddenUnknown: true,
       newMessageMenu: true,
-      userHistory: [
-        {
-          name: "kenan",
-          messages: [
-            {
-              body: "Hello world kenan!",
-              user1:true
-            },
-            {
-              body: "Hello world2 kenan!",
-              user1:false
-            },
-            {
-              body: "Hello world3 kenan!",
-              user1:true
-            }
-          ]
-        },
-        {
-          name: "sinan",
-          messages: [
-            {
-              body: "Hello world sinan!",
-              user1:true
-            },
-            {
-              body: "Hello world2 sinan!",
-              user1:false
-            },
-            {
-              body: "Hello world3 sinan!",
-              user1:true
-            }
-          ]
-        },
-        {
-          name: "bilal",
-          messages: [
-            {
-              body: "Hello world bilal!",
-              user1:true
-            },
-            {
-              body: "Hello world2 bilal!",
-              user1:false
-            },
-            {
-              body: "Hello world3 bilal!",
-              user1:true
-            }
-          ]
-        },
-        {
-          name: "bora",
-          messages: [
-            {
-              body: "Hello world bora!",
-              user1:true
-            },
-            {
-              body: "Hello world2 bora!",
-              user1:false
-            },
-            {
-              body: "Hello world3 bora!",
-              user1:true
-            }
-          ]
-        },
-      ],
+      conversation_history: [],
+      messages: [],
       errors: {}
-      //   user_id: Cookies.get("user_id")
     }
   }
 
   componentDidMount() {
     let myCookie = read_cookie("user");
-
     const headers = {
       Authorization: `Token ${myCookie.token}`,
     };
-
-    axios.get(serverUrl + `api/message/conversations/`,{
-      headers:headers
-    }).then((res) => {
-      res.data.conversations.forEach((conversation)=>{
-        console.log(conversation);
-        axios.get(serverUrl + `api/message/${conversation.id}/`,{
-          headers:headers
-        }).then((res)=>{
-          console.log(res);
+    this.setState({conversation_history: []})
+    axios.get(serverUrl + `api/message/conversations/`, {
+      headers: headers
+    })
+      .then((response) => {
+        this.setState({conversation_history:response.data.conversations});
+        this.state.conversation_history.forEach((conversation)=>{
+          conversation.id -= 5; // temporary fix until deploy
+          axios.get(serverUrl + `api/message/${conversation.id}/`, {
+            headers: headers
+          }).then((response)=>{
+            //console.log(("message"+conversation.id),response.data);
+            this.setState({messages:(this.state.messages.concat([[conversation.email,response.data]]))})
+          });
         });
+        //console.log("this.state.conversations",this.state.conversations);
       });
-    });
   }
 
-  render() {
 
-    let Conversation = (messages) => {
-      return messages.map((message)=>{
+  render() {
+    const {conversation_history, messages} = this.state;
+
+    //console.warn("messages",messages);
+    //console.log("this.state.conversation_history",conversation_history);
+
+    let Conversation = (conversation) => {
+      if (conversation[0] === undefined) return;
+      if (conversation.size > 1) console.warn("CONVERSATION SIZE > 1", conversation);
+      conversation = conversation[0][1];
+      console.log("CONVERSATION",conversation);
+      return conversation.map((message)=>{
         return (
-          <div className={"row justify-content-"+ (message.user1 ? "start" : "end")}>
-            <div className="col-4">
+          <div className={"row justify-content-"+ (message.is_user1 ? "end" : "start")}>
+            <div className={"col-8 chatText user" + (message.is_user1 ? 1 : 2)}>
               {message.body}
             </div>
           </div>
         )});
     }
 
-    let Conversations = this.state.userHistory.map((user) => {
+    let Conversations = this.state.conversation_history.map((conversation) => {
       return (
-        <div className="tab-pane fade" id={"v-pills-"+user.name} role="tabpanel" aria-labelledby={"v-pills-"+user.name+"-tab"}>
-          <h4 className="text-center">{user.name}</h4>
-          <div className="container">{Conversation(user.messages)}</div>
+        <div className="tab-pane fade" id={"v-pills-"+conversation.user_id} role="tabpanel" aria-labelledby={"v-pills-"+conversation.user_id+"-tab"}>
+          <h4 className="text-center">{conversation.email}</h4>
+          <div className="container chatBox">
+            {
+              //This is magnificent coding in act, selects the related conversation of the user
+              Conversation(messages.filter(message => message[0] === conversation.email))
+            }
+          </div>
           <form>
             <div className="form-group">
               <textarea className="form-control" id="form_body" rows="2" placeholder="Enter Message"/>
@@ -150,12 +93,15 @@ export default class Messages extends Component {
         </div>
       )});
 
-    let LeftCol = this.state.userHistory.map((user) => {
+
+    let LeftCol = conversation_history.map((user) => {
       return (
-        <a className="nav-link" id={"v-pills-"+user.name+"-tab"} data-toggle="pill" href={"#v-pills-"+user.name} role="tab"
-           aria-controls={"v-pills-"+user.name} aria-selected="false">{user.name}</a>
+        <a className="nav-link" id={"v-pills-"+user.user_id+"-tab"} data-toggle="pill" href={"#v-pills-"+user.user_id} role="tab"
+           aria-controls={"v-pills-"+user.user_id} aria-selected="false">{user.email}</a>
       );
     });
+
+
 
     return (
       <div className='background'>
