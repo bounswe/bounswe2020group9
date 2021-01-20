@@ -138,3 +138,11 @@ struct VendorData: Codable {
     let bazaar_point:Double
     let company:String
 }
+
+struct CreditCardData:Codable {
+    let cardId:Int
+    let name:String
+    let cardNumber:String
+    let deadline:String
+    let cvv:String
+}

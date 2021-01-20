@@ -3724,7 +3724,6 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="cardNumberLabel" destination="C5z-Gk-b7h" id="XOy-dW-Jc1"/>
-                                            <outlet property="cellDeleteButton" destination="9yp-yr-itu" id="RtX-bJ-apf"/>
                                             <outlet property="creditCardCellView" destination="VWL-xG-cGq" id="20C-G9-yOR"/>
                                             <outlet property="cvvLabel" destination="zPc-Fd-48i" id="Ocu-T4-ftK"/>
                                             <outlet property="deadlineLabel" destination="A2l-cl-pGb" id="4Cd-su-5Ls"/>
@@ -4265,8 +4264,8 @@
         <image name="settings_icon" width="50" height="50"/>
         <image name="settings_icon_blue" width="50" height="50"/>
         <image name="trash_icon" width="100" height="100"/>
-        <image name="xmark.circle" catalog="system" width="128" height="121"/>
         <image name="xmark.circle" width="13" height="13"/>
+        <image name="xmark.circle" catalog="system" width="128" height="121"/>
         <systemColor name="darkTextColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
