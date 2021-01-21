@@ -37,6 +37,7 @@
 		938A1552256AD19100572844 /* CategoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 938A1550256AD19100572844 /* CategoryCollectionViewCell.swift */; };
 		938A1553256AD19100572844 /* CategoryCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 938A1551256AD19100572844 /* CategoryCollectionViewCell.xib */; };
 		939AB4F825694B76007815C8 /* StringHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 939AB4F725694B76007815C8 /* StringHelper.swift */; };
+		93BD6B7A25B9FD11006CA357 /* AddCreditCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93BD6B7925B9FD11006CA357 /* AddCreditCardViewController.swift */; };
 		93C2D069257FE419007C5750 /* credentials.plist in Resources */ = {isa = PBXBuildFile; fileRef = 93C2D068257FE419007C5750 /* credentials.plist */; };
 		93D91AC625867A3B007B238C /* MyAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D91AC525867A3B007B238C /* MyAccountViewController.swift */; };
 		93E99DD92577E8CD00BCFDAD /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E99DD72577E8CC00BCFDAD /* LoginViewController.swift */; };
@@ -121,6 +122,7 @@
 		938A1550256AD19100572844 /* CategoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		938A1551256AD19100572844 /* CategoryCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CategoryCollectionViewCell.xib; sourceTree = "<group>"; };
 		939AB4F725694B76007815C8 /* StringHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringHelper.swift; sourceTree = "<group>"; };
+		93BD6B7925B9FD11006CA357 /* AddCreditCardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCreditCardViewController.swift; sourceTree = "<group>"; };
 		93C2D068257FE419007C5750 /* credentials.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = credentials.plist; sourceTree = "<group>"; };
 		93D91AC525867A3B007B238C /* MyAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MyAccountViewController.swift; path = "Bazaar-iOS/MyAccountViewController.swift"; sourceTree = SOURCE_ROOT; };
 		93E99DD72577E8CC00BCFDAD /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -417,6 +419,7 @@
 				93ED20C925B5F10C00F5A320 /* VendorMyAccountViewController.swift */,
 				69B21FBC25B7117600BC4E0D /* VendorProfileForUserViewController.swift */,
 				9315419525B8B40E001549AC /* MyCreditCardsViewController.swift */,
+				93BD6B7925B9FD11006CA357 /* AddCreditCardViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -771,6 +774,7 @@
 				93E99DDF2577E91B00BCFDAD /* RadioButton.swift in Sources */,
 				930C1FB4256C12A00086E1DC /* APIParse.swift in Sources */,
 				9315419625B8B40E001549AC /* MyCreditCardsViewController.swift in Sources */,
+				93BD6B7A25B9FD11006CA357 /* AddCreditCardViewController.swift in Sources */,
 				696B5E21258E988800CF1FB8 /* CartTableViewCell.swift in Sources */,
 				93EE3CAD2558822500B504DF /* Bazaar_iOS.xcdatamodeld in Sources */,
 				93EE3CA52558822500B504DF /* SceneDelegate.swift in Sources */,
