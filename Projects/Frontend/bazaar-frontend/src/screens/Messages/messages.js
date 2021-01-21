@@ -12,16 +12,11 @@ export default class Messages extends Component {
   constructor() {
     super();
     this.state = {
-      username: '',
-      fullAddress: '',
-      utype: '',
-      token: '',
-      isCustomer: true,
-      redirect: null,
-      hasError: false,
       isHiddenMessageSent: true,
       isHiddenUnknown: true,
-      newMessageMenu: true,
+      currentPill: "",
+      message_username: "",
+      message_body: "",
       conversation_history: [],
       messages: [],
       errors: {}
@@ -52,6 +47,52 @@ export default class Messages extends Component {
       });
   }
 
+  handleSendMessage = (event) => {
+    event.preventDefault();
+
+    const body = new FormData();
+    body.append("receiver_username", this.state.currentPill);
+    body.append("body", this.state.message_body);
+
+    let myCookie = read_cookie('user');
+    const header = {headers: {Authorization: "Token "+myCookie.token}};
+
+    axios.post( serverUrl + "api/message/", body, header)
+      .then(()=>{
+        this.setState({isHiddenMessageSent:false});
+      }).catch(error => {
+        this.setState({isHiddenUnknown:false});
+      });
+
+    console.log("Message Sent", this.state.currentPill, this.state.message_body);
+    window.location.reload();
+  };
+
+  handleNewConversation = (event)=>{
+    event.preventDefault();
+
+    const body = new FormData();
+    body.append("receiver_username", this.state.message_username);
+    body.append("body", this.state.message_body);
+
+    let myCookie = read_cookie('user');
+    const header = {headers: {Authorization: "Token "+myCookie.token}};
+
+    axios.post( serverUrl + "api/message/", body, header)
+      .then(()=>{
+        this.setState({isHiddenMessageSent:false});
+      }).catch(error => {
+        this.setState({isHiddenUnknown:false});
+      });
+
+    console.log("New Conversation Created", this.state.message_username, this.state.message_body);
+    window.location.reload();
+  }
+
+  handleTextChange = (event)=>{
+    this.state[event.target.name] = event.target.value;
+    console.log(event.target.name, event.target.value);
+  };
 
   render() {
     const {conversation_history, messages} = this.state;
@@ -67,7 +108,7 @@ export default class Messages extends Component {
       return conversation.map((message)=>{
         return (
           <div className={"row justify-content-"+ (message.is_user1 ? "end" : "start")}>
-            <div className={"col-8 chatText user" + (message.is_user1 ? 1 : 2)}>
+            <div className={"col-8 chatText " + (message.is_user1 ? "user1" : "user2")}>
               {message.body}
             </div>
           </div>
@@ -84,9 +125,15 @@ export default class Messages extends Component {
               Conversation(messages.filter(message => message[0] === conversation.email))
             }
           </div>
-          <form>
+          <form onSubmit={this.handleSendMessage}>
             <div className="form-group">
-              <textarea className="form-control" id="form_body" rows="2" placeholder="Enter Message"/>
+              <input
+                type="text"
+                name="message_body"
+                className="form-control"
+                id="form_body" rows="2"
+                placeholder="Enter Message"
+                onChange={this.handleTextChange}/>
             </div>
             <button type="submit" className="btn btn-primary">Send</button>
           </form>
@@ -97,10 +144,9 @@ export default class Messages extends Component {
     let LeftCol = conversation_history.map((user) => {
       return (
         <a className="nav-link" id={"v-pills-"+user.user_id+"-tab"} data-toggle="pill" href={"#v-pills-"+user.user_id} role="tab"
-           aria-controls={"v-pills-"+user.user_id} aria-selected="false">{user.email}</a>
+           aria-controls={"v-pills-"+user.user_id} aria-selected="false" onClick={()=>{this.state.currentPill=user.email}}>{user.email}</a>
       );
     });
-
 
 
     return (
@@ -108,7 +154,7 @@ export default class Messages extends Component {
         <CategoryBar/>
         <div className="message-container">
           <Alert variant="success" hidden={this.state.isHiddenMessageSent}>
-            Profile details updated.
+            Message Sent.
           </Alert>
           <Alert variant="danger" hidden={this.state.isHiddenUnknown}>
             Something went wrong.
@@ -119,19 +165,31 @@ export default class Messages extends Component {
               <div className="nav flex-column nav-pills col-4 no-padding-left" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                 <h4>Conversation History</h4>
                 <a className="nav-link active" id="v-pills-new_conversation-tab" data-toggle="pill" href="#v-pills-new_conversation" role="tab"
-                   aria-controls="v-pills-new_conversation" aria-selected="true">New Conversation</a>
+                   aria-controls="v-pills-new_conversation" aria-selected="true" onClick={()=>{this.state.currentPill="";}}>New Conversation</a>
                 {LeftCol}
               </div>
               <div className="tab-content col-8 no-padding-left" id="v-pills-tabContent">
                 <div className="tab-pane fade show active" id="v-pills-new_conversation" role="tabpanel"
                      aria-labelledby="v-pills-new_conversation-tab">
                   <h4 className="text-center">New Conversation</h4>
-                  <form>
+                  <form onSubmit={this.handleNewConversation}>
                     <div className="form-group">
-                      <input type="email" className="form-control" id="form-username" placeholder="Enter Username"/>
+                      <input
+                        type="text"
+                        name="message_username"
+                        className="form-control"
+                        id="form-username"
+                        placeholder="Enter Username"
+                        onChange={this.handleTextChange}/>
                     </div>
                     <div className="form-group">
-                      <textarea className="form-control" id="form_body" rows="2" placeholder="Enter Message"/>
+                      <textarea
+                        name="message_body"
+                        className="form-control"
+                        id="form_body"
+                        rows="2"
+                        placeholder="Enter Message"
+                        onChange={this.handleTextChange}/>
                     </div>
                     <button type="submit" className="btn btn-primary">Send</button>
                   </form>
