@@ -468,8 +468,10 @@ class CommentsOfProductAPIView(APIView):
 
 
 class PaymentView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     def get(self,request):
-        user_id = request.data["owner"]
+        user_id = request.user.id
         cards = list(Payment.objects.filter(owner=user_id).values())
         return Response(cards, status=status.HTTP_200_OK)
     def post(self,request):

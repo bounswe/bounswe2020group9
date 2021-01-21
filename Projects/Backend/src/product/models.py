@@ -101,7 +101,8 @@ class Comment(models.Model):
 class Payment(models.Model):
     owner = models.ForeignKey(Customer, on_delete=models.CASCADE)
     # Below are cart info, TODO encrypt them
-    card_name = models.CharField(max_length=255,unique=True)
+    name_on_card = models.CharField(max_length=255)
+    card_name = models.CharField(max_length=255)
     card_id = models.CharField(max_length=16)
     date_month = models.CharField(max_length=2)
     date_year = models.CharField(max_length=2)
