@@ -243,7 +243,7 @@ class AllOrders {
     
     func fetchAllOrders() {
         dispatchGroup.enter()
-        APIManager().getAllProducts(completionHandler: { orders in
+        APIManager().getCustomerOrders(userId: 0,completionHandler: { orders in
             if orders != nil {
                 self.dataFetched = true
                 self.All_Orders = orders!
