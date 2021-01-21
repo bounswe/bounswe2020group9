@@ -32,6 +32,7 @@ enum ApiRouter: URLRequestBuilder {
     case search(filterType: String, sortType: String, searchWord: String)
     case googleSignIn(userName:String, token:String, firstName:String, lastName:String)
     case getAllVendors(str:String)
+    case addNewCreditCard(owner:Int, nameOnCard:String, cardNumber:String, month:String, year:String, cvv:String, cardName:String)
 
   // MARK: - Path
     internal var path: String {
@@ -79,8 +80,9 @@ enum ApiRouter: URLRequestBuilder {
             return "api/user/googleuser/"
         case .getAllVendors:
             return "api/user/vendor/"
+        case .addNewCreditCard:
+            return "api/product/payment/"
         }
-        
     }
 
     // MARK: - Parameters
@@ -143,6 +145,14 @@ enum ApiRouter: URLRequestBuilder {
             params["latitude"] = latitude
             params["longitude"] = lontitude
             params["company"] = companyName
+        case .addNewCreditCard(let owner, let nameOnCard, let cardNumber, let month, let year, let cvv, let cardName):
+            params["owner"] = owner
+            params["name_on_card"] = nameOnCard
+            params["card_id"] = cardNumber
+            params["date_month"] = month
+            params["date_year"] = year
+            params["cvv"] = cvv
+            params["card_name"] = cardName
         default:
             break
         }
@@ -158,7 +168,7 @@ enum ApiRouter: URLRequestBuilder {
             if isCustomerLoggedIn {
                 headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
             }
-        case .addList, .deleteList, .deleteProductFromList , .editList, .addToList, .getUsersComment:
+        case .addList, .deleteList, .deleteProductFromList , .editList, .addToList, .getUsersComment, .addNewCreditCard:
             headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
         case .getCart, .addToCart, .editAmountInCart, .deleteProductFromCart:
             headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
@@ -181,7 +191,7 @@ enum ApiRouter: URLRequestBuilder {
     // MARK: - Methods
     internal var method: HTTPMethod {
         switch self {
-        case .authenticate, .addList,.addToList, .signUpCustomer, .signUpVendor, .resetPasswordEmail, .addToCart,.updatePassword, .googleSignIn:
+        case .authenticate, .addList,.addToList, .signUpCustomer, .signUpVendor, .resetPasswordEmail, .addToCart,.updatePassword, .googleSignIn, .addNewCreditCard:
             return .post
         case .getCustomerLists, .getComments, .getUsersComment, .getCart, .getProfileInfo, .getAllVendors:
             return .get

@@ -55,7 +55,23 @@ class AddCreditCardViewController: UIViewController {
                                                         alertController.message = "Please enter the CVV as three numbers"
                                                         self.present(alertController, animated: true, completion: nil)
                                                     }else {
-                                                        
+                                                        if let owner = UserDefaults.standard.value(forKey: K.userIdKey) as? Int {
+                                                            var cardName = "Unnamed Card"
+                                                            if let givenCardName =  cardNameTextField.text,givenCardName.count != 0{
+                                                                cardName = givenCardName
+                                                            }
+                                                            
+                                                            APIManager().addNewCreditCard(owner: owner, nameOnCard: "\(firstName) \(lastName)", cardNumber: cardNumber, month: month, year: year, cvv: cvv, cardName: cardName) { (result) in
+                                                                switch result {
+                                                                case .success(_):
+                                                                    alertController.message = "Your new card has been successfully added!"
+                                                                    self.present(alertController, animated: true, completion: nil)
+                                                                case .failure(_):
+                                                                    alertController.message = "There was a problem adding the card!"
+                                                                    self.present(alertController, animated: true, completion: nil)
+                                                                }
+                                                            }
+                                                        }
                                                     }
                                                 }
                                             }
@@ -71,6 +87,6 @@ class AddCreditCardViewController: UIViewController {
     }
     
     @IBAction func backButtonPressed(_ sender: UIButton) {
-        
+        self.dismiss(animated: true, completion: nil)
     }
 }
