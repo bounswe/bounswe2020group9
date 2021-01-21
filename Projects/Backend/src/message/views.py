@@ -157,7 +157,11 @@ class GetConversation(APIView):
         except:
             return Response({"message": "Token is not valid."}, status=status.HTTP_401_UNAUTHORIZED)
 
-        conversation = Conversation.objects.get(id=id)
+        try:
+            conversation = Conversation.objects.get(id=id)
+        except:
+            return Response({"message": "Conversation is not valid."}, status=HTTP_404_NOT_FOUND)
+
         is_user1 = conversation.user1.id == user_id
         messages = Message.objects.filter(conversation_id=id).order_by('timestamp')
         messageList = []
