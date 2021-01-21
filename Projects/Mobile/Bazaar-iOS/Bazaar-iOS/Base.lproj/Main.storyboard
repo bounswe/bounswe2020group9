@@ -3625,7 +3625,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <segue destination="Oc6-ES-1ZM" kind="presentation" id="EId-JM-NF1"/>
+                                            <segue destination="Oc6-ES-1ZM" kind="presentation" modalPresentationStyle="fullScreen" id="EId-JM-NF1"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -3656,6 +3656,12 @@
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o12-EJ-6gs" userLabel="Name">
                                                             <rect key="frame" x="20" y="12" width="0.0" height="35"/>
+                                                            <fontDescription key="fontDescription" name="Poppins-Medium" family="Poppins" pointSize="13"/>
+                                                            <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yDS-4B-ZnE" userLabel="Card Name">
+                                                            <rect key="frame" x="324" y="12" width="0.0" height="35"/>
                                                             <fontDescription key="fontDescription" name="Poppins-Medium" family="Poppins" pointSize="13"/>
                                                             <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
@@ -3697,6 +3703,8 @@
                                                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="A2l-cl-pGb" secondAttribute="trailing" constant="20" symbolic="YES" id="687-Ik-Qqs"/>
                                                         <constraint firstAttribute="bottom" secondItem="zPc-Fd-48i" secondAttribute="bottom" constant="12" id="Bx3-gI-j4u"/>
                                                         <constraint firstAttribute="width" constant="295" id="CQA-nm-v4S"/>
+                                                        <constraint firstAttribute="trailing" secondItem="yDS-4B-ZnE" secondAttribute="trailing" constant="10" id="CVD-QZ-Mi0"/>
+                                                        <constraint firstItem="yDS-4B-ZnE" firstAttribute="top" secondItem="VWL-xG-cGq" secondAttribute="top" constant="12" id="D3i-Si-KiP"/>
                                                         <constraint firstAttribute="trailing" secondItem="9yp-yr-itu" secondAttribute="trailing" constant="20" id="Dsb-Bx-qRm"/>
                                                         <constraint firstAttribute="bottom" secondItem="C5z-Gk-b7h" secondAttribute="bottom" constant="38" id="Fej-n9-n4W"/>
                                                         <constraint firstAttribute="bottom" secondItem="A2l-cl-pGb" secondAttribute="bottom" constant="12" id="HdD-qR-mc3"/>
@@ -3704,6 +3712,7 @@
                                                         <constraint firstAttribute="bottom" secondItem="o12-EJ-6gs" secondAttribute="bottom" constant="64" id="Nxv-d5-YPC"/>
                                                         <constraint firstAttribute="bottom" secondItem="9yp-yr-itu" secondAttribute="bottom" constant="12" id="Omk-1b-bUb"/>
                                                         <constraint firstItem="zPc-Fd-48i" firstAttribute="top" secondItem="VWL-xG-cGq" secondAttribute="top" constant="64" id="Owb-3V-4Sk"/>
+                                                        <constraint firstAttribute="bottom" secondItem="yDS-4B-ZnE" secondAttribute="bottom" constant="64" id="TN2-zl-pfc"/>
                                                         <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="C5z-Gk-b7h" secondAttribute="trailing" constant="20" symbolic="YES" id="ahS-l9-ids"/>
                                                         <constraint firstItem="C5z-Gk-b7h" firstAttribute="leading" secondItem="VWL-xG-cGq" secondAttribute="leading" constant="20" id="f3c-sf-22m"/>
                                                         <constraint firstItem="zPc-Fd-48i" firstAttribute="leading" secondItem="A2l-cl-pGb" secondAttribute="trailing" constant="20" id="lCr-wy-Q9F"/>
@@ -3727,6 +3736,7 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="cardNameLabel" destination="yDS-4B-ZnE" id="btw-ql-kIZ"/>
                                             <outlet property="cardNumberLabel" destination="C5z-Gk-b7h" id="XOy-dW-Jc1"/>
                                             <outlet property="creditCardCellView" destination="VWL-xG-cGq" id="20C-G9-yOR"/>
                                             <outlet property="cvvLabel" destination="zPc-Fd-48i" id="Ocu-T4-ftK"/>
@@ -3770,11 +3780,11 @@
             <objects>
                 <viewController id="Oc6-ES-1ZM" customClass="AddCreditCardViewController" customModule="Bazaar_iOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="VwV-x3-BVb">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eDq-MN-NK6" userLabel="Add New Card View">
-                                <rect key="frame" x="20" y="80" width="374" height="344"/>
+                                <rect key="frame" x="20" y="120" width="374" height="344"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add New Card" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cdn-1e-xTF">
                                         <rect key="frame" x="132" y="9.9999999999999982" width="110" height="20.333333333333329"/>
@@ -3991,10 +4001,10 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YkG-dv-TUq" userLabel="Header">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="60"/>
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="100"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K63-T1-DV1">
-                                        <rect key="frame" x="20" y="5" width="50" height="50"/>
+                                        <rect key="frame" x="20" y="45" width="50" height="50"/>
                                         <state key="normal" image="left_arrow_icon"/>
                                         <connections>
                                             <action selector="backButtonPressed:" destination="L5V-jH-uVD" eventType="touchUpInside" id="HY7-07-fJg"/>
@@ -4006,7 +4016,7 @@
                                 <color key="backgroundColor" systemColor="systemGray6Color"/>
                                 <constraints>
                                     <constraint firstItem="K63-T1-DV1" firstAttribute="leading" secondItem="YkG-dv-TUq" secondAttribute="leading" constant="20" id="55r-oQ-Pmo"/>
-                                    <constraint firstAttribute="height" constant="60" id="CxA-Il-qyr"/>
+                                    <constraint firstAttribute="height" constant="100" id="CxA-Il-qyr"/>
                                     <constraint firstAttribute="bottom" secondItem="K63-T1-DV1" secondAttribute="bottom" constant="5" id="S2P-qD-KYA"/>
                                 </constraints>
                             </view>

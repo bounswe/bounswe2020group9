@@ -549,4 +549,25 @@ struct APIManager {
             completionHandler(.failure(err))
         }
     }
+    
+    func getCreditCards(completionHandler: @escaping (Result<[CreditCardData] ,Error>) -> Void) {
+        do {
+            let request = try ApiRouter.getCreditCards.asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if (response.response?.statusCode != nil){
+                    guard let safeData = response.data else  {
+                        completionHandler(.failure(MyError.runtimeError("Error")))
+                        return
+                    }
+                    if let decodedData:[CreditCardData] = APIParse().parseJSON(safeData: safeData){
+                        completionHandler(.success(decodedData))
+                    }else {
+                        completionHandler(.failure(MyError.runtimeError("Failed to parse json ")))
+                    }
+                }
+            }
+        }catch let err {
+            completionHandler(.failure(err))
+        }
+    }
 }

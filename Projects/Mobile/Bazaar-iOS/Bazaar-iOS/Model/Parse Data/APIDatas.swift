@@ -140,9 +140,11 @@ struct VendorData: Codable {
 }
 
 struct CreditCardData:Codable {
-    let cardId:Int
-    let name:String
-    let cardNumber:String
-    let deadline:String
+    let id:Int
+    let name_on_card:String
+    let card_id:String
+    let date_month:String
+    let date_year:String
     let cvv:String
+    let card_name:String
 }

@@ -19,13 +19,15 @@ class CreditCardCell: UITableViewCell {
     @IBOutlet weak var cardNumberLabel: UILabel!
     @IBOutlet weak var deadlineLabel: UILabel!
     @IBOutlet weak var cvvLabel: UILabel!
+    @IBOutlet weak var cardNameLabel: UILabel!
     
-    func setCreditCard(cardId:Int, name:String , cardNumber:String, deadline:String, cvv:String) -> CreditCardCell {
+    func setCreditCard(cardId:Int, name:String , cardNumber:String, dateMonth:String, dateYear:String, cvv:String,cardName:String) -> CreditCardCell {
         self.cardId = cardId
         self.nameLabel.text = name
-        self.cardNumberLabel.text = cardNumber
-        self.deadlineLabel.text = deadline
-        self.cvvLabel.text = cvv
+        self.cardNumberLabel.text = "\(cardNumber.prefix(4)) **** **** **\(cardNumber.suffix(2))"
+        self.deadlineLabel.text = "\(dateMonth)/\(dateYear)"
+        self.cvvLabel.text = "\(cvv.prefix(1))**"
+        self.cardNameLabel.text = cardName
         self.creditCardCellView.layer.shadowColor = UIColor.black.cgColor
         self.creditCardCellView.layer.shadowOpacity = 0.2
         self.creditCardCellView.layer.shadowOffset = CGSize(width: 3, height: 3)

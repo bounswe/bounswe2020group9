@@ -33,6 +33,7 @@ enum ApiRouter: URLRequestBuilder {
     case googleSignIn(userName:String, token:String, firstName:String, lastName:String)
     case getAllVendors(str:String)
     case addNewCreditCard(owner:Int, nameOnCard:String, cardNumber:String, month:String, year:String, cvv:String, cardName:String)
+    case getCreditCards
 
   // MARK: - Path
     internal var path: String {
@@ -80,7 +81,7 @@ enum ApiRouter: URLRequestBuilder {
             return "api/user/googleuser/"
         case .getAllVendors:
             return "api/user/vendor/"
-        case .addNewCreditCard:
+        case .addNewCreditCard,.getCreditCards:
             return "api/product/payment/"
         }
     }
@@ -168,7 +169,7 @@ enum ApiRouter: URLRequestBuilder {
             if isCustomerLoggedIn {
                 headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
             }
-        case .addList, .deleteList, .deleteProductFromList , .editList, .addToList, .getUsersComment, .addNewCreditCard:
+        case .addList, .deleteList, .deleteProductFromList , .editList, .addToList, .getUsersComment, .addNewCreditCard, .getCreditCards:
             headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
         case .getCart, .addToCart, .editAmountInCart, .deleteProductFromCart:
             headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
@@ -193,7 +194,7 @@ enum ApiRouter: URLRequestBuilder {
         switch self {
         case .authenticate, .addList,.addToList, .signUpCustomer, .signUpVendor, .resetPasswordEmail, .addToCart,.updatePassword, .googleSignIn, .addNewCreditCard:
             return .post
-        case .getCustomerLists, .getComments, .getUsersComment, .getCart, .getProfileInfo, .getAllVendors:
+        case .getCustomerLists, .getComments, .getUsersComment, .getCart, .getProfileInfo, .getAllVendors, .getCreditCards:
             return .get
         case .deleteList, .deleteProductFromList,.deleteProductFromCart:
             return .delete
