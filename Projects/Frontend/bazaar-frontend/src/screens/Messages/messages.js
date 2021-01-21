@@ -35,7 +35,6 @@ export default class Messages extends Component {
       .then((response) => {
         this.setState({conversation_history:response.data.conversations});
         this.state.conversation_history.forEach((conversation)=>{
-          conversation.id -= 5; // temporary fix until deploy
           axios.get(serverUrl + `api/message/${conversation.id}/`, {
             headers: headers
           }).then((response)=>{
@@ -131,7 +130,7 @@ export default class Messages extends Component {
                 type="text"
                 name="message_body"
                 className="form-control"
-                id="form_body" rows="2"
+                id="form_body"
                 placeholder="Enter Message"
                 onChange={this.handleTextChange}/>
             </div>
