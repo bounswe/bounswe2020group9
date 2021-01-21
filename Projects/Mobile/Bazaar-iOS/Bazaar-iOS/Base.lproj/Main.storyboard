@@ -3765,10 +3765,10 @@
             </objects>
             <point key="canvasLocation" x="4156.521739130435" y="2361.8303571428569"/>
         </scene>
-        <!--View Controller-->
+        <!--Add Credit Card View Controller-->
         <scene sceneID="Psj-9N-Q1b">
             <objects>
-                <viewController id="Oc6-ES-1ZM" sceneMemberID="viewController">
+                <viewController id="Oc6-ES-1ZM" customClass="AddCreditCardViewController" customModule="Bazaar_iOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="VwV-x3-BVb">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -3802,6 +3802,9 @@
                                                 <size key="value" width="2" height="2"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="saveCardButtonPressed:" destination="Oc6-ES-1ZM" eventType="touchUpInside" id="UVw-kj-6Ng"/>
+                                        </connections>
                                     </button>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" alignment="top" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="IaV-9V-ppN">
                                         <rect key="frame" x="10" y="40" width="354" height="254"/>
@@ -3996,6 +3999,7 @@
                                         <connections>
                                             <action selector="backButtonPressed:" destination="L5V-jH-uVD" eventType="touchUpInside" id="HY7-07-fJg"/>
                                             <action selector="backButtonPressed:" destination="uCT-Ki-9HI" eventType="touchUpInside" id="b2U-E9-n4B"/>
+                                            <action selector="backButtonPressed:" destination="Oc6-ES-1ZM" eventType="touchUpInside" id="hJp-Hd-5IL"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -4018,6 +4022,15 @@
                             <constraint firstAttribute="trailing" secondItem="eDq-MN-NK6" secondAttribute="trailing" constant="20" id="w9S-8S-VNM"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="cardNameTextField" destination="KB2-yy-AGq" id="Yyu-be-Ind"/>
+                        <outlet property="cardNumberTextField" destination="Aox-FO-wdO" id="NIQ-C7-msi"/>
+                        <outlet property="cvvTextField" destination="Yqr-Xf-oul" id="gol-Hh-wRS"/>
+                        <outlet property="firstNameTextField" destination="DnE-b0-Ys9" id="zYz-wn-cvL"/>
+                        <outlet property="lastNameTextField" destination="O5r-aE-Wso" id="Pxu-bx-r6m"/>
+                        <outlet property="monthTextField" destination="hKr-CM-kaD" id="qTW-eV-UGm"/>
+                        <outlet property="yearTextField" destination="AdO-ka-QHW" id="EAC-6b-2By"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="r3W-9D-bts" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
