@@ -35,14 +35,13 @@ class VendorProfileForUserViewController: UIViewController {
         addressLabel.text = vendor.company  + vendor.company
         vendorNameLabel.text = vendor.company
         vendorNameLabel.adjustsFontSizeToFitWidth = true
-        let rating = vendor.bazaar_point
+        products = AllProducts.shared.allProducts.filter{$0.vendor == vendor.id}
+        let rating = calcAverageRating()
         if (rating == 0.0) {
             ratingButton.setTitle("No reviews yet.", for: .normal)
         } else {
             ratingButton.setTitle(String(rating), for: .normal)
         }
-        products = AllProducts.shared.allProducts.filter{$0.vendor == vendor.id}
-        print("count", products.count)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -58,6 +57,10 @@ class VendorProfileForUserViewController: UIViewController {
     }
 
     @IBAction func messageButtonPressed(_ sender: Any) {
+    }
+    
+    func calcAverageRating() -> Double {
+        return (Double((products.map{$0.rating}).reduce(0, +))/Double(products.count)).rounded(toPlaces: 2)
     }
     
     // MARK: - Navigation

@@ -33,7 +33,7 @@ class ProductDetailViewController: UIViewController {
     var selectedList: Int?
     
     override func viewWillAppear(_ animated: Bool) {
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
         amountPickerTextField.tintColor = UIColor.clear
         amountPickerTextField.layer.borderWidth = 1
         amountPickerTextField.layer.cornerRadius = 5
@@ -72,7 +72,7 @@ class ProductDetailViewController: UIViewController {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        self.navigationController?.setNavigationBarHidden(true, animated: true)
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
 
     }
     
@@ -210,6 +210,10 @@ class ProductDetailViewController: UIViewController {
             }
         }
         
+    }
+    
+    @IBAction func backButtonPressed(_ sender: Any) {
+        self.navigationController?.popViewController(animated: true)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
