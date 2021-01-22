@@ -87,6 +87,7 @@ class Header extends Component {
     });
   }
 
+
   componentDidMount() {
     let myCookie = read_cookie("user");
 
@@ -133,13 +134,17 @@ class Header extends Component {
       axios
         .get(serverUrl + "api/message/notifications/", {headers: headers})
         .then((res)=>{
-        console.log("Notifications",res.data);
+          res.data.notifications.forEach((notification)=>{
+            const date = new Date(notification.timestamp);
+            notification.customTime = `${date.getDate()}.${date.getMonth()+1}.${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
+          });
+        //console.log("Notifications",res.data);
         this.setState({
           new_notifications : res.data.new_notifications,
           notifications : res.data.notifications
         });
       }).catch((err)=>{
-        console.log("notifications not loaded, please refresh", myCookie.token);
+        //console.log("notifications not loaded, please refresh", myCookie.token);
       })
 
       axios.get(serverUrl + "api/message/conversations/", {headers:headers})
@@ -180,7 +185,7 @@ class Header extends Component {
               this.setState({notifications:this.state.notifications});
             }}>
               <div className="row">
-                <div className="col-3 no-padding-left">{notification.timestamp}</div>
+                <div className="col-3 no-padding-left">{notification.customTime}</div>
                 <div className="col-3 no-padding-left">{notification.type}</div>
                 <div className="col-6 no-padding-left">{notification.body}</div>
               </div>
