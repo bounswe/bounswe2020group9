@@ -69,19 +69,25 @@ class Label(models.Model):
 
 
 class Order(models.Model):
+    
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True, blank=True)
+    #sub_order = models.ForeignKey(SubOrder, on_delete=models.CASCADE)
+    
+class Delivery(models.Model):
     STATUS_TYPES = (
         (1, "Preparing"),
         (2, "On the Way"),
         (3, "Delivered"),
+        (4, "Cancelled"),
     )
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    sub_order = models.ForeignKey(SubOrder, on_delete=models.CASCADE)
-    timestamp = models.DateTimeField()
-    delivery_time = models.DateTimeField()
+    timestamp = models.DateTimeField(auto_now_add=True, blank=True)
+    delivery_time = models.DateTimeField(auto_now_add=True, blank=True)
     current_status = models.PositiveSmallIntegerField(choices=STATUS_TYPES, default=1)
-
-
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    amount = models.IntegerField(default=0)
 class Comment(models.Model):
     RATES = (
         (1, "Awful"),
