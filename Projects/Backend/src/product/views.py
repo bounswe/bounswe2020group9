@@ -15,7 +15,7 @@ from product.serializers import ProductSerializer, ProductListSerializer, Commen
 # Create your views here.
 from user.models import User, Customer, Vendor
 from user.serializers import UserSerializer
-
+import datetime
 
 class ProductListAPIView(APIView):
 
@@ -483,8 +483,11 @@ class VendorOrderView(APIView):
                 delivery.current_status = status1
             else:
                 return Response({"message" : "Vendor can not cancel order"},status=status.HTTP_400_BAD_REQUEST)
-        elif "delivery_time" in request.data:
-            delivery.delivery_time = request.data["delivery_time"]
+        if "delivery_time" in request.data:
+            delivery_time1 = request.data["delivery_time"]
+            a = datetime.datetime(delivery_time1["year"],delivery_time1["month"],delivery_time1["day"])
+            delivery.delivery_time = a
+            
         delivery.save()
         return Response({"message":"Updated Successfully"},status=status.HTTP_200_OK)
             
