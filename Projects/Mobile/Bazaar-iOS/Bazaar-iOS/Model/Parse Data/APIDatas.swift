@@ -133,7 +133,7 @@ struct VendorData: Codable {
     let first_name:String
     let last_name:String
     let date_joined:String
-    let last_login:String
+    let last_login:String?
     let user_type:Int
     let bazaar_point:Double
     let company:String
