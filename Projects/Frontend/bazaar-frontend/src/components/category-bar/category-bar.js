@@ -47,11 +47,11 @@ export default class CategoryBar extends Component {
   }
 
   render() {
-    console.log(this.props)
+    //console.log(this.props)
     let categoryList = this.state.categoryList;
     let categoryStructure = this.state.categoryStructure;
     let categories = [];
-    console.log("category bar here")
+    //console.log("category bar here")
 
     for (let number = 0; number < categoryList.length; number++) {
       let subs = [];
