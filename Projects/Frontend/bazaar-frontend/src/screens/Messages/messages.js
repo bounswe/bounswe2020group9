@@ -14,11 +14,12 @@ export default class Messages extends Component {
     this.state = {
       isHiddenMessageSent: true,
       isHiddenUnknown: true,
+      hide_enter_username: true,
+      hide_enter_message: true,
       currentPill: "",
       message_username: "",
       message_body: "",
-      conversation_history: [],
-      messages: [],
+      conversations: [],
       errors: {}
     }
   }
@@ -28,100 +29,117 @@ export default class Messages extends Component {
     const headers = {
       Authorization: `Token ${myCookie.token}`,
     };
-    this.setState({conversation_history: []})
-    axios.get(serverUrl + `api/message/conversations/`, {
+
+    axios.get(serverUrl + `api/message/all/`, {
       headers: headers
     })
       .then((response) => {
-        this.setState({conversation_history:response.data.conversations});
-        this.state.conversation_history.forEach((conversation)=>{
-          axios.get(serverUrl + `api/message/${conversation.id}/`, {
-            headers: headers
-          }).then((response)=>{
-            //console.log(("message"+conversation.id),response.data);
-            this.setState({messages:(this.state.messages.concat([[conversation.email,response.data]]))})
-          });
+        this.setState({
+          token: myCookie.token,
+          conversations: response.data.conversations
         });
-        //console.log("this.state.conversations",this.state.conversations);
+        //console.log("API returns:", this.state.conversations);
       });
   }
 
   handleSendMessage = (event) => {
     event.preventDefault();
 
+    if (this.state.message_body === "") {
+      this.setState({hide_enter_message:false})
+      return;
+    }
+
     const body = new FormData();
     body.append("receiver_username", this.state.currentPill);
     body.append("body", this.state.message_body);
 
-    let myCookie = read_cookie('user');
-    const header = {headers: {Authorization: "Token "+myCookie.token}};
+    const header = {headers: {Authorization: "Token " + this.state.token}};
 
-    axios.post( serverUrl + "api/message/", body, header)
-      .then(()=>{
-        this.setState({isHiddenMessageSent:false});
+    axios.post(serverUrl + "api/message/", body, header)
+      .then(() => {
+        this.setState({
+          token: this.state.token,
+          isHiddenMessageSent: false
+        });
       }).catch(error => {
-        this.setState({isHiddenUnknown:false});
+      this.setState({
+        isHiddenUnknown: false,
+        hide_enter_username: true,
+        hide_enter_message: true
       });
-
-    console.log("Message Sent", this.state.currentPill, this.state.message_body);
-    window.location.reload();
+    });
+    //console.log("Message Sent", this.state.currentPill, this.state.message_body);
+    //window.location.reload();
   };
 
-  handleNewConversation = (event)=>{
+  handleNewConversation = (event) => {
     event.preventDefault();
+
+    if (this.state.message_username === "" || this.state.message_body === ""){
+      this.setState({
+        hide_enter_username: !(this.state.message_username === ""),
+        hide_enter_message: !(this.state.message_body === "")
+      });
+      return;
+    }
+    console.log("reached");
 
     const body = new FormData();
     body.append("receiver_username", this.state.message_username);
     body.append("body", this.state.message_body);
 
-    let myCookie = read_cookie('user');
-    const header = {headers: {Authorization: "Token "+myCookie.token}};
+    const header = {headers: {Authorization: "Token " + this.state.token}};
 
-    axios.post( serverUrl + "api/message/", body, header)
-      .then(()=>{
-        this.setState({isHiddenMessageSent:false});
+    axios.post(serverUrl + "api/message/", body, header)
+      .then(() => {
+        this.setState({
+          isHiddenMessageSent: false,
+          hide_enter_username: true,
+          hide_enter_message: true
+        });
       }).catch(error => {
-        this.setState({isHiddenUnknown:false});
-      });
-
-    console.log("New Conversation Created", this.state.message_username, this.state.message_body);
-    window.location.reload();
-  }
-
-  handleTextChange = (event)=>{
-    this.state[event.target.name] = event.target.value;
-    console.log(event.target.name, event.target.value);
+      this.setState({isHiddenUnknown: false});
+    });
+    //console.log("New Conversation Created", this.state.message_username, this.state.message_body);
+    //window.location.reload();
   };
 
-  render() {
-    const {conversation_history, messages} = this.state;
+  handleTextChange = (event) => {
+    this.state[event.target.name] = event.target.value;
+  };
 
-    //console.warn("messages",messages);
-    //console.log("this.state.conversation_history",conversation_history);
+
+  render() {
+    const {conversations} = this.state;
+    let messages = conversations.map((conversation) => {
+      return [conversation.email, conversation.messages]
+    });
+    if (messages === undefined) messages = [];
+
 
     let Conversation = (conversation) => {
-      if (conversation[0] === undefined) return;
-      if (conversation.size > 1) console.warn("CONVERSATION SIZE > 1", conversation);
-      conversation = conversation[0][1];
-      console.log("CONVERSATION",conversation);
-      return conversation.map((message)=>{
+      conversation = conversation[1];
+      return conversation.map((message) => {
         return (
-          <div className={"row justify-content-"+ (message.is_user1 ? "end" : "start")}>
+          <div className={"row justify-content-" + (message.is_user1 ? "end" : "start")}>
             <div className={"col-8 chatText " + (message.is_user1 ? "user1" : "user2")}>
               {message.body}
             </div>
           </div>
-        )});
+        )
+      });
     }
 
-    let Conversations = this.state.conversation_history.map((conversation) => {
+    let Conversations = this.state.conversations.map((conversation) => {
       return (
-        <div className="tab-pane fade" id={"v-pills-"+conversation.user_id} role="tabpanel" aria-labelledby={"v-pills-"+conversation.user_id+"-tab"}>
+        <div className="tab-pane fade" id={"v-pills-" + conversation.user_id} role="tabpanel"
+             aria-labelledby={"v-pills-" + conversation.user_id + "-tab"}>
           <h4 className="text-center">{conversation.email}</h4>
           <div className="container chatBox">
             {
               //This is magnificent coding in act, selects the related conversation of the user
-              Conversation(messages.filter(message => message[0] === conversation.email))
+              Conversation(messages.find(message => message[0] === conversation.email))
             }
           </div>
           <form onSubmit={this.handleSendMessage}>
@@ -133,17 +151,41 @@ export default class Messages extends Component {
                 id="form_body"
                 placeholder="Enter Message"
                 onChange={this.handleTextChange}/>
+              <small hidden={this.state.hide_enter_message}
+                     style={{"color": "darkred"}}>Please enter a message</small>
             </div>
             <button type="submit" className="btn btn-primary">Send</button>
           </form>
         </div>
-      )});
+      )
+    });
 
 
-    let LeftCol = conversation_history.map((user) => {
+    let LeftCol = conversations.map((user) => {
       return (
-        <a className="nav-link" id={"v-pills-"+user.user_id+"-tab"} data-toggle="pill" href={"#v-pills-"+user.user_id} role="tab"
-           aria-controls={"v-pills-"+user.user_id} aria-selected="false" onClick={()=>{this.state.currentPill=user.email}}>{user.email}</a>
+        <a className="nav-link"
+           id={"v-pills-" + user.user_id + "-tab"}
+           data-toggle="pill" href={"#v-pills-" + user.user_id}
+           role="tab"
+           aria-controls={"v-pills-" + user.user_id}
+           aria-selected="false"
+           style={{"font-weight": (user.is_visited ? "normal" : "bold")}}
+           onClick={() => {
+             // This can't be a separate function since we need user
+             this.state.currentPill = user.email;
+             let conversation = this.state.conversations.find(conversation => conversation.email === user.email);
+
+             axios.get(serverUrl + `api/message/${conversation.id}/`, {
+               headers: {Authorization: `Token ${this.state.token}`}
+             });
+
+             conversation.is_visited = true;
+             this.setState({
+               conversations: conversations,
+               hide_enter_username: true,
+               hide_enter_message: true
+             });
+           }}>{user.email}</a>
       );
     });
 
@@ -161,10 +203,20 @@ export default class Messages extends Component {
           <h2 className="text-center">Messages</h2>
           <div className="container">
             <div className="row">
-              <div className="nav flex-column nav-pills col-4 no-padding-left" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+              <div className="nav flex-column nav-pills col-4 no-padding-left" id="v-pills-tab" role="tablist"
+                   aria-orientation="vertical">
                 <h4>Conversation History</h4>
-                <a className="nav-link active" id="v-pills-new_conversation-tab" data-toggle="pill" href="#v-pills-new_conversation" role="tab"
-                   aria-controls="v-pills-new_conversation" aria-selected="true" onClick={()=>{this.state.currentPill="";}}>New Conversation</a>
+                <a className="nav-link active"
+                   id="v-pills-new_conversation-tab"
+                   data-toggle="pill"
+                   href="#v-pills-new_conversation"
+                   role="tab"
+                   aria-controls="v-pills-new_conversation"
+                   aria-selected="true"
+                   onClick={() => {this.setState({
+                     hide_enter_message: true,
+                     currentPill : ""
+                   })}}>New Conversation</a>
                 {LeftCol}
               </div>
               <div className="tab-content col-8 no-padding-left" id="v-pills-tabContent">
@@ -180,6 +232,8 @@ export default class Messages extends Component {
                         id="form-username"
                         placeholder="Enter Username"
                         onChange={this.handleTextChange}/>
+                      <small hidden={this.state.hide_enter_username}
+                             style={{"color": "darkred"}}>Please enter a username</small>
                     </div>
                     <div className="form-group">
                       <textarea
@@ -189,6 +243,8 @@ export default class Messages extends Component {
                         rows="2"
                         placeholder="Enter Message"
                         onChange={this.handleTextChange}/>
+                        <small hidden={this.state.hide_enter_message}
+                               style={{"color": "darkred"}}>Please enter a message</small>
                     </div>
                     <button type="submit" className="btn btn-primary">Send</button>
                   </form>
