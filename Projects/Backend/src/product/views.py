@@ -7,12 +7,11 @@ from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND, HTTP_204_NO_CONTENT, \
     HTTP_202_ACCEPTED
 from rest_framework.views import APIView
-
-
+from django.utils import timezone
 from product.functions import search_product_db, datamuse_call, filter_func, sort_func, calculate_rating
-from product.models import Product, ProductList, SubOrder, Comment, Category, Payment
+from product.models import Product, ProductList, SubOrder, Comment, Category, Payment,Delivery,Order
 from product.serializers import ProductSerializer, ProductListSerializer, CommentSerializer, SubOrderSerializer, \
-    SearchHistorySerializer, CategorySerializer, PaymentSerializer
+    SearchHistorySerializer, CategorySerializer, PaymentSerializer, DeliverySerializer
 # Create your views here.
 from user.models import User, Customer, Vendor
 from user.serializers import UserSerializer
@@ -465,6 +464,74 @@ class CommentsOfProductAPIView(APIView):
                               **UserSerializer(User.objects.get(id=comment.customer.user_id)).data}
                 serializers.append(serializer)
         return Response(serializers)
+class VendorOrderView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    def get(self,request):
+        user_id = request.user.id
+        temp = list(Product.objects.filter(vendor_id=user_id).values())
+        product_list = [temp[i]["id"] for i in range(len(temp))]
+        products = Delivery.objects.filter(product_id__in=product_list).values()
+        result = sorted(products, key=lambda k: k["current_status"]) 
+        return Response(result)
+    def put(self,request):
+        delivery_id = request.data["delivery_id"]
+        delivery = Delivery.objects.get(id = delivery_id)
+        if "status" in request.data:
+            status1 = request.data["status"]
+            if status1 != 4:
+                delivery.current_status = status1
+            else:
+                return Response({"message" : "Vendor can not cancel order"},status=status.HTTP_400_BAD_REQUEST)
+        elif "delivery_time" in request.data:
+            delivery.delivery_time = request.data["delivery_time"]
+        delivery.save()
+        return Response({"message":"Updated Successfully"},status=status.HTTP_200_OK)
+            
+class OrderView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    def get(self,request):
+        user_id = request.user.id
+        result = []
+        orders = Order.objects.filter(customer=user_id).values()
+        for order in orders:
+            deliveries = Delivery.objects.filter(order=order["id"]).values()
+            delivery_list = []
+            for delivery in deliveries:
+                product_id = delivery["product_id"]
+                product = Product.objects.get(id=product_id)
+                delivery["vendor"] = product.vendor_id
+                delivery_list.append(delivery)
+            order["deliveries"] = delivery_list
+            result.append(order)
+        result = sorted(result, key=lambda k: k["timestamp"],reverse=True) 
+        return Response(result, status=status.HTTP_200_OK)
+    def post(self,request):
+        user_id = request.data["user_id"]
+        deliveries = request.data["deliveries"]
+        user=Customer.objects.get(user_id=user_id)
+        order = Order.objects.create(customer=user,timestamp=timezone.now())
+        for delivery in deliveries:
+            delivery["timestamp"] = timezone.now()
+            delivery["customer"] = user_id
+            delivery["order"] = order.id
+            delivery["delivery_time"] = "Not Yet Decided"
+            serializer = DeliverySerializer(data=delivery)
+            if serializer.is_valid():
+                serializer.save()
+            else:
+                return Response({"message":"Bad Request"},status=status.HTTP_400_BAD_REQUEST)
+        return Response(deliveries, status=status.HTTP_200_OK)   
+    def put(self,request):
+        delivery_id = request.data["delivery_id"]
+        status1 = request.data["status"]
+        if status1 == 4:
+            delivery = Delivery.objects.get(id = delivery_id)
+            delivery.current_status = 4
+            delivery.save()
+            return Response({"message":"Updated Successfully"},status=status.HTTP_200_OK)
+        
 
 
 class PaymentView(APIView):
@@ -488,7 +555,7 @@ class PaymentView(APIView):
             return(Response(serializer.data,status=status.HTTP_200_OK))
         return(Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST))
     def delete(self,request):
-        card = Payment.objects.get(card_name=request.data["card_name"],owner=request.data["owner"])
+        card = Payment.objects.get(id=request.data["id"],owner=request.data["owner"])
         card.delete()
         return Response({"message": "An mail has been sent to your email, please check it"},status=status.HTTP_204_NO_CONTENT)
 
