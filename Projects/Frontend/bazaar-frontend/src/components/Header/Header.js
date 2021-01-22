@@ -33,6 +33,7 @@ class Header extends Component {
     this.state = {
       isSignedIn: false,
       token: "",
+      new_messages: 0,
       showNotification: false,
       new_notifications: 0,
       notifications: [],
@@ -80,7 +81,10 @@ class Header extends Component {
     this.state.notifications.forEach(notification=>{
       notification.is_visited = true;
     });
-    this.setState({notifications:this.state.notifications});
+    this.setState({
+      new_notifications:0,
+      notifications:this.state.notifications
+    });
   }
 
   componentDidMount() {
@@ -121,18 +125,30 @@ class Header extends Component {
         this.setState({ cartProducts });
       });
 
-    axios
-      .get(serverUrl + "api/message/notifications/", {
-        headers: {
-          Authorization: `Token ${myCookie.token}`,
-        },
-      }).then((res)=>{
+    if(myCookie.token !== undefined){
+      const headers = {
+        Authorization: `Token ${myCookie.token}`
+      }
+
+      axios
+        .get(serverUrl + "api/message/notifications/", {headers: headers})
+        .then((res)=>{
         console.log("Notifications",res.data);
         this.setState({
           new_notifications : res.data.new_notifications,
           notifications : res.data.notifications
-          });
-    })
+        });
+      }).catch((err)=>{
+        console.log("notifications not loaded, please refresh", myCookie.token);
+      })
+
+      axios.get(serverUrl + "api/message/conversations/", {headers:headers})
+      .then((res)=>{
+        this.setState({new_messages:res.data.new_messages});
+      }).catch((err)=>{
+        console.warn(err);
+      })
+    }
   }
 
   render() {
@@ -233,7 +249,9 @@ class Header extends Component {
               >
                 <FontAwesomeIcon icon={faEnvelope} />
                 <span className="mr-1"/>Messages
-                <span className="badge badge-secondary badge-pill"/>
+                <span hidden={!this.state.new_messages} className="badge badge-secondary badge-pill">
+                  {this.state.new_messages}
+                </span>
               </a>
               <div className="dropdown-menu" aria-labelledby="ddlMessages">
                 <a className="dropdown-item" href="/messages">
@@ -245,10 +263,13 @@ class Header extends Component {
               <a className="nav-link" href="/" onClick={this.openNotificationModal}>
                 <FontAwesomeIcon icon={faBell} />
                 <span className="mr-1"/>Notifications
+                <span hidden={!this.state.new_notifications} className="badge badge-secondary badge-pill">
+                  {this.state.new_notifications}
+                </span>
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" onClick={this.handleSignout}>
+              <a className="nav-link"  href="/" onClick={this.handleSignout}>
                 <FontAwesomeIcon icon={faSignOutAlt} />
                 <span className="mr-1"/>Sign Out
               </a>
@@ -308,7 +329,9 @@ class Header extends Component {
               >
                 <FontAwesomeIcon icon={faEnvelope} />
                 <span className="mr-1"/>Messages
-                <span className="badge badge-secondary badge-pill"/>
+                <span hidden={!this.state.new_messages} className="badge badge-secondary badge-pill">
+                  {this.state.new_messages}
+                </span>
               </a>
               <div className="dropdown-menu" aria-labelledby="ddlMessages">
                 <a className="dropdown-item" href="/messages">
@@ -320,6 +343,9 @@ class Header extends Component {
               <a className="nav-link" href="/" onClick={this.openNotificationModal}>
                 <FontAwesomeIcon icon={faBell} />
                 <span className="mr-1"/>Notifications
+                <span hidden={!this.state.new_notifications} className="badge badge-secondary badge-pill">
+                  {this.state.new_notifications}
+                </span>
               </a>
             </li>
             <li className="nav-item">
@@ -358,7 +384,10 @@ class Header extends Component {
 
         <Modal show={this.state.showNotification} onHide={this.closeNotificationModal}>
           <Modal.Header closeButton>
-            <Modal.Title style={{"textAlign":"center"}}>{"Notifications"+ (this.state.new_notifications ? (` (${this.state.new_notifications} Unread)`) : "")}</Modal.Title>
+            <Modal.Title>{
+              (this.state.new_notifications ? this.state.new_notifications: "No")
+              + " new Notification"
+              + (this.state.new_notifications===1 ? "": "s")}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <ul className="list-group">
