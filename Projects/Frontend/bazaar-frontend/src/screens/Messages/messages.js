@@ -7,7 +7,6 @@ import {read_cookie} from "sfcookies";
 import "./messages.scss";
 
 
-
 export default class Messages extends Component {
   constructor() {
     super();
@@ -46,7 +45,7 @@ export default class Messages extends Component {
     event.preventDefault();
 
     if (this.state.message_body === "") {
-      this.setState({hide_enter_message:false})
+      this.setState({hide_enter_message: false})
       return;
     }
 
@@ -76,7 +75,7 @@ export default class Messages extends Component {
   handleNewConversation = (event) => {
     event.preventDefault();
 
-    if (this.state.message_username === "" || this.state.message_body === ""){
+    if (this.state.message_username === "" || this.state.message_body === "") {
       this.setState({
         hide_enter_username: !(this.state.message_username === ""),
         hide_enter_message: !(this.state.message_body === "")
@@ -213,10 +212,12 @@ export default class Messages extends Component {
                    role="tab"
                    aria-controls="v-pills-new_conversation"
                    aria-selected="true"
-                   onClick={() => {this.setState({
-                     hide_enter_message: true,
-                     currentPill : ""
-                   })}}>New Conversation</a>
+                   onClick={() => {
+                     this.setState({
+                       hide_enter_message: true,
+                       currentPill: ""
+                     })
+                   }}>New Conversation</a>
                 {LeftCol}
               </div>
               <div className="tab-content col-8 no-padding-left" id="v-pills-tabContent">
@@ -243,8 +244,8 @@ export default class Messages extends Component {
                         rows="2"
                         placeholder="Enter Message"
                         onChange={this.handleTextChange}/>
-                        <small hidden={this.state.hide_enter_message}
-                               style={{"color": "darkred"}}>Please enter a message</small>
+                      <small hidden={this.state.hide_enter_message}
+                             style={{"color": "darkred"}}>Please enter a message</small>
                     </div>
                     <button type="submit" className="btn btn-primary">Send</button>
                   </form>
