@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import GoogleSignIn
 
 class CustomerOrdersViewController: UIViewController{
     
@@ -243,7 +242,7 @@ class AllOrders {
     
     func fetchAllOrders() {
         dispatchGroup.enter()
-        APIManager().getCustomerOrders(userId: 0,completionHandler: { orders in
+        APIManager().getAllProducts(completionHandler: { orders in
             if orders != nil {
                 self.dataFetched = true
                 self.All_Orders = orders!

@@ -217,32 +217,34 @@ struct APIManager {
             completionHandler(nil)
         }
     }
-    
+    /*
     func getCustomerOrders(userId:Int, completionHandler: @escaping ([ProductData]?) -> Void) {
         do {
             let request = try ApiRouter.getCustomerOrders(userId: userId).asURLRequest()
             AF.request(request).responseJSON { (response) in
                 if (response.response?.statusCode != nil){
                     guard let safeData = response.data else  {
-                        completionHandler(.failure(MyError.runtimeError("Error")))
+                        completionHandler(nil)
                         return
                     }
-                    if let decodedData:[ProductData] = APIParse().parseJSON(safeData: safeData){
+                    do {
+                        let allOrders = try JSONDecoder().decode([ProductData].self, from: response.data!)
                         AllOrders.shared.jsonParseError = false
                         AllOrders.shared.apiFetchError = false
                         AllOrders.shared.dataFetched = true
-                        completionHandler(AllOrders)
-                        completionHandler(.success(decodedData))
-                        
-                    }else {
-                        completionHandler(.failure(MyError.runtimeError("Error")))
+                        completionHandler(allOrders)
+                    } catch {
+                        print("error while decoding JSON for all products")
+                        AllOrders.shared.jsonParseError = true
+                        AllOrders.shared.dataFetched = false
+                        completionHandler(nil)
                     }
                 }
             }
         }catch let err {
-            completionHandler(.failure(err))
+            completionHandler(nil)
         }
-    }
+    }*/
     
     func getCustomerLists(userId:Int, isCustomerLoggedIn:Bool, completionHandler: @escaping (Result<[CustomerListData] , Error>) -> Void) {
         do {
