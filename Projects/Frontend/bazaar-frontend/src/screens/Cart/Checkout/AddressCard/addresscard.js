@@ -7,31 +7,39 @@ import { serverUrl } from "../../../../utils/get-url";
 
 export default class AddressCard extends Component {
 
-
   render() {
-    //console.log("category name: "+this.props.product?.category["name"])
-
+    if (this.props.address == '') {
+      return (
+        <div>
+          please select a card
+        </div>
+      )
+    } else {
+      return (
+        <div>
+          <div hidden={!this.props.selected}>
+            {this.props.address.name}
+          </div>
+          <Card className="address-card">
+            <Card.Body className="address-card-body overflow-hidden">
+              <Card.Text>
+                {this.props.address.full_address}
+              </Card.Text>
+            </Card.Body>
+            <Card.Footer className="address-card-footer">
+              <div className="footer-text">
+                {this.props.address.city}, {this.props.address.country}
+              </div>
+            </Card.Footer>
+          </Card>
+    
+        </div>
+      )
+    }
 
     //console.log("image link: "+imageLink)
  
-    return (
-      <div>
-      
-        <Card className="address-card">
-          <Card.Body className="address-card-body">
-            <Card.Title>{this.props.address.name}</Card.Title>
-            <Card.Text>
-              {this.props.address.full_address}
-            </Card.Text>
-          </Card.Body>
-          <Card.Footer className={"address-card-footer"}>
-            <small className="text-muted address-card-country">{this.props.address.country},  </small>
-            <small className="text-muted address-card-city">₺{this.props.address.city}</small>
-          </Card.Footer>
-        </Card>
-
-      </div>
-    )
+    
   }
 
 }

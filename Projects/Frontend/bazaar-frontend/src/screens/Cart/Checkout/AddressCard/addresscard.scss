@@ -1,0 +1,20 @@
+.address-card {
+  width: 140px;
+
+  & .address-card-body {
+    font-size: small;
+    padding: 10px;
+    height: 100px;
+  }
+
+  & .address-card-footer {
+    font-size: small;
+    padding: 8px;
+
+    & .footer-text {
+
+      text-align: right;
+    }
+  }
+
+}

@@ -30,10 +30,6 @@ export default class ProfilePage extends Component {
           redirect: null,
           hasError: false,
           isHiddenStates: [true, true, true, true],
-          isHiddenSuccess: true,
-          isHiddenSuccessPw: true,
-          isHiddenFail: true,
-          isHiddenUnknown: true,
           errors: {}
         //   user_id: Cookies.get("user_id")
         }
@@ -279,7 +275,7 @@ export default class ProfilePage extends Component {
               </div>
               <div className="profile-form row">
 
-                  <div className=" col-lg-6 col-md-6 col-sm-6 no-padding-left border-right">
+                  <div className=" col-lg-6 col-md-6 col-sm-6 no-padding-left border-right border-left">
                       <h3 className="text-center heading-2">Change Details</h3>
                       <div className="account-update">
                           <form className='needs-validation' onSubmit={this.handleSubmit} noValidate>
@@ -322,7 +318,7 @@ export default class ProfilePage extends Component {
                           </form>
                       </div>
                   </div>
-                  <div className=" col-lg-6 col-md-6 col-sm-6 no-padding-left">
+                  <div className=" col-lg-6 col-md-6 col-sm-6 no-padding-left border-right">
                   <h3 className="text-center heading-2">Change Password</h3>
                       <div className="password-update">
                           <form className='needs-validation' onSubmit={this.handlePasswordSubmit} noValidate>
