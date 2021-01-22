@@ -21,9 +21,8 @@ class ProductDetailViewController: UIViewController {
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var priceLabel: UILabel!
     @IBOutlet weak var addToCartBurtton: UIButton!
-    @IBOutlet weak var vendorBackgroundView: UIView!
-    @IBOutlet weak var vendorLabel: UILabel!
     @IBOutlet weak var addToListStackView: UIStackView!
+    @IBOutlet weak var seeVendorButton: UIButton!
     
     var product: ProductData!
     let buyCount = [1,2,3,4,5,6,7,8,9,10]
@@ -56,9 +55,9 @@ class ProductDetailViewController: UIViewController {
         
         self.view.bringSubviewToFront(priceLabel)
         self.view.bringSubviewToFront(addToCartBurtton)
-        vendorBackgroundView.layer.borderWidth = 2
-        vendorBackgroundView.layer.cornerRadius = 20
-        vendorBackgroundView.layer.borderColor = #colorLiteral(red: 1, green: 0.6431372549, blue: 0.3568627451, alpha: 1)
+        //vendorBackgroundView.layer.borderWidth = 2
+        //vendorBackgroundView.layer.cornerRadius = 20
+        //vendorBackgroundView.layer.borderColor = #colorLiteral(red: 1, green: 0.6431372549, blue: 0.3568627451, alpha: 1)
         self.navigationController?.navigationBar.backItem?.title = ""
         
         if let isLoggedIn = UserDefaults.standard.value(forKey: K.isLoggedinKey) as? Bool{
@@ -115,7 +114,10 @@ class ProductDetailViewController: UIViewController {
             self.addToListStackView.isHidden = true
             return
         }
-        
+        seeVendorButton.titleLabel?.adjustsFontSizeToFitWidth = true
+        seeVendorButton.titleLabel?.numberOfLines = 0
+        seeVendorButton.titleLabel?.lineBreakMode = .byWordWrapping 
+        seeVendorButton.sizeToFit()
     }
     
     func setProductInfo() {
@@ -130,6 +132,8 @@ class ProductDetailViewController: UIViewController {
         descriptionLabel.numberOfLines = 0
         descriptionLabel.sizeToFit()
         descriptionLabel.textColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
+        let vendor = AllVendors.shared.allVendors.filter{$0.id == product.vendor}[0]
+        seeVendorButton.setTitle("See more about "+vendor.company, for: .normal)
         priceLabel.text = "₺" + String(product.price)
         if product.picture != nil {
             if let img = AllProducts.shared.allImages[product.id] {
@@ -175,6 +179,9 @@ class ProductDetailViewController: UIViewController {
         }
     }
     
+    @IBAction func seeVendorButtonPressed(_ sender: Any) {
+        self.performSegue(withIdentifier: "productDetailToVendorProfileForUserSegue", sender: nil)
+    }
     
     @IBAction func addToList(_ sender: UIButton) {
         if let user = UserDefaults.standard.value(forKey: K.userIdKey) as? Int {
@@ -220,6 +227,8 @@ class ProductDetailViewController: UIViewController {
         
         if let reviewsVC = segue.destination as? ReviewsViewController {
             reviewsVC.productId = product.id
+        } else if let vendorProfileVC = segue.destination as? VendorProfileForUserViewController {
+            vendorProfileVC.vendor = AllVendors.shared.allVendors.filter{$0.id == product.vendor}[0]
         }
         
     }
