@@ -37,7 +37,7 @@ export default class Messages extends Component {
           token: myCookie.token,
           conversations: response.data.conversations
         });
-        //console.log("API returns:", this.state.conversations);
+        console.log("API returns:", this.state.conversations);
       });
   }
 
