@@ -251,13 +251,6 @@ export default class Productpage extends Component {
                   <Form className="formWrapper">
                     <Form.Row className="align-items-center formRow">
                       <Col xs="auto" className="my-1">
-                        <Form.Label
-                          className="mr-sm-2"
-                          htmlFor="inlineFormCustomSelect"
-                          srOnly
-                        >
-                          Preference
-                        </Form.Label>
                         <Form.Control
                           as="select"
                           className="mr-sm-2"
@@ -276,11 +269,8 @@ export default class Productpage extends Component {
                         <Form.Check
                           type="switch"
                           id="custom-switch"
-                          label="Check this switch"
+                          label="Anonimous"
                         />
-                      </Col>
-                      <Col xs="auto" className="my-1">
-                        <Button type="submit">Submit</Button>
                       </Col>
                     </Form.Row>
 
@@ -295,10 +285,19 @@ export default class Productpage extends Component {
                       </Col>
                     </Form.Row>
 
-                    <Form.Row controlId="exampleForm.ControlTextarea1 formRow">
+                    <Form.Row
+                      controlId="exampleForm.ControlTextarea1"
+                      className="formRow"
+                    >
                       <Col>
                         <Form.Label>Comment</Form.Label>
                         <Form.Control as="textarea" rows={4} />
+                      </Col>
+                    </Form.Row>
+
+                    <Form.Row className="formRow">
+                      <Col xs="auto" className="my-1 commentSubmitButton">
+                        <Button type="submit">Submit</Button>
                       </Col>
                     </Form.Row>
                   </Form>
