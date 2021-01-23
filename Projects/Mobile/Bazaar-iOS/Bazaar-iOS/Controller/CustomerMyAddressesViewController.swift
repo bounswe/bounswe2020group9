@@ -17,7 +17,21 @@ class CustomerMyAddressesViewController: UIViewController {
         myAddressesTableView.layer.borderColor = #colorLiteral(red: 1, green: 0.6235294118, blue: 0, alpha: 1)
         self.myAddressesTableView.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
         self.myAddressesTableView.dataSource = self
-        myAddressesArray.append(AddressData(id: 1, address_name: "Address Name", address: "Karacaoglan Mah. 89. sok no:98", country: "Turkiye", city: "K.maras", postal_code: 46400, longitude: 1.11, latitude: 1.112))
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        APIManager().getCustomerAddresses { (result) in
+            switch result{
+            case .success(let myAddresses):
+                self.myAddressesArray = myAddresses
+                self.myAddressesTableView.reloadData()
+            case .failure(_):
+                let alertController = UIAlertController(title: "Alert!", message: "There was an error loading your addresses, please try again later.", preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+                 self.present(alertController, animated: true, completion: nil)
+            }
+        }
     }
     
     @IBAction func backButtonPressed(_ sender: UIButton) {

@@ -36,7 +36,7 @@ enum ApiRouter: URLRequestBuilder {
     case getCreditCards
     case removeCreditCard(id:Int, owner:Int)
     case addNewAddressForCustomer(addressName:String , fullAddress:String, country:String, city:String, postalCode:Int,user:Int)
-
+    case getCustomerAddresses
   // MARK: - Path
     internal var path: String {
         switch self {
@@ -85,7 +85,7 @@ enum ApiRouter: URLRequestBuilder {
             return "api/user/vendor/"
         case .addNewCreditCard,.getCreditCards,.removeCreditCard:
             return "api/product/payment/"
-        case .addNewAddressForCustomer:
+        case .addNewAddressForCustomer, .getCustomerAddresses:
             return "api/location/byuser/"
         }
     }
@@ -183,7 +183,7 @@ enum ApiRouter: URLRequestBuilder {
             if isCustomerLoggedIn {
                 headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
             }
-        case .addList, .deleteList, .deleteProductFromList , .editList, .addToList, .getUsersComment, .addNewCreditCard, .getCreditCards, .removeCreditCard, .addNewAddressForCustomer:
+        case .addList, .deleteList, .deleteProductFromList , .editList, .addToList, .getUsersComment, .addNewCreditCard, .getCreditCards, .removeCreditCard, .addNewAddressForCustomer, .getCustomerAddresses:
             headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
         case .getCart, .addToCart, .editAmountInCart, .deleteProductFromCart:
             headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
@@ -208,7 +208,7 @@ enum ApiRouter: URLRequestBuilder {
         switch self {
         case .authenticate, .addList,.addToList, .signUpCustomer, .signUpVendor, .resetPasswordEmail, .addToCart,.updatePassword, .googleSignIn, .addNewCreditCard, .addNewAddressForCustomer:
             return .post
-        case .getCustomerLists, .getComments, .getUsersComment, .getCart, .getProfileInfo, .getAllVendors, .getCreditCards:
+        case .getCustomerLists, .getComments, .getUsersComment, .getCart, .getProfileInfo, .getAllVendors, .getCreditCards, .getCustomerAddresses:
             return .get
         case .deleteList, .deleteProductFromList,.deleteProductFromCart, .removeCreditCard:
             return .delete
