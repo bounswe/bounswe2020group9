@@ -16,8 +16,13 @@ class CustomerOrdersViewController: UIViewController{
     var allProductsInstance = AllProducts.shared
     var allVendorsInstance = AllVendors.shared
     
+    let orderStatusArray = ["", "Preparing", "In Cargo", "Delivered", "Canceled"]
+    
+    var products_dict: [Int: ProductData] = [:]
+    var vendors_dict: [Int: VendorData] = [:]
+    
     var orders: [OrderData] = []
-    var products: [Product] = []
+    var products: [ProductData] = []
     var vendors:[VendorData] = []
     
     var networkFailedAlert:UIAlertController = UIAlertController(title: "Error while retrieving orders", message: "We encountered a problem while retrieving the orders, please check your internet connection.", preferredStyle: .alert)
@@ -51,21 +56,29 @@ class CustomerOrdersViewController: UIViewController{
         networkFailedAlert.addAction(okButton)
         ordersTableView.register(UINib(nibName: "OrderCell", bundle: nil), forCellReuseIdentifier: "ReusableOrderCell")
         if !(allProductsInstance.dataFetched) {
-            print("products could not fetched,tryin to fetch right now")
+            print("products not fetched yet,tryin to fetch right now")
             productsCannotBeFetched()
             self.allProductsInstance.fetchAllProducts()
+        }else {
+            for prod in allProductsInstance.allProducts {
+                products_dict[prod.id]=prod
+            }
         }
         if !(allVendorsInstance.dataFetched) {
-            print("vendors could not fetched,tryin to fetch right now")
+            print("vendors not fetched yet,tryin to fetch right now")
             vendorsCannotBeFetched()
             self.allVendorsInstance.fetchAllVendors()
+        }else{
+            for vendor in allVendorsInstance.allVendors {
+                vendors_dict[vendor.id]=vendor
+            }
         }
         if !(allOrdersInstance.dataFetched) {
-            print("orders could not fetched,tryin to fetch right now")
+            print("orders not fetched yet,tryin to fetch right now")
             ordersCannotBeFetched()
             self.allOrdersInstance.fetchAllOrders()
         }
-
+        
     }
     
     
@@ -74,34 +87,56 @@ class CustomerOrdersViewController: UIViewController{
 extension CustomerOrdersViewController:UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //return 10
+        print("returned order count")
         if tableView == ordersTableView {
+            print(allOrdersInstance.allOrders.count)
             return allOrdersInstance.allOrders.count
+        }else {
+            print("Should not see this.")
+            return 5
         }
-        return 3
     }
     
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        print("setting order cell")
         let cell = ordersTableView.dequeueReusableCell(withIdentifier: "ReusableOrderCell", for: indexPath) as! OrderCell
         cell.ProductImage?.image = UIImage(named:"xmark.circle")
         //TODO change here
         let filteredOrders:[OrderData] = allOrdersInstance.allOrders
-        let filteredProducts:[ProductData] = allProductsInstance.allProducts
-        let filteredVendors:[VendorData] = allVendorsInstance.allVendors
+        //let filteredProducts:[ProductData] = allProductsInstance.allProducts
+        //let filteredVendors:[VendorData] = allVendorsInstance.allVendors
         let order = filteredOrders[indexPath.row]
-        let product = filteredProducts[order.id]
-        cell.Name_BrandLabel.text = "product name"//product.name + ", " + product.brand
+        let delivery = order.deliveries[0]
+        print("Product ID: " + String(delivery.product_id))
+        let product = products_dict[delivery.product_id]!                //filteredProducts[delivery.product_id]
+        let vendor = vendors_dict[delivery.vendor]!
+        let orderStatus=orderStatusArray[delivery.current_status]
+        
+        
+        cell.Name_BrandLabel.text = product.detail + ", " + product.brand
         cell.Name_BrandLabel.font = UIFont.systemFont(ofSize: 10, weight: .regular)
-        cell.Price_StatusLabel.text = "₺" + String(product.price) + ", " + " order.status "
+        
+        cell.Price_StatusLabel.text = "₺" + String(product.price) + ", Status: " + orderStatus
         cell.Price_StatusLabel.font = UIFont.systemFont(ofSize: 13, weight: .black)
-        cell.VendorLabel.text = " Vendor Label"
+        cell.VendorLabel.text = vendor.company
         cell.VendorLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
-        cell.AmountLabel.text = "Amount : " + String("order.amount")
+        cell.AmountLabel.text = "Amount : " + String(delivery.amount)
         cell.AmountLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
-        cell.DatesLabel.text = "Order Date: " + " order.date " + "Estimated Delivery : " + "some date here "
+        cell.DatesLabel.text = " Order Date: " + delivery.timestamp.prefix(10) + " Estimated Delivery : " + delivery.delivery_time.prefix(10)
         cell.DatesLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         cell.AdressLabel.text = "Order Adress: " + " order.adress "
         cell.AdressLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
-        /*
+        print("complete setting order cell")
+        
+        
+        print(cell.Name_BrandLabel.text)
+        print(cell.Price_StatusLabel.text)
+        print(cell.VendorLabel.text)
+        print(cell.AmountLabel.text)
+        print(cell.DatesLabel.text)
+        print(cell.AdressLabel.text)
+        
         if allProductsInstance.allImages.keys.contains(product.id) {
             cell.ProductImage.image = allProductsInstance.allImages[product.id]
             cell.ProductImage.contentMode = .scaleAspectFit
@@ -120,13 +155,17 @@ extension CustomerOrdersViewController:UITableViewDelegate,UITableViewDataSource
                 }
             }
         }
-        */
+        
         return cell
     }
     
 }
 extension CustomerOrdersViewController: AllProductsFetchDelegate {
     func allProductsAreFetched() {
+        for prod in allProductsInstance.allProducts {
+            products_dict[prod.id]=prod
+            print("ADDED " + String(prod.id))
+        }
         self.stopIndicator()
         self.ordersTableView.reloadData()
     }
@@ -154,6 +193,10 @@ extension CustomerOrdersViewController: AllVendorsFetchDelegate {
     func allVendorsAreFetched() {
         self.stopIndicator()
         self.vendors = self.allVendorsInstance.allVendors
+        for vendor in allVendorsInstance.allVendors {
+            vendors_dict[vendor.id]=vendor
+        }
+        self.ordersTableView.reloadData()
     }
     
     func vendorsCannotBeFetched() {
@@ -164,6 +207,7 @@ extension CustomerOrdersViewController: AllOrdersFetchDelegate {
     func allOrdersAreFetched() {
         self.stopIndicator()
         self.orders = self.allOrdersInstance.allOrders
+        self.ordersTableView.reloadData()
     }
     
     func ordersCannotBeFetched() {
@@ -230,18 +274,18 @@ class AllOrders {
     
     func fetchAllOrders() {
         dispatchGroup.enter()
-        APIManager().getCustomerOrders(completionHandler: { result in
-            switch result {
-            case .success(let orders):
+        APIManager().getCustomerOrders(completionHandler: { orders in
+            if orders != nil {
+                
                 self.dataFetched = true
-                self.allOrders = orders
+                self.allOrders = orders!
                 self.delegate?.allOrdersAreFetched()
-            case .failure(let err):
-                print(err)
+                print("Fetched orders.")
+            } else {
                 self.dataFetched = false
                 self.allOrders = []
                 self.delegate?.ordersCannotBeFetched()
-                print(err)
+                print("Could not fetch orders.")
             }
         })
         dispatchGroup.leave()
