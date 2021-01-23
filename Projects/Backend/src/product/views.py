@@ -563,7 +563,7 @@ class PaymentView(APIView):
     def delete(self,request):
         card = Payment.objects.get(id=request.data["id"],owner=request.data["owner"])
         card.delete()
-        return Response({"message": "An mail has been sent to your email, please check it"},status=status.HTTP_204_NO_CONTENT)
+        return Response({"message": "Card is deleted"},status=status.HTTP_204_NO_CONTENT)
 
 class SearchAPIView(APIView):
     authentication_classes = [TokenAuthentication]
