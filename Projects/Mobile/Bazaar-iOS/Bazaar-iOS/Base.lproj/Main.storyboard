@@ -4776,6 +4776,9 @@
                                                                         <constraint firstAttribute="width" constant="29" id="Tj4-ZO-O72"/>
                                                                     </constraints>
                                                                     <state key="normal" title="Button" image="update_icon"/>
+                                                                    <connections>
+                                                                        <action selector="updateButtonPressed:" destination="9wd-41-fX8" eventType="touchUpInside" id="XXh-YM-K8t"/>
+                                                                    </connections>
                                                                 </button>
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KTx-7f-Ya8">
                                                                     <rect key="frame" x="0.66666666666668561" y="49" width="29" height="29"/>
@@ -4784,6 +4787,9 @@
                                                                         <constraint firstAttribute="height" constant="29" id="tcP-2W-bEc"/>
                                                                     </constraints>
                                                                     <state key="normal" title="Button" image="trash_icon"/>
+                                                                    <connections>
+                                                                        <action selector="removeButtonPressed:" destination="9wd-41-fX8" eventType="touchUpInside" id="CIT-B4-fK8"/>
+                                                                    </connections>
                                                                 </button>
                                                             </subviews>
                                                             <constraints>
@@ -4802,11 +4808,10 @@
                                                         <constraint firstAttribute="trailing" secondItem="NSB-qR-5HR" secondAttribute="trailing" constant="10" id="HQX-lm-Z3k"/>
                                                         <constraint firstItem="VVU-2V-e8Y" firstAttribute="leading" secondItem="jhn-2h-SCO" secondAttribute="leading" constant="10" id="N7L-QP-MKG"/>
                                                         <constraint firstItem="05u-A1-0ZM" firstAttribute="leading" secondItem="jhn-2h-SCO" secondAttribute="leading" constant="10" id="QCb-gz-BUB"/>
+                                                        <constraint firstAttribute="height" constant="200" id="UZ2-e8-BhQ"/>
                                                         <constraint firstItem="mTe-mh-k5n" firstAttribute="centerX" secondItem="jhn-2h-SCO" secondAttribute="centerX" id="VSz-Xr-G94"/>
-                                                        <constraint firstAttribute="width" constant="295" id="hZq-bm-CTU"/>
                                                         <constraint firstItem="mTe-mh-k5n" firstAttribute="top" secondItem="jhn-2h-SCO" secondAttribute="top" constant="10" id="nyC-LF-9Iq"/>
                                                         <constraint firstItem="x2s-pP-Uag" firstAttribute="top" secondItem="VVU-2V-e8Y" secondAttribute="bottom" constant="10" id="scB-W3-1C8"/>
-                                                        <constraint firstAttribute="height" constant="97" id="ul4-Pa-RaH"/>
                                                         <constraint firstItem="NSB-qR-5HR" firstAttribute="centerY" secondItem="jhn-2h-SCO" secondAttribute="centerY" id="yJe-HB-iED"/>
                                                     </constraints>
                                                     <userDefinedRuntimeAttributes>
@@ -4823,6 +4828,14 @@
                                                 <constraint firstItem="jhn-2h-SCO" firstAttribute="leading" secondItem="XAx-Vh-mSY" secondAttribute="leading" constant="20" id="ium-PC-DNT"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="addressCellView" destination="jhn-2h-SCO" id="tx7-hl-wQ5"/>
+                                            <outlet property="addressNameLabel" destination="mTe-mh-k5n" id="OdB-h3-yii"/>
+                                            <outlet property="cityNameLabel" destination="VVp-d6-xDe" id="jWM-ds-DFv"/>
+                                            <outlet property="countryNameLabel" destination="05u-A1-0ZM" id="mzC-Id-dwU"/>
+                                            <outlet property="openAddressLabel" destination="x2s-pP-Uag" id="zWv-b5-vCT"/>
+                                            <outlet property="postalCodeLabel" destination="VVU-2V-e8Y" id="NPP-jQ-Bcv"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <userDefinedRuntimeAttributes>
