@@ -162,6 +162,9 @@ class MyCartViewController: UIViewController {
                 productDetailVC.product = product
             }
         }
+        else if let paymentVC = segue.destination as? PaymentViewController {
+            paymentVC.totalPriceText = self.totalPriceLabel.text
+        }
      }
      
     
