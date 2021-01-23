@@ -166,7 +166,7 @@ class MainViewController: UIViewController{
                 productDetailVC.product = products[indexPath!.row]
             }
         } else if let vendorProfileVC = segue.destination as? VendorProfileForUserViewController {
-            let indexPath = self.productTableView.indexPathForSelectedRow
+            let indexPath = self.searchHistoryTableView.indexPathForSelectedRow
             if indexPath != nil {
                 let vendor = allVendorsInstance.allVendors.filter{$0.company.contains(searchResults[indexPath!.row])}
                 vendorProfileVC.vendor = vendor[0]
@@ -237,9 +237,7 @@ extension MainViewController:UITableViewDelegate,UITableViewDataSource {
             if allProductsInstance.allImages.keys.contains(product.id) {
                 cell.productImageView.image = allProductsInstance.allImages[product.id]
                 cell.productImageView.contentMode = .scaleAspectFit
-                print("1: \(product.name)")
             } else {
-                print("2: \(product.name)")
                 if let url = product.picture {
                     do{
                         try cell.productImageView.loadImageUsingCache(withUrl: url, forProduct: product)
@@ -292,7 +290,6 @@ extension MainViewController:UITableViewDelegate,UITableViewDataSource {
         } else {
             let filteredProducts:[ProductData] = allProductsInstance.allProducts.filter{($0.category.parent?.contains(selectedCategoryName!))! || $0.category.name.contains(selectedCategoryName!)}
             let product = filteredProducts[indexPath.row]
-            print(product.name)
             performSegue(withIdentifier: "mainToProductDetailSegue", sender: nil)
         }
         
@@ -425,21 +422,17 @@ extension MainViewController: UISearchBarDelegate, UISearchControllerDelegate {
         searchResults = searchText.isEmpty ? searchHistory : searchHistory.filter{(query:String) -> (Bool) in
             return query.range(of:searchText, options: .caseInsensitive, range:nil, locale: nil) != nil
         }
-        print("1",searchResults.count)
         historyEndIndex = searchResults.count
         searchResults.append(contentsOf: categories.filter{(query:String) -> (Bool) in
                                 return query.range(of:searchText, options: .caseInsensitive, range:nil, locale: nil) != nil})
         categoriesEndIndex = searchResults.count
-        print("2",searchResults.count)
         let brands = Array(Set(allProductsInstance.allProducts.map{$0.brand}))
         searchResults.append(contentsOf: brands.filter{(query:String) -> (Bool) in
                                 return query.range(of:searchText, options: .caseInsensitive, range:nil, locale: nil) != nil})
         brandsEndIndex = searchResults.count
-        print("3",searchResults.count)
         let vendorlist = Array(Set(allVendorsInstance.allVendors.map{$0.company}))
         searchResults.append(contentsOf: vendorlist.filter{(query:String) -> (Bool) in
                                 return query.range(of:searchText, options: .caseInsensitive, range:nil, locale: nil) != nil})
-        print("4",searchResults.count)
         searchHistoryTableView.reloadData()
     }
     
@@ -562,7 +555,6 @@ class AllProducts {
                 for prod in self.allProducts {
                     group.enter()
                     if let pic = prod.picture {
-                        print(prod.name, pic)
                         let url = URL(string: prod.picture!)
                         URLSession(configuration: .default).dataTask(with: url!) { (data, response, error) in
                             guard let data = data, let image = UIImage(data: data), error == nil else { group.leave(); return }
@@ -574,7 +566,6 @@ class AllProducts {
                                 
                                 // ****************************************************
                                 // tells the group a pending process has been completed
-                                print(prod.id, "done")
                                 group.leave()
                             }
                         }.resume()
@@ -629,6 +620,7 @@ class AllVendors {
                 self.allVendors = vendors
                 self.delegate?.allVendorsAreFetched()
             case .failure(let err):
+                print(err)
                 self.dataFetched = false
                 self.allVendors = []
                 self.delegate?.vendorsCannotBeFetched()
