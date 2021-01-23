@@ -26,31 +26,22 @@ export default class Productpage extends Component {
     super(props);
     this.state = {
       isGuest: false,
-      comments: [
-        {
-          name: "Hasan Demirkiran",
-          rate: 4.5,
-          date: "20.01.2020",
-          content:
-            "But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure",
-        },
-        {
-          name: "Hasan Demirkiran",
-          rate: 3.0,
-          date: "20.01.2020",
-          content:
-            "But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure",
-        },
-        {
-          name: "Hasan Demirkiran",
-          rate: 5.0,
-          date: "20.01.2020",
-          content:
-            "But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure",
-        },
-      ],
+      comments: [],
     };
   }
+
+  componentDidMount = () => {
+    // get request to get all comments
+    axios
+      .get(
+        serverUrl +
+          `api/product/comment/${this.props.location.state.product.id}/`
+      )
+      .then((res) => {
+        console.log(res.data);
+        this.setState({ comments: res.data });
+      });
+  };
 
   onCartButtonClick = () => {
     const { product } = this.props.location.state;
@@ -111,9 +102,9 @@ export default class Productpage extends Component {
     }
 
     return (
-      <div className='background'>
+      <div className="background">
         <Container>
-        <CategoryBar></CategoryBar>
+          <CategoryBar></CategoryBar>
           <Row className={"productPart"}>
             <Col>
               <Carousel className={"productCarousel"}>
@@ -210,7 +201,16 @@ export default class Productpage extends Component {
           </Row>
           <Row className={"commentPart"}>
             <Col>
-              <h2>Comments</h2>
+              <Row>
+                <h2>Comments</h2>
+
+                <button
+                  className={"commentButton"}
+                  onClick={this.onCartButtonClick}
+                >
+                  Add a new comment
+                </button>
+              </Row>
               {CommentCards}
             </Col>
           </Row>
