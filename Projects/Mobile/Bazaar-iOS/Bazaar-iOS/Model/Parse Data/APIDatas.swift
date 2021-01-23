@@ -133,8 +133,26 @@ struct VendorData: Codable {
     let first_name:String
     let last_name:String
     let date_joined:String
-    let last_login:String
+    let last_login:String?
     let user_type:Int
     let bazaar_point:Double
     let company:String
+}
+struct OrderData: Codable {
+    let id:Int
+    let customer_id:Int
+    let timestamp:String
+    let deliveries:[DeliveryData]
+}
+struct DeliveryData: Codable {
+    let id:Int
+    let product_id:Int
+    let timestamp:String
+    let delivery_time:String
+    let current_status:String
+    let order_id:Int
+    let customer_id:Int
+    let amount:Int
+    let vendor:Int
+    
 }

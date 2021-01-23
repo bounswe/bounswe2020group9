@@ -81,7 +81,7 @@ enum ApiRouter: URLRequestBuilder {
         case .getAllVendors:
             return "api/user/vendor/"
         case .getCustomerOrders:
-            return "api/product/"
+            return "api/product/order/"
         }
         
     }
@@ -161,7 +161,7 @@ enum ApiRouter: URLRequestBuilder {
             if isCustomerLoggedIn {
                 headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
             }
-        case .addList, .deleteList, .deleteProductFromList , .editList, .addToList, .getUsersComment:
+        case .addList, .deleteList, .deleteProductFromList , .editList, .addToList, .getUsersComment,.getCustomerOrders:
             headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
         case .getCart, .addToCart, .editAmountInCart, .deleteProductFromCart:
             headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
