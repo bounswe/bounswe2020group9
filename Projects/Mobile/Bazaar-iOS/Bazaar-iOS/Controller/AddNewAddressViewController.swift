@@ -17,8 +17,6 @@ class AddNewAddressViewController: UIViewController {
     @IBOutlet weak var postalCodeTextField: UITextField!
     
     var mapViewController = MapViewController()
-    var latitude:Float?
-    var longitude:Float?
     var addressAnnotation: MKPointAnnotation?
     
     override func viewDidLoad() {
@@ -33,16 +31,18 @@ class AddNewAddressViewController: UIViewController {
     @IBAction func openMapButtonPressed(_ sender: UIButton) {
         performSegue(withIdentifier: "AddAddressToMap", sender: nil)
     }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "AddAddressToMap" {
             if let destinationVC = segue.destination as? MapViewController {
-                //destinationVC.delegate = self
+                destinationVC.delegate = self
                 if let annotation = self.addressAnnotation{
                     destinationVC.annotations.append(annotation)
                 }
             }
         }
     }
+    
     @IBAction func saveAddressButtonPressed(_ sender: UIButton) {
         let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
@@ -70,5 +70,51 @@ class AddNewAddressViewController: UIViewController {
             }
         }
     }
+    
+    func getAddressFromLatLon(pdblLatitude: String, withLongitude pdblLongitude: String) {
+        var center : CLLocationCoordinate2D = CLLocationCoordinate2D()
+        let lat: Double = Double("\(pdblLatitude)")!
+        let lon: Double = Double("\(pdblLongitude)")!
+        let ceo: CLGeocoder = CLGeocoder()
+        center.latitude = lat
+        center.longitude = lon
+        
+        let loc: CLLocation = CLLocation(latitude:center.latitude, longitude: center.longitude)
+        
+        ceo.reverseGeocodeLocation(loc, completionHandler:{(placemarks, error) in
+            if (error != nil)
+            {
+                let alertController = UIAlertController(title: "Alert!", message: "We could not get your address information, please try again! You have to long press when selecting your address.", preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+                self.present(alertController, animated: true, completion: nil)
+            }
+            let pm = placemarks! as [CLPlacemark]
+            
+            if pm.count > 0 {
+                let pm = placemarks![0]
+                if pm.administrativeArea != nil {
+                    self.cityTextField.text = pm.administrativeArea
+                }
+                if pm.country != nil {
+                    self.countryTextField.text = pm.country
+                }
+                if pm.postalCode != nil {
+                    self.postalCodeTextField.text = pm.postalCode
+                }
+            }
+        })
+    }
 }
 
+extension AddNewAddressViewController:MapViewControllerDelegate{
+    func mapViewControllerDidGetLocation(latitude: Float, longitude: Float, annotation:MKPointAnnotation) {
+        self.addressAnnotation = annotation
+        getAddressFromLatLon(pdblLatitude: "\(latitude)", withLongitude: "\(longitude)")
+    }
+    
+    func mapViewControllerDidFail() {
+        let alertController = UIAlertController(title: "Alert!", message: "We could not get your address information, please try again! You have to long press when selecting your address.", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
+    }
+}
