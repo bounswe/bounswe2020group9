@@ -29,11 +29,9 @@ export default class Productpage extends Component {
     this.state = {
       isGuest: false,
       comments: [],
-      newComment: {
-        body: "",
-        rating: "",
-        is_anonymous: false,
-      },
+      body: "",
+      rating: "",
+      is_anonymous: false,
       user: [],
     };
   }
@@ -48,7 +46,6 @@ export default class Productpage extends Component {
           `api/product/comment/${this.props.location.state.product.id}/`
       )
       .then((res) => {
-        console.log(res.data);
         this.setState({ comments: res.data });
       });
   };
@@ -88,8 +85,8 @@ export default class Productpage extends Component {
     }
   };
 
-  onAddCommentButton = () => {
-    const { product } = this.props.location.state;
+  onSubmitComment = (event) => {
+    event.preventDefault();
 
     let myCookie = read_cookie("user");
 
@@ -98,8 +95,11 @@ export default class Productpage extends Component {
     };
 
     const data = {
-      product_id: product.id,
-      amount: 1,
+      body: this.state.body,
+      rating: this.state.rating,
+      customer: myCookie.user_id,
+      is_anonymous: this.state.is_anonymous,
+      product: this.props.location.state.product.id,
     };
 
     if (myCookie.length === 0) {
@@ -110,11 +110,24 @@ export default class Productpage extends Component {
           headers: headers,
         })
         .then((res) => {
-          this.setState({
-            redirect: `/product/${this.props.location.state.id}`,
-          });
+          axios
+            .get(
+              serverUrl +
+                `api/product/comment/${this.props.location.state.product.id}/`
+            )
+            .then((res) => {
+              this.setState({ comments: res.data });
+            });
         });
     }
+  };
+
+  onCommentChange = (event, type) => {
+    this.setState({ [type]: event.target.value });
+  };
+
+  onCommentChangeAnonimous = (event) => {
+    this.setState({ is_anonimous: event.target.checked });
   };
 
   render() {
@@ -256,20 +269,25 @@ export default class Productpage extends Component {
                           className="mr-sm-2"
                           id="inlineFormCustomSelect"
                           custom
+                          onChange={(event) =>
+                            this.onCommentChange(event, "rating")
+                          }
                         >
                           <option value="0">Rating...</option>
                           <option value="1">1</option>
                           <option value="2">2</option>
                           <option value="3">3</option>
-                          <option value="2">4</option>
-                          <option value="3">5</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
                         </Form.Control>
                       </Col>
+
                       <Col xs="auto" className="my-1">
                         <Form.Check
                           type="switch"
                           id="custom-switch"
                           label="Anonimous"
+                          onChange={this.onCommentChangeAnonimous}
                         />
                       </Col>
                     </Form.Row>
@@ -291,13 +309,19 @@ export default class Productpage extends Component {
                     >
                       <Col>
                         <Form.Label>Comment</Form.Label>
-                        <Form.Control as="textarea" rows={4} />
+                        <Form.Control
+                          as="textarea"
+                          rows={4}
+                          onChange={(event) =>
+                            this.onCommentChange(event, "body")
+                          }
+                        />
                       </Col>
                     </Form.Row>
 
                     <Form.Row className="formRow">
                       <Col xs="auto" className="my-1 commentSubmitButton">
-                        <Button type="submit">Submit</Button>
+                        <Button onClick={this.onSubmitComment}>Submit</Button>
                       </Col>
                     </Form.Row>
                   </Form>

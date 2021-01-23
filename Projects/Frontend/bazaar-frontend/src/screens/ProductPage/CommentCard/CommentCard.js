@@ -7,7 +7,6 @@ import StarRatings from "../../../../node_modules/react-star-ratings";
 
 export default class CommentCard extends Component {
   render() {
-    console.log(this.props, "props comment cards");
     return (
       <div className={"commentWrapper"}>
         {!this.props.comment.is_anonymous ? (
