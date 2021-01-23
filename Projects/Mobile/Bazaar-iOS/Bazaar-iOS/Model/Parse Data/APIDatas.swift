@@ -163,4 +163,3 @@ struct AddressData:Codable {
     let longitude:Float
     let latitude:Float
 }
-

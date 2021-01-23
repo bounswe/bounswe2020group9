@@ -57,12 +57,21 @@ class AddNewAddressViewController: UIViewController {
                         alertController.message = "Please enter a valid full address."
                         self.present(alertController, animated: true, completion: nil)
                     }else {
-                        if let country = countryTextField.text , let city = cityTextField.text, let pk = postalCodeTextField.text {
+                        if let country = countryTextField.text , let city = cityTextField.text, let pk = postalCodeTextField.text , let user = UserDefaults.standard.value(forKey: K.userIdKey) as? Int{
                             if country.count == 0 && city.count == 0 && pk.count == 0 {
                                 alertController.message = "Please click on the button(Get Country, City and PK from Map) above and select the location from the map"
                                 self.present(alertController, animated: true, completion: nil)
                             }else{
-                                //TODO: backend
+                                APIManager().addNewAddressForCustomer(addressName: addressName, fullAddress: fullAddress, country: country, city: city, postalCode: Int(pk) ?? 0, user: user) { (result) in
+                                    switch result {
+                                    case .success(_):
+                                        alertController.message = "Your new address has been successfully added!"
+                                        self.present(alertController, animated: true, completion: nil)
+                                    case .failure(_):
+                                        alertController.message = "There was a problem adding the new address!"
+                                        self.present(alertController, animated: true, completion: nil)
+                                    }
+                                }
                             }
                         }
                     }
