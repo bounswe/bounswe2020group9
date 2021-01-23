@@ -4908,6 +4908,9 @@
                                                 <size key="value" width="2" height="2"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="saveAddressButtonPressed:" destination="lcL-UI-E4l" eventType="touchUpInside" id="0iq-Gr-CDT"/>
+                                        </connections>
                                     </button>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" alignment="top" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="hBS-a7-6m1">
                                         <rect key="frame" x="10" y="40" width="354" height="296"/>
@@ -4969,7 +4972,7 @@
                                             </stackView>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mk5-bm-lG3">
                                                 <rect key="frame" x="0.0" y="134" width="354" height="30"/>
-                                                <state key="normal" title=" Get Country, City and PK from Map"/>
+                                                <state key="normal" title=" Get Country, City and PK from Map "/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
                                                         <integer key="value" value="1"/>
@@ -4987,6 +4990,9 @@
                                                         <size key="value" width="2" height="2"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="openMapButtonPressed:" destination="lcL-UI-E4l" eventType="touchUpInside" id="0AK-YF-lf4"/>
+                                                </connections>
                                             </button>
                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="d0N-Eq-HIF">
                                                 <rect key="frame" x="0.0" y="174" width="354" height="34"/>
@@ -5104,7 +5110,7 @@
                                         <state key="normal" image="left_arrow_icon"/>
                                         <connections>
                                             <action selector="backButtonPressed:" destination="uCT-Ki-9HI" eventType="touchUpInside" id="JrO-5e-Ie0"/>
-                                            <action selector="backButtonPressed:" destination="lcL-UI-E4l" eventType="touchUpInside" id="bBi-jY-vwz"/>
+                                            <action selector="backButtonPressed:" destination="lcL-UI-E4l" eventType="touchUpInside" id="uPc-3s-mL9"/>
                                             <action selector="backButtonPressed:" destination="L5V-jH-uVD" eventType="touchUpInside" id="vmh-mV-LUn"/>
                                         </connections>
                                     </button>
@@ -5128,6 +5134,14 @@
                             <constraint firstAttribute="trailing" secondItem="vXZ-Dl-AuR" secondAttribute="trailing" constant="20" id="g60-zX-6L3"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="addressNameTextField" destination="dsc-PK-WJR" id="s5x-gK-JSG"/>
+                        <outlet property="cityTextField" destination="oKl-uk-HZz" id="IPn-GD-kAW"/>
+                        <outlet property="countryTextField" destination="7y7-Dn-uZv" id="KaD-NO-02n"/>
+                        <outlet property="fullAddressTextView" destination="2Md-i0-R3G" id="VgU-04-OGO"/>
+                        <outlet property="postalCodeTextField" destination="D4L-bj-QNQ" id="SoP-cB-NBy"/>
+                        <segue destination="f8W-BH-naY" kind="presentation" identifier="AddAddressToMap" id="iKO-xp-CV1"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ufq-3s-Qgh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -5149,6 +5163,7 @@
         </designable>
     </designables>
     <inferredMetricsTieBreakers>
+        <segue reference="iKO-xp-CV1"/>
         <segue reference="bek-xH-bIt"/>
         <segue reference="NHr-zy-FFi"/>
         <segue reference="ybP-Ln-r90"/>
@@ -5193,8 +5208,8 @@
         <image name="settings_icon_blue" width="50" height="50"/>
         <image name="trash_icon" width="100" height="100"/>
         <image name="update_icon" width="100" height="100"/>
-        <image name="xmark.circle" width="13" height="13"/>
         <image name="xmark.circle" catalog="system" width="128" height="121"/>
+        <image name="xmark.circle" width="13" height="13"/>
         <systemColor name="darkTextColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
