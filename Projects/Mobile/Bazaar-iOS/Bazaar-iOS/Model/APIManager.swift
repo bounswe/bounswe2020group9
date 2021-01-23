@@ -528,4 +528,67 @@ struct APIManager {
             completionHandler(.failure(error))
         }
     }
+    
+    func addNewCreditCard(owner:Int, nameOnCard:String, cardNumber:String, month:String, year:String, cvv:String, cardName:String,completionHandler: @escaping (Result<CreditCardData ,Error>) -> Void) {
+        do {
+            let request = try ApiRouter.addNewCreditCard(owner: owner, nameOnCard: nameOnCard, cardNumber: cardNumber, month: month, year: year, cvv: cvv, cardName: cardName).asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if (response.response?.statusCode != nil){
+                    guard let safeData = response.data else  {
+                        completionHandler(.failure(MyError.runtimeError("Error")))
+                        return
+                    }
+                    if let decodedData:CreditCardData = APIParse().parseJSON(safeData: safeData){
+                        completionHandler(.success(decodedData))
+                    }else {
+                        completionHandler(.failure(MyError.runtimeError("Failed to parse json ")))
+                    }
+                }
+            }
+        }catch let err {
+            completionHandler(.failure(err))
+        }
+    }
+    
+    func getCreditCards(completionHandler: @escaping (Result<[CreditCardData] ,Error>) -> Void) {
+        do {
+            let request = try ApiRouter.getCreditCards.asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if (response.response?.statusCode != nil){
+                    guard let safeData = response.data else  {
+                        completionHandler(.failure(MyError.runtimeError("Error")))
+                        return
+                    }
+                    if let decodedData:[CreditCardData] = APIParse().parseJSON(safeData: safeData){
+                        completionHandler(.success(decodedData))
+                    }else {
+                        completionHandler(.failure(MyError.runtimeError("Failed to parse json ")))
+                    }
+                }
+            }
+        }catch let err {
+            completionHandler(.failure(err))
+        }
+    }
+    
+    func removeCreditCard(id:Int, owner:Int,completionHandler: @escaping (Result<String ,Error>) -> Void) {
+        do {
+            let request = try ApiRouter.removeCreditCard(id: id, owner: owner).asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if (response.response?.statusCode != nil){
+                    guard let safeData = response.data else  {
+                        completionHandler(.failure(MyError.runtimeError("Error")))
+                        return
+                    }
+                    if let decodedData:removeCreditCardData = APIParse().parseJSON(safeData: safeData){
+                        completionHandler(.success(decodedData.message))
+                    }else {
+                        completionHandler(.failure(MyError.runtimeError("Failed to parse json ")))
+                    }
+                }
+            }
+        }catch let err {
+            completionHandler(.failure(err))
+        }
+    }
 }

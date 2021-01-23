@@ -133,8 +133,22 @@ struct VendorData: Codable {
     let first_name:String
     let last_name:String
     let date_joined:String
-    let last_login:String
+    let last_login:String?
     let user_type:Int
     let bazaar_point:Double
     let company:String
+}
+
+struct CreditCardData:Codable {
+    let id:Int
+    let name_on_card:String
+    let card_id:String
+    let date_month:String
+    let date_year:String
+    let cvv:String
+    let card_name:String
+}
+
+struct removeCreditCardData: Codable{
+    let message: String
 }
