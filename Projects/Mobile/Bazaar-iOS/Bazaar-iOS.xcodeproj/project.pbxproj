@@ -32,6 +32,7 @@
 		9315419B25B8B99F001549AC /* CreditCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9315419A25B8B99F001549AC /* CreditCardCell.swift */; };
 		9333667C25794FDB0010E82F /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9333667B25794FDB0010E82F /* Constants.swift */; };
 		935A22DB25BC8842007B8A21 /* CustomerMyAddressesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 935A22DA25BC8842007B8A21 /* CustomerMyAddressesViewController.swift */; };
+		935A22E025BC898E007B8A21 /* AddressCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 935A22DF25BC898E007B8A21 /* AddressCell.swift */; };
 		9377BEB425AD0D7100AE8CC2 /* VendorProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9377BEB325AD0D7100AE8CC2 /* VendorProfileViewController.swift */; };
 		9377BEB925AD0D8600AE8CC2 /* VendorMyOrdersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9377BEB825AD0D8600AE8CC2 /* VendorMyOrdersViewController.swift */; };
 		9377BEBE25AD0DA300AE8CC2 /* VendorMyProductsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9377BEBD25AD0DA300AE8CC2 /* VendorMyProductsViewController.swift */; };
@@ -118,6 +119,7 @@
 		9315419A25B8B99F001549AC /* CreditCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditCardCell.swift; sourceTree = "<group>"; };
 		9333667B25794FDB0010E82F /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		935A22DA25BC8842007B8A21 /* CustomerMyAddressesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerMyAddressesViewController.swift; sourceTree = "<group>"; };
+		935A22DF25BC898E007B8A21 /* AddressCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddressCell.swift; sourceTree = "<group>"; };
 		9377BEB325AD0D7100AE8CC2 /* VendorProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VendorProfileViewController.swift; sourceTree = "<group>"; };
 		9377BEB825AD0D8600AE8CC2 /* VendorMyOrdersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VendorMyOrdersViewController.swift; sourceTree = "<group>"; };
 		9377BEBD25AD0DA300AE8CC2 /* VendorMyProductsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VendorMyProductsViewController.swift; sourceTree = "<group>"; };
@@ -393,6 +395,7 @@
 				6994EAC9255DA38000AC48F6 /* Main Tab Bar */,
 				6994EACA255DA3A200AC48F6 /* Product Cell */,
 				9315419A25B8B99F001549AC /* CreditCardCell.swift */,
+				935A22DF25BC898E007B8A21 /* AddressCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -750,6 +753,7 @@
 				9315419B25B8B99F001549AC /* CreditCardCell.swift in Sources */,
 				930C1FAF256C0D9D0086E1DC /* APIDatas.swift in Sources */,
 				6929E5F7257FD4FE008F32D3 /* StarRatingStackView.swift in Sources */,
+				935A22E025BC898E007B8A21 /* AddressCell.swift in Sources */,
 				6994EAD6255DBF4A00AC48F6 /* MyCartViewController.swift in Sources */,
 				9996E88D2585121000986DB1 /* ListDetailViewController.swift in Sources */,
 				99F3379D256ADD460095105F /* ProfileViewController.swift in Sources */,
