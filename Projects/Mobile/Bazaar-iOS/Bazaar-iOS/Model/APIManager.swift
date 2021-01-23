@@ -591,4 +591,67 @@ struct APIManager {
             completionHandler(.failure(err))
         }
     }
+    
+    func getVendorsProducts(vendorId:Int, completionHandler: @escaping (Result<[ProductData] ,Error>) -> Void) {
+        do {
+            let request = try ApiRouter.getVendorsProducts(vendorId: vendorId).asURLRequest()
+            AF.request(request).responseJSON { response in
+                if (response.response?.statusCode != nil ) {
+                    guard let safeData = response.data else {
+                        completionHandler(.failure(MyError.runtimeError("Error")))
+                        return
+                    }
+                    if let decodedData:[ProductData] = APIParse().parseJSON(safeData: safeData) {
+                        completionHandler(.success(decodedData))
+                    } else {
+                        completionHandler(.failure(MyError.runtimeError("Failed to parse json ")))
+                    }
+                }
+            }
+        } catch let err {
+            completionHandler(.failure(err))
+        }
+    }
+    
+    func vendorAddProduct(title:String, brand:String, price:Double, stock:Int, description:String, image:String, completionHandler: @escaping (Result<ProductData ,Error>) -> Void) {
+        do {
+            let request = try ApiRouter.vendorAddProduct(title: title, brand: brand, price: price, stock: stock, description: description, image: image).asURLRequest()
+            AF.request(request).responseJSON { response in
+                if (response.response?.statusCode != nil ) {
+                    guard let safeData = response.data else {
+                        completionHandler(.failure(MyError.runtimeError("Error")))
+                        return
+                    }
+                    if let decodedData:ProductData = APIParse().parseJSON(safeData: safeData) {
+                        completionHandler(.success(decodedData))
+                    } else {
+                        completionHandler(.failure(MyError.runtimeError("Failed to parse json ")))
+                    }
+                }
+            }
+        } catch let err {
+            completionHandler(.failure(err))
+        }
+    }
+    
+    func vendorEditProduct(prodID:Int, title:String, brand:String, price:Double, stock:Int, description:String, image:String, completionHandler: @escaping (Result<ProductData ,Error>) -> Void) {
+        do {
+            let request = try ApiRouter.vendorAddProduct(title: title, brand: brand, price: price, stock: stock, description: description, image: image).asURLRequest()
+            AF.request(request).responseJSON { response in
+                if (response.response?.statusCode != nil ) {
+                    guard let safeData = response.data else {
+                        completionHandler(.failure(MyError.runtimeError("Error")))
+                        return
+                    }
+                    if let decodedData:ProductData = APIParse().parseJSON(safeData: safeData) {
+                        completionHandler(.success(decodedData))
+                    } else {
+                        completionHandler(.failure(MyError.runtimeError("Failed to parse json ")))
+                    }
+                }
+            }
+        } catch let err {
+            completionHandler(.failure(err))
+        }
+    }
 }

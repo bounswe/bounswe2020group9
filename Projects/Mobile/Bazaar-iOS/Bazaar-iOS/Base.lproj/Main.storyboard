@@ -2895,6 +2895,8 @@
                     </view>
                     <tabBarItem key="tabBarItem" title="My Products" id="xV1-qr-9cC"/>
                     <connections>
+                        <outlet property="addProductButton" destination="k5F-MK-naT" id="dio-R7-tw3"/>
+                        <outlet property="productsTableView" destination="DSq-ck-E7f" id="nAG-oR-jSa"/>
                         <segue destination="DZ4-J7-0B4" kind="show" identifier="VendorMyProductsToAddEditProductSegue" id="c1F-SA-xLo"/>
                     </connections>
                 </viewController>
@@ -3132,6 +3134,15 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="8Ow-VP-B9p"/>
+                    <connections>
+                        <outlet property="brandTextField" destination="fhW-HF-363" id="No0-OX-f25"/>
+                        <outlet property="descriptionTextField" destination="div-we-ncl" id="qPh-9T-hZp"/>
+                        <outlet property="headerLabel" destination="r04-5S-tIP" id="Kbj-FL-IPZ"/>
+                        <outlet property="imageURLTextField" destination="j8m-Ud-ZHc" id="MLy-Jo-Zo0"/>
+                        <outlet property="priceTextField" destination="fby-xq-vZm" id="UiH-4i-5A5"/>
+                        <outlet property="stockTextField" destination="1QU-qt-oJh" id="qSR-JM-WDG"/>
+                        <outlet property="titleTextField" destination="vqf-1Y-2Si" id="6Sb-f8-eOo"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TwD-HF-4xZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -5024,8 +5035,8 @@
         <image name="settings_icon" width="50" height="50"/>
         <image name="settings_icon_blue" width="50" height="50"/>
         <image name="trash_icon" width="100" height="100"/>
-        <image name="xmark.circle" catalog="system" width="128" height="121"/>
         <image name="xmark.circle" width="13" height="13"/>
+        <image name="xmark.circle" catalog="system" width="128" height="121"/>
         <systemColor name="darkTextColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

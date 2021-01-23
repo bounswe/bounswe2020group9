@@ -9,6 +9,14 @@ import UIKit
 
 class VendorAddEditProductViewController: UIViewController {
 
+    @IBOutlet weak var headerLabel: UILabel!
+    @IBOutlet weak var titleTextField: UITextField!
+    @IBOutlet weak var brandTextField: UITextField!
+    @IBOutlet weak var priceTextField: UITextField!
+    @IBOutlet weak var imageURLTextField: UITextField!
+    @IBOutlet weak var descriptionTextField: UITextField!
+    @IBOutlet weak var stockTextField: UITextField!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 

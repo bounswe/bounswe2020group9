@@ -152,3 +152,12 @@ struct CreditCardData:Codable {
 struct removeCreditCardData: Codable{
     let message: String
 }
+
+struct AddEditProductData: Codable {
+    let name: String
+    let brand: String
+    let price: Double
+    let stock: Int
+    let image: String
+    let description: String
+}
