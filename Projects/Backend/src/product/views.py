@@ -14,6 +14,7 @@ from product.serializers import ProductSerializer, ProductListSerializer, Commen
     SearchHistorySerializer, CategorySerializer, PaymentSerializer, DeliverySerializer
 # Create your views here.
 from user.models import User, Customer, Vendor
+from location.models import Location
 from user.serializers import UserSerializer
 import datetime
 
@@ -472,6 +473,8 @@ class VendorOrderView(APIView):
         temp = list(Product.objects.filter(vendor_id=user_id).values())
         product_list = [temp[i]["id"] for i in range(len(temp))]
         products = Delivery.objects.filter(product_id__in=product_list).values()
+        address_dict = Location.objects.filter(id=products["location_id"]).values()
+        products["delivery_adress"] = address_dict
         result = sorted(products, key=lambda k: k["current_status"]) 
         return Response(result)
     def put(self,request):
@@ -505,6 +508,8 @@ class OrderView(APIView):
                 product_id = delivery["product_id"]
                 product = Product.objects.get(id=product_id)
                 delivery["vendor"] = product.vendor_id
+                address_dict = Location.objects.filter(id=delivery["location_id"]).values()
+                delivery["delivery_adress"] = address_dict
                 delivery_list.append(delivery)
             order["deliveries"] = delivery_list
             result.append(order)
@@ -520,6 +525,8 @@ class OrderView(APIView):
             delivery["customer"] = user_id
             delivery["order"] = order.id
             delivery["delivery_time"] = "Not Yet Decided"
+            loc_id = Location.objects.get(user=user_id).id
+            delivery["location_id"] = loc_id
             serializer = DeliverySerializer(data=delivery)
             if serializer.is_valid():
                 serializer.save()
@@ -551,7 +558,7 @@ class PaymentView(APIView):
             return(Response(serializer.data,status=status.HTTP_200_OK))
         return(Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST))
     def put(self,request):
-        card = Payment.objects.get(card_name=request.data["card_name"],owner=request.data["owner"])
+        card = Payment.objects.get(id=request.data["id"],owner=request.data["owner"])
         serializer = PaymentSerializer(card,data=request.data)
         if serializer.is_valid():
             serializer.save()
