@@ -149,7 +149,7 @@ struct DeliveryData: Codable {
     let product_id:Int
     let timestamp:String
     let delivery_time:String
-    let current_status:String
+    let current_status:Int
     let order_id:Int
     let customer_id:Int
     let amount:Int

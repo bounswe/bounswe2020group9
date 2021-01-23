@@ -218,24 +218,35 @@ struct APIManager {
         }
     }
 
-    func getCustomerOrders( completionHandler: @escaping (Result<[OrderData] , Error>) -> Void) {
+    
+    func getCustomerOrders( completionHandler: @escaping ([OrderData]?) -> Void) {
         do {
             let request = try ApiRouter.getCustomerOrders.asURLRequest()
             AF.request(request).responseJSON { (response) in
                 if (response.response?.statusCode != nil){
                     guard let safeData = response.data else  {
-                        completionHandler(.failure(MyError.runtimeError("Error")))
+                        AllOrders.shared.jsonParseError = true
+                        AllOrders.shared.dataFetched = false
+                        completionHandler(nil)
                         return
                     }
                     if let decodedData:[OrderData] = APIParse().parseJSON(safeData: safeData){
-                        completionHandler(.success(decodedData))
+                        AllOrders.shared.jsonParseError = false
+                        AllOrders.shared.apiFetchError = false
+                        AllOrders.shared.dataFetched = true
+                        completionHandler(decodedData)
                     }else {
-                        completionHandler(.failure(MyError.runtimeError("Error")))
+                        AllOrders.shared.jsonParseError = true
+                        AllOrders.shared.dataFetched = false
+                        completionHandler(nil)
                     }
                 }
             }
         }catch let err {
-            completionHandler(.failure(err))
+            print(err)
+            AllOrders.shared.jsonParseError = true
+            AllOrders.shared.dataFetched = false
+            completionHandler(nil)
         }
     }
     
