@@ -7,8 +7,12 @@
 
 import UIKit
 
+protocol AddressCellDelegate {
+    func  AddressCellDidDeleteButtonPressed(cell:AddressCell)
+}
+
 class AddressCell: UITableViewCell {
-    
+    var delegate: AddressCellDelegate?
     var addressId:Int?
     var user: Int?
     var latitude:Float?
@@ -42,5 +46,6 @@ class AddressCell: UITableViewCell {
     }
     
     @IBAction func removeButtonPressed(_ sender: UIButton) {
+        self.delegate?.AddressCellDidDeleteButtonPressed(cell: self)
     }
 }

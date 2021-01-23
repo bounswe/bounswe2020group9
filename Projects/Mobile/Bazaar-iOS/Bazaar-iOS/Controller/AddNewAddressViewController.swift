@@ -114,7 +114,7 @@ class AddNewAddressViewController: UIViewController {
         })
     }
 }
-
+//MARK: - Extension MapViewControllerDelegate
 extension AddNewAddressViewController:MapViewControllerDelegate{
     func mapViewControllerDidGetLocation(latitude: Float, longitude: Float, annotation:MKPointAnnotation) {
         self.addressAnnotation = annotation

@@ -39,7 +39,6 @@ class CustomerMyAddressesViewController: UIViewController {
     }
 }
 //MARK: - Extension: UITableViewDataSource
-
 extension CustomerMyAddressesViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return myAddressesArray.count
@@ -49,6 +48,23 @@ extension CustomerMyAddressesViewController: UITableViewDataSource {
         var cell = tableView.dequeueReusableCell(withIdentifier: "AddressCell", for: indexPath) as! AddressCell
         let addressData = self.myAddressesArray[indexPath.row]
         cell = cell.setAddress(addressId: addressData.id, addressName: addressData.address_name, openAddress: addressData.address, country: addressData.country, city: addressData.city, postalCode: addressData.postal_code, latitude: addressData.latitude, longitude: addressData.longitude, user: 58)
+        cell.delegate = self
         return cell
+    }
+}
+
+//MARK: - AddressCellDelegate
+extension CustomerMyAddressesViewController: AddressCellDelegate {
+    func AddressCellDidDeleteButtonPressed(cell: AddressCell) {
+        if let index = self.myAddressesArray.firstIndex(where: {$0.id == cell.addressId}){
+            DispatchQueue.main.async {
+                if let id = cell.addressId {
+                    APIManager().removeCustomerAddress(addressId: id) { (result) in
+                    }
+                }
+                self.myAddressesArray.remove(at: index)
+                self.myAddressesTableView.reloadData()
+            }
+        }
     }
 }

@@ -633,4 +633,25 @@ struct APIManager {
             completionHandler(.failure(err))
         }
     }
+    
+    func removeCustomerAddress(addressId:Int ,completionHandler: @escaping (Result<[AddressData] ,Error>) -> Void) {
+        do {
+            let request = try ApiRouter.removeCustomerAddress(addressId: addressId).asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if (response.response?.statusCode != nil){
+                    guard let safeData = response.data else  {
+                        completionHandler(.failure(MyError.runtimeError("Error")))
+                        return
+                    }
+                    if let decodedData:[AddressData] = APIParse().parseJSON(safeData: safeData){
+                        completionHandler(.success(decodedData))
+                    }else {
+                        completionHandler(.failure(MyError.runtimeError("Failed to parse json ")))
+                    }
+                }
+            }
+        }catch let err {
+            completionHandler(.failure(err))
+        }
+    }
 }
