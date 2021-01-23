@@ -12,6 +12,8 @@ import Col from "react-bootstrap/Col";
 import { bake_cookie, read_cookie, delete_cookie } from "sfcookies";
 import CommentCard from "./CommentCard/CommentCard";
 import CategoryBar from "../../components/category-bar/category-bar";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 
 //icons
 import AddToCartIcon from "../../assets/icons/add-to-cart.svg";
@@ -32,10 +34,13 @@ export default class Productpage extends Component {
         rating: "",
         is_anonymous: false,
       },
+      user: [],
     };
   }
 
   componentDidMount = () => {
+    let myCookie = read_cookie("user");
+    this.setState({ user: myCookie });
     // get request to get all comments
     axios
       .get(
@@ -83,34 +88,34 @@ export default class Productpage extends Component {
     }
   };
 
-  // onAddCommentButton = () => {
-  //   const { product } = this.props.location.state;
+  onAddCommentButton = () => {
+    const { product } = this.props.location.state;
 
-  //   let myCookie = read_cookie("user");
+    let myCookie = read_cookie("user");
 
-  //   const headers = {
-  //     Authorization: `Token ${myCookie.token}`,
-  //   };
+    const headers = {
+      Authorization: `Token ${myCookie.token}`,
+    };
 
-  //   const data = {
-  //     product_id: product.id,
-  //     amount: 1,
-  //   };
+    const data = {
+      product_id: product.id,
+      amount: 1,
+    };
 
-  //   if (myCookie.length === 0) {
-  //     this.setState({ isGuest: true });
-  //   } else {
-  //     axios
-  //       .post(serverUrl + `api/product/comment/`, data, {
-  //         headers: headers,
-  //       })
-  //       .then((res) => {
-  //         this.setState({
-  //           redirect: `/product/${this.props.location.state.id}`,
-  //         });
-  //       });
-  //   }
-  // };
+    if (myCookie.length === 0) {
+      this.setState({ isGuest: true });
+    } else {
+      axios
+        .post(serverUrl + `api/product/comment/`, data, {
+          headers: headers,
+        })
+        .then((res) => {
+          this.setState({
+            redirect: `/product/${this.props.location.state.id}`,
+          });
+        });
+    }
+  };
 
   render() {
     const { product } = this.props.location.state;
@@ -237,15 +242,68 @@ export default class Productpage extends Component {
             <Col>
               <Row>
                 <h2>Comments</h2>
-
-                <button
-                  className={"commentButton"}
-                  onClick={this.onAddCommentButton}
-                >
-                  Add a new comment
-                </button>
               </Row>
               {CommentCards}
+              {this.state.user.length === 0 ? (
+                <div></div>
+              ) : (
+                <div>
+                  <Form className="formWrapper">
+                    <Form.Row className="align-items-center formRow">
+                      <Col xs="auto" className="my-1">
+                        <Form.Label
+                          className="mr-sm-2"
+                          htmlFor="inlineFormCustomSelect"
+                          srOnly
+                        >
+                          Preference
+                        </Form.Label>
+                        <Form.Control
+                          as="select"
+                          className="mr-sm-2"
+                          id="inlineFormCustomSelect"
+                          custom
+                        >
+                          <option value="0">Rating...</option>
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="2">4</option>
+                          <option value="3">5</option>
+                        </Form.Control>
+                      </Col>
+                      <Col xs="auto" className="my-1">
+                        <Form.Check
+                          type="switch"
+                          id="custom-switch"
+                          label="Check this switch"
+                        />
+                      </Col>
+                      <Col xs="auto" className="my-1">
+                        <Button type="submit">Submit</Button>
+                      </Col>
+                    </Form.Row>
+
+                    <Form.Row className="formRow">
+                      <Col>
+                        <Form.File
+                          id="custom-file-translate-scss"
+                          label="Please upload an image"
+                          lang="en"
+                          custom
+                        />
+                      </Col>
+                    </Form.Row>
+
+                    <Form.Row controlId="exampleForm.ControlTextarea1 formRow">
+                      <Col>
+                        <Form.Label>Comment</Form.Label>
+                        <Form.Control as="textarea" rows={4} />
+                      </Col>
+                    </Form.Row>
+                  </Form>
+                </div>
+              )}
             </Col>
           </Row>
         </Container>
