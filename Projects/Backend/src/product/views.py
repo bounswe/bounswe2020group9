@@ -473,8 +473,6 @@ class VendorOrderView(APIView):
         temp = list(Product.objects.filter(vendor_id=user_id).values())
         product_list = [temp[i]["id"] for i in range(len(temp))]
         products = Delivery.objects.filter(product_id__in=product_list).values()
-        address_dict = Location.objects.filter(id=products["location_id"]).values()
-        products["delivery_adress"] = address_dict
         result = sorted(products, key=lambda k: k["current_status"]) 
         return Response(result)
     def put(self,request):
@@ -508,8 +506,6 @@ class OrderView(APIView):
                 product_id = delivery["product_id"]
                 product = Product.objects.get(id=product_id)
                 delivery["vendor"] = product.vendor_id
-                address_dict = Location.objects.filter(id=delivery["location_id"]).values()
-                delivery["delivery_adress"] = address_dict
                 delivery_list.append(delivery)
             order["deliveries"] = delivery_list
             result.append(order)
