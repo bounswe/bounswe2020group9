@@ -27,6 +27,11 @@ export default class Productpage extends Component {
     this.state = {
       isGuest: false,
       comments: [],
+      newComment: {
+        body: "",
+        rating: "",
+        is_anonymous: false,
+      },
     };
   }
 
@@ -77,6 +82,35 @@ export default class Productpage extends Component {
     } else {
     }
   };
+
+  // onAddCommentButton = () => {
+  //   const { product } = this.props.location.state;
+
+  //   let myCookie = read_cookie("user");
+
+  //   const headers = {
+  //     Authorization: `Token ${myCookie.token}`,
+  //   };
+
+  //   const data = {
+  //     product_id: product.id,
+  //     amount: 1,
+  //   };
+
+  //   if (myCookie.length === 0) {
+  //     this.setState({ isGuest: true });
+  //   } else {
+  //     axios
+  //       .post(serverUrl + `api/product/comment/`, data, {
+  //         headers: headers,
+  //       })
+  //       .then((res) => {
+  //         this.setState({
+  //           redirect: `/product/${this.props.location.state.id}`,
+  //         });
+  //       });
+  //   }
+  // };
 
   render() {
     const { product } = this.props.location.state;
@@ -206,7 +240,7 @@ export default class Productpage extends Component {
 
                 <button
                   className={"commentButton"}
-                  onClick={this.onCartButtonClick}
+                  onClick={this.onAddCommentButton}
                 >
                   Add a new comment
                 </button>
