@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import Location
+from user.models import User
 from .serializers import LocationSerializer
 
 
@@ -130,3 +131,24 @@ class UserLocationDetailAPIView(APIView):
             location.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         return Response({"message": "Token and user id didn't match"}, status=status.HTTP_401_UNAUTHORIZED)
+
+
+class VendorLocationDetailAPIView(APIView):
+
+    def get(self, request, id):
+        try:
+            user = User.objects.get(id=id)
+            locations = Location.objects.filter(user=user.id)
+        except:
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+        if user.user_type != 2:
+            return Response({"message": "User is not vendor."}, status=status.HTTP_204_NO_CONTENT)
+
+        parent = LocationDetailAPIView()
+        serializers = []
+        for location in locations:
+            location = parent.get_location(location.id)
+            serializers.append(LocationSerializer(location).data)
+
+        return Response(serializers)

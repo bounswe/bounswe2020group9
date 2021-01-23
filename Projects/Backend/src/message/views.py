@@ -24,37 +24,42 @@ class AllMessages(APIView):
         except:
             return Response({"message": "Token is not valid."}, status=status.HTTP_401_UNAUTHORIZED)
         conversations = Conversation.objects.filter(user1_id=user_id) | Conversation.objects.filter(user2_id=user_id)
-        conversations = conversations.order_by('last_message_timestamp')
+        conversations = conversations.order_by('-last_message_timestamp')
         number_of_unseen = 0
-       	responseList = []
+        responseList = []
         for conversation in conversations:
-        	d = {} 
-        	d["id"] = conversation.id
-        	is_user1 = conversation.user1.id == user_id
-        	messages = Message.objects.filter(conversation_id=conversation.id).order_by('-timestamp')
-        	message = messages[0]
-        	d["last_message_body"] = message.body
-        	d["last_message_timestamp"] = message.timestamp
-        	d["am_I_user1"] = is_user1
-        	if is_user1:
-        		d["user_id"] = conversation.user2.id
-        		d = {**d, **UserSerializer(conversation.user2).data}
-        		d["is_visited"] = message.is_visited_by_user1
-        		if not message.is_visited_by_user1:
-        			number_of_unseen = number_of_unseen + 1
-        	else:
-        		d["user_id"] = conversation.user1.id
-        		d = {**d, **UserSerializer(conversation.user1).data}
-        		d["is_visited"] = message.is_visited_by_user2
-        		if not message.is_visited_by_user2:
-        			number_of_unseen = number_of_unseen + 1
-        	messageList = []
-        	for message_ in messages:
-        		messageList.append(MessageSerializer(message_).data)
-        	d["messages"] = messageList
-
-        	d["id"] = conversation.id
-        	responseList.append(d)
+            d = {} 
+            d["id"] = conversation.id
+            is_user1 = conversation.user1.id == user_id
+            messages = Message.objects.filter(conversation_id=conversation.id).order_by('timestamp')
+            message = messages[len(messages)-1]
+            d["last_message_body"] = message.body
+            d["last_message_timestamp"] = message.timestamp
+            d["am_I_user1"] = is_user1
+            if is_user1:
+                d["user_id"] = conversation.user2.id
+                d = {**d, **UserSerializer(conversation.user2).data}
+                d["is_visited"] = message.is_visited_by_user1
+                if not message.is_visited_by_user1:
+                    number_of_unseen = number_of_unseen + 1
+            else:
+                d["user_id"] = conversation.user1.id
+                d = {**d, **UserSerializer(conversation.user1).data}
+                d["is_visited"] = message.is_visited_by_user2
+                if not message.is_visited_by_user2:
+                    number_of_unseen = number_of_unseen + 1
+            messageList = []
+            unseen_message_counter = 0
+            for message_ in messages:
+                if is_user1 and not message_.is_visited_by_user1:
+                    unseen_message_counter = unseen_message_counter + 1
+                if not is_user1 and not message_.is_visited_by_user2:
+                    unseen_message_counter = unseen_message_counter + 1
+                messageList.append(MessageSerializer(message_).data)
+            d["new_messages_of_conversation"] = unseen_message_counter
+            d["messages"] = messageList
+            d["id"] = conversation.id
+            responseList.append(d)
         response = {}
         response["new_messages"] = number_of_unseen
         response["conversations"] = responseList
@@ -70,31 +75,31 @@ class Conversations(APIView):
         except:
             return Response({"message": "Token is not valid."}, status=status.HTTP_401_UNAUTHORIZED)
         conversations = Conversation.objects.filter(user1_id=user_id) | Conversation.objects.filter(user2_id=user_id)
-        conversations = conversations.order_by('last_message_timestamp')
+        conversations = conversations.order_by('-last_message_timestamp')
         number_of_unseen = 0
-       	responseList = []
+        responseList = []
         for conversation in conversations:
-        	d = {} 
-        	d["id"] = conversation.id
-        	is_user1 = conversation.user1.id == user_id
-        	message = Message.objects.filter(conversation_id=conversation.id).order_by('-timestamp')[0]
-        	d["last_message_body"] = message.body
-        	d["last_message_timestamp"] = message.timestamp
-        	if is_user1:
-        		d["user_id"] = conversation.user2.id
-        		d = {**d, **UserSerializer(conversation.user2).data}
-        		d["is_visited"] = message.is_visited_by_user1
-        		if not message.is_visited_by_user1:
-        			number_of_unseen = number_of_unseen + 1
-        	else:
-        		d["user_id"] = conversation.user1.id
-        		d = {**d, **UserSerializer(conversation.user1).data}
-        		d["is_visited"] = message.is_visited_by_user2
-        		if not message.is_visited_by_user2:
-        			number_of_unseen = number_of_unseen + 1
+            d = {} 
+            d["id"] = conversation.id
+            is_user1 = conversation.user1.id == user_id
+            message = Message.objects.filter(conversation_id=conversation.id).order_by('-timestamp')[0]
+            d["last_message_body"] = message.body
+            d["last_message_timestamp"] = message.timestamp
+            if is_user1:
+                d["user_id"] = conversation.user2.id
+                d = {**d, **UserSerializer(conversation.user2).data}
+                d["is_visited"] = message.is_visited_by_user1
+                if not message.is_visited_by_user1:
+                    number_of_unseen = number_of_unseen + 1
+            else:
+                d["user_id"] = conversation.user1.id
+                d = {**d, **UserSerializer(conversation.user1).data}
+                d["is_visited"] = message.is_visited_by_user2
+                if not message.is_visited_by_user2:
+                    number_of_unseen = number_of_unseen + 1
 
-        	d["id"] = conversation.id
-        	responseList.append(d)
+            d["id"] = conversation.id
+            responseList.append(d)
         response = {}
         response["new_messages"] = number_of_unseen
         response["conversations"] = responseList
@@ -103,13 +108,6 @@ class Conversations(APIView):
 
 class Messages(APIView):
 
-    def get(self, request):
-        try:
-            user_id = request.user.id
-        except:
-            return Response({"message": "Token is not valid."}, status=status.HTTP_401_UNAUTHORIZED)
-        
-        return Response()
 
     def post(self, request):
         try:
@@ -128,7 +126,8 @@ class Messages(APIView):
         conversation = Conversation.objects.filter(user1_id=user_id, user2_id=receiver_user_id) | Conversation.objects.filter(user2_id=user_id, user1_id=receiver_user_id)
         if len(conversation):
             conversation = conversation[0]
-            conversation.last_message_timestamp = timezone.now
+            conversation.last_message_timestamp = timezone.now()
+            conversation.save()
         else:
             conversation = Conversation()
             conversation.user1=user
@@ -166,23 +165,23 @@ class GetConversation(APIView):
         messages = Message.objects.filter(conversation_id=id).order_by('timestamp')
         messageList = []
         for message in messages:
-        	serializer = MessageSerializer(message).data
-        	if is_user1:
-        		message.is_visited_by_user1 = True
-        		other_user = conversation.user2
-        		serializer["am_I_user1"] = True
-        	else:
-        		message.is_visited_by_user2 = True
-        		other_user = conversation.user1
-        		serializer["am_I_user1"] = False
-        	message.save()
-        	if is_user1 == message.is_user1:
-        		serializer = {**serializer, **UserSerializer(user).data}
-        		serializer["user_id"] = user.id
-        	else:
-        		serializer = {**serializer, **UserSerializer(other_user).data}
-        		serializer["user_id"] = other_user.id
-        	messageList.append(serializer)
+            serializer = MessageSerializer(message).data
+            if is_user1:
+                message.is_visited_by_user1 = True
+                other_user = conversation.user2
+                serializer["am_I_user1"] = True
+            else:
+                message.is_visited_by_user2 = True
+                other_user = conversation.user1
+                serializer["am_I_user1"] = False
+            message.save()
+            if is_user1 == message.is_user1:
+                serializer = {**serializer, **UserSerializer(user).data}
+                serializer["user_id"] = user.id
+            else:
+                serializer = {**serializer, **UserSerializer(other_user).data}
+                serializer["user_id"] = other_user.id
+            messageList.append(serializer)
         
         return Response(messageList)
 
@@ -199,9 +198,9 @@ class Notifications(APIView):
         number_of_unseen = 0
         responseList = []
         for notification in notifications:
-        	responseList.append(NotificationSerializer(notification).data)
-        	if not notification.is_visited:
-        		number_of_unseen = number_of_unseen + 1
+            responseList.append(NotificationSerializer(notification).data)
+            if not notification.is_visited:
+                number_of_unseen = number_of_unseen + 1
 
         response = {}
         response["new_notifications"] = number_of_unseen
@@ -216,8 +215,8 @@ class Notifications(APIView):
 
         notifications = Notification.objects.filter(user_id=user_id, is_visited=False)
         for notification in notifications:
-        	notification.is_visited = True
-        	notification.save()
+            notification.is_visited = True
+            notification.save()
 
         return Response(status=status.HTTP_202_ACCEPTED)
 
