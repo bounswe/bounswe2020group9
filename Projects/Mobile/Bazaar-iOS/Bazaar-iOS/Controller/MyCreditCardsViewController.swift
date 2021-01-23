@@ -11,25 +11,29 @@ class MyCreditCardsViewController: UIViewController{
     
     @IBOutlet weak var creditCardsTableView: UITableView!
     var creditCardsArray:[CreditCardData] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         creditCardsTableView.layer.borderColor = #colorLiteral(red: 1, green: 0.6235294118, blue: 0, alpha: 1)
         self.creditCardsTableView.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
         self.creditCardsTableView.dataSource = self
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         APIManager().getCreditCards { (result) in
             switch result{
             case .success(let creditCards):
-                print(creditCards)
                 self.creditCardsArray = creditCards
                 self.creditCardsTableView.reloadData()
             case .failure(_):
-                print("olmadi")
+                let alertController = UIAlertController(title: "Alert!", message: "There was an error loading your credit cards, please try again later.", preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+                 self.present(alertController, animated: true, completion: nil)
             }
         }
     }
+    
     @IBAction func backButtonPressed(_ sender: UIButton) {
         self.dismiss(animated: true, completion: nil)
     }
@@ -53,6 +57,10 @@ extension MyCreditCardsViewController: CreditCardCellDelegate {
     func creditCardCellDidDeleteButtonPressed(cell: CreditCardCell) {
         if let index = self.creditCardsArray.firstIndex(where: {$0.id == cell.cardId}){
             DispatchQueue.main.async {
+                if let id = cell.cardId ,let owner = UserDefaults.standard.value(forKey: K.userIdKey) as? Int{
+                    APIManager().removeCreditCard(id: id, owner: owner) { (result) in
+                    }
+                }
                 self.creditCardsArray.remove(at: index)
                 self.creditCardsTableView.reloadData()
             }

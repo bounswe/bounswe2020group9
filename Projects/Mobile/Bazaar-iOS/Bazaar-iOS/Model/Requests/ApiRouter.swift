@@ -34,6 +34,7 @@ enum ApiRouter: URLRequestBuilder {
     case getAllVendors(str:String)
     case addNewCreditCard(owner:Int, nameOnCard:String, cardNumber:String, month:String, year:String, cvv:String, cardName:String)
     case getCreditCards
+    case removeCreditCard(id:Int, owner:Int)
 
   // MARK: - Path
     internal var path: String {
@@ -81,7 +82,7 @@ enum ApiRouter: URLRequestBuilder {
             return "api/user/googleuser/"
         case .getAllVendors:
             return "api/user/vendor/"
-        case .addNewCreditCard,.getCreditCards:
+        case .addNewCreditCard,.getCreditCards,.removeCreditCard:
             return "api/product/payment/"
         }
     }
@@ -154,6 +155,9 @@ enum ApiRouter: URLRequestBuilder {
             params["date_year"] = year
             params["cvv"] = cvv
             params["card_name"] = cardName
+        case .removeCreditCard(let id, let owner):
+            params["owner"] = owner
+            params["id"] = id
         default:
             break
         }
@@ -169,7 +173,7 @@ enum ApiRouter: URLRequestBuilder {
             if isCustomerLoggedIn {
                 headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
             }
-        case .addList, .deleteList, .deleteProductFromList , .editList, .addToList, .getUsersComment, .addNewCreditCard, .getCreditCards:
+        case .addList, .deleteList, .deleteProductFromList , .editList, .addToList, .getUsersComment, .addNewCreditCard, .getCreditCards, .removeCreditCard:
             headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
         case .getCart, .addToCart, .editAmountInCart, .deleteProductFromCart:
             headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
@@ -196,7 +200,7 @@ enum ApiRouter: URLRequestBuilder {
             return .post
         case .getCustomerLists, .getComments, .getUsersComment, .getCart, .getProfileInfo, .getAllVendors, .getCreditCards:
             return .get
-        case .deleteList, .deleteProductFromList,.deleteProductFromCart:
+        case .deleteList, .deleteProductFromList,.deleteProductFromCart, .removeCreditCard:
             return .delete
         case .editList,.editAmountInCart,.setProfileInfo:
             return .put

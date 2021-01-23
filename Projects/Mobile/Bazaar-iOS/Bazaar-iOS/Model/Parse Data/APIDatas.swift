@@ -148,3 +148,7 @@ struct CreditCardData:Codable {
     let cvv:String
     let card_name:String
 }
+
+struct removeCreditCardData: Codable{
+    let message: String
+}

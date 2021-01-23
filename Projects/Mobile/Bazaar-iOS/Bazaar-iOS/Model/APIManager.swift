@@ -570,4 +570,25 @@ struct APIManager {
             completionHandler(.failure(err))
         }
     }
+    
+    func removeCreditCard(id:Int, owner:Int,completionHandler: @escaping (Result<String ,Error>) -> Void) {
+        do {
+            let request = try ApiRouter.removeCreditCard(id: id, owner: owner).asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if (response.response?.statusCode != nil){
+                    guard let safeData = response.data else  {
+                        completionHandler(.failure(MyError.runtimeError("Error")))
+                        return
+                    }
+                    if let decodedData:removeCreditCardData = APIParse().parseJSON(safeData: safeData){
+                        completionHandler(.success(decodedData.message))
+                    }else {
+                        completionHandler(.failure(MyError.runtimeError("Failed to parse json ")))
+                    }
+                }
+            }
+        }catch let err {
+            completionHandler(.failure(err))
+        }
+    }
 }
