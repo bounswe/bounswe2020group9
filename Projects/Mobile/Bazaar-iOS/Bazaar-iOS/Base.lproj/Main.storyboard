@@ -3566,6 +3566,9 @@
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sco-mV-WWT">
                                         <rect key="frame" x="0.0" y="0.0" width="187" height="46.666666666666664"/>
+                                        <connections>
+                                            <segue destination="DkG-hC-XE4" kind="presentation" modalPresentationStyle="fullScreen" id="Kxk-JO-T4H"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -4682,6 +4685,9 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gBm-t0-2uk">
                                         <rect key="frame" x="20" y="45" width="50" height="50"/>
                                         <state key="normal" image="left_arrow_icon"/>
+                                        <connections>
+                                            <action selector="backButtonPressed:" destination="DkG-hC-XE4" eventType="touchUpInside" id="gcd-LW-pt6"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EBU-Lv-Pyq">
                                         <rect key="frame" x="298" y="55" width="96" height="30"/>
@@ -4720,7 +4726,7 @@
                                 <rect key="frame" x="20" y="120" width="374" height="702"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CreditCardCell" rowHeight="123" id="9wd-41-fX8" userLabel="AddressCell" customClass="AddressCell" customModule="Bazaar_iOS" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="AddressCell" rowHeight="123" id="9wd-41-fX8" userLabel="AddressCell" customClass="AddressCell" customModule="Bazaar_iOS" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="374" height="123"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="9wd-41-fX8" id="XAx-Vh-mSY">
@@ -4841,6 +4847,9 @@
                             <constraint firstItem="CrL-Uc-qmt" firstAttribute="leading" secondItem="sqj-2X-7Ql" secondAttribute="leading" id="rjI-Ni-7E5"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="myAddressesTableView" destination="ggF-jg-Vj9" id="qaR-qL-suE"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ENQ-TD-ufX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -4906,8 +4915,8 @@
         <image name="settings_icon_blue" width="50" height="50"/>
         <image name="trash_icon" width="100" height="100"/>
         <image name="update_icon" width="100" height="100"/>
-        <image name="xmark.circle" catalog="system" width="128" height="121"/>
         <image name="xmark.circle" width="13" height="13"/>
+        <image name="xmark.circle" catalog="system" width="128" height="121"/>
         <systemColor name="darkTextColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

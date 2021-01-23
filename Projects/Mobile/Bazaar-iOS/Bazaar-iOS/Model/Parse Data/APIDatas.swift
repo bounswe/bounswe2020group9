@@ -152,3 +152,15 @@ struct CreditCardData:Codable {
 struct removeCreditCardData: Codable{
     let message: String
 }
+
+struct AddressData:Codable {
+    let id:Int
+    let address_name:String
+    let address:String
+    let country:String
+    let city:String
+    let postal_code:Int
+    let longitude:Float
+    let latitude:Float
+}
+
