@@ -8,7 +8,8 @@
 import UIKit
 
 protocol AddressCellDelegate {
-    func  AddressCellDidDeleteButtonPressed(cell:AddressCell)
+    func  addressCellDidDeleteButtonPressed(cell:AddressCell)
+    func  addressCellDidUpdateButtonPressed(cell:AddressCell)
 }
 
 class AddressCell: UITableViewCell {
@@ -23,12 +24,12 @@ class AddressCell: UITableViewCell {
     @IBOutlet weak var countryNameLabel: UILabel!
     @IBOutlet weak var cityNameLabel: UILabel!
     @IBOutlet weak var postalCodeLabel: UILabel!
-    @IBOutlet weak var openAddressLabel: UILabel!
+    @IBOutlet weak var fullAddressLabel: UILabel!
     
     func setAddress(addressId:Int, addressName:String , openAddress:String, country:String, city:String, postalCode:Int,latitude:Float, longitude:Float, user:Int) -> AddressCell {
         self.addressId = addressId
         self.addressNameLabel.text = addressName
-        self.openAddressLabel.text = openAddress
+        self.fullAddressLabel.text = openAddress
         self.countryNameLabel.text = country
         self.cityNameLabel.text = city
         self.postalCodeLabel.text = "\(postalCode)"
@@ -43,9 +44,10 @@ class AddressCell: UITableViewCell {
     }
     
     @IBAction func updateButtonPressed(_ sender: UIButton) {
+        self.delegate?.addressCellDidUpdateButtonPressed(cell: self)
     }
     
     @IBAction func removeButtonPressed(_ sender: UIButton) {
-        self.delegate?.AddressCellDidDeleteButtonPressed(cell: self)
+        self.delegate?.addressCellDidDeleteButtonPressed(cell: self)
     }
 }

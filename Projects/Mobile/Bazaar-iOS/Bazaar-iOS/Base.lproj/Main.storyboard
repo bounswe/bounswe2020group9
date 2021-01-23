@@ -4710,7 +4710,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <segue destination="lcL-UI-E4l" kind="presentation" modalPresentationStyle="fullScreen" id="t6o-OU-sEV"/>
+                                            <action selector="addAddressButtonPressed:" destination="DkG-hC-XE4" eventType="touchUpInside" id="ERN-Hl-Zmn"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -4836,7 +4836,7 @@
                                             <outlet property="addressNameLabel" destination="mTe-mh-k5n" id="OdB-h3-yii"/>
                                             <outlet property="cityNameLabel" destination="VVp-d6-xDe" id="jWM-ds-DFv"/>
                                             <outlet property="countryNameLabel" destination="05u-A1-0ZM" id="mzC-Id-dwU"/>
-                                            <outlet property="openAddressLabel" destination="x2s-pP-Uag" id="zWv-b5-vCT"/>
+                                            <outlet property="fullAddressLabel" destination="x2s-pP-Uag" id="zWv-b5-vCT"/>
                                             <outlet property="postalCodeLabel" destination="VVU-2V-e8Y" id="NPP-jQ-Bcv"/>
                                         </connections>
                                     </tableViewCell>
@@ -4865,6 +4865,7 @@
                     </view>
                     <connections>
                         <outlet property="myAddressesTableView" destination="ggF-jg-Vj9" id="qaR-qL-suE"/>
+                        <segue destination="lcL-UI-E4l" kind="presentation" identifier="goToAddAddress" modalPresentationStyle="fullScreen" id="4d1-Zk-e60"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ENQ-TD-ufX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -5139,7 +5140,9 @@
                         <outlet property="cityTextField" destination="oKl-uk-HZz" id="IPn-GD-kAW"/>
                         <outlet property="countryTextField" destination="7y7-Dn-uZv" id="KaD-NO-02n"/>
                         <outlet property="fullAddressTextView" destination="2Md-i0-R3G" id="VgU-04-OGO"/>
+                        <outlet property="headerLabel" destination="83C-5n-dDU" id="FUu-Bc-f4U"/>
                         <outlet property="postalCodeTextField" destination="D4L-bj-QNQ" id="SoP-cB-NBy"/>
+                        <outlet property="saveButton" destination="GQt-nD-gZM" id="Gh8-SZ-0U2"/>
                         <segue destination="f8W-BH-naY" kind="presentation" identifier="AddAddressToMap" id="iKO-xp-CV1"/>
                     </connections>
                 </viewController>

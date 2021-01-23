@@ -8,6 +8,10 @@
 import UIKit
 import MapKit
 
+enum UpdateOrAddAddress:Int  {
+    case Update, Add
+}
+
 class AddNewAddressViewController: UIViewController {
     
     @IBOutlet weak var addressNameTextField: UITextField!
@@ -15,15 +19,33 @@ class AddNewAddressViewController: UIViewController {
     @IBOutlet weak var countryTextField: UITextField!
     @IBOutlet weak var cityTextField: UITextField!
     @IBOutlet weak var postalCodeTextField: UITextField!
+    @IBOutlet weak var headerLabel: UILabel!
+    @IBOutlet weak var saveButton: UIButton!
     
     var mapViewController = MapViewController()
     var addressAnnotation: MKPointAnnotation?
+    var processType:UpdateOrAddAddress?
+    var addressCell:AddressCell?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         fullAddressTextView.layer.borderColor = #colorLiteral(red: 0.9214980006, green: 0.9216085076, blue: 0.9214602709, alpha: 1)
     }
-
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if let processType = self.processType, let addressCell = self.addressCell {
+            if processType == .Update {
+                headerLabel.text = "Update The Address"
+                saveButton.setTitle(" Update Address ", for: .normal)
+                addressNameTextField.text = addressCell.addressNameLabel.text
+                fullAddressTextView.text = addressCell.fullAddressLabel.text
+                countryTextField.text = addressCell.countryNameLabel.text
+                cityTextField.text = addressCell.cityNameLabel.text
+                postalCodeTextField.text = addressCell.postalCodeLabel.text
+            }
+        }
+    }
+    
     @IBAction func backButtonPressed(_ sender: UIButton) {
         self.dismiss(animated: true, completion: nil)
     }
@@ -62,6 +84,18 @@ class AddNewAddressViewController: UIViewController {
                                 alertController.message = "Please click on the button(Get Country, City and PK from Map) above and select the location from the map"
                                 self.present(alertController, animated: true, completion: nil)
                             }else{
+                                if let processType = self.processType, processType == .Update , let addressId = self.addressCell?.addressId {
+                                    APIManager().updateCustomerAddress(addressId: addressId, addressName: addressName, fullAddress: fullAddress, country: country, city: city, postalCode: Int(pk) ?? 0, user: user) { (result) in
+                                        switch result {
+                                        case .success(_):
+                                            alertController.message = "Your new address has been successfully updated!"
+                                            self.present(alertController, animated: true, completion: nil)
+                                        case .failure(_):
+                                            alertController.message = "There was a problem updating the address!"
+                                            self.present(alertController, animated: true, completion: nil)
+                                        }
+                                    }
+                                }else {
                                 APIManager().addNewAddressForCustomer(addressName: addressName, fullAddress: fullAddress, country: country, city: city, postalCode: Int(pk) ?? 0, user: user) { (result) in
                                     switch result {
                                     case .success(_):
@@ -79,40 +113,41 @@ class AddNewAddressViewController: UIViewController {
             }
         }
     }
+}
+
+func getAddressFromLatLon(pdblLatitude: String, withLongitude pdblLongitude: String) {
+    var center : CLLocationCoordinate2D = CLLocationCoordinate2D()
+    let lat: Double = Double("\(pdblLatitude)")!
+    let lon: Double = Double("\(pdblLongitude)")!
+    let ceo: CLGeocoder = CLGeocoder()
+    center.latitude = lat
+    center.longitude = lon
     
-    func getAddressFromLatLon(pdblLatitude: String, withLongitude pdblLongitude: String) {
-        var center : CLLocationCoordinate2D = CLLocationCoordinate2D()
-        let lat: Double = Double("\(pdblLatitude)")!
-        let lon: Double = Double("\(pdblLongitude)")!
-        let ceo: CLGeocoder = CLGeocoder()
-        center.latitude = lat
-        center.longitude = lon
+    let loc: CLLocation = CLLocation(latitude:center.latitude, longitude: center.longitude)
+    
+    ceo.reverseGeocodeLocation(loc, completionHandler:{(placemarks, error) in
+        if (error != nil)
+        {
+            let alertController = UIAlertController(title: "Alert!", message: "We could not get your address information, please try again! You have to long press when selecting your address.", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+            self.present(alertController, animated: true, completion: nil)
+        }
+        let pm = placemarks! as [CLPlacemark]
         
-        let loc: CLLocation = CLLocation(latitude:center.latitude, longitude: center.longitude)
-        
-        ceo.reverseGeocodeLocation(loc, completionHandler:{(placemarks, error) in
-            if (error != nil)
-            {
-                let alertController = UIAlertController(title: "Alert!", message: "We could not get your address information, please try again! You have to long press when selecting your address.", preferredStyle: .alert)
-                alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
-                self.present(alertController, animated: true, completion: nil)
+        if pm.count > 0 {
+            let pm = placemarks![0]
+            if pm.administrativeArea != nil {
+                self.cityTextField.text = pm.administrativeArea
             }
-            let pm = placemarks! as [CLPlacemark]
-            
-            if pm.count > 0 {
-                let pm = placemarks![0]
-                if pm.administrativeArea != nil {
-                    self.cityTextField.text = pm.administrativeArea
-                }
-                if pm.country != nil {
-                    self.countryTextField.text = pm.country
-                }
-                if pm.postalCode != nil {
-                    self.postalCodeTextField.text = pm.postalCode
-                }
+            if pm.country != nil {
+                self.countryTextField.text = pm.country
             }
-        })
-    }
+            if pm.postalCode != nil {
+                self.postalCodeTextField.text = pm.postalCode
+            }
+        }
+    })
+}
 }
 //MARK: - Extension MapViewControllerDelegate
 extension AddNewAddressViewController:MapViewControllerDelegate{

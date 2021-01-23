@@ -11,6 +11,8 @@ class CustomerMyAddressesViewController: UIViewController {
     
     @IBOutlet weak var myAddressesTableView: UITableView!
     var myAddressesArray:[AddressData] = []
+    var processType:UpdateOrAddAddress = .Add
+    var addressCell:AddressCell?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,6 +23,7 @@ class CustomerMyAddressesViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        processType = .Add
         APIManager().getCustomerAddresses { (result) in
             switch result{
             case .success(let myAddresses):
@@ -36,6 +39,24 @@ class CustomerMyAddressesViewController: UIViewController {
     
     @IBAction func backButtonPressed(_ sender: UIButton) {
         self.dismiss(animated: true, completion: nil)
+    }
+    @IBAction func addAddressButtonPressed(_ sender: UIButton) {
+        performSegue(withIdentifier: "goToAddAddress", sender: nil)
+    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "goToAddAddress"  {
+            if processType == .Update{
+            if let destinationVC = segue.destination as? AddNewAddressViewController {
+                destinationVC.processType = .Update
+                destinationVC.addressCell = self.addressCell
+            }
+            }else {
+                if let destinationVC = segue.destination as? AddNewAddressViewController {
+                    destinationVC.processType = .Add
+                    destinationVC.addressCell = nil
+                }
+            }
+        }
     }
 }
 //MARK: - Extension: UITableViewDataSource
@@ -55,7 +76,13 @@ extension CustomerMyAddressesViewController: UITableViewDataSource {
 
 //MARK: - AddressCellDelegate
 extension CustomerMyAddressesViewController: AddressCellDelegate {
-    func AddressCellDidDeleteButtonPressed(cell: AddressCell) {
+    func addressCellDidUpdateButtonPressed(cell: AddressCell) {
+        self.processType = .Update
+        self.addressCell = cell
+        performSegue(withIdentifier: "goToAddAddress", sender: nil)
+    }
+    
+    func addressCellDidDeleteButtonPressed(cell: AddressCell) {
         if let index = self.myAddressesArray.firstIndex(where: {$0.id == cell.addressId}){
             DispatchQueue.main.async {
                 if let id = cell.addressId {
