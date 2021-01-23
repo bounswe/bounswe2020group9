@@ -4,6 +4,7 @@
 
 .summary-block {
   padding-left: 20px;
+  margin-top: 50px;
   & .summary-card {
 
     & .payment-info {
@@ -51,6 +52,16 @@
       margin-left: 20px;
       margin-bottom: 20px;
       
+      & .address-label {
+        max-width: 80px;
+        
+      }
+
+      & .edit-label {
+        text-align: right;
+        display: inline-block;
+      }
+
       & .add-new-address {
         display: inline-flex;
         padding-left: 20px;
@@ -123,14 +134,16 @@
     margin-right: 10px;
 
   }
-  & .add-or-save {
-    border-color: #F4A133;
-    background-color: #F4A133;
-    color: black;
-      &:hover {
-        background-color: #f1ca1a;
-  
-        color: black;
-    }
+
+}
+.add-or-save {
+  margin-top: 20px;
+  border-color: #F4A133!important;
+  background-color: #F4A133!important;
+  color: black!important;
+    &:hover {
+      background-color: #f1ca1a!important;
+
+      color: black!important  ;
   }
 }

@@ -18,12 +18,12 @@ export default class AddressCard extends Component {
       return (
         <div>
           <div hidden={!this.props.selected}>
-            {this.props.address.name}
+            {this.props.address.address_name}
           </div>
           <Card className="address-card">
             <Card.Body className="address-card-body overflow-hidden">
               <Card.Text>
-                {this.props.address.full_address}
+                {this.props.address.address}
               </Card.Text>
             </Card.Body>
             <Card.Footer className="address-card-footer">

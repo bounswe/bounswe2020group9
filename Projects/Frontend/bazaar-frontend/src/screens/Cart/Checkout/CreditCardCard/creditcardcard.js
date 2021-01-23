@@ -24,7 +24,7 @@ export default class CreditCardCard extends Component {
         return (
         <div>
           <div hidden={!this.props.selected}>
-            {this.props.creditCard.name}
+            {this.props.creditCard.card_name}
           </div>
           <Card className="creditcard-card">
             <Card.Body className="creditcard-card-body">
@@ -34,7 +34,7 @@ export default class CreditCardCard extends Component {
                     cvc={this.props.creditCard.cvc}
                     expiry={this.props.creditCard.expiry}
                     // focused={creditCard.focus}
-                    name={this.props.creditCard.owner_name}
+                    name={this.props.creditCard.name_on_card}
                     number={this.props.creditCard.card_id}
                   />
                 </div>

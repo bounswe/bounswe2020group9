@@ -1,6 +1,6 @@
 .creditcard-card {
 
-  
+  border-width: 0!important;
 
   & .creditcard-card-header {
 
@@ -9,14 +9,17 @@
 
   & .creditcard-card-body {
 
-    
+    padding: 0;
+    background-color: #e8ffff;
 
     & .credit-card {
 
-      zoom: 50%;
+      zoom: 60%;
 
     }
 
   }
+  
+
 
 }
