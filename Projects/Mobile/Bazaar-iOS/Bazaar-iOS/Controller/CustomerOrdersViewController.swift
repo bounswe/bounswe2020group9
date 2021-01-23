@@ -12,8 +12,13 @@ class CustomerOrdersViewController: UIViewController{
 
     @IBOutlet weak var ordersTableView: UITableView!
     //var allOrdersInstance = AllOrders.shared
-    var selectedCategoryName: String? //look again
+    
+    var allProductsInstance = AllProducts.shared
+    var allVendorsInstance = AllVendors.shared
+    
     var orders: [Product] = []
+    var products: [Product] = []
+    var vendors:[VendorData] = []
     
     var networkFailedAlert:UIAlertController = UIAlertController(title: "Error while retrieving orders", message: "We encountered a problem while retrieving the orders, please check your internet connection.", preferredStyle: .alert)
     
@@ -38,10 +43,10 @@ class CustomerOrdersViewController: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        selectedCategoryName = "Clothing"
         ordersTableView.dataSource = self
-        ordersTableView.delegate = self
-        // allOrdersInstance.delegate = self
+        allProductsInstance.delegate = self
+        allVendorsInstance.delegate = self
+        // allOrdersInstance. = self
         let okButton = UIAlertAction(title: "Retry", style: .cancel, handler: { action in
             // fetch orders
             //self.allOrdersInstance.fetchAllOrders()
@@ -52,32 +57,22 @@ class CustomerOrdersViewController: UIViewController{
             //startIndicator()
             self.allOrdersInstance.fetchAllOrders()
         }*/
+        if !(allProductsInstance.dataFetched) {
+            startIndicator()
+            self.allProductsInstance.fetchAllProducts()
+        }
+        if !(allVendorsInstance.dataFetched) {
+            startIndicator()
+            self.allVendorsInstance.fetchAllVendors()
+        }
         
     }
     
-   /*
-    func categorySelected () {
-        self.ordersTableView.reloadData()
-    }*/
     
     
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         dismiss(animated: true, completion: nil)
-        /*
-        if let productDetailVC = segue.destination as? ProductDetailViewController {
-            let indexPath = self.ordersTableView.indexPathForSelectedRow
-            if indexPath != nil {
-                let orders = allOrdersInstance.AllOrders.filter{$0.category.parent!.contains(selectedCategoryName!) || $0.category.name.contains(selectedCategoryName!)}
-                productDetailVC.product = orders[indexPath!.row]
-            }
-        } else if let vendorProfileVC = segue.destination as? VendorProfileForUserViewController {
-            let indexPath = self.ordersTableView.indexPathForSelectedRow
-            if indexPath != nil {
-                let vendor = allVendorsInstance.allVendors.filter{$0.company.contains(searchResults[indexPath!.row])}
-                vendorProfileVC.vendor = vendor[0]
-            }
-        }*/
     }
     
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
@@ -97,75 +92,72 @@ extension CustomerOrdersViewController:UITableViewDelegate,UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //return 10
         /*if tableView == ordersTableView {
-            return allOrdersInstance.All_Orders.filter{($0.category.parent?.contains(selectedCategoryName!))! || $0.category.name.contains(selectedCategoryName!)}.count
+            return allOrdersInstance.All_Orders.count
         }*/
-        return 10
+        return 5
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = ordersTableView.dequeueReusableCell(withIdentifier: "ReusableOrderCell", for: indexPath) as! OrderCell
         cell.ProductImage?.image = UIImage(named:"xmark.circle")
-        /*let filteredorders:[ProductData] = allOrdersInstance.All_Orders.filter{($0.category.parent?.contains(selectedCategoryName!))! || $0.category.name.contains(selectedCategoryName!)}*/
-        /*let product = filteredorders[indexPath.row]
-        cell.productNameLabel.text = product.name
-        cell.productNameLabel.font = UIFont.systemFont(ofSize: 15, weight: .black)
-        cell.productDescriptionLabel.text = product.brand
-        cell.productDescriptionLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
-        cell.productPriceLabel.text = "₺"+String(product.price)
-        cell.productPriceLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
+        //TODO change here
+        let filteredOrders:[ProductData] = allProductsInstance.allProducts
+        let filteredProducts:[ProductData] = allProductsInstance.allProducts
+        let filteredVendors:[VendorData] = allVendorsInstance.allVendors
+        let order = filteredOrders[indexPath.row]
         
-        if allOrdersInstance.allImages.keys.contains(product.id) {
-            cell.productImageView.image = allOrdersInstance.allImages[product.id]
-            cell.productImageView.contentMode = .scaleAspectFit
+        let product = filteredProducts[order.id]
+        cell.Name_BrandLabel.text = product.name + ", " + product.brand
+        cell.Name_BrandLabel.font = UIFont.systemFont(ofSize: 15, weight: .black)
+        cell.Price_StatusLabel.text = "₺" + String(product.price) + ", " + " order.status "
+        cell.Price_StatusLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
+        cell.VendorLabel.text = " Vendor Label"
+        cell.VendorLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
+        cell.AmountLabel.text = "Amount : " + String("order.amount")
+        cell.AmountLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
+        cell.DatesLabel.text = "Order Date: " + " order.date " + "Estimated Delivery : " + "some date here "
+        cell.DatesLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
+        cell.AdressLabel.text = "Order Adress: " + " order.adress "
+        cell.AdressLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
+        if allProductsInstance.allImages.keys.contains(product.id) {
+            cell.ProductImage.image = allProductsInstance.allImages[product.id]
+            cell.ProductImage.contentMode = .scaleAspectFit
             print("1: \(product.name)")
         } else {
             print("2: \(product.name)")
             if let url = product.picture {
                 do{
-                    try cell.productImageView.loadImageUsingCache(withUrl: url, forProduct: product)
-                    cell.productImageView.contentMode = .scaleAspectFit
+                    try cell.ProductImage.loadImageUsingCache(withUrl: url, forProduct: product)
+                    cell.ProductImage.contentMode = .scaleAspectFit
                 } catch let error {
                     print(error)
-                    cell.productImageView.image = UIImage(named:"xmark.circle")
-                    cell.productImageView.tintColor = UIColor.lightGray
-                    cell.productImageView.contentMode = .center
+                    cell.ProductImage.image = UIImage(named:"xmark.circle")
+                    cell.ProductImage.tintColor = UIColor.lightGray
+                    cell.ProductImage.contentMode = .center
                 }
             }
-        }*/
-        
+        }
         return cell
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        /*let filteredorders:[ProductData] = allOrdersInstance.All_Orders.filter{($0.category.parent?.contains(selectedCategoryName!))! || $0.category.name.contains(selectedCategoryName!)}
-        let product = filteredorders[indexPath.row]
-        print(product.name)*/
-        performSegue(withIdentifier: "mainToProductDetailSegue", sender: nil)
-        
-    }
-    
 }
-
-
-
-/*
-extension CustomerOrdersViewController: AllOrdersFetchDelegate {
-    func AllOrdersAreFetched() {
+extension CustomerOrdersViewController: AllProductsFetchDelegate {
+    func allProductsAreFetched() {
         self.stopIndicator()
         self.ordersTableView.reloadData()
     }
     
-    func ordersCannotBeFetched() {
+    func productsCannotBeFetched() {
         startIndicator()
         presentAlert()
         
     }
     
     func presentAlert() {
-        if allOrdersInstance.apiFetchError {
+        if allProductsInstance.apiFetchError {
             self.networkFailedAlert.message = "We couldn't connect to the network, please check your internet connection."
         }
-        if allOrdersInstance.jsonParseError {
+        if allProductsInstance.jsonParseError {
             self.networkFailedAlert.message = "There is an internal problem in the system."
         }
         if !self.networkFailedAlert.isBeingPresented {
@@ -174,7 +166,19 @@ extension CustomerOrdersViewController: AllOrdersFetchDelegate {
     }
 }
 
-*/
+extension CustomerOrdersViewController: AllVendorsFetchDelegate {
+    func allVendorsAreFetched() {
+        self.stopIndicator()
+        self.vendors = self.allVendorsInstance.allVendors
+    }
+    
+    func vendorsCannotBeFetched() {
+        startIndicator()
+    }
+}
+
+
+
 
 
 // MARK: - IndicatorView
@@ -200,18 +204,10 @@ extension CustomerOrdersViewController {
             //self.activityIndicator.isHidden = true
             //self.activityIndicator.stopAnimating()
             self.ordersTableView.isHidden = false
-            self.ordersTableView.isUserInteractionEnabled = true
             self.ordersTableView.reloadData()
             
         }
     }
 }
-
-/*
- protocol AllOrdersFetchDelegate {
-    func AllOrdersAreFetched()
-    func ordersCannotBeFetched()
-    func presentAlert()
-}*/
 
 
