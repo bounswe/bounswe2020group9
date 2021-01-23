@@ -5,6 +5,7 @@ import './App.css';
 
 //screens
 import ProfilePage from "./screens/Profile-page/profile-page";
+import UserPage from "./screens/Profile-page/user-page";
 import SignIn from "./screens/Sign-In/sign-in"
 import SignUp from "./screens/Sign-Up/sign-up"
 import Activate from "./screens/Sign-Up/activate"
@@ -73,6 +74,15 @@ function App() {
           <Header />
           <ProfilePage />
         </Route>
+        <Route
+          path="/user/:user_id"
+          render={(props) =>
+            <div>
+              <Header />
+              <UserPage {...props} />
+            </div>
+          }
+        />
         <Route path="/messages">
           <Header />
           <Messages />
@@ -89,41 +99,41 @@ function App() {
           <Header />
           <Inventory />
         </Route>
-        <Route 
-          path="/product/:id" 
-          render={(props) => 
+        <Route
+          path="/product/:id"
+          render={(props) =>
             <div>
               <Header />
               <ProductPage {...props} />
             </div>
         }
-        /> 
-        <Route 
-          path="/search=:keywords"  
-          render={(props) => 
+        />
+        <Route
+          path="/search=:keywords"
+          render={(props) =>
               <div>
                   <Header />
                   <SearchResults {...props} />
-              </div> 
-          } 
+              </div>
+          }
         />
-        <Route 
-          path="/category/:id"  
-          render={(props) => 
+        <Route
+          path="/category/:id"
+          render={(props) =>
               <div>
                   <Header />
                   <ViewCategory {...props} />
-              </div> 
-          } 
+              </div>
+          }
         />
-        <Route 
-          path="/cart"  
-          render={(props) => 
+        <Route
+          path="/cart"
+          render={(props) =>
               <div>
                   <Header />
                   <Cart {...props} />
-              </div> 
-          } 
+              </div>
+          }
         />
       </Switch>
 
