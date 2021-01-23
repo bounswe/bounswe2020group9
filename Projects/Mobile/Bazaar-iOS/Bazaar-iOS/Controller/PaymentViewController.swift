@@ -29,12 +29,39 @@ class PaymentViewController: UIViewController {
     var totalPrice: Int!
     
     var termsAccepted: Bool?
+    var creditCardsArray:[CreditCardData] = []
+    var cards:[String] = []
+    //var addressesArray:[AddressData] = []
+    //var addresses:[String] = []
     
     
 
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         self.navigationController?.navigationBar.backItem?.title = ""
+        
+        APIManager().getCreditCards { (result) in
+            switch result{
+            case .success(let creditCards):
+                self.creditCardsArray = creditCards
+                self.cards = ["Choose from Cards"] + (self.creditCardsArray.map { $0.card_name })
+                self.cardsDropdown!.dataSource = self.cards
+            case .failure(_):
+                let alertController = UIAlertController(title: "Alert!", message: "There was an error loading your credit cards, please try again later.", preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+                 self.present(alertController, animated: true, completion: nil)
+            }
+        }
+        
+        self.termsView.bringSubviewToFront(contractTextView)
+        
+        //getAddresses
+        //self.addressesArray = addr
+        //self.addresses = ["Choose from Addresses"] + (self.addressesArray.map { $0.address_name })
+        //self.addressDropDown!.dataSource = self.addresses
+        
+        
     }
     
     override func viewDidLoad() {
@@ -42,9 +69,11 @@ class PaymentViewController: UIViewController {
         
         //contractLabel.sizeToFit()
         
+        
+        
         if let contractUrl = Bundle.main.url(forResource: "DistanceSellingAgreement", withExtension: "txt") {
             if let contract = try? String(contentsOf: contractUrl) {
-                contractTextView.text = contract
+                //contractTextView.text = contract
             }
         }
         
@@ -78,17 +107,13 @@ class PaymentViewController: UIViewController {
                     self.chooseAddressButton.setTitle(item, for: controlState)
                }
         }
-        
-        let cards = ["Choose from Cards"] + ["ben","anne"]
-        // let cards = ["Choose a Brand"] + Array(Set(AllProducts.shared.allProducts.map{$0.brand}))
-        
+       
         cardsDropdown = DropDown(anchorView: cardInfoView)
-        cardsDropdown!.dataSource = cards
         cardsDropdown!.direction = .bottom
         cardsDropdown?.cancelAction = {
             let controlStates: Array<UIControl.State> = [.normal, .highlighted, .disabled, .selected, .focused, .application, .reserved]
                for controlState in controlStates {
-                    self.chooseCardButton.setTitle(cards[0], for: controlState)
+                self.chooseCardButton.setTitle(self.cards[0], for: controlState)
                }
         }
         cardsDropdown?.selectionAction = {  (index, item) in
