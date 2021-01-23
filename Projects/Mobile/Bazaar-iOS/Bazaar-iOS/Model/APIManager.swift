@@ -217,34 +217,27 @@ struct APIManager {
             completionHandler(nil)
         }
     }
-    /*
-    func getCustomerOrders(userId:Int, completionHandler: @escaping ([ProductData]?) -> Void) {
+
+    func getCustomerOrders( completionHandler: @escaping (Result<[OrderData] , Error>) -> Void) {
         do {
-            let request = try ApiRouter.getCustomerOrders(userId: userId).asURLRequest()
+            let request = try ApiRouter.getCustomerOrders.asURLRequest()
             AF.request(request).responseJSON { (response) in
                 if (response.response?.statusCode != nil){
                     guard let safeData = response.data else  {
-                        completionHandler(nil)
+                        completionHandler(.failure(MyError.runtimeError("Error")))
                         return
                     }
-                    do {
-                        let allOrders = try JSONDecoder().decode([ProductData].self, from: response.data!)
-                        AllOrders.shared.jsonParseError = false
-                        AllOrders.shared.apiFetchError = false
-                        AllOrders.shared.dataFetched = true
-                        completionHandler(allOrders)
-                    } catch {
-                        print("error while decoding JSON for all products")
-                        AllOrders.shared.jsonParseError = true
-                        AllOrders.shared.dataFetched = false
-                        completionHandler(nil)
+                    if let decodedData:[OrderData] = APIParse().parseJSON(safeData: safeData){
+                        completionHandler(.success(decodedData))
+                    }else {
+                        completionHandler(.failure(MyError.runtimeError("Error")))
                     }
                 }
             }
         }catch let err {
-            completionHandler(nil)
+            completionHandler(.failure(err))
         }
-    }*/
+    }
     
     func getCustomerLists(userId:Int, isCustomerLoggedIn:Bool, completionHandler: @escaping (Result<[CustomerListData] , Error>) -> Void) {
         do {

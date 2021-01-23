@@ -32,7 +32,7 @@ enum ApiRouter: URLRequestBuilder {
     case search(filterType: String, sortType: String, searchWord: String)
     case googleSignIn(userName:String, token:String, firstName:String, lastName:String)
     case getAllVendors(str:String)
-    case getCustomerOrders(userId:Int)
+    case getCustomerOrders
 
   // MARK: - Path
     internal var path: String {
