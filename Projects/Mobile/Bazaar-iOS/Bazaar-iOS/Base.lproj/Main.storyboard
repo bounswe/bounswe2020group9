@@ -3727,6 +3727,9 @@
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jRF-oN-fH7">
                                         <rect key="frame" x="0.0" y="0.0" width="187" height="47"/>
+                                        <connections>
+                                            <action selector="deleteMyAccountButtonPressed:" destination="L5V-jH-uVD" eventType="touchUpInside" id="KXJ-8t-jle"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -3794,6 +3797,7 @@
                         <outlet property="firstNameTextField" destination="RO7-1V-2LN" id="64s-6Y-jgz"/>
                         <outlet property="frameView" destination="e3Y-4l-TEa" id="nko-2g-hjW"/>
                         <outlet property="lastNameTextField" destination="Bsu-dS-L4M" id="86B-md-c55"/>
+                        <outlet property="logoutButton" destination="ZGQ-1K-nZt" id="cjl-WE-QBp"/>
                         <outlet property="myAddressView" destination="oMM-Ll-Lf6" id="hVH-pg-c8b"/>
                         <outlet property="myCreditCardsView" destination="pCd-8Q-98Y" id="axP-wa-MyN"/>
                         <outlet property="newPasswordAgainTextField" destination="p9X-aT-NCb" id="L1D-R5-AGA"/>
@@ -4699,6 +4703,9 @@
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Yc-7X-gyF">
                                         <rect key="frame" x="0.0" y="0.0" width="187" height="47"/>
+                                        <connections>
+                                            <action selector="deleteMyAccountButtonPressed:" destination="Dhh-Hn-nyM" eventType="touchUpInside" id="OJs-t3-sya"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -4763,6 +4770,7 @@
                         <outlet property="firstNameTextField" destination="Qo1-nd-CJs" id="fab-UF-hZO"/>
                         <outlet property="infoView" destination="Aq7-l0-bIy" id="U7L-GL-KNh"/>
                         <outlet property="lastNameTextField" destination="ust-9x-ris" id="KiL-xS-KbL"/>
+                        <outlet property="logoutButton" destination="Sm9-Ng-hGg" id="VAg-fG-wM2"/>
                         <outlet property="myAddressView" destination="LBo-CM-0Z8" id="dxH-e0-PdR"/>
                         <outlet property="newPasswordAgainTextField" destination="AEH-hL-4dK" id="iSm-c5-fVc"/>
                         <outlet property="newPasswordTextField" destination="EIZ-fM-cgy" id="bUh-8J-rYW"/>
