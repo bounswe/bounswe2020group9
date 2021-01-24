@@ -314,5 +314,3 @@ protocol AllOrdersVendorFetchDelegate {
     func ordersCannotBeFetched()
 }
 
-    
-}

@@ -34,6 +34,7 @@ enum ApiRouter: URLRequestBuilder {
     case getAllVendors(str:String)
     case getCustomerOrders
     case deleteOrder(delivery_id:Int)
+    case getVendorOrders
 
   // MARK: - Path
     internal var path: String {
@@ -85,6 +86,9 @@ enum ApiRouter: URLRequestBuilder {
             return "api/product/order/"
         case .deleteOrder:
             return "api/product/order/"
+        case .getVendorOrders:
+            return "api/product/vendor_order/"
+            
         }
         
     }
@@ -166,7 +170,7 @@ enum ApiRouter: URLRequestBuilder {
             if isCustomerLoggedIn {
                 headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
             }
-        case .addList, .deleteList, .deleteProductFromList , .editList, .addToList, .getUsersComment,.getCustomerOrders,.deleteOrder:
+        case .addList, .deleteList, .deleteProductFromList , .editList, .addToList, .getUsersComment,.getCustomerOrders,.deleteOrder,.getVendorOrders:
             headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
         case .getCart, .addToCart, .editAmountInCart, .deleteProductFromCart:
             headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
@@ -191,7 +195,7 @@ enum ApiRouter: URLRequestBuilder {
         switch self {
         case .authenticate, .addList,.addToList, .signUpCustomer, .signUpVendor, .resetPasswordEmail, .addToCart,.updatePassword, .googleSignIn:
             return .post
-        case .getCustomerLists, .getComments, .getUsersComment, .getCart, .getProfileInfo, .getAllVendors, .getCustomerOrders:
+        case .getCustomerLists, .getComments, .getUsersComment, .getCart, .getProfileInfo, .getAllVendors, .getCustomerOrders , .getVendorOrders:
             return .get
         case .deleteList, .deleteProductFromList,.deleteProductFromCart:
             return .delete

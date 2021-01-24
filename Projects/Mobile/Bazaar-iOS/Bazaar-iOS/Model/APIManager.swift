@@ -250,6 +250,37 @@ struct APIManager {
         }
     }
     
+    func getVendorOrders( completionHandler: @escaping ([OrderData]?) -> Void) {
+        do {
+            let request = try ApiRouter.getVendorOrders.asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if (response.response?.statusCode != nil){
+                    guard let safeData = response.data else  {
+                        AllOrders_vendor.shared.jsonParseError = true
+                        AllOrders_vendor.shared.dataFetched = false
+                        completionHandler(nil)
+                        return
+                    }
+                    if let decodedData:[OrderData] = APIParse().parseJSON(safeData: safeData){
+                        AllOrders_vendor.shared.jsonParseError = false
+                        AllOrders_vendor.shared.apiFetchError = false
+                        AllOrders_vendor.shared.dataFetched = true
+                        completionHandler(decodedData)
+                    }else {
+                        AllOrders_vendor.shared.jsonParseError = true
+                        AllOrders_vendor.shared.dataFetched = false
+                        completionHandler(nil)
+                    }
+                }
+            }
+        }catch let err {
+            print(err)
+            AllOrders_vendor.shared.jsonParseError = true
+            AllOrders_vendor.shared.dataFetched = false
+            completionHandler(nil)
+        }
+    }
+    
     func deleteOrder(delivery_id:Int , completionHandler: @escaping (Result<String ,Error>) -> Void) {
         do {
             let request = try ApiRouter.deleteOrder(delivery_id: delivery_id).asURLRequest()
