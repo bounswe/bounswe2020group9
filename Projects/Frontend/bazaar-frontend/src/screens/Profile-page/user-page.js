@@ -232,13 +232,14 @@ export default class ProfilePage extends Component {
     })
 
     let Comments = this.state.comments.map((comment)=>{
+      let product = comment.product;
       return (
         <div className="row">
           <div className="col-8">{comment.product.name}</div>
           <div className="col-4">
             <Link
               className="btn btn-info col-12"
-              to={ {pathname: `/product/${comment.product.id}`, state: comment.product }}>
+              to={ {pathname: `/product/${comment.product.id}`, state: { product } }}>
               View Product</Link>
           </div>
         </div>
