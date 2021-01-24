@@ -37,8 +37,7 @@ class AddressCell: UITableViewCell {
         self.longitude = longitude
         self.user = user
         self.addressCellView.layer.shadowColor = UIColor.black.cgColor
-        self.addressCellView.layer.shadowOpacity = 0.2
-        self.addressCellView.layer.shadowOffset = CGSize(width: 3, height: 3)
+        self.addressCellView.layer.shadowOpacity = 0.5
         self.addressCellView.layer.shadowRadius = 3
         return self
     }

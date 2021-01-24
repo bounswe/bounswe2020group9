@@ -3816,10 +3816,10 @@
                                 <rect key="frame" x="20" y="120" width="374" height="702"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="CreditCardCell" rowHeight="123" id="y4s-Xk-1Gp" customClass="CreditCardCell" customModule="Bazaar_iOS" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="CreditCardCell" rowHeight="123" id="y4s-Xk-1Gp" customClass="CreditCardCell" customModule="Bazaar_iOS" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="374" height="123"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="y4s-Xk-1Gp" id="wAX-IU-Xy3">
+                                        <tableViewCellContentView key="contentView" opaque="NO" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="y4s-Xk-1Gp" id="wAX-IU-Xy3">
                                             <rect key="frame" x="0.0" y="0.0" width="374" height="123"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
@@ -3834,8 +3834,8 @@
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yDS-4B-ZnE" userLabel="Card Name">
                                                             <rect key="frame" x="324" y="12" width="0.0" height="35"/>
-                                                            <fontDescription key="fontDescription" name="Poppins-Medium" family="Poppins" pointSize="13"/>
-                                                            <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <fontDescription key="fontDescription" name="Poppins-Medium" family="Poppins" pointSize="15"/>
+                                                            <color key="textColor" red="0.99710637329999996" green="0.63249832390000005" blue="0.01492969599" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C5z-Gk-b7h" userLabel="Card Number">
@@ -4729,10 +4729,10 @@
                                 <rect key="frame" x="20" y="120" width="374" height="702"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="AddressCell" rowHeight="123" id="9wd-41-fX8" userLabel="AddressCell" customClass="AddressCell" customModule="Bazaar_iOS" customModuleProvider="target">
+                                    <tableViewCell contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="AddressCell" rowHeight="123" id="9wd-41-fX8" userLabel="AddressCell" customClass="AddressCell" customModule="Bazaar_iOS" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="374" height="123"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="9wd-41-fX8" id="XAx-Vh-mSY">
+                                        <tableViewCellContentView key="contentView" opaque="NO" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="9wd-41-fX8" id="XAx-Vh-mSY">
                                             <rect key="frame" x="0.0" y="0.0" width="374" height="123"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
@@ -4741,8 +4741,8 @@
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mTe-mh-k5n" userLabel="Address Name">
                                                             <rect key="frame" x="167" y="10" width="0.0" height="0.0"/>
-                                                            <fontDescription key="fontDescription" name="Poppins-Medium" family="Poppins" pointSize="13"/>
-                                                            <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            <fontDescription key="fontDescription" name="Poppins-Medium" family="Poppins" pointSize="15"/>
+                                                            <color key="textColor" red="0.99710637329999996" green="0.63249832390000005" blue="0.01492969599" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="05u-A1-0ZM" userLabel="Country Name">

@@ -96,14 +96,15 @@ class AddNewAddressViewController: UIViewController {
                                         }
                                     }
                                 }else {
-                                APIManager().addNewAddressForCustomer(addressName: addressName, fullAddress: fullAddress, country: country, city: city, postalCode: Int(pk) ?? 0, user: user) { (result) in
-                                    switch result {
-                                    case .success(_):
-                                        alertController.message = "Your new address has been successfully added!"
-                                        self.present(alertController, animated: true, completion: nil)
-                                    case .failure(_):
-                                        alertController.message = "There was a problem adding the new address!"
-                                        self.present(alertController, animated: true, completion: nil)
+                                    APIManager().addNewAddressForCustomer(addressName: addressName, fullAddress: fullAddress, country: country, city: city, postalCode: Int(pk) ?? 0, user: user) { (result) in
+                                        switch result {
+                                        case .success(_):
+                                            alertController.message = "Your new address has been successfully added!"
+                                            self.present(alertController, animated: true, completion: nil)
+                                        case .failure(_):
+                                            alertController.message = "There was a problem adding the new address!"
+                                            self.present(alertController, animated: true, completion: nil)
+                                        }
                                     }
                                 }
                             }
@@ -113,41 +114,40 @@ class AddNewAddressViewController: UIViewController {
             }
         }
     }
-}
-
-func getAddressFromLatLon(pdblLatitude: String, withLongitude pdblLongitude: String) {
-    var center : CLLocationCoordinate2D = CLLocationCoordinate2D()
-    let lat: Double = Double("\(pdblLatitude)")!
-    let lon: Double = Double("\(pdblLongitude)")!
-    let ceo: CLGeocoder = CLGeocoder()
-    center.latitude = lat
-    center.longitude = lon
     
-    let loc: CLLocation = CLLocation(latitude:center.latitude, longitude: center.longitude)
-    
-    ceo.reverseGeocodeLocation(loc, completionHandler:{(placemarks, error) in
-        if (error != nil)
-        {
-            let alertController = UIAlertController(title: "Alert!", message: "We could not get your address information, please try again! You have to long press when selecting your address.", preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
-            self.present(alertController, animated: true, completion: nil)
-        }
-        let pm = placemarks! as [CLPlacemark]
+    func getAddressFromLatLon(pdblLatitude: String, withLongitude pdblLongitude: String) {
+        var center : CLLocationCoordinate2D = CLLocationCoordinate2D()
+        let lat: Double = Double("\(pdblLatitude)")!
+        let lon: Double = Double("\(pdblLongitude)")!
+        let ceo: CLGeocoder = CLGeocoder()
+        center.latitude = lat
+        center.longitude = lon
         
-        if pm.count > 0 {
-            let pm = placemarks![0]
-            if pm.administrativeArea != nil {
-                self.cityTextField.text = pm.administrativeArea
+        let loc: CLLocation = CLLocation(latitude:center.latitude, longitude: center.longitude)
+        
+        ceo.reverseGeocodeLocation(loc, completionHandler:{(placemarks, error) in
+            if (error != nil)
+            {
+                let alertController = UIAlertController(title: "Alert!", message: "We could not get your address information, please try again! You have to long press when selecting your address.", preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+                self.present(alertController, animated: true, completion: nil)
             }
-            if pm.country != nil {
-                self.countryTextField.text = pm.country
+            let pm = placemarks! as [CLPlacemark]
+            
+            if pm.count > 0 {
+                let pm = placemarks![0]
+                if pm.administrativeArea != nil {
+                    self.cityTextField.text = pm.administrativeArea
+                }
+                if pm.country != nil {
+                    self.countryTextField.text = pm.country
+                }
+                if pm.postalCode != nil {
+                    self.postalCodeTextField.text = pm.postalCode
+                }
             }
-            if pm.postalCode != nil {
-                self.postalCodeTextField.text = pm.postalCode
-            }
-        }
-    })
-}
+        })
+    }
 }
 //MARK: - Extension MapViewControllerDelegate
 extension AddNewAddressViewController:MapViewControllerDelegate{
