@@ -472,21 +472,12 @@ class CommentsOfProductAPIView(APIView):
 
 class CommentsOfUserAPIView(APIView):
 
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request):
-        try:
-            user_id = request.user.id
-        except:
-            return Response({"message": "Token is not valid."}, status=status.HTTP_401_UNAUTHORIZED)
-        comments = Comment.objects.filter(customer_id=user_id)
+    def get(self, request, id):
+        
+        comments = Comment.objects.filter(customer_id=id)
         serializers = []
         for comment in comments:
-            if comment.is_anonymous:
-                comment.customer = None
-                serializers.append(CommentSerializer(comment).data)
-            else:
+            if not comment.is_anonymous:
                 serializer = CommentSerializer(comment).data
                 serializers.append(serializer)
         return Response(serializers)
