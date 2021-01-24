@@ -37,7 +37,7 @@ export default class Checkout extends Component {
       expiryPastValue: '',
       costs: [0,0,0],
       cart: [],
-      isHiddenStates: [true, true, true, true, true, true, true, true, true]
+      isHiddenStates: [true, true, true, true, true, true, true, true, true, true]
     }
   }
 
