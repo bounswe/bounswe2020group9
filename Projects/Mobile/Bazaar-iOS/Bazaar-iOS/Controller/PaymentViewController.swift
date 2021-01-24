@@ -27,6 +27,7 @@ class PaymentViewController: UIViewController {
     
     var totalPriceText: String!
     var totalPrice: Int!
+    var deliveries:[Int:Int]!
     
     var termsAccepted: Bool?
     var creditCardsArray:[CreditCardData] = []
@@ -73,7 +74,7 @@ class PaymentViewController: UIViewController {
         
         if let contractUrl = Bundle.main.url(forResource: "DistanceSellingAgreement", withExtension: "txt") {
             if let contract = try? String(contentsOf: contractUrl) {
-                //contractTextView.text = contract
+                contractTextView.text = contract
             }
         }
         
@@ -147,7 +148,7 @@ class PaymentViewController: UIViewController {
     }
     
     @IBAction func didBuyButtonPressed(_ sender: Any) {
-        let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
+        let alertController = UIAlertController(title: nil, message: "Message", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
         
         if let accepted = self.termsAccepted {
@@ -161,12 +162,25 @@ class PaymentViewController: UIViewController {
                 alertController.message = "Please choose one of your saved credit cards or add a new one."
                 self.present(alertController, animated: true, completion: nil)
             } else{
-                print("Hello", chooseAddressButton.currentTitle, chooseCardButton.currentTitle)
+                if let userId =  UserDefaults.standard.value(forKey: K.userIdKey) as? Int{
+                    APIManager().placeOrder(userId: userId, products: deliveries) { (result) in
+                        switch result{
+                        case .success(_):
+                            alertController.message = "Your order is successfully placed. Go to \"My Orders\" page in Profile to track your orders."
+                            self.present(alertController, animated: true, completion: nil)
+                            self.navigationController?.popViewController(animated: true)
+                        case .failure(_):
+                            let alertController = UIAlertController(title: "Alert!", message: "Order could not be placed successfully. Please be sure that you have entered valid information.", preferredStyle: .alert)
+                            alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+                            self.present(alertController, animated: true, completion: nil)
+                        }
+                    }
+                }
                 
-                //PAYMENT
             }
+            
         } else {
-            alertController.message = "You need to accept the Terms"
+            alertController.message = "You need to accept \"Distance Selling Agreement\""
             self.present(alertController, animated: true, completion: nil)
         }
     }

@@ -35,6 +35,7 @@ enum ApiRouter: URLRequestBuilder {
     case addNewCreditCard(owner:Int, nameOnCard:String, cardNumber:String, month:String, year:String, cvv:String, cardName:String)
     case getCreditCards
     case removeCreditCard(id:Int, owner:Int)
+    case placeOrder(userId:Int, products:[Int:Int])
 
   // MARK: - Path
     internal var path: String {
@@ -84,6 +85,8 @@ enum ApiRouter: URLRequestBuilder {
             return "api/user/vendor/"
         case .addNewCreditCard,.getCreditCards,.removeCreditCard:
             return "api/product/payment/"
+        case .placeOrder:
+            return "api/product/order/"
         }
     }
 
@@ -158,6 +161,15 @@ enum ApiRouter: URLRequestBuilder {
         case .removeCreditCard(let id, let owner):
             params["owner"] = owner
             params["id"] = id
+        case .placeOrder(let userId, let products):
+            params["user_id"] = userId
+            var arr:[[String:Int]] = []
+            for p in products {
+                let d = ["product":p.key, "amount":p.value]
+                arr.append(d)
+            }
+            params["deliveries"] = arr
+            print(params)
         default:
             break
         }
@@ -175,7 +187,7 @@ enum ApiRouter: URLRequestBuilder {
             }
         case .addList, .deleteList, .deleteProductFromList , .editList, .addToList, .getUsersComment, .addNewCreditCard, .getCreditCards, .removeCreditCard:
             headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
-        case .getCart, .addToCart, .editAmountInCart, .deleteProductFromCart:
+        case .getCart, .addToCart, .editAmountInCart, .deleteProductFromCart, .placeOrder:
             headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
         case .getProfileInfo(let authorization):
             headers["Authorization"] = "Token \(authorization)"
@@ -196,7 +208,7 @@ enum ApiRouter: URLRequestBuilder {
     // MARK: - Methods
     internal var method: HTTPMethod {
         switch self {
-        case .authenticate, .addList,.addToList, .signUpCustomer, .signUpVendor, .resetPasswordEmail, .addToCart,.updatePassword, .googleSignIn, .addNewCreditCard:
+        case .authenticate, .addList,.addToList, .signUpCustomer, .signUpVendor, .resetPasswordEmail, .addToCart,.updatePassword, .googleSignIn, .addNewCreditCard, .placeOrder:
             return .post
         case .getCustomerLists, .getComments, .getUsersComment, .getCart, .getProfileInfo, .getAllVendors, .getCreditCards:
             return .get
@@ -204,10 +216,9 @@ enum ApiRouter: URLRequestBuilder {
             return .delete
         case .editList,.editAmountInCart,.setProfileInfo:
             return .put
-        case .updatePassword:
-            return .post
         case .search:
             return .post
         }
     }
+    
 }

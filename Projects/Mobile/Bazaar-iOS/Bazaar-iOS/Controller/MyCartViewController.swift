@@ -164,6 +164,11 @@ class MyCartViewController: UIViewController {
         }
         else if let paymentVC = segue.destination as? PaymentViewController {
             paymentVC.totalPriceText = self.totalPriceLabel.text
+            
+            let myDict = self.userCart.reduce(into: [Int: Int]()) {
+                $0[$1.product] = $1.amount
+            }
+            paymentVC.deliveries = myDict
         }
      }
      
