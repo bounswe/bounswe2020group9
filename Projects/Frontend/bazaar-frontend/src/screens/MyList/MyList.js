@@ -86,12 +86,52 @@ export default class MyList extends Component {
     let productCards = this.state.productList.products?.map((product) => {
       return (
         <Col sm="3">
+          <button
+            className="listProductRemoveButton"
+            onClick={(event) => this.onDeleteListProductButton(event, product)}
+          >
+            <img src={removeListIcon} />
+          </button>
           <ProductCard product={product}></ProductCard>
         </Col>
       );
     });
 
     return <Row>{productCards}</Row>;
+  }
+
+  onDeleteListProductButton(event, product) {
+    let myCookie = read_cookie("user");
+
+    const headers = {
+      Authorization: `Token ${myCookie.token}`,
+    };
+
+    const data = {
+      product_id: product.id,
+    };
+
+    console.log(data);
+
+    axios
+      .delete(
+        serverUrl +
+          `api/user/${myCookie.user_id}/list/${this.state.whichList}/edit/`,
+        { headers: headers, data: data }
+      )
+      .then((res) => {
+        axios
+          .get(
+            serverUrl +
+              `api/user/${myCookie.user_id}/list/${this.state.whichList}/`,
+            {
+              headers: headers,
+            }
+          )
+          .then((res) => {
+            this.setState({ productList: res.data });
+          });
+      });
   }
 
   onAddListSubmit = () => {
@@ -180,7 +220,6 @@ export default class MyList extends Component {
 
     return (
       <div className="background">
-        <CategoryBar></CategoryBar>
         <Row className={"listWrapper"}>
           <Col xs={3} className={"lists"}>
             <Row>

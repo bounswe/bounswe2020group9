@@ -287,7 +287,7 @@ export default class Productpage extends Component {
                       </button>
                     </Col>
                     <Col>
-                      <a
+                      <button
                         className={"nav-link dropdown-toggle productButton"}
                         id="ddlList"
                         data-toggle="dropdown"
@@ -297,7 +297,7 @@ export default class Productpage extends Component {
                       >
                         <span>Add to List</span>
                         <img src={AddToListIcon} />
-                      </a>
+                      </button>
                       <div className="dropdown-menu" aria-labelledby="ddlList">
                         {listItems}
                       </div>

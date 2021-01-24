@@ -1,4 +1,5 @@
 .listWrapper {
+  padding-top: 3rem;
   margin-left: 0rem !important;
   & .lists {
     & h2 {
@@ -62,5 +63,13 @@
     & img {
       max-width: 2rem;
     }
+  }
+}
+
+.listProductRemoveButton {
+  border: 0rem;
+  background: transparent;
+  & img {
+    max-width: 1.5rem;
   }
 }
