@@ -629,6 +629,7 @@ class AllVendors {
                 self.allVendors = vendors
                 self.delegate?.allVendorsAreFetched()
             case .failure(let err):
+                print(err)
                 self.dataFetched = false
                 self.allVendors = []
                 self.delegate?.vendorsCannotBeFetched()

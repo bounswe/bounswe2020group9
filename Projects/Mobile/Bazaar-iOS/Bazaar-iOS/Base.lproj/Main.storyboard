@@ -3533,7 +3533,7 @@
                                         <rect key="frame" x="20" y="45" width="50" height="50"/>
                                         <state key="normal" image="left_arrow_icon"/>
                                         <connections>
-                                            <action selector="backButtonPressed:" destination="Ea4-C5-o3e" eventType="touchUpInside" id="Sa6-9i-gHK"/>
+                                            <action selector="backButtonPressed:" destination="Ea4-C5-o3e" eventType="touchUpInside" id="qmV-5Q-oH3"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -3565,7 +3565,7 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="ordersTableView" destination="w4G-iP-HTX" id="gUO-hf-So8"/>
+                        <outlet property="ordersTableView" destination="w4G-iP-HTX" id="KoI-tE-y2b"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fHo-BA-6rV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -4073,8 +4073,8 @@
         <image name="right_arrow_blue" width="64" height="64"/>
         <image name="settings_icon" width="50" height="50"/>
         <image name="settings_icon_blue" width="50" height="50"/>
-        <image name="xmark.circle" width="13" height="13"/>
         <image name="xmark.circle" catalog="system" width="128" height="121"/>
+        <image name="xmark.circle" width="13" height="13"/>
         <systemColor name="darkTextColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
