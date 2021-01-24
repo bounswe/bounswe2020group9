@@ -175,3 +175,15 @@ struct AddressData:Codable {
     let latitude:Float
 }
 
+struct NotificationsData:Codable {
+    let new_notifications:Int
+    let notifications:[Notification]
+}
+struct Notification:Codable {
+    let id:Int
+    let body:String
+    let timestamp:String
+    let type:String
+    let is_visited:Bool
+    let user:Int
+}
