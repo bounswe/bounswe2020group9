@@ -2342,10 +2342,57 @@
                     <view key="view" contentMode="scaleToFill" id="5dg-js-nb1">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4jt-dV-Fkz" userLabel="Header">
+                                <rect key="frame" x="0.0" y="44" width="414" height="100"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="My Orders" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r89-2I-QwY">
+                                        <rect key="frame" x="167" y="59.666666666666679" width="80" height="20.333333333333336"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0KQ-Xs-9gj">
+                                        <rect key="frame" x="20" y="45" width="50" height="50"/>
+                                        <state key="normal" image="left_arrow_icon"/>
+                                        <connections>
+                                            <action selector="backButtonPressed:" destination="Tqt-58-jBo" eventType="touchUpInside" id="5lK-n7-yYK"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemGray6Color"/>
+                                <constraints>
+                                    <constraint firstItem="0KQ-Xs-9gj" firstAttribute="leading" secondItem="4jt-dV-Fkz" secondAttribute="leading" constant="20" id="3N7-Wy-gMC"/>
+                                    <constraint firstItem="r89-2I-QwY" firstAttribute="top" secondItem="4jt-dV-Fkz" secondAttribute="top" constant="59.666666666666679" id="FHB-aK-KK6"/>
+                                    <constraint firstAttribute="height" constant="100" id="NUQ-01-V7G"/>
+                                    <constraint firstAttribute="bottom" secondItem="r89-2I-QwY" secondAttribute="bottom" constant="20" id="WMZ-89-D7W"/>
+                                    <constraint firstAttribute="bottom" secondItem="0KQ-Xs-9gj" secondAttribute="bottom" constant="5" id="gEZ-Da-GaD"/>
+                                    <constraint firstItem="r89-2I-QwY" firstAttribute="centerX" secondItem="4jt-dV-Fkz" secondAttribute="centerX" id="xUa-CW-Uwq"/>
+                                </constraints>
+                            </view>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="singleLineEtched" rowHeight="260" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="K7r-gM-XcI" userLabel="Orders Table View">
+                                <rect key="frame" x="0.0" y="144" width="414" height="669"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <color key="separatorColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <inset key="separatorInset" minX="15" minY="0.0" maxX="15" maxY="0.0"/>
+                            </tableView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="PU1-6z-dAq"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="4jt-dV-Fkz" firstAttribute="top" secondItem="PU1-6z-dAq" secondAttribute="top" id="2qf-y9-mCY"/>
+                            <constraint firstItem="4jt-dV-Fkz" firstAttribute="leading" secondItem="PU1-6z-dAq" secondAttribute="leading" id="NRh-I0-npP"/>
+                            <constraint firstItem="K7r-gM-XcI" firstAttribute="top" secondItem="4jt-dV-Fkz" secondAttribute="bottom" id="YLv-Yq-yLR"/>
+                            <constraint firstItem="PU1-6z-dAq" firstAttribute="bottom" secondItem="K7r-gM-XcI" secondAttribute="bottom" id="ZVy-D3-vJU"/>
+                            <constraint firstItem="4jt-dV-Fkz" firstAttribute="centerX" secondItem="5dg-js-nb1" secondAttribute="centerX" id="aBx-bH-OMz"/>
+                            <constraint firstItem="4jt-dV-Fkz" firstAttribute="centerX" secondItem="K7r-gM-XcI" secondAttribute="centerX" id="o08-Ks-wg6"/>
+                            <constraint firstItem="4jt-dV-Fkz" firstAttribute="leading" secondItem="K7r-gM-XcI" secondAttribute="leading" id="zQC-gQ-nkc"/>
+                        </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="My Orders" id="cdN-Gf-k8T"/>
+                    <connections>
+                        <outlet property="ordersTableView" destination="K7r-gM-XcI" id="O0g-Nq-5ly"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="11U-Gh-BNK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -4075,8 +4122,8 @@
         <image name="right_arrow_blue" width="64" height="64"/>
         <image name="settings_icon" width="50" height="50"/>
         <image name="settings_icon_blue" width="50" height="50"/>
-        <image name="xmark.circle" width="13" height="13"/>
         <image name="xmark.circle" catalog="system" width="128" height="121"/>
+        <image name="xmark.circle" width="13" height="13"/>
         <systemColor name="darkTextColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
