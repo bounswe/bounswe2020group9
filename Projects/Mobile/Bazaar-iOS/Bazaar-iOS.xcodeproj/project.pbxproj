@@ -43,6 +43,7 @@
 		93BD6B7A25B9FD11006CA357 /* AddCreditCardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93BD6B7925B9FD11006CA357 /* AddCreditCardViewController.swift */; };
 		93C2D069257FE419007C5750 /* credentials.plist in Resources */ = {isa = PBXBuildFile; fileRef = 93C2D068257FE419007C5750 /* credentials.plist */; };
 		93D91AC625867A3B007B238C /* MyAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93D91AC525867A3B007B238C /* MyAccountViewController.swift */; };
+		93E3C20625BDA23A007255A3 /* VendorMyAddressesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E3C20525BDA23A007255A3 /* VendorMyAddressesViewController.swift */; };
 		93E99DD92577E8CD00BCFDAD /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E99DD72577E8CC00BCFDAD /* LoginViewController.swift */; };
 		93E99DDA2577E8CD00BCFDAD /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E99DD82577E8CC00BCFDAD /* SignUpViewController.swift */; };
 		93E99DDF2577E91B00BCFDAD /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93E99DDE2577E91B00BCFDAD /* RadioButton.swift */; };
@@ -131,6 +132,7 @@
 		93BD6B7925B9FD11006CA357 /* AddCreditCardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCreditCardViewController.swift; sourceTree = "<group>"; };
 		93C2D068257FE419007C5750 /* credentials.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = credentials.plist; sourceTree = "<group>"; };
 		93D91AC525867A3B007B238C /* MyAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = MyAccountViewController.swift; path = "Bazaar-iOS/MyAccountViewController.swift"; sourceTree = SOURCE_ROOT; };
+		93E3C20525BDA23A007255A3 /* VendorMyAddressesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VendorMyAddressesViewController.swift; sourceTree = "<group>"; };
 		93E99DD72577E8CC00BCFDAD /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		93E99DD82577E8CC00BCFDAD /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		93E99DDE2577E91B00BCFDAD /* RadioButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RadioButton.swift; sourceTree = "<group>"; };
@@ -429,6 +431,7 @@
 				93BD6B7925B9FD11006CA357 /* AddCreditCardViewController.swift */,
 				935A22DA25BC8842007B8A21 /* CustomerMyAddressesViewController.swift */,
 				935A22E425BCA57E007B8A21 /* AddNewAddressViewController.swift */,
+				93E3C20525BDA23A007255A3 /* VendorMyAddressesViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -784,6 +787,7 @@
 				99F6E84D257EBDBB0045C7BD /* ListCell.swift in Sources */,
 				93E99DDF2577E91B00BCFDAD /* RadioButton.swift in Sources */,
 				930C1FB4256C12A00086E1DC /* APIParse.swift in Sources */,
+				93E3C20625BDA23A007255A3 /* VendorMyAddressesViewController.swift in Sources */,
 				9315419625B8B40E001549AC /* MyCreditCardsViewController.swift in Sources */,
 				93BD6B7A25B9FD11006CA357 /* AddCreditCardViewController.swift in Sources */,
 				696B5E21258E988800CF1FB8 /* CartTableViewCell.swift in Sources */,
