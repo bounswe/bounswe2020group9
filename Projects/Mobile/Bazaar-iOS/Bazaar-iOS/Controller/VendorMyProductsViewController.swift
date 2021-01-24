@@ -38,16 +38,26 @@ class VendorMyProductsViewController: UIViewController {
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        self.productsTableView.reloadData()
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let addEditProductVC = segue.destination as? VendorAddEditProductViewController {
             let indexPath = self.productsTableView.indexPathForSelectedRow
             if indexPath != nil {
                 addEditProductVC.product = products[indexPath!.row]
                 addEditProductVC.isEdit = true
+            } else {
+                addEditProductVC.product = products[0]
+                addEditProductVC.isEdit = false
             }
         }
     }
     
+    @IBAction func addProductButtonPressed(_ sender: Any) {
+        performSegue(withIdentifier: "VendorMyProductsToAddEditProductSegue", sender: nil)
+    }
     
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
         if identifier == "VendorMyProductsToAddEditProductSegue" {
@@ -73,13 +83,22 @@ extension VendorMyProductsViewController: UITableViewDelegate, UITableViewDataSo
         cell.productPriceLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         
         if AllProducts.shared.allImages.keys.contains(product.id) {
+            print(product.name, product.picture, "1")
             cell.productImageView.image = AllProducts.shared.allImages[product.id]
             cell.productImageView.contentMode = .scaleAspectFit
         } else {
             if let url = product.picture {
+                print(product.name, product.picture)
                 do{
-                    try _ = cell.productImageView.loadImageUsingCache(withUrl: url, forProduct: product)
-                    cell.productImageView.contentMode = .scaleAspectFit
+                    if product.picture != "<null>" {
+                        try _ = cell.productImageView.loadImageUsingCache(withUrl: url, forProduct: product)
+                        cell.productImageView.contentMode = .scaleAspectFit
+                    } else {
+                        cell.productImageView.image = UIImage(named:"xmark.circle")
+                        cell.productImageView.tintColor = UIColor.lightGray
+                        cell.productImageView.contentMode = .center
+                    }
+                    
                 } catch let error {
                     print(error)
                     cell.productImageView.image = UIImage(named:"xmark.circle")

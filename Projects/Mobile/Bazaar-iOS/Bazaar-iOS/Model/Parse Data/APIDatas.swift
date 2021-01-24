@@ -38,7 +38,7 @@ struct ProductData: Codable, Equatable {
   let id:Int
   let name: String
   let brand: String
-  let labels: [String]
+  let labels: [String]?
   let detail: String
   let category: Category
   let price: Double

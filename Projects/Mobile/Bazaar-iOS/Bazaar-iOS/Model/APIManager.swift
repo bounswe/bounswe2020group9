@@ -613,10 +613,11 @@ struct APIManager {
         }
     }
     
-    func vendorAddProduct(title:String, brand:String, price:Double, stock:Int, description:String, image:String, completionHandler: @escaping (Result<ProductData ,Error>) -> Void) {
+    func vendorAddProduct(title:String, brand:String, price:Double, stock:Int, description:String, image:String, categoryID: Int, completionHandler: @escaping (Result<ProductData ,Error>) -> Void) {
         do {
-            let request = try ApiRouter.vendorAddProduct(title: title, brand: brand, price: price, stock: stock, description: description, image: image).asURLRequest()
+            let request = try ApiRouter.vendorAddProduct(title: title, brand: brand, price: price, stock: stock, description: description, image: image, categoryID: categoryID).asURLRequest()
             AF.request(request).responseJSON { response in
+                print(response)
                 if (response.response?.statusCode != nil ) {
                     guard let safeData = response.data else {
                         completionHandler(.failure(MyError.runtimeError("Error")))
@@ -634,10 +635,12 @@ struct APIManager {
         }
     }
     
-    func vendorEditProduct(prodID:Int, title:String, brand:String, price:Double, stock:Int, description:String, image:String, completionHandler: @escaping (Result<ProductData ,Error>) -> Void) {
+    func vendorEditProduct(prodID:Int, title:String, brand:String, price:Double, stock:Int, description:String, image:String, categoryID: Int, completionHandler: @escaping (Result<ProductData ,Error>) -> Void) {
         do {
-            let request = try ApiRouter.vendorAddProduct(title: title, brand: brand, price: price, stock: stock, description: description, image: image).asURLRequest()
+            let request = try ApiRouter.vendorEditProduct(prodId:prodID, title: title, brand: brand, price: price, stock: stock, description: description, image: image, categoryID: categoryID).asURLRequest()
             AF.request(request).responseJSON { response in
+                print("api:", response)
+
                 if (response.response?.statusCode != nil ) {
                     guard let safeData = response.data else {
                         completionHandler(.failure(MyError.runtimeError("Error")))

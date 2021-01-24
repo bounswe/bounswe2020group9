@@ -36,8 +36,8 @@ enum ApiRouter: URLRequestBuilder {
     case getCreditCards
     case removeCreditCard(id:Int, owner:Int)
     case getVendorsProducts(vendorId: Int)
-    case vendorAddProduct(title:String, brand:String, price:Double, stock:Int, description:String, image:String)
-    case vendorEditProduct(prodId: Int, title:String, brand:String, price:Double, stock:Int, description:String, image:String)
+    case vendorAddProduct(title:String, brand:String, price:Double, stock:Int, description:String, image:String, categoryID: Int)
+    case vendorEditProduct(prodId: Int, title:String, brand:String, price:Double, stock:Int, description:String, image:String, categoryID: Int)
   // MARK: - Path
     internal var path: String {
         switch self {
@@ -88,9 +88,9 @@ enum ApiRouter: URLRequestBuilder {
             return "api/product/payment/"
         case .getVendorsProducts(let vendorId):
             return "api/product/vendor/\(vendorId)/"
-        case .vendorAddProduct(_,_,_,_,_,_):
-            return "api/product"
-        case .vendorEditProduct(let prodId, _,_,_,_,_,_):
+        case .vendorAddProduct(_,_,_,_,_,_,_):
+            return "api/product/"
+        case .vendorEditProduct(let prodId, _,_,_,_,_,_,_):
             return "api/product/\(prodId)/"
         }
     }
@@ -136,7 +136,7 @@ enum ApiRouter: URLRequestBuilder {
             params["user_id"] = userID
             params["old_password"] = currentPassword
             params["new_password"] = newPassword
-        case .search(let filterType, let sortType, let searchWord):
+        case .search(_, let sortType, let searchWord):
             params["searched"] = searchWord.lowercased()
         case .googleSignIn(let userName, let token, let firstName, let lastName):
             params["username"] = userName
@@ -166,20 +166,20 @@ enum ApiRouter: URLRequestBuilder {
         case .removeCreditCard(let id, let owner):
             params["owner"] = owner
             params["id"] = id
-        case .vendorAddProduct(let title, let brand, let price, let stock, let description, let image):
+        case .vendorAddProduct(let title, let brand, let price, let stock, let description, _, let categoryId):
             params["name"] = title
             params["brand"] = brand
             params["price"] = price
             params["stock"] = stock
-            params["description"] = description
-            params["image"] = image
-        case .vendorEditProduct(_,let title, let brand, let price, let stock, let description, let image):
+            params["detail"] = description
+            params["category_id"] = categoryId
+        case .vendorEditProduct(_,let title, let brand, let price, let stock, let description, _, let categoryId):
             params["name"] = title
             params["brand"] = brand
             params["price"] = price
             params["stock"] = stock
-            params["description"] = description
-            params["picture"] = image
+            params["detail"] = description
+            params["category_id"] = categoryId
         default:
             break
         }
@@ -197,6 +197,7 @@ enum ApiRouter: URLRequestBuilder {
             }
         case .addList, .deleteList, .deleteProductFromList , .editList, .addToList, .getUsersComment, .addNewCreditCard, .getCreditCards, .removeCreditCard, .vendorAddProduct, .vendorEditProduct:
             headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
+            print((UserDefaults.standard.value(forKey: K.token) as! String))
         case .getCart, .addToCart, .editAmountInCart, .deleteProductFromCart:
             headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
         case .getProfileInfo(let authorization):
