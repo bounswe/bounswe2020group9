@@ -454,7 +454,9 @@ class UpdateCommentAPIView(APIView):
 
 
 class CommentsOfProductAPIView(APIView):
+
     def get(self, request, pid):
+
         comments = Comment.objects.filter(product_id=pid)
         serializers = []
         for comment in comments:
@@ -466,6 +468,30 @@ class CommentsOfProductAPIView(APIView):
                               **UserSerializer(User.objects.get(id=comment.customer.user_id)).data}
                 serializers.append(serializer)
         return Response(serializers)
+
+
+class CommentsOfUserAPIView(APIView):
+
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        try:
+            user_id = request.user.id
+        except:
+            return Response({"message": "Token is not valid."}, status=status.HTTP_401_UNAUTHORIZED)
+        comments = Comment.objects.filter(customer_id=user_id)
+        serializers = []
+        for comment in comments:
+            if comment.is_anonymous:
+                comment.customer = None
+                serializers.append(CommentSerializer(comment).data)
+            else:
+                serializer = CommentSerializer(comment).data
+                serializers.append(serializer)
+        return Response(serializers)
+
+
 class VendorOrderView(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
