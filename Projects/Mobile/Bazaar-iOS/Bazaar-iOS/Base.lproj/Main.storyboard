@@ -2352,21 +2352,12 @@
                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0KQ-Xs-9gj">
-                                        <rect key="frame" x="20" y="45" width="50" height="50"/>
-                                        <state key="normal" image="left_arrow_icon"/>
-                                        <connections>
-                                            <action selector="backButtonPressed:" destination="Tqt-58-jBo" eventType="touchUpInside" id="5lK-n7-yYK"/>
-                                        </connections>
-                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemGray6Color"/>
                                 <constraints>
-                                    <constraint firstItem="0KQ-Xs-9gj" firstAttribute="leading" secondItem="4jt-dV-Fkz" secondAttribute="leading" constant="20" id="3N7-Wy-gMC"/>
                                     <constraint firstItem="r89-2I-QwY" firstAttribute="top" secondItem="4jt-dV-Fkz" secondAttribute="top" constant="59.666666666666679" id="FHB-aK-KK6"/>
                                     <constraint firstAttribute="height" constant="100" id="NUQ-01-V7G"/>
                                     <constraint firstAttribute="bottom" secondItem="r89-2I-QwY" secondAttribute="bottom" constant="20" id="WMZ-89-D7W"/>
-                                    <constraint firstAttribute="bottom" secondItem="0KQ-Xs-9gj" secondAttribute="bottom" constant="5" id="gEZ-Da-GaD"/>
                                     <constraint firstItem="r89-2I-QwY" firstAttribute="centerX" secondItem="4jt-dV-Fkz" secondAttribute="centerX" id="xUa-CW-Uwq"/>
                                 </constraints>
                             </view>
@@ -4122,8 +4113,8 @@
         <image name="right_arrow_blue" width="64" height="64"/>
         <image name="settings_icon" width="50" height="50"/>
         <image name="settings_icon_blue" width="50" height="50"/>
-        <image name="xmark.circle" catalog="system" width="128" height="121"/>
         <image name="xmark.circle" width="13" height="13"/>
+        <image name="xmark.circle" catalog="system" width="128" height="121"/>
         <systemColor name="darkTextColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

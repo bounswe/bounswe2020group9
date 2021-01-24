@@ -21,7 +21,7 @@ class VendorMyOrdersViewController: UIViewController {
     var products_dict: [Int: ProductData] = [:]
     var vendors_dict: [Int: VendorData] = [:]
     
-    var orders: [OrderData] = []
+    var orders: [VendorOrderData] = []
     var products: [ProductData] = []
     var vendors:[VendorData] = []
     
@@ -29,9 +29,6 @@ class VendorMyOrdersViewController: UIViewController {
     
     
     
-    @IBAction func backButtonPressed(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
-    }
     override func viewWillAppear(_ animated: Bool) {
         ordersTableView.reloadData()
         ordersTableView.tableFooterView = UIView(frame: .zero)
@@ -118,15 +115,15 @@ extension VendorMyOrdersViewController:UITableViewDelegate,UITableViewDataSource
         let cell = ordersTableView.dequeueReusableCell(withIdentifier: "ReusableOrderCell", for: indexPath) as! OrderCell
         cell.ProductImage?.image = UIImage(named:"xmark.circle")
         //TODO change here
-        let filteredOrders:[OrderData] = allOrdersInstance.allOrders
+        let filteredOrders:[VendorOrderData] = allOrdersInstance.allOrders
         //let filteredProducts:[ProductData] = allProductsInstance.allProducts
         //let filteredVendors:[VendorData] = allVendorsInstance.allVendors
         let order = filteredOrders[indexPath.row]
-        print("Order deliveries count:" + String(order.deliveries.count))
-        let delivery = order.deliveries[0]
+        //print("Order deliveries count:" + String(order.deliveries.count))
+        let delivery = order
         print("Product ID: " + String(delivery.product_id))
         let product = products_dict[delivery.product_id]!                //filteredProducts[delivery.product_id]
-        let vendor = vendors_dict[delivery.vendor]!
+        //let vendor = vendors_dict[delivery.vendor]!
         let orderStatus=orderStatusArray[delivery.current_status]
         cell.Cancel_OrderButton.tag = indexPath.row
         cancel_button_delivery_id=delivery.id
@@ -137,11 +134,11 @@ extension VendorMyOrdersViewController:UITableViewDelegate,UITableViewDataSource
         
         cell.Price_StatusLabel.text = "₺" + String(product.price) + ", Status: " + orderStatus
         cell.Price_StatusLabel.font = UIFont.systemFont(ofSize: 13, weight: .black)
-        cell.VendorLabel.text = "Vendor Company : "+vendor.company
+        cell.VendorLabel.text = "Order Date: " + delivery.timestamp.prefix(10)
         cell.VendorLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         cell.AmountLabel.text = "Amount : " + String(delivery.amount)
         cell.AmountLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
-        cell.DatesLabel.text = "Order Date: " + delivery.timestamp.prefix(10) + " Estimated Delivery : " + delivery.delivery_time.prefix(10)
+        cell.DatesLabel.text = "Estimated Delivery : " + delivery.delivery_time.prefix(10)
         cell.DatesLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
         cell.AdressLabel.text = "Order Adress: " + delivery.delivery_address.address + delivery.delivery_address.city
         cell.AdressLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
@@ -269,7 +266,7 @@ extension VendorMyOrdersViewController {
 
 class AllOrders_vendor {
     static let shared = AllOrders_vendor()
-    var allOrders: [OrderData]
+    var allOrders: [VendorOrderData]
     private let saveKey = "AllOrders"
     
     var delegate: AllOrdersVendorFetchDelegate?
@@ -292,7 +289,7 @@ class AllOrders_vendor {
     
     func fetchAllOrders() {
         dispatchGroup.enter()
-        APIManager().getCustomerOrders(completionHandler: { orders in
+        APIManager().getVendorOrders(completionHandler: { orders in
             if orders != nil {
                 
                 self.dataFetched = true
