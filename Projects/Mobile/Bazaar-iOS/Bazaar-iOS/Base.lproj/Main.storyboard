@@ -5517,6 +5517,9 @@
                                                 <size key="value" width="2" height="2"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="saveButtonPressed:" destination="t7K-yJ-hhT" eventType="touchUpInside" id="yaZ-wi-w1b"/>
+                                        </connections>
                                     </button>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" alignment="top" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="TcJ-t5-Jng">
                                         <rect key="frame" x="10" y="40" width="354" height="296"/>
@@ -5598,6 +5601,9 @@
                                                         <size key="value" width="2" height="2"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="openMapButtonPressed:" destination="t7K-yJ-hhT" eventType="touchUpInside" id="qtC-Zm-a2i"/>
+                                                </connections>
                                             </button>
                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="0K7-s2-NIq">
                                                 <rect key="frame" x="0.0" y="174" width="354" height="34"/>
@@ -5713,6 +5719,9 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kUc-ow-Xr4">
                                         <rect key="frame" x="20" y="45" width="50" height="50"/>
                                         <state key="normal" image="left_arrow_icon"/>
+                                        <connections>
+                                            <action selector="backButtonPressed:" destination="t7K-yJ-hhT" eventType="touchUpInside" id="O6d-Zs-MMB"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemGray6Color"/>
@@ -5734,6 +5743,16 @@
                             <constraint firstItem="aH1-WO-FJ7" firstAttribute="top" secondItem="asZ-3J-C6K" secondAttribute="bottom" constant="20" id="y3K-y3-7yx"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="addressNameTextField" destination="PJR-oi-SiA" id="bG9-5k-P3t"/>
+                        <outlet property="cityTextField" destination="dIZ-SW-AMn" id="Z9z-dP-zwx"/>
+                        <outlet property="countryTextField" destination="Qtc-PR-eis" id="Ro9-I4-nk0"/>
+                        <outlet property="fullAddressTextView" destination="aFT-Le-mPZ" id="dXo-U0-TvE"/>
+                        <outlet property="headerLabel" destination="ZZd-nX-ABb" id="CTW-iL-xu9"/>
+                        <outlet property="postalCodeTextField" destination="rzB-kx-mVy" id="2F5-Tm-qiA"/>
+                        <outlet property="saveButton" destination="I4Z-Rr-lup" id="qic-Yo-ybL"/>
+                        <segue destination="f8W-BH-naY" kind="presentation" identifier="VendorAddAddressToMap" id="F5l-V4-YaC"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ihq-UA-bMZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -5755,7 +5774,7 @@
         </designable>
     </designables>
     <inferredMetricsTieBreakers>
-        <segue reference="iKO-xp-CV1"/>
+        <segue reference="F5l-V4-YaC"/>
         <segue reference="bek-xH-bIt"/>
         <segue reference="NHr-zy-FFi"/>
         <segue reference="ybP-Ln-r90"/>

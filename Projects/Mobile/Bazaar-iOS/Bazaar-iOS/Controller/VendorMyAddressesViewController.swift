@@ -46,12 +46,12 @@ class VendorMyAddressesViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "goToAddAddressFromVendor"  {
             if processType == .Update{
-                if let destinationVC = segue.destination as? AddNewAddressViewController {
+                if let destinationVC = segue.destination as? VendorAddNewAddressViewController {
                     destinationVC.processType = .Update
                     destinationVC.addressCell = self.addressCell
                 }
             }else {
-                if let destinationVC = segue.destination as? AddNewAddressViewController {
+                if let destinationVC = segue.destination as? VendorAddNewAddressViewController {
                     destinationVC.processType = .Add
                     destinationVC.addressCell = nil
                 }
