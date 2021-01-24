@@ -153,6 +153,17 @@ struct removeCreditCardData: Codable{
     let message: String
 }
 
+
+struct OrderData:Codable {
+    let product:Int
+    let amount:Int
+    let timestamp:String
+    let customer:Int
+    let order:Int
+    let delivery_time:String
+}
+
+
 struct AddressData:Codable {
     let id:Int
     let address_name:String
@@ -163,3 +174,4 @@ struct AddressData:Codable {
     let longitude:Float
     let latitude:Float
 }
+

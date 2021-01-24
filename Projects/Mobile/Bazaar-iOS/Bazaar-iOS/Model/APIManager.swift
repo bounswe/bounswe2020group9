@@ -676,6 +676,27 @@ struct APIManager {
         }
     }
     
+    func placeOrder(userId:Int, products:[Int:Int], add_id:Int, completionHandler: @escaping (Result<[OrderData] ,Error>) -> Void) {
+        do {
+            let request = try ApiRouter.placeOrder(userId: userId, products: products, add_id: add_id).asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if (response.response?.statusCode != nil){
+                    guard let safeData = response.data else  {
+                        completionHandler(.failure(MyError.runtimeError("Error")))
+                        return
+                    }
+                    if let decodedData:[OrderData] = APIParse().parseJSON(safeData: safeData){
+                        completionHandler(.success(decodedData))
+                    }else {
+                        completionHandler(.failure(MyError.runtimeError("Failed to parse json ")))
+                    }
+                }
+            }
+        }catch let err {
+            completionHandler(.failure(err))
+        }
+    }
+
     func deleteAccount(token: String) {
         do {
             let request = try ApiRouter.deleteAccount(token: token).asURLRequest()
@@ -688,4 +709,5 @@ struct APIManager {
         }
     }
 }
+
 
