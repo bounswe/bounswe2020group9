@@ -1,29 +1,42 @@
-.listWrapper{
-    & .lists{
-        & h2{
-            margin-left: 2rem;
-        }
+.listWrapper {
+  & .lists {
+    & h2 {
+      margin-left: 2rem;
     }
+  }
+  & .addListButton {
+    margin-left: 2rem;
+    margin-bottom: 1rem;
+    display: flex;
+    width: 7rem;
+    border-radius: 12px;
+    background-color: #42aea8;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    & img {
+      max-width: 20px;
+      margin: auto;
+    }
+  }
 }
 
-.listButton{
-    // border-radius: 12px;
-    // background-color: #42AEA8!important;
+.listButton {
+  // border-radius: 12px;
+  // background-color: #42AEA8!important;
+  border: none;
+  background-color: white !important;
+  border-color: white;
+  & .list-group-item {
+    color: #42aea8;
     border: none;
-    background-color: white!important;
-    border-color: white;
-    & .list-group-item{
-        color: #42AEA8;
-        border: none;
-        border-bottom: 1px solid rgba(0,0,0,0.1);
-        &:focus{
-            border: none;
-            outline: none;
-        }
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    &:focus {
+      border: none;
+      outline: none;
     }
+  }
 
-     &:focus{
-        border: none;
-        outline: none;
-    }
+  &:focus {
+    border: none;
+    outline: none;
+  }
 }
