@@ -675,5 +675,17 @@ struct APIManager {
             completionHandler(.failure(err))
         }
     }
+    
+    func deleteAccount(token: String) {
+        do {
+            let request = try ApiRouter.deleteAccount(token: token).asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if (response.response?.statusCode != nil){
+                }
+            }
+        }catch {
+           //
+        }
+    }
 }
 
