@@ -33,7 +33,7 @@ enum ApiRouter: URLRequestBuilder {
     case googleSignIn(userName:String, token:String, firstName:String, lastName:String)
     case getAllVendors(str:String)
     case getCustomerOrders
-    case deleteOrder(delivery_id:Int)
+    case deleteOrder(delivery_id:Int,status:Int)
     case getVendorOrders
 
   // MARK: - Path
@@ -153,8 +153,9 @@ enum ApiRouter: URLRequestBuilder {
             params["latitude"] = latitude
             params["longitude"] = lontitude
             params["company"] = companyName
-        case .deleteOrder(let delivery_id):
+        case .deleteOrder(let delivery_id,let status):
             params["delivery_id"] = delivery_id
+            params["status"] = status
         default:
             break
         }

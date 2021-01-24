@@ -281,9 +281,9 @@ struct APIManager {
         }
     }
     
-    func deleteOrder(delivery_id:Int , completionHandler: @escaping (Result<String ,Error>) -> Void) {
+    func deleteOrder(delivery_id:Int ,status:Int, completionHandler: @escaping (Result<String ,Error>) -> Void) {
         do {
-            let request = try ApiRouter.deleteOrder(delivery_id: delivery_id).asURLRequest()
+            let request = try ApiRouter.deleteOrder(delivery_id: delivery_id, status:status).asURLRequest()
             AF.request(request).responseJSON { (response) in
                 if response.response?.statusCode == 204 {
                     completionHandler(.success("success"))
