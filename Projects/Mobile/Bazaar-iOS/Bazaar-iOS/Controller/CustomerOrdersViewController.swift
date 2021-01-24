@@ -123,7 +123,7 @@ extension CustomerOrdersViewController:UITableViewDelegate,UITableViewDataSource
         cell.VendorLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         cell.AmountLabel.text = "Amount : " + String(delivery.amount)
         cell.AmountLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
-        cell.DatesLabel.text = " Order Date: " + delivery.timestamp.prefix(10) + " Estimated Delivery : " + delivery.delivery_time.prefix(10)
+        cell.DatesLabel.text = "Order Date: " + delivery.timestamp.prefix(10) + " Estimated Delivery : " + delivery.delivery_time.prefix(10)
         cell.DatesLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         cell.AdressLabel.text = "Order Adress: " + " order.adress "
         cell.AdressLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
