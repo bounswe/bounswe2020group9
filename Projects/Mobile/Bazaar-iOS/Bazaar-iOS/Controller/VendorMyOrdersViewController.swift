@@ -16,6 +16,8 @@ class VendorMyOrdersViewController: UIViewController {
     
     let orderStatusArray = ["", "Preparing", "On the Way", "Delivered", "Canceled"]
     
+    var cancel_button_delivery_id :Int = -1
+    var cancel_button_status :Int = -1
     var products_dict: [Int: ProductData] = [:]
     var vendors_dict: [Int: VendorData] = [:]
     
@@ -92,18 +94,19 @@ extension VendorMyOrdersViewController:UITableViewDelegate,UITableViewDataSource
             return 5
         }
     }
-    @objc func cancel_button_clicked(_ sender : UIButton, delivery_id: Int){
+    @objc func cancel_button_clicked(_ sender : UIButton){
         print("Button clicked. ")
+        // need to take status information and set to cancel_button_status
         let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
-        APIManager().deleteOrder(delivery_id: delivery_id) { (result) in
+        APIManager().deleteOrder(delivery_id: cancel_button_delivery_id,status:cancel_button_status) { (result) in
             switch result {
             case .success(let message):
                 self.dismiss(animated: false, completion: nil)
-                alertController.message = "Order succesfully canceled."
+                alertController.message = "Order status succesfully changed."
                 self.present(alertController, animated: true, completion: nil)
             case .failure(_):
-                alertController.message = "Order could not canceled. Try again later."
+                alertController.message = "Order status did not changed. Try again later."
                 self.present(alertController, animated: true, completion: nil)
             }
         }
@@ -125,9 +128,9 @@ extension VendorMyOrdersViewController:UITableViewDelegate,UITableViewDataSource
         let product = products_dict[delivery.product_id]!                //filteredProducts[delivery.product_id]
         let vendor = vendors_dict[delivery.vendor]!
         let orderStatus=orderStatusArray[delivery.current_status]
-        
         cell.Cancel_OrderButton.tag = indexPath.row
-        cell.Cancel_OrderButton.addTarget(self, action: #selector(self.cancel_button_clicked(_:delivery_id:)), for: .allTouchEvents);
+        cancel_button_delivery_id=delivery.id
+        cell.Cancel_OrderButton.addTarget(self, action: #selector(self.cancel_button_clicked(_:)), for: .allTouchEvents);
         
         cell.Name_BrandLabel.text = product.detail + ", " + product.brand
         cell.Name_BrandLabel.font = UIFont.systemFont(ofSize: 10, weight: .regular)
