@@ -35,6 +35,7 @@ enum ApiRouter: URLRequestBuilder {
     case addNewCreditCard(owner:Int, nameOnCard:String, cardNumber:String, month:String, year:String, cvv:String, cardName:String)
     case getCreditCards
     case removeCreditCard(id:Int, owner:Int)
+    case placeOrder(userId:Int, products:[Int:Int], add_id:Int)
     case addNewAddressForCustomer(addressName:String , fullAddress:String, country:String, city:String, postalCode:Int,user:Int)
     case getCustomerAddresses
     case removeCustomerAddress(addressId:Int)
@@ -88,6 +89,8 @@ enum ApiRouter: URLRequestBuilder {
             return "api/user/vendor/"
         case .addNewCreditCard,.getCreditCards,.removeCreditCard:
             return "api/product/payment/"
+        case .placeOrder:
+            return "api/product/order/"
         case .addNewAddressForCustomer, .getCustomerAddresses:
             return "api/location/byuser/"
         case .removeCustomerAddress(let addressId):
@@ -170,6 +173,16 @@ enum ApiRouter: URLRequestBuilder {
         case .removeCreditCard(let id, let owner):
             params["owner"] = owner
             params["id"] = id
+        case .placeOrder(let userId, let products, let add_id):
+            params["user_id"] = userId
+            var arr:[[String:Int]] = []
+            for p in products {
+                let d = ["product":p.key, "amount":p.value]
+                arr.append(d)
+            }
+            params["deliveries"] = arr
+            params["location"] = add_id
+            print(params)
         case .addNewAddressForCustomer(let addressName, let fullAddress, let country, let city, let postalCode, let user):
             params["address_name"] = addressName
             params["address"] = fullAddress
@@ -203,7 +216,7 @@ enum ApiRouter: URLRequestBuilder {
             if let token = UserDefaults.standard.value(forKey: K.token) as? String {
                 headers["Authorization"] = "Token \(token)"
             }
-        case .getCart, .addToCart, .editAmountInCart, .deleteProductFromCart:
+        case .getCart, .addToCart, .editAmountInCart, .deleteProductFromCart, .placeOrder:
             headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
         case .getProfileInfo(let authorization):
             headers["Authorization"] = "Token \(authorization)"
@@ -226,7 +239,7 @@ enum ApiRouter: URLRequestBuilder {
     // MARK: - Methods
     internal var method: HTTPMethod {
         switch self {
-        case .authenticate, .addList,.addToList, .signUpCustomer, .signUpVendor, .resetPasswordEmail, .addToCart,.updatePassword, .googleSignIn, .addNewCreditCard, .addNewAddressForCustomer, .search:
+        case .authenticate, .addList,.addToList, .signUpCustomer, .signUpVendor, .resetPasswordEmail, .addToCart,.updatePassword, .googleSignIn, .addNewCreditCard, .addNewAddressForCustomer, .search, .placeOrder:
             return .post
         case .getCustomerLists, .getComments, .getUsersComment, .getCart, .getProfileInfo, .getAllVendors, .getCreditCards, .getCustomerAddresses:
             return .get
@@ -236,4 +249,5 @@ enum ApiRouter: URLRequestBuilder {
             return .put
         }
     }
+    
 }
