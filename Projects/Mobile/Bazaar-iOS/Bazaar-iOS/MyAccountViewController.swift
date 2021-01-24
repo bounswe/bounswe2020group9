@@ -19,6 +19,8 @@ class MyAccountViewController: UIViewController {
     @IBOutlet weak var newPasswordTextField: UITextField!
     @IBOutlet weak var myCreditCardsView: UIView!
     @IBOutlet weak var newPasswordAgainTextField: UITextField!
+    @IBOutlet weak var logoutButton: UIButton!
+    
     var firstName:String?
     var lastName:String?
     
@@ -110,6 +112,19 @@ class MyAccountViewController: UIViewController {
         UserDefaults.standard.setValue(false, forKey: K.isLoggedinKey)
         GIDSignIn.sharedInstance().signOut()
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction func deleteMyAccountButtonPressed(_ sender: UIButton) {
+        let alertController = UIAlertController(title: "Alert!", message: "Are you sure you want to completely delete your account? You cannot undo this action.", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Delete", style: UIAlertAction.Style.default, handler: { (action) in
+            if let token = UserDefaults.standard.value(forKey: K.token) as? String{
+                self.logoutButton.sendActions(for: .touchUpInside)
+                APIManager().deleteAccount(token: token)
+            }
+
+        }))
+        alertController.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.default, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
     }
     
     @IBAction func updatePasswordButtonPressed(_ sender: UIButton) {

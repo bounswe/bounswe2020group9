@@ -18,6 +18,7 @@ class VendorMyAccountViewController: UIViewController {
     @IBOutlet weak var infoView: UIView!
     @IBOutlet weak var passwordView: UIView!
     @IBOutlet weak var myAddressView: UIView!
+    @IBOutlet weak var logoutButton: UIButton!
     var firstName:String?
     var lastName:String?
     
@@ -52,6 +53,19 @@ class VendorMyAccountViewController: UIViewController {
     }
     
     
+    @IBAction func deleteMyAccountButtonPressed(_ sender: UIButton) {
+        let alertController = UIAlertController(title: "Alert!", message: "Are you sure you want to completely delete your account? You cannot undo this action.", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Delete", style: UIAlertAction.Style.default, handler: { (action) in
+            if let token = UserDefaults.standard.value(forKey: K.token) as? String{
+                self.logoutButton.sendActions(for: .touchUpInside)
+                APIManager().deleteAccount(token: token)
+            }
+
+        }))
+        alertController.addAction(UIAlertAction(title: "Cancel", style: UIAlertAction.Style.default, handler: nil))
+        self.present(alertController, animated: true, completion: nil)
+        
+    }
     @IBAction func backButtonPressed(_ sender: UIButton) {
         self.dismiss(animated: true, completion: nil)
     }
