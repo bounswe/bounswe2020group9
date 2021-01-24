@@ -510,7 +510,7 @@ class OrderView(APIView):
                 product = Product.objects.get(id=product_id)
                 delivery["vendor"] = product.vendor_id
                 address_dict = Location.objects.filter(id=delivery["location_id"]).values()
-                delivery["delivery_adress"] = address_dict[0]
+                delivery["delivery_address"] = address_dict[0]
                 delivery_list.append(delivery)
             order["deliveries"] = delivery_list
             result.append(order)
@@ -519,6 +519,7 @@ class OrderView(APIView):
     def post(self,request):
         user_id = request.data["user_id"]
         deliveries = request.data["deliveries"]
+        location_id = request.data["location"]
         user=Customer.objects.get(user_id=user_id)
         order = Order.objects.create(customer=user,timestamp=timezone.now())
         for delivery in deliveries:
@@ -526,8 +527,7 @@ class OrderView(APIView):
             delivery["customer"] = user_id
             delivery["order"] = order.id
             delivery["delivery_time"] = "Not Yet Decided"
-            loc_id = Location.objects.get(user=user_id).id
-            delivery["location_id"] = loc_id
+            delivery["location"] = location
             serializer = DeliverySerializer(data=delivery)
             if serializer.is_valid():
                 serializer.save()
