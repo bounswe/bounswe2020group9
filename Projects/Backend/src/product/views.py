@@ -533,7 +533,7 @@ class OrderView(APIView):
             if serializer.is_valid():
                 serializer.save()
                 try:
-                    cart = SubOrder.objects.get(customer_id=user_id, purchased=False)
+                    cart = SubOrder.objects.get(customer_id=user_id, product_id=delivery["product"], purchased=False)
                     cart.purchased = True
                     cart.save()
                 except:

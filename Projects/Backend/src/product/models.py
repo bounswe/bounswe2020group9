@@ -89,7 +89,7 @@ class Delivery(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     amount = models.IntegerField(default=0)
-    location = models.ForeignKey(Location,on_delete=models.CASCADE)
+    location = models.ForeignKey(Location,on_delete=models.CASCADE, blank=True)
 class Comment(models.Model):
     RATES = (
         (1, "Awful"),
