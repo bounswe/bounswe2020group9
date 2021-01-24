@@ -1,0 +1,24 @@
+.address-card {
+  width: 140px;
+
+  & .address-card-body {
+    font-size: small;
+    padding: 10px;
+    color: white;
+
+    height: 100px;
+    background-color: #41aea9;
+
+  }
+
+  & .address-card-footer {
+    font-size: small;
+    padding: 8px;
+
+    & .footer-text {
+
+      text-align: right;
+    }
+  }
+
+}

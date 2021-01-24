@@ -97,6 +97,10 @@ export default class SignUp extends Component {
         this.setState({ [event.target.name]: event.target.value });
       }
 
+      handleTermsChange = event => {
+        this.setState({terms_accepted: event.target.checked});
+      }
+
       openModal = () => {
         this.setState({ isOpen: true })
         this.setState({isHiddenFail: false})
@@ -126,6 +130,7 @@ export default class SignUp extends Component {
           data.append("address", this.state.address);
           data.append("address_name", this.state.address_name);
           data.append("user_type", 2);
+          console.log("here")
           axios.post(serverUrl+`api/user/signup/`, data)
             .then(res => {
       
