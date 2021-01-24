@@ -59,9 +59,9 @@ struct APIManager {
         }
     }
     
-    func signUpVendor(firstName:String, lastName:String, username:String, password:String, user_type:String,addressName:String, address:String, postalCode:Int, latitude:Float, longitude:Float, companyName:String ,completionHandler: @escaping (Result<String ,Error>) -> Void) {
+    func signUpVendor(firstName:String, lastName:String, username:String, password:String, user_type:String,addressName:String, address:String, country:String , city:String, postalCode:Int, latitude:Float, longitude:Float, companyName:String ,completionHandler: @escaping (Result<String ,Error>) -> Void) {
         do {
-            let request = try ApiRouter.signUpVendor(firstName: firstName, lastName: lastName, username: username, password: password, user_type: user_type, addressName: addressName, address: address, postalCode: postalCode, latitude: latitude, lontitude: longitude, companyName: companyName).asURLRequest()
+            let request = try ApiRouter.signUpVendor(firstName: firstName, lastName: lastName, username: username, password: password, user_type: user_type, addressName: addressName, address: address, country: country, city: city, postalCode: postalCode, latitude: latitude, longitude: longitude, companyName: companyName).asURLRequest()
             AF.request(request).responseJSON { (response) in
                 if (response.response?.statusCode != nil){
                     guard let safeData = response.data else  {

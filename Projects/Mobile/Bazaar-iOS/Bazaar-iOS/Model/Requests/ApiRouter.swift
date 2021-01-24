@@ -18,7 +18,7 @@ enum ApiRouter: URLRequestBuilder {
     case editList(userId:Int, list: String, newName: String, newIsPrivate: String)
     case addToList(userId:Int, list_id: Int, product_id: Int)
     case signUpCustomer(firstName:String,lastName:String,username:String, password:String, user_type:String)
-    case signUpVendor(firstName:String, lastName:String, username:String, password:String, user_type:String,addressName:String, address:String, postalCode:Int, latitude:Float, lontitude:Float, companyName:String)
+    case signUpVendor(firstName:String, lastName:String, username:String, password:String, user_type:String,addressName:String, address:String, country:String , city: String, postalCode:Int, latitude:Float, longitude:Float, companyName:String)
     case resetPasswordEmail(username:String)
     case updatePassword(userId:Int,currentPassword:String, newPassword:String)
     case getCart(user: Int)
@@ -148,7 +148,7 @@ enum ApiRouter: URLRequestBuilder {
             params["token"] = token
             params["first_name"] = firstName
             params["last_name"] = lastName
-        case .signUpVendor(let firstName, let lastName, let username, let password, let user_type, let addressName, let address, let postalCode, let latitude, let lontitude, let companyName):
+        case .signUpVendor(let firstName, let lastName, let username, let password, let user_type, let addressName, let address, let country, let city, let postalCode, let latitude, let longitude, let companyName):
             params["first_name"] = firstName
             params["last_name"] = lastName
             params["username"] = username
@@ -156,9 +156,11 @@ enum ApiRouter: URLRequestBuilder {
             params["user_type"] = user_type
             params["address_name"] = addressName
             params["address"] = address
+            params["country"] = country
+            params["city"] = city
             params["postal_code"] = postalCode
             params["latitude"] = latitude
-            params["longitude"] = lontitude
+            params["longitude"] = longitude
             params["company"] = companyName
         case .addNewCreditCard(let owner, let nameOnCard, let cardNumber, let month, let year, let cvv, let cardName):
             params["owner"] = owner
