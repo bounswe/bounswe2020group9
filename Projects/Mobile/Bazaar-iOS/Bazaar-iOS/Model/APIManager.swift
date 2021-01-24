@@ -594,18 +594,15 @@ struct APIManager {
     
     func placeOrder(userId:Int, products:[Int:Int], completionHandler: @escaping (Result<[OrderData] ,Error>) -> Void) {
         do {
-            var request = try ApiRouter.placeOrder(userId: userId, products: products).asURLRequest()
+            let request = try ApiRouter.placeOrder(userId: userId, products: products).asURLRequest()
             AF.request(request).responseJSON { (response) in
                 if (response.response?.statusCode != nil){
-                    print("Hey")
-                    print(String(data: request.httpBody!, encoding: String.Encoding.utf8))
                     guard let safeData = response.data else  {
                         completionHandler(.failure(MyError.runtimeError("Error")))
                         return
                     }
                     if let decodedData:[OrderData] = APIParse().parseJSON(safeData: safeData){
                         completionHandler(.success(decodedData))
-                        print("off")
                     }else {
                         completionHandler(.failure(MyError.runtimeError("Failed to parse json ")))
                     }

@@ -169,7 +169,6 @@ enum ApiRouter: URLRequestBuilder {
                 arr.append(d)
             }
             params["deliveries"] = arr
-            print(params)
         default:
             break
         }

@@ -55,7 +55,6 @@ class PaymentViewController: UIViewController {
             }
         }
         
-        self.termsView.bringSubviewToFront(contractTextView)
         
         //getAddresses
         //self.addressesArray = addr
@@ -68,17 +67,12 @@ class PaymentViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //contractLabel.sizeToFit()
-        
-        
-        
         if let contractUrl = Bundle.main.url(forResource: "DistanceSellingAgreement", withExtension: "txt") {
             if let contract = try? String(contentsOf: contractUrl) {
                 contractTextView.text = contract
             }
         }
-        
-        
+        self.contractTextView.superview?.layer.borderColor = UIColor.black.cgColor
         
         totalPriceLabel.text = totalPriceText
         

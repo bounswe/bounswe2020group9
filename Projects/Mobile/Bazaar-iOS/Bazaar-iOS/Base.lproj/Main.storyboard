@@ -2255,88 +2255,84 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                     </view>
-                                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gQd-We-8mx" userLabel="Agreement View">
-                                        <rect key="frame" x="10" y="394" width="394" height="214"/>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gQd-We-8mx" userLabel="Agreement View">
+                                        <rect key="frame" x="10" y="393.66666666666669" width="394" height="146.66666666666669"/>
                                         <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="Mag-gp-Vs2" userLabel="Agreement Stack View">
-                                                <rect key="frame" x="5" y="5" width="384" height="163"/>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Distance Selling Agreement" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m4D-39-LtD" userLabel="Terms and Conditions">
+                                                <rect key="frame" x="80.666666666666671" y="5" width="232.66666666666663" height="23"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                                <color key="textColor" red="0.96776050329999996" green="0.6416403651" blue="0.1417042017" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kvj-29-pXw" userLabel="Contract View">
+                                                <rect key="frame" x="18" y="47.999999999999943" width="358" height="33.666666666666657"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Distance Selling Agreement" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="m4D-39-LtD" userLabel="Terms and Conditions">
-                                                        <rect key="frame" x="75.666666666666671" y="0.0" width="232.66666666666663" height="23"/>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="19"/>
-                                                        <color key="textColor" red="0.96776050329999996" green="0.6416403651" blue="0.1417042017" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kvj-29-pXw" userLabel="Contract View">
-                                                        <rect key="frame" x="15" y="52.999999999999943" width="354" height="50"/>
-                                                        <subviews>
-                                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="srI-5a-6nJ" userLabel="Contract Text View">
-                                                                <rect key="frame" x="10" y="1" width="334" height="47.666666666666664"/>
-                                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
-                                                                <color key="textColor" systemColor="labelColor"/>
-                                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                                            </textView>
-                                                        </subviews>
+                                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="xxx" textAlignment="justified" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="srI-5a-6nJ" userLabel="Contract Text View">
+                                                        <rect key="frame" x="10" y="0.33333333333337123" width="338" height="33"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="trailing" secondItem="srI-5a-6nJ" secondAttribute="trailing" constant="10" id="6WT-lC-70n"/>
-                                                            <constraint firstItem="srI-5a-6nJ" firstAttribute="height" secondItem="kvj-29-pXw" secondAttribute="height" multiplier="0.95" id="B25-PL-I73"/>
-                                                            <constraint firstItem="srI-5a-6nJ" firstAttribute="leading" secondItem="kvj-29-pXw" secondAttribute="leading" constant="10" id="GIM-2c-l2q"/>
-                                                            <constraint firstItem="srI-5a-6nJ" firstAttribute="centerY" secondItem="kvj-29-pXw" secondAttribute="centerY" id="oM5-Yd-wOK"/>
-                                                        </constraints>
+                                                        <color key="textColor" systemColor="labelColor"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                    </textView>
+                                                </subviews>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstItem="srI-5a-6nJ" firstAttribute="centerY" secondItem="kvj-29-pXw" secondAttribute="centerY" id="3UO-Wj-gcN"/>
+                                                    <constraint firstAttribute="trailing" secondItem="srI-5a-6nJ" secondAttribute="trailing" constant="10" id="6WT-lC-70n"/>
+                                                    <constraint firstItem="srI-5a-6nJ" firstAttribute="leading" secondItem="kvj-29-pXw" secondAttribute="leading" constant="10" id="GIM-2c-l2q"/>
+                                                    <constraint firstItem="srI-5a-6nJ" firstAttribute="height" secondItem="kvj-29-pXw" secondAttribute="height" multiplier="0.98" id="eC2-GZ-BUi"/>
+                                                </constraints>
+                                                <userDefinedRuntimeAttributes>
+                                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
+                                                        <integer key="value" value="1"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                    <userDefinedRuntimeAttribute type="color" keyPath="layer.borderColor">
+                                                        <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </userDefinedRuntimeAttribute>
+                                                </userDefinedRuntimeAttributes>
+                                            </view>
+                                            <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="cC8-NI-sbs" userLabel="Accept Stack View">
+                                                <rect key="frame" x="152.66666666666666" y="101.66666666666669" width="88.666666666666657" height="30"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lOz-4F-UwA" userLabel="Accept Radio Button" customClass="RadioButton" customModule="Bazaar_iOS" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
                                                         <userDefinedRuntimeAttributes>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
-                                                                <integer key="value" value="1"/>
+                                                            <userDefinedRuntimeAttribute type="color" keyPath="outerCircleColor">
+                                                                <color key="value" red="1" green="0.64313725489999995" blue="0.35686274509999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="color" keyPath="innerCircleCircleColor">
+                                                                <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="outerCircleLineWidth">
+                                                                <real key="value" value="2"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="innerCircleGap">
+                                                                <real key="value" value="3"/>
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
-                                                    </view>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="cC8-NI-sbs" userLabel="Accept Stack View">
-                                                        <rect key="frame" x="147.66666666666666" y="132.99999999999994" width="88.666666666666657" height="30"/>
-                                                        <subviews>
-                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lOz-4F-UwA" userLabel="Accept Radio Button" customClass="RadioButton" customModule="Bazaar_iOS" customModuleProvider="target">
-                                                                <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
-                                                                <userDefinedRuntimeAttributes>
-                                                                    <userDefinedRuntimeAttribute type="color" keyPath="outerCircleColor">
-                                                                        <color key="value" red="1" green="0.64313725489999995" blue="0.35686274509999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                    </userDefinedRuntimeAttribute>
-                                                                    <userDefinedRuntimeAttribute type="color" keyPath="innerCircleCircleColor">
-                                                                        <color key="value" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                    </userDefinedRuntimeAttribute>
-                                                                    <userDefinedRuntimeAttribute type="number" keyPath="outerCircleLineWidth">
-                                                                        <real key="value" value="2"/>
-                                                                    </userDefinedRuntimeAttribute>
-                                                                    <userDefinedRuntimeAttribute type="number" keyPath="innerCircleGap">
-                                                                        <real key="value" value="3"/>
-                                                                    </userDefinedRuntimeAttribute>
-                                                                </userDefinedRuntimeAttributes>
-                                                                <connections>
-                                                                    <action selector="didAcceptPressed:" destination="ZtX-a7-Si5" eventType="touchUpInside" id="CGb-mv-Juw"/>
-                                                                </connections>
-                                                            </button>
-                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Accept" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IWG-vz-Poo" userLabel="Accept">
-                                                                <rect key="frame" x="35" y="4.6666666666667425" width="53.666666666666657" height="20.333333333333332"/>
-                                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                                <color key="textColor" red="0.99958151579999999" green="0.64487946029999998" blue="0.3569172323" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                <nil key="highlightedColor"/>
-                                                            </label>
-                                                        </subviews>
-                                                    </stackView>
+                                                        <connections>
+                                                            <action selector="didAcceptPressed:" destination="ZtX-a7-Si5" eventType="touchUpInside" id="CGb-mv-Juw"/>
+                                                        </connections>
+                                                    </button>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Accept" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IWG-vz-Poo" userLabel="Accept">
+                                                        <rect key="frame" x="35" y="4.6666666666666288" width="53.666666666666657" height="20.333333333333332"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" red="0.99958151579999999" green="0.64487946029999998" blue="0.3569172323" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
                                                 </subviews>
-                                                <constraints>
-                                                    <constraint firstItem="kvj-29-pXw" firstAttribute="leading" secondItem="Mag-gp-Vs2" secondAttribute="leading" constant="15" id="FWH-jk-R4i"/>
-                                                    <constraint firstAttribute="trailing" secondItem="kvj-29-pXw" secondAttribute="trailing" constant="15" id="Qcm-KF-Uw0"/>
-                                                </constraints>
                                             </stackView>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
-                                            <constraint firstAttribute="trailing" secondItem="Mag-gp-Vs2" secondAttribute="trailing" constant="5" id="4Gw-b6-IRd"/>
-                                            <constraint firstAttribute="bottom" secondItem="Mag-gp-Vs2" secondAttribute="bottom" constant="5" id="IyK-Zk-rng"/>
-                                            <constraint firstItem="Mag-gp-Vs2" firstAttribute="leading" secondItem="gQd-We-8mx" secondAttribute="leading" constant="5" id="JMO-b6-NHf"/>
-                                            <constraint firstItem="cC8-NI-sbs" firstAttribute="centerX" secondItem="gQd-We-8mx" secondAttribute="centerX" id="TMl-cP-2mf"/>
-                                            <constraint firstItem="Mag-gp-Vs2" firstAttribute="top" secondItem="gQd-We-8mx" secondAttribute="top" constant="5" id="UdM-7O-Kys"/>
+                                            <constraint firstItem="cC8-NI-sbs" firstAttribute="top" secondItem="kvj-29-pXw" secondAttribute="bottom" constant="20" id="589-EE-B2H"/>
+                                            <constraint firstItem="m4D-39-LtD" firstAttribute="centerX" secondItem="gQd-We-8mx" secondAttribute="centerX" id="JeH-4q-r9m"/>
+                                            <constraint firstItem="kvj-29-pXw" firstAttribute="leading" secondItem="gQd-We-8mx" secondAttribute="leadingMargin" constant="10" id="VMb-gV-VkB"/>
+                                            <constraint firstItem="cC8-NI-sbs" firstAttribute="centerX" secondItem="gQd-We-8mx" secondAttribute="centerX" id="amT-xi-96g"/>
+                                            <constraint firstItem="m4D-39-LtD" firstAttribute="top" secondItem="gQd-We-8mx" secondAttribute="top" constant="5" id="lyC-O6-p9A"/>
+                                            <constraint firstItem="kvj-29-pXw" firstAttribute="top" secondItem="m4D-39-LtD" secondAttribute="bottom" constant="20" id="vBf-PQ-MYb"/>
+                                            <constraint firstAttribute="bottom" secondItem="cC8-NI-sbs" secondAttribute="bottom" constant="15" id="vEc-Ja-9Yu"/>
+                                            <constraint firstAttribute="trailingMargin" secondItem="kvj-29-pXw" secondAttribute="trailing" constant="10" id="zpx-Gx-m9P"/>
                                         </constraints>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -5029,7 +5025,7 @@
         </designable>
     </designables>
     <inferredMetricsTieBreakers>
-        <segue reference="nph-r1-0sN"/>
+        <segue reference="HSB-zT-ihT"/>
         <segue reference="bek-xH-bIt"/>
         <segue reference="NHr-zy-FFi"/>
         <segue reference="ybP-Ln-r90"/>
@@ -5073,8 +5069,8 @@
         <image name="settings_icon" width="50" height="50"/>
         <image name="settings_icon_blue" width="50" height="50"/>
         <image name="trash_icon" width="100" height="100"/>
-        <image name="xmark.circle" catalog="system" width="128" height="121"/>
         <image name="xmark.circle" width="13" height="13"/>
+        <image name="xmark.circle" catalog="system" width="128" height="121"/>
         <systemColor name="darkTextColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
