@@ -10,9 +10,9 @@ export default class AddressCard extends Component {
   render() {
     if (this.props.address == '') {
       return (
-        <div>
-          please select a card
-        </div>
+        <span className="align-middle">
+          Select an address
+        </span>
       )
     } else {
       return (
@@ -20,13 +20,13 @@ export default class AddressCard extends Component {
           <div hidden={!this.props.selected}>
             {this.props.address.address_name}
           </div>
-          <Card className="address-card">
-            <Card.Body className="address-card-body overflow-hidden">
-              <Card.Text>
+          <Card className="address-card" id={this.props.address.address_name}>
+            <Card.Body className="address-card-body overflow-hidden" id={this.props.address.address_name}>
+              <Card.Text id={this.props.address.address_name}>
                 {this.props.address.address}
               </Card.Text>
             </Card.Body>
-            <Card.Footer className="address-card-footer">
+            <Card.Footer className="address-card-footer" id={this.props.address.address_name}>
               <div className="footer-text">
                 {this.props.address.city}, {this.props.address.country}
               </div>

@@ -16,9 +16,9 @@ export default class CreditCardCard extends Component {
     //console.log("image link: "+imageLink)
       if (this.props.creditCard == '') {
         return (
-          <div>
-            please select a card
-          </div>
+          <span className="align-middle">
+            Select a card
+          </span>
         )
       } else {
         return (
@@ -31,7 +31,7 @@ export default class CreditCardCard extends Component {
               <Card.Text>
                 <div className="credit-card">
                   <CreditCard 
-                    cvc={this.props.creditCard.cvc}
+                    cvv={this.props.creditCard.cvv}
                     expiry={this.props.creditCard.expiry}
                     // focused={creditCard.focus}
                     name={this.props.creditCard.name_on_card}

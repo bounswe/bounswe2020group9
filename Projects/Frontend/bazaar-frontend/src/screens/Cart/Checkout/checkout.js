@@ -9,7 +9,7 @@ import AddressCard from "./AddressCard/addresscard";
 import CreditCardCard from "./CreditCardCard/creditcardcard";
 import Card from 'react-bootstrap/Card'
 import { CountryDropdown, RegionDropdown, CountryRegionData } from 'react-country-region-selector';
-
+import CreditCardView from "./CreditCardView";
 
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
@@ -34,13 +34,24 @@ export default class Checkout extends Component {
       addressModalIsOpen: false,
       cardModalIsOpen: false,
       adding: false,
+      expiryPastValue: '',
       costs: [0,0,0],
-      isHiddenStates: [true, true, true, true, true]
+      cart: [],
+      isHiddenStates: [true, true, true, true, true, true, true, true, true]
     }
   }
 
   handleChange = event => {
     event.preventDefault();
+    if (event.target.name === "expiry") {
+      if (event.target.value.length === 2 && this.state.expiryPastValue.length === 1) {
+        event.target.value += "/";
+      }
+      if (event.target.value.length === 6) {
+        event.target.value = this.state.expiryPastValue;
+      }
+      this.setState({expiryPastValue: event.target.value})
+    }
     this.setState({ [event.target.name]: event.target.value });
     let editedItem_ = this.state.editedItem
     editedItem_[event.target.name] = event.target.value
@@ -70,6 +81,49 @@ export default class Checkout extends Component {
 
   handleSubmit = event => {
 
+    if (this.state.selectedAddress == '') {
+      this.setHiddenStates(5);
+      if (this.state.selectedCard == '') {
+        this.setHiddenStates(7);
+      }
+    } else if (this.state.selectedCard == '') {
+      this.setHiddenStates(6);
+    } else {
+      this.setHiddenStates(10);
+      let selectedCard = this.state.selectedCard;
+      let selectedAddress = this.state.selectedAddress;
+      let cart = this.state.cart;
+
+      let myCookie = read_cookie('user');
+      const header = {headers: {Authorization: "Token "+myCookie.token}};
+
+      const body = {};
+      body["user_id"] = myCookie.user_id;
+      body["location"] = selectedAddress.id;
+
+      let deliveries = []
+      for (let i = 0; i < cart.length; i ++) {
+        let item = {};
+        item["product"] = cart[i].product
+        item["amount"] = cart[i].amount
+        deliveries.push(item);
+      }
+      body["deliveries"] = deliveries;
+
+      axios.post(serverUrl+`api/product/order/`, body, header)
+      .then(res => {
+
+        this.setHiddenStates(8);
+        console.log(res)
+
+
+      }).catch(error => {
+        console.log("error: "+JSON.stringify(error))
+        this.setHiddenStates(9)
+      })
+      
+
+    }
 
 
   }
@@ -122,15 +176,21 @@ export default class Checkout extends Component {
         formIsValid = false;
         new_errors["cvv"] = "CVV should be 3 integers.";
       }
-      let month_int = parseInt(editedItem_.date_month)
-      if (month_int.toString().length != 2 && month_int.toString().length != 1) {
+      if (editedItem_.expiry.length != 5 || editedItem_.expiry.indexOf("/") < 0){
         formIsValid = false;
-        new_errors["expiry"] = "Month should be 1 or 2 integers.";
-      }
-      let year_int = parseInt(editedItem_.date_year)
-      if (year_int.toString().length != 2) {
-        formIsValid = false;
-        new_errors["expiry"] = "Year should be 2 integers.";
+        new_errors["expiry"] = "Invalid format.";
+      } else {
+        let dates = editedItem_.expiry.split("/");
+        if (parseInt(dates[0]) < 1 || parseInt(dates[0]) > 12 || isNaN(parseInt(dates[0]))) {
+          formIsValid = false;
+          new_errors["expiry"] = "Please give a valid month.";
+        }
+        if (parseInt(dates[1]) < 21 || isNaN(parseInt(dates[1]))) {
+          formIsValid = false;
+          new_errors["expiry"] = "Please give a valid year.";
+        }
+
+
       }
       this.setState({errors: new_errors})
       return formIsValid;
@@ -269,12 +329,13 @@ export default class Checkout extends Component {
 
         let editedItem_ = this.state.editedItem;
         const body = new FormData();
+        let dates = editedItem_.expiry.split("/")
         body.append("id", editedItem_.id);
         body.append("card_name", editedItem_.card_name);
         body.append("card_id", editedItem_.card_id);
         body.append("name_on_card", editedItem_.name_on_card);
-        body.append("date_month", editedItem_.date_month);
-        body.append("date_year", editedItem_.date_year);
+        body.append("date_month", dates[0]);
+        body.append("date_year", dates[1]);
         body.append("owner", myCookie.user_id);
         body.append("cvv", editedItem_.cvv);
         console.log(body)
@@ -341,7 +402,6 @@ export default class Checkout extends Component {
   componentDidMount() {
     let myCookie = read_cookie('user')
     const header = {headers: {Authorization: "Token "+myCookie.token}};
-    console.log(header)
 
     axios.get(serverUrl+`api/location/byuser/`, header)
     .then(res => {
@@ -357,11 +417,8 @@ export default class Checkout extends Component {
     axios.get(serverUrl+`api/product/payment/`, header)
     .then(res => {
 
-      console.log(res);
-      console.log(res.data);
       this.setState({ creditCards: res.data })
 
-      console.log(this.state.creditCards)
     }).catch(error => {
       console.log("error: "+JSON.stringify(error))
       this.setState({isHiddenFail: false})
@@ -370,17 +427,13 @@ export default class Checkout extends Component {
     axios.get(serverUrl + `api/user/cart/`, header)
     .then(res => {
       this.setState({ cart: res.data });
-      console.log(this.state.cart)
       let totalCost = 0;
-      console.log(res.data.length)
 
 
       for (let i=0;i<res.data.length;i++) {
-        console.log(res.data[i])
         axios.get(serverUrl + 'api/product/'+res.data[i].product+'/')
         .then(res2 => {
           totalCost += parseInt(res2.data.price)*res.data[i].amount
-          console.log(totalCost)
           let costs_ = this.state.costs
           costs_[0] = totalCost;
           this.setState({costs: costs_})
@@ -401,6 +454,11 @@ export default class Checkout extends Component {
         return creditCard.card_name == name_;
       });
       this.setState({ selectedCard: cardSelect[0] })
+      if (!(this.state.isHiddenStates[5] && this.state.isHiddenStates[7])) {
+        this.setHiddenStates(5);
+      } else {
+        this.setHiddenStates(10);
+      }
     }
 
   }
@@ -416,12 +474,17 @@ export default class Checkout extends Component {
         return address.address_name == name_;
       });
       this.setState({ selectedAddress: addressToSelect[0] })
+      if (!(this.state.isHiddenStates[6] && this.state.isHiddenStates[7])) {
+        this.setHiddenStates(6);
+      } else {
+        this.setHiddenStates(10);
+      }
     }
 
   }
 
   editAddress = event => {
-    let name_ = event.target.nextSibling?.id
+    let name_ = event.target.id
     var addressToEdit = this.state.addresses.filter(function (address) {
       return address.address_name == name_;
     });
@@ -454,7 +517,8 @@ export default class Checkout extends Component {
     editedItem_["card_id"] = (cardToEdit[0] != undefined) ? cardToEdit[0]["card_id"] : ""
     editedItem_["date_month"] = (cardToEdit[0] != undefined) ? cardToEdit[0]["date_month"] : ""
     editedItem_["date_year"] = (cardToEdit[0] != undefined) ? cardToEdit[0]["date_year"] : ""
-    editedItem_["expiry"] = (cardToEdit[0] != undefined) ? cardToEdit[0]["expiry"] : ""
+    editedItem_["expiry"] = (cardToEdit[0] != undefined) ? (cardToEdit[0]["date_month"].length == 1 ? "0"+cardToEdit[0]["date_month"] : cardToEdit[0]["date_month"])
+    +"/"+cardToEdit[0]["date_year"] : ""
     editedItem_["cvv"] = (cardToEdit[0] != undefined) ? cardToEdit[0]["cvv"] : ""
     this.setState({editedItem: editedItem_})
     this.openCardModal();
@@ -492,10 +556,10 @@ export default class Checkout extends Component {
               {address.address_name} 
             </label>
           </div>
-          <a onClick={this.editAddress} classname="edit-label">
+          <div onClick={this.editAddress} id={address.address_name} className="edit-label">
             edit
-          </a>
-          <div id={address.address_name}>
+          </div>
+          <div id={address.address_name} onClick={this.editAddress}>
             <AddressCard address={address} selected={false} ></AddressCard>
           </div>
         </div>
@@ -516,18 +580,19 @@ export default class Checkout extends Component {
     )
 
     let creditCards = this.state.creditCards.map((creditCard) => {
+      creditCard.expiry = creditCard.date_month+"/"+creditCard.date_year
       return (
         <div className="credit-card-wrapper float-left">
           <div onClick={this.handleCardClick} className="form-check form-check-inline">
             <input className="form-check-input" type="radio" name="creditcard-checkbox"
               id={"creditcard-checkbox-" + creditCard.card_name} value="option1" />
-            <label className="form-check-label" for={"creditcard-checkbox-" + creditCard.card_name}>
+            <label className="form-check-label credit-card-label" for={"creditcard-checkbox-" + creditCard.card_name}>
               {creditCard.card_name}
             </label>
           </div>
-          <a onClick={this.editCard}>
+          <div onClick={this.editCard} className="edit-label">
             edit
-          </a>
+          </div>
           <div id={creditCard.card_name}>
             <CreditCardCard creditCard={creditCard} selected={false}></CreditCardCard>
           </div>
@@ -553,7 +618,6 @@ export default class Checkout extends Component {
     return (
       <div className='background'>
         <CategoryBar></CategoryBar>
-        
         <Modal show={this.state.addressModalIsOpen || this.state.cardModalIsOpen} onHide={this.closeModal}>
           <Modal.Header closeButton>
             <Modal.Title>{this.state.addressModalIsOpen ? this.state.editedItem?.address_name : this.state.editedItem?.card_name}</Modal.Title>
@@ -573,6 +637,13 @@ export default class Checkout extends Component {
               <Alert variant="danger" hidden={this.state.isHiddenStates[4]}>
                 Please fill out the form correctly.
               </Alert>
+              
+              <div className="form-group row edited-card" hidden={this.state.addressModalIsOpen}>
+                <CreditCardView cardModalIsOpen={this.state.cardModalIsOpen} editedItem={this.state.editedItem}>
+
+                </CreditCardView>
+
+              </div>
               <div className="form-group row" hidden={this.state.cardModalIsOpen}>
                   <label className="col-4 align-middle">Name:</label>
                   <div className="col-6">
@@ -642,13 +713,8 @@ export default class Checkout extends Component {
               </div>
               <div className="form-group row" hidden={this.state.addressModalIsOpen}>
                   <label className="col-4 align-middle">Expiry:</label>
-                  <div className="col-6 form-control-inline">
-                    <input type="text" name="date_month" className="form-control col date-field" value={this.state.editedItem?.date_month}
-                    onChange={this.handleChange} required/>
-                    <span className="date-slash">
-                      /
-                    </span>
-                    <input type="text" name="date_year" className="form-control col date-field" value={this.state.editedItem?.date_year}
+                  <div className="col-6">
+                    <input type="text" name="expiry" className="form-control col" value={this.state.editedItem?.expiry}
                     onChange={this.handleChange} required/>
                     <div className="error">{this.state.errors["expiry"]}</div>
                   </div>
@@ -681,6 +747,14 @@ export default class Checkout extends Component {
 
         </Modal>
         <div className="row">
+          <Alert variant="success" hidden={this.state.isHiddenStates[8]}
+                 className="order-alert col-lg-6 col-md-6 col-sm-6">
+                  You order has been sent.
+          </Alert>
+          <Alert variant="danger" hidden={this.state.isHiddenStates[9]}
+                 className="order-alert col-lg-6 col-md-6 col-sm-6">
+                  Something went wrong.
+          </Alert>
           <div className="checkout-container col-lg-8 col-md-8 col-sm-8 no-padding-left border-right ">
             <div className="justify-content-center" id="header3">
               <h2 className="text-center">Checkout</h2>
@@ -688,15 +762,23 @@ export default class Checkout extends Component {
             <div className="order-selection row border-bottom">
 
               <div className="col-lg-6 col-md-6 col-sm-6 no-padding-left border-right row row-margin-correction">
-                <div className="text-center col-lg-6 col-md-6 col-sm-6">
+                <Alert variant="danger" hidden={this.state.isHiddenStates[5] && this.state.isHiddenStates[7]}
+                 className="selection-warning col-lg-12 col-md-12 col-sm-12">
+                  Please select an address.
+                </Alert>
+                <span className="text-center col-lg-7 col-md-7 col-sm-7 align-middle">
                   Address info:
-                </div>
+                </span>
                 <AddressCard address={this.state.selectedAddress} selected={true}></AddressCard>
               </div>
               <div className="col-lg-6 col-md-6 col-sm-6 no-padding-left row row-margin-correction">
-                <div className="text-center col-lg-6 col-md-6 col-sm-6">
+                <Alert variant="danger" hidden={this.state.isHiddenStates[6] && this.state.isHiddenStates[7]} 
+                className="selection-warning col-lg-12 col-md-12 col-sm-12" id="credit-card-warning">
+                  Please select a credit card.
+                </Alert>
+                <span className="text-center col-lg-6 col-md-6 col-sm-6 align-middle">
                   Card info:
-                </div>
+                </span>
                 <CreditCardCard creditCard={this.state.selectedCard} selected={true}></CreditCardCard>
               </div>
             </div>
@@ -736,10 +818,10 @@ export default class Checkout extends Component {
                 <div className="payment-total">
                   Total Cost: {this.state.costs[0] + this.state.costs[1] - this.state.costs[2]} TL
                 </div>
-                <form>
-                  <Button variant="primary" className="add-or-save" type="submit">Finalize Order</Button>
+                
+                <Button variant="primary" className="add-or-save" onClick={this.handleSubmit}>Finalize Order</Button>
 
-                </form>
+
               </div>
             </Container>
           </div>

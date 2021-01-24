@@ -10,11 +10,14 @@
   & .creditcard-card-body {
 
     padding: 0;
-    background-color: #e8ffff;
 
     & .credit-card {
 
       zoom: 60%;
+
+      & .rccs__card--front {
+        background: default;
+      }
 
     }
 
