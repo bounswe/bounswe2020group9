@@ -8,6 +8,7 @@ import "./userpage.scss";
 
 
 import "./profilepage.scss";
+import {Link} from "react-router-dom";
 
 export default class ProfilePage extends Component {
 
@@ -26,12 +27,19 @@ export default class ProfilePage extends Component {
         bazaar_point: 0
       },
       token: "",
-      comments:[[]], // TODO handle comments
-      lists:[],
       user_not_found:false,
+      errors: {},
+      // Modal states
+      //Customer states
       show_comments_modal:false,
-      show_lists_modal:false,
-      errors: {}
+      show_lists_modal:false, // TODO this should redirect instead of opening a modal, fix it later
+      comments:[[]], // TODO handle
+      lists:[],
+      //Vendor states
+      show_locations_modal:false,
+      locations:[],
+      show_products_modal:false,
+      products:[]
     }
   }
 
@@ -43,20 +51,17 @@ export default class ProfilePage extends Component {
       Authorization: `Token ${this.state.token}`
     }
 
+
     axios.get(serverUrl + "api/user/" + this.state.user_id + "/")
       .then((res) => {
         this.setState({
           user: res.data,
         });
-        // get comments of user
-        /* axios.get()
-          .then((res)=>{
-            this.setState({
-              comments:res.data,
-            });
-        */
-        // get lists of user
+
         if (this.state.user.user_type === 1) {
+          // if user is Customer,
+
+          // get lists of Customer
           axios.get(serverUrl + "api/user/" + this.state.user_id + "/lists/", {
             headers: headers
           }).then((res) => {
@@ -64,10 +69,39 @@ export default class ProfilePage extends Component {
               lists: res.data,
             });
           });
+
+          // get comments of Customer
+          /* axios.get()
+            .then((res)=>{
+              this.setState({
+                comments:res.data,
+              });
+          */
+        } else if (this.state.user.user_type === 2) {
+          // if user is Vendor
+
+          // get products of Vendor
+
+          axios.get(serverUrl + "api/product/vendor/" + this.state.user_id + "/", {
+            headers: headers
+          }).then((res) => {
+            this.setState({
+              products: res.data,
+            });
+          })
+
+
+          // get locations of Vendor
+
+          axios.get(serverUrl + "api/location/vendor/" + this.state.user_id + "/", {
+            headers: headers
+          }).then((res) => {
+            this.setState({
+              locations: res.data,
+            });
+          })
         }
-      }).catch(() => {
-          this.setState({user_not_found: true});
-        })
+      })
   }
 
   handleInfo = (user)=>{
@@ -87,41 +121,116 @@ export default class ProfilePage extends Component {
     return returned;
   }
 
-  openCommentsModal = ()=>{
-    this.setState({show_comments_modal:true});
-  }
-  closeCommentsModal = ()=>{
-    this.setState({show_comments_modal:false});
-  }
+  openCommentsModal = ()=> this.setState({show_comments_modal:true});
+  closeCommentsModal = ()=> this.setState({show_comments_modal:false});
 
-  openListsModal = ()=>{
-    this.setState({show_lists_modal:true});
-  }
-  closeListsModal = ()=>{
-    this.setState({show_lists_modal:false});
-  }
+  openListsModal = () => this.setState({show_lists_modal:true})
+  closeListsModal = () => this.setState({show_lists_modal:false});
+
+  openProductsModal = () => this.setState({show_products_modal:true});
+  closeProductsModal = () => this.setState({show_products_modal:false});
+
+  openLocationsModal = () => this.setState({show_locations_modal:true});
+  closeLocationsModal = () => this.setState({show_locations_modal:false});
 
   render() {
     const user = this.state.user;
 
-    let Lists = this.state.lists.map((list)=>{
-      return(
-        <div className="row">
-          <div className="col-3">{list.is_private ? "Private" : "Public"}</div>
-          <div className="col-4">{list.name}</div>
-          <div className="col-5">
-            <button variant="secondary">View Products</button>
+
+    if (user.user_type===2){
+      // if vendor
+
+      let Products = this.state.products.map((product)=>{
+        return (
+          <div className="row">
+            <Link
+              className="btn btn-info col-12"
+              to={{ pathname: `/product/${product.id}`, state: { product } }}
+            >
+              {product.name}</Link>
+          </div>
+        )
+      })
+
+      let Locations = this.state.locations.map((location)=>{
+        return (
+          <div className="row">
+            <div className="col-4">{location.address_name.name}</div>
+            <Link
+              className="btn btn-info col-12"
+              to={{ pathname: `#`, state: { location } }}
+            >
+              View on Google Maps</Link>
+          </div>
+        )
+       });
+
+      return (
+        <div className='background'>
+          <Modal show={this.state.show_products_modal} onHide={this.closeProductsModal}>
+            <Modal.Header closeButton>
+              <Modal.Title>{"Products of "+user.email}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <ul className="list-group">
+                <li className="list-group-item row">
+                  {Products}
+                </li>
+              </ul>
+            </Modal.Body>
+            <button className="btn btn-info modalCloseButton" onClick={this.closeProductsModal}>Close</button>
+          </Modal>
+
+          <Modal show={this.state.show_locations_modal} onHide={this.closeLocationsModal}>
+            <Modal.Header closeButton>
+              <Modal.Title>{"Locations of "+user.email}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <ul className="list-group">
+                <li className="list-group-item row">
+                  {Locations}
+                </li>
+              </ul>
+            </Modal.Body>
+            <button className="btn btn-info modalCloseButton" onClick={this.closeLocationsModal}>Close</button>
+          </Modal>
+
+          <Alert variant="danger" hidden={!this.state.user_not_found} style={{textAlign:"center", margin:0}}>
+            User Not Found.
+          </Alert>
+          <div className="container" hidden={this.state.user_not_found}>
+            <h2 className="textCenter">{user.email}</h2>
+            <ul className="list-group col-8 setCenter">
+              <li className="list-group-item row textCenter">{this.handleInfo(user)}</li>
+              <li className="list-group-item row textCenter">{"Date Joined: " + this.handleTimestamp(user.date_joined)}</li>
+              <li className="list-group-item row textCenter">{"Last Login: " + this.handleTimestamp(user.last_login)}</li>
+              <li className="list-group-item row textCenter">
+                <button className="btn btn-info" onClick={this.openProductsModal}>View Products</button>
+                <button className="btn btn-info" onClick={this.openLocationsModal}>View Locations</button>
+              </li>
+            </ul>
           </div>
         </div>
-        )
+      );
+    }
+
+    // else, if customer
+
+    let Lists = this.state.lists.map((list)=>{
+      return(
+        <div className={"rowClicked" + list.is_private ? " font-italic" : ""}>
+          <div className="btn col-12">{list.name}</div>
+        </div>
+      )
     })
 
     let Comments = this.state.comments.map((comment)=>{
       return (
         <div className="row">
-          <div className="col-3">Comment First</div>
-          <div className="col-6">Comment Second</div>
-          <div className="col-3">Comment Third</div>
+          <div className="col-8">product name</div>
+          <div className="col-4">
+            <button className="btn btn-info">View Product</button>
+          </div>
         </div>
       )
     })
@@ -131,7 +240,7 @@ export default class ProfilePage extends Component {
 
         <Modal show={this.state.show_comments_modal} onHide={this.closeCommentsModal}>
           <Modal.Header closeButton>
-            <Modal.Title>Comments Modal</Modal.Title>
+            <Modal.Title>{"Comments of "+user.email}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <ul className="list-group">
@@ -140,41 +249,41 @@ export default class ProfilePage extends Component {
               </li>
             </ul>
           </Modal.Body>
-          <Modal.Footer>
-            <button variant="secondary" onClick={this.closeCommentsModal}>Close</button>
-          </Modal.Footer>
+          <button className="btn btn-info modalCloseButton" onClick={this.closeCommentsModal}>Close</button>
         </Modal>
 
         <Modal show={this.state.show_lists_modal} onHide={this.closeListsModal}>
           <Modal.Header closeButton>
-            <Modal.Title>Lists Modal</Modal.Title>
+            <Modal.Title>{"Lists of "+user.email}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
+            <div className="row myTitle">
+              <Link
+                className="btn btn-info col-12"
+                to={{ pathname: `#`,}}
+              >View All</Link>
+            </div>
             <ul className="list-group">
               <li className="list-group-item row">
                 {Lists}
               </li>
             </ul>
           </Modal.Body>
-          <Modal.Footer>
-            <button variant="secondary" onClick={this.closeListsModal}>Close</button>
-          </Modal.Footer>
+          <button className="btn btn-info modalCloseButton" onClick={this.closeListsModal}>Close</button>
         </Modal>
 
         <Alert variant="danger" hidden={!this.state.user_not_found} style={{textAlign:"center", margin:0}}>
           User Not Found.
         </Alert>
-        <div hidden={this.state.user_not_found}>
+        <div className="container" hidden={this.state.user_not_found}>
           <h2 className="text-center">{user.email}</h2>
-          <ul className="list-group">
+          <ul className="list-group col-8 setCenter">
             <li className="list-group-item row textCenter">{this.handleInfo(user)}</li>
             <li className="list-group-item row textCenter">{"Date Joined: " + this.handleTimestamp(user.date_joined)}</li>
             <li className="list-group-item row textCenter">{"Last Login: " + this.handleTimestamp(user.last_login)}</li>
-          </ul>
-          <ul className="list-group">
-            <li className="list-group-item textCenter">
-              <button variant="secondary" onClick={this.openCommentsModal}>View Comments</button>
-              <button variant="secondary" onClick={this.openListsModal}>View Lists</button>
+            <li className="list-group-item row textCenter">
+              <button className="btn btn-info" onClick={this.openCommentsModal}>View Comments</button>
+              <button className="btn btn-info" onClick={this.openListsModal}>View Lists</button>
             </li>
           </ul>
         </div>
