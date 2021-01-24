@@ -41,10 +41,10 @@ class VendorMyAddressesViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     @IBAction func addNewAddressButtonPressed(_ sender: UIButton) {
-        performSegue(withIdentifier: "goToAddAddress", sender: nil)
+        performSegue(withIdentifier: "goToAddAddressFromVendor", sender: nil)
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "goToAddAddress"  {
+        if segue.identifier == "goToAddAddressFromVendor"  {
             if processType == .Update{
                 if let destinationVC = segue.destination as? AddNewAddressViewController {
                     destinationVC.processType = .Update
@@ -79,7 +79,7 @@ extension VendorMyAddressesViewController: AddressCellDelegate {
     func addressCellDidUpdateButtonPressed(cell: AddressCell) {
         self.processType = .Update
         self.addressCell = cell
-        performSegue(withIdentifier: "goToAddAddress", sender: nil)
+        performSegue(withIdentifier: "goToAddAddressFromVendor", sender: nil)
     }
     
     func addressCellDidDeleteButtonPressed(cell: AddressCell) {
