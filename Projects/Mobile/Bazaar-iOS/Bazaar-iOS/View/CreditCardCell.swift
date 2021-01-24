@@ -29,8 +29,7 @@ class CreditCardCell: UITableViewCell {
         self.cvvLabel.text = "\(cvv.prefix(1))**"
         self.cardNameLabel.text = cardName
         self.creditCardCellView.layer.shadowColor = UIColor.black.cgColor
-        self.creditCardCellView.layer.shadowOpacity = 0.2
-        self.creditCardCellView.layer.shadowOffset = CGSize(width: 3, height: 3)
+        self.creditCardCellView.layer.shadowOpacity = 0.5
         self.creditCardCellView.layer.shadowRadius = 3
         return self
     }
