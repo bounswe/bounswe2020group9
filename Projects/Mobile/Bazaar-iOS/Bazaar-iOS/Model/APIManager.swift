@@ -675,26 +675,27 @@ struct APIManager {
             completionHandler(.failure(err))
         }
     }
-}
-
-func placeOrder(userId:Int, products:[Int:Int], completionHandler: @escaping (Result<[OrderData] ,Error>) -> Void) {
-    do {
-        var request = try ApiRouter.placeOrder(userId: userId, products: products).asURLRequest()
-        AF.request(request).responseJSON { (response) in
-            if (response.response?.statusCode != nil){
-                guard let safeData = response.data else  {
-                    completionHandler(.failure(MyError.runtimeError("Error")))
-                    return
-                }
-                if let decodedData:[OrderData] = APIParse().parseJSON(safeData: safeData){
-                    completionHandler(.success(decodedData))
-                }else {
-                    completionHandler(.failure(MyError.runtimeError("Failed to parse json ")))
+    
+    func placeOrder(userId:Int, products:[Int:Int], completionHandler: @escaping (Result<[OrderData] ,Error>) -> Void) {
+        do {
+            var request = try ApiRouter.placeOrder(userId: userId, products: products).asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if (response.response?.statusCode != nil){
+                    guard let safeData = response.data else  {
+                        completionHandler(.failure(MyError.runtimeError("Error")))
+                        return
+                    }
+                    if let decodedData:[OrderData] = APIParse().parseJSON(safeData: safeData){
+                        completionHandler(.success(decodedData))
+                    }else {
+                        completionHandler(.failure(MyError.runtimeError("Failed to parse json ")))
+                    }
                 }
             }
+        }catch let err {
+            completionHandler(.failure(err))
         }
-    }catch let err {
-        completionHandler(.failure(err))
     }
 }
+
 

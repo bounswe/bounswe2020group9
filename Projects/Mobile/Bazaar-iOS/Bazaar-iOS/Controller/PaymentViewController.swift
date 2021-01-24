@@ -32,8 +32,8 @@ class PaymentViewController: UIViewController {
     var termsAccepted: Bool?
     var creditCardsArray:[CreditCardData] = []
     var cards:[String] = []
-    //var addressesArray:[AddressData] = []
-    //var addresses:[String] = []
+    var addressesArray:[AddressData] = []
+    var addresses:[String] = []
     
     
 
@@ -55,12 +55,18 @@ class PaymentViewController: UIViewController {
             }
         }
         
-        
-        //getAddresses
-        //self.addressesArray = addr
-        //self.addresses = ["Choose from Addresses"] + (self.addressesArray.map { $0.address_name })
-        //self.addressDropDown!.dataSource = self.addresses
-        
+        APIManager().getCustomerAddresses { (result) in
+            switch result{
+            case .success(let myAddresses):
+                self.addressesArray = myAddresses
+                self.addresses = ["Choose from Addresses"] + (self.addressesArray.map { $0.address_name })
+                self.addressDropdown!.dataSource = self.addresses
+            case .failure(_):
+                let alertController = UIAlertController(title: "Alert!", message: "There was an error loading your addresses, please try again later.", preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+                 self.present(alertController, animated: true, completion: nil)
+            }
+        }
         
     }
     
@@ -83,8 +89,6 @@ class PaymentViewController: UIViewController {
         termsView.layer.borderColor = #colorLiteral(red: 1, green: 0.6431372549, blue: 0.3568627451, alpha: 1)
         termsView.layer.shadowColor = UIColor.black.cgColor
         
-        let addresses = ["Choose from Addresses"] + ["iş","ev"]
-        // let addresses = ["Choose a Brand"] + Array(Set(AllProducts.shared.allProducts.map{$0.brand}))
         
         addressDropdown = DropDown(anchorView: addressInfoView)
         addressDropdown!.dataSource = addresses
@@ -93,7 +97,7 @@ class PaymentViewController: UIViewController {
         addressDropdown?.cancelAction = {
             let controlStates: Array<UIControl.State> = [.normal, .highlighted, .disabled, .selected, .focused, .application, .reserved]
                for controlState in controlStates {
-                    self.chooseAddressButton.setTitle(addresses[0], for: controlState)
+                self.chooseAddressButton.setTitle(self.addresses[0], for: controlState)
                }
         }
         addressDropdown!.selectionAction = { (index, item) in
