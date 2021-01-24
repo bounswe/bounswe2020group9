@@ -134,6 +134,30 @@ export default class MyList extends Component {
     this.setState({ list_is_private: event.target.checked });
   };
 
+  onDeleteListButton = (event, list) => {
+    let myCookie = read_cookie("user");
+
+    const headers = {
+      Authorization: `Token ${myCookie.token}`,
+    };
+
+    axios
+      .delete(serverUrl + `api/user/${myCookie.user_id}/list/${list.id}/`, {
+        headers: headers,
+      })
+      .then((res) => {
+        axios
+          .get(serverUrl + `api/user/${myCookie.user_id}/lists/`, {
+            headers: {
+              Authorization: `Token ${myCookie.token}`,
+            },
+          })
+          .then((res) => {
+            this.setState({ productLists: res.data });
+          });
+      });
+  };
+
   render() {
     let listNames = this.state.productLists?.map((list) => {
       return (
@@ -146,7 +170,7 @@ export default class MyList extends Component {
           </button>
           <button
             className="listRemoveButton"
-            onClick={this.onDeleteListButton}
+            onClick={(event) => this.onDeleteListButton(event, list)}
           >
             <img src={removeListIcon} />
           </button>
