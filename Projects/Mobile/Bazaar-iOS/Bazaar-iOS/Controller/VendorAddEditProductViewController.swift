@@ -24,6 +24,7 @@ class VendorAddEditProductViewController: UIViewController {
     @IBOutlet weak var subcategoryButton: UIButton!
     @IBOutlet weak var categoryButton: UIButton!
     
+    var delegate: VendorAddEditProductViewControllerDelegate?
     var categoryDropdown: DropDown?
     var subcategoryDropdown: DropDown?
     var product:ProductData!
@@ -146,6 +147,7 @@ class VendorAddEditProductViewController: UIViewController {
                     DispatchQueue.main.async {
                         AllProducts.shared.allProducts = AllProducts.shared.allProducts.filter{$0.id != self.product.id}
                         AllProducts.shared.allProducts.append(prod)
+                        self.delegate?.vendorAddEditProductViewControllerResponse()
                         self.dismiss(animated: true, completion: nil)
                     }
                 case .failure(let error):
@@ -219,6 +221,7 @@ class VendorAddEditProductViewController: UIViewController {
                 switch result {
                 case .success(let prod):
                     AllProducts.shared.allProducts.append(prod)
+                    self.delegate?.vendorAddEditProductViewControllerResponse()
                     self.dismiss(animated: true, completion: nil)
                 case .failure(let err):
                     print(err)
@@ -250,4 +253,9 @@ class VendorAddEditProductViewController: UIViewController {
     }
     */
 
+}
+
+protocol VendorAddEditProductViewControllerDelegate
+{
+     func vendorAddEditProductViewControllerResponse()
 }

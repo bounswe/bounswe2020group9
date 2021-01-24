@@ -290,9 +290,7 @@ extension SearchResultsViewController: UITableViewDelegate, UITableViewDataSourc
         if allProductsInstance.allImages.keys.contains(product.id) {
             cell.productImageView.image = allProductsInstance.allImages[product.id]
             cell.productImageView.contentMode = .scaleAspectFit
-            print("1: \(product.name)")
         } else {
-            print("2: \(product.name)")
             if let url = product.picture {
                 do{
                     try cell.productImageView.loadImageUsingCache(withUrl: url, forProduct: product)
@@ -303,6 +301,10 @@ extension SearchResultsViewController: UITableViewDelegate, UITableViewDataSourc
                     cell.productImageView.tintColor = UIColor.lightGray
                     cell.productImageView.contentMode = .center
                 }
+            }  else {
+                cell.productImageView.image = UIImage(named:"xmark.circle")
+                cell.productImageView.tintColor = UIColor.lightGray
+                cell.productImageView.contentMode = .center
             }
         }
         return cell

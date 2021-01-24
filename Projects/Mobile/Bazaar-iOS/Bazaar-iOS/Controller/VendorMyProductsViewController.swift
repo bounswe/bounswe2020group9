@@ -45,6 +45,7 @@ class VendorMyProductsViewController: UIViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let addEditProductVC = segue.destination as? VendorAddEditProductViewController {
             let indexPath = self.productsTableView.indexPathForSelectedRow
+            addEditProductVC.delegate = self
             if indexPath != nil {
                 addEditProductVC.product = products[indexPath!.row]
                 addEditProductVC.isEdit = true
@@ -81,14 +82,12 @@ extension VendorMyProductsViewController: UITableViewDelegate, UITableViewDataSo
         cell.productDescriptionLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
         cell.productPriceLabel.text = "₺"+String(product.price)
         cell.productPriceLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
-        
+        print("ehh",product)
         if AllProducts.shared.allImages.keys.contains(product.id) {
-            print(product.name, product.picture, "1")
             cell.productImageView.image = AllProducts.shared.allImages[product.id]
             cell.productImageView.contentMode = .scaleAspectFit
         } else {
             if let url = product.picture {
-                print(product.name, product.picture)
                 do{
                     if product.picture != "<null>" {
                         try _ = cell.productImageView.loadImageUsingCache(withUrl: url, forProduct: product)
@@ -105,6 +104,10 @@ extension VendorMyProductsViewController: UITableViewDelegate, UITableViewDataSo
                     cell.productImageView.tintColor = UIColor.lightGray
                     cell.productImageView.contentMode = .center
                 }
+            } else {
+                cell.productImageView.image = UIImage(named:"xmark.circle")
+                cell.productImageView.tintColor = UIColor.lightGray
+                cell.productImageView.contentMode = .center
             }
         }
         cell.arrowImageView.image = UIImage(systemName: "pencil")
@@ -117,4 +120,25 @@ extension VendorMyProductsViewController: UITableViewDelegate, UITableViewDataSo
         }
     }
     
+}
+
+extension VendorMyProductsViewController: VendorAddEditProductViewControllerDelegate {
+    func vendorAddEditProductViewControllerResponse() {
+        if let vendorId = UserDefaults.standard.value(forKey: K.userIdKey) as? Int{
+            APIManager().getVendorsProducts(vendorId: vendorId) { (result) in
+                switch result {
+                case .success(let products):
+                    self.products = products
+                    self.productsTableView.reloadData()
+                    DispatchQueue.main.async {
+                        self.productsTableView.reloadData()
+                    }
+                case .failure(let error):
+                    self.products = []
+                    print(error)
+                // error ver
+                }
+            }
+        }
+    }
 }
