@@ -1,42 +1,66 @@
 .listWrapper {
+  margin-left: 0rem !important;
   & .lists {
     & h2 {
       margin-left: 2rem;
     }
   }
-  & .addListButton {
-    margin-left: 2rem;
-    margin-bottom: 1rem;
-    display: flex;
-    width: 7rem;
-    border-radius: 12px;
-    background-color: #42aea8;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    & img {
-      max-width: 20px;
-      margin: auto;
+  & .addListRow {
+    margin: 1rem 0rem 0rem 1rem;
+
+    & .addListButton {
+      margin-left: 2rem;
+      margin-bottom: 1rem;
+      display: flex;
+      width: 7rem;
+      height: 2rem;
+      border-radius: 12px;
+      background-color: #42aea8;
+      border: 1px solid rgba(0, 0, 0, 0.2);
+      & img {
+        max-width: 20px;
+        margin: auto;
+      }
     }
+
+    // & .isFormPrivate {
+    //   margin-top: 1rem;
+    // }
   }
 }
 
-.listButton {
-  // border-radius: 12px;
-  // background-color: #42AEA8!important;
+.listRow {
   border: none;
   background-color: white !important;
   border-color: white;
-  & .list-group-item {
-    color: #42aea8;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  & .listButton {
+    // border-radius: 12px;
+    // background-color: #42AEA8!important;
     border: none;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    background-color: white !important;
+    border-color: white;
+    display: flex;
+    flex: 1;
+    & .list-group-item {
+      color: #42aea8;
+      border: none;
+      &:focus {
+        border: none;
+        outline: none;
+      }
+    }
     &:focus {
       border: none;
       outline: none;
     }
   }
 
-  &:focus {
-    border: none;
-    outline: none;
+  & .listRemoveButton {
+    border: 0rem;
+    background: transparent;
+    & img {
+      max-width: 2rem;
+    }
   }
 }
