@@ -23,7 +23,7 @@
     padding: 15px;
     border: solid 1px;
     border-color: #e2e2e2;
-    margin: 0;
+    margin-bottom: 50px;
 }
 
 #header3 {
@@ -46,4 +46,15 @@
     color: white;
     float: right;
     width: 50%;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+#save-changes-div {
+    margin-bottom: 0;
+    height: 50px;
+}
+
+#isvendor {
+    
 }

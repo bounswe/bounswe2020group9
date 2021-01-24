@@ -1,102 +1,87 @@
 import React, { Component, useState } from "react";
 import GoogleButton from 'react-google-button'
 import axios from 'axios'
+import { Redirect } from "react-router-dom";
+
 
 import "./signup.css";
 
 export default class SignUpComponent extends Component {
-    constructor(){
+
+    constructor() {
         super();
         this.state = {
-            fname: '',
-            lname: '',
-            email: '',
-            password: '',
+          username: '',
+          password: '',
+          fname: '',
+          lname: '',
+          redirect: null
         }
-    }
-
-    signUp (){
-        fetch('http://13.59.236.175:8000/api/user/', {
-            method:"POST",
-            body:JSON.stringify(this.state)
-        }).then(response => {
-            response.JSON().then(result=>{
-                console.warn("result", result);
-                localStorage.setItem('login', JSON.stringify({
-                    login:true,
-                    token:result.token
-                }))
-            })
-        })
-    }
-
-
-      onChange = (e) => {
-
-        this.setState({ [e.target.name]: e.target.value });
+      }
+    
+      handleChange = event => {
+        this.setState({ [event.target.name]: event.target.value });
       }
 
-      onSubmit = (e) => {
-        e.preventDefault();
-        // get our form data out of state
+    
+      handleSubmit = event => {
+    
+        event.preventDefault();
         const data = new FormData();
-        data.append("fname", this.state.fname);
-        data.append("lname", this.state.lname);
-        data.append("email", this.state.email);
+        data.append("username", this.state.username);
         data.append("password", this.state.password);
-
-        axios.post('http://13.59.236.175:8000/api/user/', data)
-            .then(res => {
-                console.log(res);
-                console.log(res.status);
-                this.setState({ redirect: "True" });
-            })
-            .catch(error =>{
-                if (error.response){
-                    if (error.response.status == 401){
-                        alert ("The email or password you have entered is incorrect. Please try again.");
-                    }
-                    else{
-                        alert ("There has been an error. Please try again.");
-                    }
-                }
-                else{
-                    alert ("There has been an error. Please try again.");
-                }
-
-            })
-        e.preventDefault();
+        data.append("first_name", this.state.fname);
+        data.append("last_name", this.state.lname);
+    
+    
+        axios.post(`http://13.59.236.175:8000/api/user/signup/`, data)
+          .then(res => {
+    
+            console.log(res);
+            console.log(res.data);
+            this.setState({ redirect: "/signin" });
+          })
+    
+    
+    
       }
 
     render() {
+        if (this.state.redirect) {
+            return <Redirect to={this.state.redirect} />
+          }
         return (
             <div className="entry-form">
-                <form onSubmit={this.signUp} >
+                <form onSubmit={this.handleSubmit} >
                     <h3>Sign Up</h3>
                     <div className="row">
                         <div className="form-group col">
-                            <label>First Name</label>
-                            <input type="text" name="fname" className="form-control" placeholder="Enter first name"  onChange={this.onChange}/>
+                            <label>First Name (Optional)</label>
+                            <input type="text" name="fname" className="form-control" placeholder="Enter first name"  
+                            onChange={this.handleChange}/>
                         </div>
                         <div className="form-group col">
-                            <label>Last name</label>
-                            <input type="text" name="lname" className="form-control" placeholder="Enter last name"  onChange={this.onChange}/>
+                            <label>Last name (Optional)</label>
+                            <input type="text" name="lname" className="form-control" placeholder="Enter last name"  
+                            onChange={this.handleChange}/>
                         </div>
                     </div>
                     <div className="form-group">
                         <label>Email address</label>
-                        <input type="text" name="email" className="form-control" placeholder="Enter email"  onChange={this.onChange}/>
+                        <input type="text" name="username" className="form-control" placeholder="Enter email"  
+                        onChange={this.handleChange}/>
                     </div>
 
                     <div className="form-group">
                         <label>Password</label>
-                        <input type="text" name="password" className="form-control" placeholder="Enter password"  onChange={this.onChange}/>
+                        <input type="text" name="password" className="form-control" placeholder="Enter password"  
+                        onChange={this.handleChange}/>
                     </div>
 
                     <button id="submit" type="submit" className="btn btn-block">Sign Up</button>
 
                     <p className="forgot-password">
-                        Already registered <a href="#">sign in?</a>
+                        Already registered <a href="/signin">sign in?</a>
                     </p>
                 </form>
                 <GoogleButton className="btn-google"
