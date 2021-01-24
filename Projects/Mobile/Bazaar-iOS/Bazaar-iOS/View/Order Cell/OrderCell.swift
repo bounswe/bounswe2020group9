@@ -14,8 +14,10 @@ class OrderCell: UITableViewCell {
     @IBOutlet weak var Price_StatusLabel: UILabel!
     @IBOutlet weak var VendorLabel: UILabel!
     @IBOutlet weak var DatesLabel: UILabel!
+    @IBOutlet weak var Cancel_OrderButton: UIButton!
     @IBOutlet weak var AmountLabel: UILabel!
     @IBOutlet weak var AdressLabel: UILabel!
+ 
     
     override func awakeFromNib() {
         super.awakeFromNib()

@@ -16,7 +16,7 @@ class CustomerOrdersViewController: UIViewController{
     var allProductsInstance = AllProducts.shared
     var allVendorsInstance = AllVendors.shared
     
-    let orderStatusArray = ["", "Preparing", "In Cargo", "Delivered", "Canceled"]
+    let orderStatusArray = ["", "Preparing", "On the Way", "Delivered", "Canceled"]
     
     var products_dict: [Int: ProductData] = [:]
     var vendors_dict: [Int: VendorData] = [:]
@@ -96,9 +96,25 @@ extension CustomerOrdersViewController:UITableViewDelegate,UITableViewDataSource
             return 5
         }
     }
-    
+    @objc func cancel_button_clicked(_ sender : UIButton, delivery_id: Int){
+        print("Button clicked. ")
+        let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+        APIManager().deleteOrder(delivery_id: delivery_id) { (result) in
+            switch result {
+            case .success(let message):
+                self.dismiss(animated: false, completion: nil)
+                alertController.message = "Order succesfully canceled."
+                self.present(alertController, animated: true, completion: nil)
+            case .failure(_):
+                alertController.message = "Order could not canceled. Try again later."
+                self.present(alertController, animated: true, completion: nil)
+            }
+        }
+    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         print("setting order cell : "+String(indexPath.row))
         let cell = ordersTableView.dequeueReusableCell(withIdentifier: "ReusableOrderCell", for: indexPath) as! OrderCell
         cell.ProductImage?.image = UIImage(named:"xmark.circle")
@@ -114,19 +130,21 @@ extension CustomerOrdersViewController:UITableViewDelegate,UITableViewDataSource
         let vendor = vendors_dict[delivery.vendor]!
         let orderStatus=orderStatusArray[delivery.current_status]
         
+        cell.Cancel_OrderButton.tag = indexPath.row
+        cell.Cancel_OrderButton.addTarget(self, action: #selector(self.cancel_button_clicked(_:delivery_id:)), for: .allTouchEvents);
         
         cell.Name_BrandLabel.text = product.detail + ", " + product.brand
         cell.Name_BrandLabel.font = UIFont.systemFont(ofSize: 10, weight: .regular)
         
         cell.Price_StatusLabel.text = "₺" + String(product.price) + ", Status: " + orderStatus
         cell.Price_StatusLabel.font = UIFont.systemFont(ofSize: 13, weight: .black)
-        cell.VendorLabel.text = vendor.company
+        cell.VendorLabel.text = "Vendor Company : "+vendor.company
         cell.VendorLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         cell.AmountLabel.text = "Amount : " + String(delivery.amount)
         cell.AmountLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         cell.DatesLabel.text = "Order Date: " + delivery.timestamp.prefix(10) + " Estimated Delivery : " + delivery.delivery_time.prefix(10)
-        cell.DatesLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
-        cell.AdressLabel.text = "Order Adress: " + " order.adress "
+        cell.DatesLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
+        cell.AdressLabel.text = "Order Adress: " + delivery.delivery_address.address + delivery.delivery_address.city
         cell.AdressLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         print("complete setting order cell")
         
