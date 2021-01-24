@@ -532,6 +532,12 @@ class OrderView(APIView):
             serializer = DeliverySerializer(data=delivery)
             if serializer.is_valid():
                 serializer.save()
+                try:
+                    cart = SubOrder.objects.get(customer_id=user_id, purchased=False)
+                    cart.purchased = True
+                    cart.save()
+                except:
+                    pass
             else:
                 return Response({"message":serializer.errors},status=status.HTTP_400_BAD_REQUEST)
         return Response(deliveries, status=status.HTTP_200_OK)   
