@@ -33,7 +33,7 @@ export default class ProfilePage extends Component {
       //Customer states
       show_comments_modal:false,
       show_lists_modal:false, // TODO this should redirect instead of opening a modal, fix it later
-      comments:[[]], // TODO handle
+      comments:[],
       lists:[],
       //Vendor states
       show_locations_modal:false,
@@ -70,12 +70,22 @@ export default class ProfilePage extends Component {
           });
 
           // get comments of Customer
-          /* axios.get()
-            .then((res)=>{
-              this.setState({
-                comments:res.data,
+          axios.get(serverUrl + "api/product/comment/user/" + this.state.user_id + "/all/", {
+            headers: headers
+          })
+            .then((res)=> {
+              let comments = res.data;
+              comments.forEach((comment)=>{
+                axios.get(serverUrl + "api/product/" + comment.product + "/", {
+                  headers: headers
+                }).then((res)=>{
+                  comment.product = res.data;
+                })
               });
-          */
+              this.setState({
+                comments: comments,
+              });
+            });
         } else if (this.state.user.user_type === 2) {
           // if user is Vendor
 
@@ -135,7 +145,6 @@ export default class ProfilePage extends Component {
   render() {
     const user = this.state.user;
 
-
     if (user.user_type===2){
       // if vendor
 
@@ -162,8 +171,6 @@ export default class ProfilePage extends Component {
           </div>
         )
        });
-
-      console.warn(this.state.locations);
 
       return (
         <div className='background'>
@@ -227,9 +234,12 @@ export default class ProfilePage extends Component {
     let Comments = this.state.comments.map((comment)=>{
       return (
         <div className="row">
-          <div className="col-8">Comment Dummy</div>
+          <div className="col-8">{comment.product.name}</div>
           <div className="col-4">
-            <button className="btn btn-info">View Product</button>
+            <Link
+              className="btn btn-info col-12"
+              to={ {pathname: `/product/${comment.product.id}`, state: comment.product }}>
+              View Product</Link>
           </div>
         </div>
       )
