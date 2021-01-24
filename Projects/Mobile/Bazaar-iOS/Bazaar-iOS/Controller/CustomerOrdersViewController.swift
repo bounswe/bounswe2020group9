@@ -99,7 +99,7 @@ extension CustomerOrdersViewController:UITableViewDelegate,UITableViewDataSource
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        print("setting order cell")
+        print("setting order cell : "+String(indexPath.row))
         let cell = ordersTableView.dequeueReusableCell(withIdentifier: "ReusableOrderCell", for: indexPath) as! OrderCell
         cell.ProductImage?.image = UIImage(named:"xmark.circle")
         //TODO change here
@@ -107,6 +107,7 @@ extension CustomerOrdersViewController:UITableViewDelegate,UITableViewDataSource
         //let filteredProducts:[ProductData] = allProductsInstance.allProducts
         //let filteredVendors:[VendorData] = allVendorsInstance.allVendors
         let order = filteredOrders[indexPath.row]
+        print("Order deliveries count:" + String(order.deliveries.count))
         let delivery = order.deliveries[0]
         print("Product ID: " + String(delivery.product_id))
         let product = products_dict[delivery.product_id]!                //filteredProducts[delivery.product_id]
@@ -140,7 +141,7 @@ extension CustomerOrdersViewController:UITableViewDelegate,UITableViewDataSource
         if allProductsInstance.allImages.keys.contains(product.id) {
             cell.ProductImage.image = allProductsInstance.allImages[product.id]
             cell.ProductImage.contentMode = .scaleAspectFit
-            print("1: \(product.name)")
+            print("1: Name: \(product.name) :Product ID: \(product.id)")
         } else {
             print("2: \(product.name)")
             if let url = product.picture {

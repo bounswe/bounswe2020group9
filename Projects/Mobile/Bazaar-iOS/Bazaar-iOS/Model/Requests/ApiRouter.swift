@@ -33,6 +33,7 @@ enum ApiRouter: URLRequestBuilder {
     case googleSignIn(userName:String, token:String, firstName:String, lastName:String)
     case getAllVendors(str:String)
     case getCustomerOrders
+    case deleteOrder(delivery_id:Int)
 
   // MARK: - Path
     internal var path: String {
@@ -81,6 +82,8 @@ enum ApiRouter: URLRequestBuilder {
         case .getAllVendors:
             return "api/user/vendor/"
         case .getCustomerOrders:
+            return "api/product/order/"
+        case .deleteOrder:
             return "api/product/order/"
         }
         
@@ -146,6 +149,8 @@ enum ApiRouter: URLRequestBuilder {
             params["latitude"] = latitude
             params["longitude"] = lontitude
             params["company"] = companyName
+        case .deleteOrder(let delivery_id):
+            params["delivery_id"] = delivery_id
         default:
             break
         }
@@ -161,7 +166,7 @@ enum ApiRouter: URLRequestBuilder {
             if isCustomerLoggedIn {
                 headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
             }
-        case .addList, .deleteList, .deleteProductFromList , .editList, .addToList, .getUsersComment,.getCustomerOrders:
+        case .addList, .deleteList, .deleteProductFromList , .editList, .addToList, .getUsersComment,.getCustomerOrders,.deleteOrder:
             headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
         case .getCart, .addToCart, .editAmountInCart, .deleteProductFromCart:
             headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
@@ -190,7 +195,7 @@ enum ApiRouter: URLRequestBuilder {
             return .get
         case .deleteList, .deleteProductFromList,.deleteProductFromCart:
             return .delete
-        case .editList,.editAmountInCart,.setProfileInfo:
+        case .editList,.editAmountInCart,.setProfileInfo,.deleteOrder:
             return .put
         case .updatePassword:
             return .post

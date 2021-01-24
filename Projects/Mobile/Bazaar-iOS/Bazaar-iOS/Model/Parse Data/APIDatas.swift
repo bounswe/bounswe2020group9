@@ -154,5 +154,15 @@ struct DeliveryData: Codable {
     let customer_id:Int
     let amount:Int
     let vendor:Int
-    
+    let delivery_address:AddressData
+}
+struct AddressData:Codable {
+    let id:Int
+    let address_name:String
+    let address:String
+    let country:String
+    let city:String
+    let postal_code:Int
+    let longitude:Float
+    let latitude:Float
 }

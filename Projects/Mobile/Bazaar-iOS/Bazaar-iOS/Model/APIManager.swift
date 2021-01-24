@@ -250,6 +250,36 @@ struct APIManager {
         }
     }
     
+    func deleteOrder(delivery_id:Int , completionHandler: @escaping (Result<String ,Error>) -> Void) {
+        do {
+            let request = try ApiRouter.deleteOrder(delivery_id: delivery_id).asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if response.response?.statusCode == 204 {
+                    completionHandler(.success("success"))
+                }
+                else if (response.response?.statusCode != nil){
+                    guard let safeData = response.data else  {
+                        completionHandler(.failure(MyError.runtimeError("Error")))
+                        return
+                    }
+                    if let decodedData:[String:String] = APIParse().parseJSON(safeData: safeData){
+                        if (decodedData["message"]=="Updated Successfully"){
+                            completionHandler(.success("success"))
+                        }else{
+                            print("Failed to parse returned message: " + decodedData["message"]!)
+                            completionHandler(.failure(MyError.runtimeError("Error")))
+                        }
+                        
+                    }else {
+                        completionHandler(.failure(MyError.runtimeError("Error")))
+                    }
+                }
+            }
+        }catch let err {
+            completionHandler(.failure(err))
+        }
+    }
+    
     func getCustomerLists(userId:Int, isCustomerLoggedIn:Bool, completionHandler: @escaping (Result<[CustomerListData] , Error>) -> Void) {
         do {
             let request = try ApiRouter.getCustomerLists(userId: userId, isCustomerLoggedIn: isCustomerLoggedIn).asURLRequest()
@@ -270,6 +300,7 @@ struct APIManager {
             completionHandler(.failure(err))
         }
     }
+    
     
     func addList(name:String, userId:Int, isPrivate:Bool, completionHandler: @escaping (Result<CustomerListData ,Error>) -> Void) {
         do {
