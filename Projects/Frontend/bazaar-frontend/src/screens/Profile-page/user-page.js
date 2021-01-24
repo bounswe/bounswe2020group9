@@ -51,7 +51,6 @@ export default class ProfilePage extends Component {
       Authorization: `Token ${this.state.token}`
     }
 
-
     axios.get(serverUrl + "api/user/" + this.state.user_id + "/")
       .then((res) => {
         this.setState({
@@ -155,15 +154,16 @@ export default class ProfilePage extends Component {
       let Locations = this.state.locations.map((location)=>{
         return (
           <div className="row">
-            <div className="col-4">{location.address_name.name}</div>
-            <Link
-              className="btn btn-info col-12"
-              to={{ pathname: `#`, state: { location } }}
-            >
-              View on Google Maps</Link>
+            <div className="col-7">{location.address_name}</div>
+            <p
+              className="btn btn-info col-5"
+              onClick={()=>window.open(`//www.google.com/maps/@${location.latitude},${location.longitude},15z`)}>
+              View on Google Maps</p>
           </div>
         )
        });
+
+      console.warn(this.state.locations);
 
       return (
         <div className='background'>
@@ -227,7 +227,7 @@ export default class ProfilePage extends Component {
     let Comments = this.state.comments.map((comment)=>{
       return (
         <div className="row">
-          <div className="col-8">product name</div>
+          <div className="col-8">Comment Dummy</div>
           <div className="col-4">
             <button className="btn btn-info">View Product</button>
           </div>
