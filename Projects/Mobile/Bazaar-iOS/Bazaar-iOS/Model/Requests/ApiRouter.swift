@@ -35,7 +35,7 @@ enum ApiRouter: URLRequestBuilder {
     case addNewCreditCard(owner:Int, nameOnCard:String, cardNumber:String, month:String, year:String, cvv:String, cardName:String)
     case getCreditCards
     case removeCreditCard(id:Int, owner:Int)
-    case placeOrder(userId:Int, products:[Int:Int])
+    case placeOrder(userId:Int, products:[Int:Int], add_id:Int)
     case addNewAddressForCustomer(addressName:String , fullAddress:String, country:String, city:String, postalCode:Int,user:Int)
     case getCustomerAddresses
     case removeCustomerAddress(addressId:Int)
@@ -171,7 +171,7 @@ enum ApiRouter: URLRequestBuilder {
         case .removeCreditCard(let id, let owner):
             params["owner"] = owner
             params["id"] = id
-        case .placeOrder(let userId, let products):
+        case .placeOrder(let userId, let products, let add_id):
             params["user_id"] = userId
             var arr:[[String:Int]] = []
             for p in products {
@@ -179,6 +179,8 @@ enum ApiRouter: URLRequestBuilder {
                 arr.append(d)
             }
             params["deliveries"] = arr
+            params["location"] = add_id
+            print(params)
         case .addNewAddressForCustomer(let addressName, let fullAddress, let country, let city, let postalCode, let user):
             params["address_name"] = addressName
             params["address"] = fullAddress

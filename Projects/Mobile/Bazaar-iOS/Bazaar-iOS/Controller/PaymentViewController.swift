@@ -26,7 +26,6 @@ class PaymentViewController: UIViewController {
     var cardsDropdown: DropDown?
     
     var totalPriceText: String!
-    var totalPrice: Int!
     var deliveries:[Int:Int]!
     
     var termsAccepted: Bool?
@@ -34,6 +33,7 @@ class PaymentViewController: UIViewController {
     var cards:[String] = []
     var addressesArray:[AddressData] = []
     var addresses:[String] = []
+    var selectedAddressIndex:Int?
     
     
 
@@ -120,6 +120,7 @@ class PaymentViewController: UIViewController {
                for controlState in controlStates {
                     self.chooseCardButton.setTitle(item, for: controlState)
                }
+            self.selectedAddressIndex = index
         }
         cardsDropdown?.dismissMode = .automatic
     }
@@ -161,12 +162,13 @@ class PaymentViewController: UIViewController {
                 self.present(alertController, animated: true, completion: nil)
             } else{
                 if let userId =  UserDefaults.standard.value(forKey: K.userIdKey) as? Int{
-                    APIManager().placeOrder(userId: userId, products: deliveries) { (result) in
+                    APIManager().placeOrder(userId: userId, products: deliveries, add_id: self.addressesArray[self.selectedAddressIndex!-1].id) { (result) in
                         switch result{
                         case .success(_):
                             alertController.message = "Your order is successfully placed. Go to \"My Orders\" page in Profile to track your orders."
                             self.present(alertController, animated: true, completion: nil)
-                            self.navigationController?.popViewController(animated: true)
+                            //self.navigationController?.popViewController(animated: true)
+                            //TODO send to ORDER DETAIL
                         case .failure(_):
                             let alertController = UIAlertController(title: "Alert!", message: "Order could not be placed successfully. Please be sure that you have entered valid information.", preferredStyle: .alert)
                             alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
@@ -174,7 +176,6 @@ class PaymentViewController: UIViewController {
                         }
                     }
                 }
-                
             }
             
         } else {

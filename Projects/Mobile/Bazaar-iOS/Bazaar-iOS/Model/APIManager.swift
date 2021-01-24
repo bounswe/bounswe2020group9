@@ -676,9 +676,9 @@ struct APIManager {
         }
     }
     
-    func placeOrder(userId:Int, products:[Int:Int], completionHandler: @escaping (Result<[OrderData] ,Error>) -> Void) {
+    func placeOrder(userId:Int, products:[Int:Int], add_id:Int, completionHandler: @escaping (Result<[OrderData] ,Error>) -> Void) {
         do {
-            var request = try ApiRouter.placeOrder(userId: userId, products: products).asURLRequest()
+            let request = try ApiRouter.placeOrder(userId: userId, products: products, add_id: add_id).asURLRequest()
             AF.request(request).responseJSON { (response) in
                 if (response.response?.statusCode != nil){
                     guard let safeData = response.data else  {
