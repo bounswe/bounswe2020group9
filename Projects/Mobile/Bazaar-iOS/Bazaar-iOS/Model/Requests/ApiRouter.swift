@@ -179,7 +179,7 @@ enum ApiRouter: URLRequestBuilder {
             params["price"] = price
             params["stock"] = stock
             params["description"] = description
-            params["image"] = image
+            params["picture"] = image
         default:
             break
         }

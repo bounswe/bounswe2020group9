@@ -82,6 +82,7 @@
                 <constraint firstItem="XbW-Cr-6zF" firstAttribute="width" secondItem="njF-e1-oar" secondAttribute="width" multiplier="0.1" id="isk-Up-HhO"/>
             </constraints>
             <connections>
+                <outlet property="arrowImageView" destination="XbW-Cr-6zF" id="3Ea-YT-jdG"/>
                 <outlet property="productDescriptionLabel" destination="IyX-4i-qfR" id="wN3-oe-6XQ"/>
                 <outlet property="productImageView" destination="Giw-Wt-0fS" id="VVi-Wk-sXI"/>
                 <outlet property="productNameLabel" destination="vKi-TA-wkk" id="JHV-md-o9E"/>

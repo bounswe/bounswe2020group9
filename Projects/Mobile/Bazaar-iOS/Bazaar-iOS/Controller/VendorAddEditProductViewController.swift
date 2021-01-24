@@ -16,14 +16,34 @@ class VendorAddEditProductViewController: UIViewController {
     @IBOutlet weak var imageURLTextField: UITextField!
     @IBOutlet weak var descriptionTextField: UITextField!
     @IBOutlet weak var stockTextField: UITextField!
+    @IBOutlet weak var descriptionTextView: UITextView!
+    
+    var product:ProductData!
+    var isEdit: Bool!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        self.descriptionTextView.layer.borderColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1).cgColor
+        self.descriptionTextView.layer.borderWidth = 1.0
+        self.descriptionTextView.layer.cornerRadius = 8
+        if(isEdit) {
+            headerLabel.text = "Edit " + product.name
+            titleTextField.placeholder = product.name
+            brandTextField.placeholder = product.brand
+            priceTextField.placeholder = String(product.price)
+            imageURLTextField.placeholder = product.picture ?? "URL of the product's image"
+            descriptionTextField.placeholder = product.detail
+            descriptionTextView.text = product.detail
+            descriptionTextView.textColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
+            stockTextField.placeholder = String(product.stock)
+        }
         // Do any additional setup after loading the view.
     }
     
-
+    @IBAction func cancelButtonPressed(_ sender: Any) {
+        dismiss(animated: false, completion: nil)
+    }
+    
     /*
     // MARK: - Navigation
 
