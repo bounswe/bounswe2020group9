@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import ReactDOM from "react-dom";
 import axios from "axios";
-import {Button, Modal} from "react-bootstrap";
+import { Button, Modal } from "react-bootstrap";
 import { Redirect } from "react-router-dom";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -23,7 +23,7 @@ import { faUser } from "@fortawesome/free-solid-svg-icons";
 import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { faWarehouse } from "@fortawesome/free-solid-svg-icons";
-import {faBell} from "@fortawesome/free-solid-svg-icons";
+import { faBell } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 class Header extends Component {
@@ -61,45 +61,46 @@ class Header extends Component {
     this.setState({ [event.target.name]: event.target.value });
   };
 
-  openNotificationModal = (event)=>{
+  openNotificationModal = (event) => {
     if (event !== undefined) event.preventDefault();
-    this.setState({showNotification: true});
-  }
+    this.setState({ showNotification: true });
+  };
 
-  closeNotificationModal = (event)=>{
-    this.setState({showNotification: false});
-  }
+  closeNotificationModal = (event) => {
+    this.setState({ showNotification: false });
+  };
 
-  readAllNotifications = (event)=>{
-    axios.post(serverUrl + "api/message/notifications/", "",{
+  readAllNotifications = (event) => {
+    axios
+      .post(serverUrl + "api/message/notifications/", "", {
         headers: {
           Authorization: `Token ${this.state.token}`,
-        }
-    }).then((res)=>{
-      console.warn(this.state.token,res);
-    });
-    this.state.notifications.forEach(notification=>{
+        },
+      })
+      .then((res) => {
+        console.warn(this.state.token, res);
+      });
+    this.state.notifications.forEach((notification) => {
       notification.is_visited = true;
     });
     this.setState({
-      new_notifications:0,
-      notifications:this.state.notifications
+      new_notifications: 0,
+      notifications: this.state.notifications,
     });
-  }
-
+  };
 
   componentDidMount() {
     let myCookie = read_cookie("user");
 
     if (Object.keys(myCookie).length === 0) {
       this.setState({
-        isSignedIn: false
+        isSignedIn: false,
       });
     } else {
       this.setState({
         isSignedIn: true,
         user_type: myCookie.user_type,
-        token : myCookie.token
+        token: myCookie.token,
       });
     }
 
@@ -126,33 +127,38 @@ class Header extends Component {
         this.setState({ cartProducts });
       });
 
-    if(myCookie.token !== undefined){
+    if (myCookie.token !== undefined) {
       const headers = {
-        Authorization: `Token ${myCookie.token}`
-      }
+        Authorization: `Token ${myCookie.token}`,
+      };
 
       axios
-        .get(serverUrl + "api/message/notifications/", {headers: headers})
-        .then((res)=>{
-          res.data.notifications.forEach((notification)=>{
+        .get(serverUrl + "api/message/notifications/", { headers: headers })
+        .then((res) => {
+          res.data.notifications.forEach((notification) => {
             const date = new Date(notification.timestamp);
-            notification.customTime = `${date.getDate()}.${date.getMonth()+1}.${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
+            notification.customTime = `${date.getDate()}.${
+              date.getMonth() + 1
+            }.${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
           });
-        //console.log("Notifications",res.data);
-        this.setState({
-          new_notifications : res.data.new_notifications,
-          notifications : res.data.notifications
+          //console.log("Notifications",res.data);
+          this.setState({
+            new_notifications: res.data.new_notifications,
+            notifications: res.data.notifications,
+          });
+        })
+        .catch((err) => {
+          //console.log("notifications not loaded, please refresh", myCookie.token);
         });
-      }).catch((err)=>{
-        //console.log("notifications not loaded, please refresh", myCookie.token);
-      })
 
-      axios.get(serverUrl + "api/message/conversations/", {headers:headers})
-      .then((res)=>{
-        this.setState({new_messages:res.data.new_messages});
-      }).catch((err)=>{
-        console.warn(err);
-      })
+      axios
+        .get(serverUrl + "api/message/conversations/", { headers: headers })
+        .then((res) => {
+          this.setState({ new_messages: res.data.new_messages });
+        })
+        .catch((err) => {
+          console.warn(err);
+        });
     }
   }
 
@@ -170,27 +176,30 @@ class Header extends Component {
 
     let SignPart;
 
-    let Notifications = this.state.notifications.map((notification)=>{
+    let Notifications = this.state.notifications.map((notification) => {
       return (
-          <a
-            className="list-group-item list-group-item-action"
-            style={{
-              "fontWeight": (notification.is_visited ? "normal" : "bold"),
-              "fontSize": "0.8rem",
-            }}
-            href="#"
-            onClick={(event)=>{
-              event.preventDefault();
-              notification.is_visited = true;
-              this.setState({notifications:this.state.notifications});
-            }}>
-              <div className="row">
-                <div className="col-3 no-padding-left">{notification.customTime}</div>
-                <div className="col-3 no-padding-left">{notification.type}</div>
-                <div className="col-6 no-padding-left">{notification.body}</div>
-              </div>
-            </a>
-      )
+        <a
+          className="list-group-item list-group-item-action"
+          style={{
+            fontWeight: notification.is_visited ? "normal" : "bold",
+            fontSize: "0.8rem",
+          }}
+          href="#"
+          onClick={(event) => {
+            event.preventDefault();
+            notification.is_visited = true;
+            this.setState({ notifications: this.state.notifications });
+          }}
+        >
+          <div className="row">
+            <div className="col-3 no-padding-left">
+              {notification.customTime}
+            </div>
+            <div className="col-3 no-padding-left">{notification.type}</div>
+            <div className="col-6 no-padding-left">{notification.body}</div>
+          </div>
+        </a>
+      );
     });
 
     if (Object.keys(read_cookie("user")).length !== 0) {
@@ -207,7 +216,8 @@ class Header extends Component {
                 aria-expanded="false"
               >
                 <FontAwesomeIcon icon={faUser} />
-                <span className="mr-1"/>Profile
+                <span className="mr-1" />
+                Profile
               </a>
               <div className="dropdown-menu" aria-labelledby="ddlProfile">
                 <a className="dropdown-item" href="/profile-page">
@@ -228,14 +238,15 @@ class Header extends Component {
                 aria-expanded="false"
               >
                 <FontAwesomeIcon icon={faShoppingCart} />
-                <span className="mr-1"/>Cart
+                <span className="mr-1" />
+                Cart
                 <span className="badge badge-secondary badge-pill">
                   {this.state.cart?.length}
                 </span>
               </a>
               <div className="dropdown-menu" aria-labelledby="ddlCart">
                 {cartItems}
-                <div className="dropdown-divider"/>
+                <div className="dropdown-divider" />
                 <Link
                   to={{ pathname: `/cart`, state: { cart: this.state.cart } }}
                 >
@@ -253,8 +264,12 @@ class Header extends Component {
                 aria-expanded="false"
               >
                 <FontAwesomeIcon icon={faEnvelope} />
-                <span className="mr-1"/>Messages
-                <span hidden={!this.state.new_messages} className="badge badge-secondary badge-pill">
+                <span className="mr-1" />
+                Messages
+                <span
+                  hidden={!this.state.new_messages}
+                  className="badge badge-secondary badge-pill"
+                >
                   {this.state.new_messages}
                 </span>
               </a>
@@ -265,18 +280,27 @@ class Header extends Component {
               </div>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="/" onClick={this.openNotificationModal}>
+              <a
+                className="nav-link"
+                href="/"
+                onClick={this.openNotificationModal}
+              >
                 <FontAwesomeIcon icon={faBell} />
-                <span className="mr-1"/>Notifications
-                <span hidden={!this.state.new_notifications} className="badge badge-secondary badge-pill">
+                <span className="mr-1" />
+                Notifications
+                <span
+                  hidden={!this.state.new_notifications}
+                  className="badge badge-secondary badge-pill"
+                >
                   {this.state.new_notifications}
                 </span>
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link"  href="/" onClick={this.handleSignout}>
+              <a className="nav-link" href="/" onClick={this.handleSignout}>
                 <FontAwesomeIcon icon={faSignOutAlt} />
-                <span className="mr-1"/>Sign Out
+                <span className="mr-1" />
+                Sign Out
               </a>
             </li>
           </ul>
@@ -294,7 +318,8 @@ class Header extends Component {
                 aria-expanded="false"
               >
                 <FontAwesomeIcon icon={faWarehouse} />
-                <span className="mr-1"/>Inventory
+                <span className="mr-1" />
+                Inventory
               </a>
               <div className="dropdown-menu" aria-labelledby="ddlProfile">
                 <a className="dropdown-item" href="/inventory">
@@ -315,7 +340,8 @@ class Header extends Component {
                 aria-expanded="false"
               >
                 <FontAwesomeIcon icon={faUser} />
-                <span className="mr-1"/>Profile
+                <span className="mr-1" />
+                Profile
               </a>
               <div className="dropdown-menu" aria-labelledby="ddlProfile">
                 <a className="dropdown-item" href="/profile-page">
@@ -333,8 +359,12 @@ class Header extends Component {
                 aria-expanded="false"
               >
                 <FontAwesomeIcon icon={faEnvelope} />
-                <span className="mr-1"/>Messages
-                <span hidden={!this.state.new_messages} className="badge badge-secondary badge-pill">
+                <span className="mr-1" />
+                Messages
+                <span
+                  hidden={!this.state.new_messages}
+                  className="badge badge-secondary badge-pill"
+                >
                   {this.state.new_messages}
                 </span>
               </a>
@@ -345,10 +375,18 @@ class Header extends Component {
               </div>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="/" onClick={this.openNotificationModal}>
+              <a
+                className="nav-link"
+                href="/"
+                onClick={this.openNotificationModal}
+              >
                 <FontAwesomeIcon icon={faBell} />
-                <span className="mr-1"/>Notifications
-                <span hidden={!this.state.new_notifications} className="badge badge-secondary badge-pill">
+                <span className="mr-1" />
+                Notifications
+                <span
+                  hidden={!this.state.new_notifications}
+                  className="badge badge-secondary badge-pill"
+                >
                   {this.state.new_notifications}
                 </span>
               </a>
@@ -356,7 +394,8 @@ class Header extends Component {
             <li className="nav-item">
               <a className="nav-link" href="/" onClick={this.handleSignout}>
                 <FontAwesomeIcon icon={faSignOutAlt} />
-                <span className="mr-1"/>Sign Out
+                <span className="mr-1" />
+                Sign Out
               </a>
             </li>
           </ul>
@@ -368,13 +407,15 @@ class Header extends Component {
           <li className="nav-item">
             <a className="nav-link" href="/signUp">
               <FontAwesomeIcon icon={faUserPlus} />
-              <span className="mr-1"/>Sign Up
+              <span className="mr-1" />
+              Sign Up
             </a>
           </li>
           <li className="nav-item">
             <a className="nav-link" href="/signIn">
               <FontAwesomeIcon icon={faSignInAlt} />
-              <span className="mr-1"/>Sign In
+              <span className="mr-1" />
+              Sign In
             </a>
           </li>
         </ul>
@@ -386,22 +427,29 @@ class Header extends Component {
     }
     return (
       <nav className="navbar navbar-expand-md navbar-light myNavbar">
-
-        <Modal show={this.state.showNotification} onHide={this.closeNotificationModal}>
+        <Modal
+          show={this.state.showNotification}
+          onHide={this.closeNotificationModal}
+        >
           <Modal.Header closeButton>
-            <Modal.Title>{
-              (this.state.new_notifications ? this.state.new_notifications: "No")
-              + " new Notification"
-              + (this.state.new_notifications===1 ? "": "s")}</Modal.Title>
+            <Modal.Title>
+              {(this.state.new_notifications
+                ? this.state.new_notifications
+                : "No") +
+                " new Notification" +
+                (this.state.new_notifications === 1 ? "" : "s")}
+            </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <ul className="list-group">
-              {Notifications}
-            </ul>
+            <ul className="list-group">{Notifications}</ul>
           </Modal.Body>
           <Modal.Footer>
-            <Button variant="secondary" onClick={this.readAllNotifications}>Unmark All</Button>
-            <Button variant="secondary" onClick={this.closeNotificationModal}>Close</Button>
+            <Button variant="secondary" onClick={this.readAllNotifications}>
+              Unmark All
+            </Button>
+            <Button variant="secondary" onClick={this.closeNotificationModal}>
+              Close
+            </Button>
           </Modal.Footer>
         </Modal>
 
