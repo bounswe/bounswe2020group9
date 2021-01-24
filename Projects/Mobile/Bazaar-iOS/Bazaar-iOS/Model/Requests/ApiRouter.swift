@@ -35,7 +35,11 @@ enum ApiRouter: URLRequestBuilder {
     case addNewCreditCard(owner:Int, nameOnCard:String, cardNumber:String, month:String, year:String, cvv:String, cardName:String)
     case getCreditCards
     case removeCreditCard(id:Int, owner:Int)
-
+    case addNewAddressForCustomer(addressName:String , fullAddress:String, country:String, city:String, postalCode:Int,user:Int)
+    case getCustomerAddresses
+    case removeCustomerAddress(addressId:Int)
+    case updateCustomerAddress(addressId:Int,addressName:String , fullAddress:String, country:String, city:String, postalCode:Int,user:Int)
+    
   // MARK: - Path
     internal var path: String {
         switch self {
@@ -84,6 +88,12 @@ enum ApiRouter: URLRequestBuilder {
             return "api/user/vendor/"
         case .addNewCreditCard,.getCreditCards,.removeCreditCard:
             return "api/product/payment/"
+        case .addNewAddressForCustomer, .getCustomerAddresses:
+            return "api/location/byuser/"
+        case .removeCustomerAddress(let addressId):
+            return "api/location/byuser/\(addressId)/"
+        case .updateCustomerAddress(let addressId, _,  _,  _,  _,  _,  _):
+            return "api/location/byuser/\(addressId)/"
         }
     }
 
@@ -158,6 +168,20 @@ enum ApiRouter: URLRequestBuilder {
         case .removeCreditCard(let id, let owner):
             params["owner"] = owner
             params["id"] = id
+        case .addNewAddressForCustomer(let addressName, let fullAddress, let country, let city, let postalCode, let user):
+            params["address_name"] = addressName
+            params["address"] = fullAddress
+            params["country"] = country
+            params["city"] = city
+            params["postal_code"] = postalCode
+            params["user"] = user
+        case .updateCustomerAddress(_, let addressName, let fullAddress, let country, let city, let postalCode, let user):
+            params["address_name"] = addressName
+            params["address"] = fullAddress
+            params["country"] = country
+            params["city"] = city
+            params["postal_code"] = postalCode
+            params["user"] = user
         default:
             break
         }
@@ -173,7 +197,7 @@ enum ApiRouter: URLRequestBuilder {
             if isCustomerLoggedIn {
                 headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
             }
-        case .addList, .deleteList, .deleteProductFromList , .editList, .addToList, .getUsersComment, .addNewCreditCard, .getCreditCards, .removeCreditCard:
+        case .addList, .deleteList, .deleteProductFromList , .editList, .addToList, .getUsersComment, .addNewCreditCard, .getCreditCards, .removeCreditCard, .addNewAddressForCustomer, .getCustomerAddresses, .removeCustomerAddress, .updateCustomerAddress:
             headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
         case .getCart, .addToCart, .editAmountInCart, .deleteProductFromCart:
             headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
@@ -196,18 +220,14 @@ enum ApiRouter: URLRequestBuilder {
     // MARK: - Methods
     internal var method: HTTPMethod {
         switch self {
-        case .authenticate, .addList,.addToList, .signUpCustomer, .signUpVendor, .resetPasswordEmail, .addToCart,.updatePassword, .googleSignIn, .addNewCreditCard:
+        case .authenticate, .addList,.addToList, .signUpCustomer, .signUpVendor, .resetPasswordEmail, .addToCart,.updatePassword, .googleSignIn, .addNewCreditCard, .addNewAddressForCustomer, .search:
             return .post
-        case .getCustomerLists, .getComments, .getUsersComment, .getCart, .getProfileInfo, .getAllVendors, .getCreditCards:
+        case .getCustomerLists, .getComments, .getUsersComment, .getCart, .getProfileInfo, .getAllVendors, .getCreditCards, .getCustomerAddresses:
             return .get
-        case .deleteList, .deleteProductFromList,.deleteProductFromCart, .removeCreditCard:
+        case .deleteList, .deleteProductFromList,.deleteProductFromCart, .removeCreditCard, .removeCustomerAddress:
             return .delete
-        case .editList,.editAmountInCart,.setProfileInfo:
+        case .editList,.editAmountInCart,.setProfileInfo, .updateCustomerAddress:
             return .put
-        case .updatePassword:
-            return .post
-        case .search:
-            return .post
         }
     }
 }
