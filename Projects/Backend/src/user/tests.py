@@ -15,7 +15,7 @@ class UserTestCases(TestCase):
         self.user1 = create_user("Vendor", "vendor@test.com", "vendorpw")
         self.user2 = create_user("Customer", "customer1@test.com", "1customerpw")
         self.user3 = create_user("Customer", "customer2@test.com", "2customerpw")
-    """
+    
     def test_user_list(self):
         client = Client()
         response = client.get("/api/user/")
@@ -80,4 +80,4 @@ class UserTestCases(TestCase):
         response = client.put("/api/user/profile/",{"first_name":"test","last_name":"customer"},HTTP_AUTHORIZATION=t)
         response = json.loads(response.content)
         print(response)
-        self.assertEqual("test",response["first_name"])"""
+        self.assertEqual("test",response["first_name"])

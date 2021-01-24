@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from product.models import Product, Order, Comment, ProductList, Payment, Label, Category, SubOrder, SearchHistory
+from product.models import Product, Order, Comment, ProductList, Payment, Label, Category, SubOrder, SearchHistory, Delivery
 
 # Register your models here.
 
@@ -21,3 +21,5 @@ admin.site.register(Order)
 admin.site.register(Payment)
 
 admin.site.register(SearchHistory)
+
+admin.site.register(Delivery)
