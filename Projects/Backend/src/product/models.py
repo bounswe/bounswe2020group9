@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 
+from location.models import Location
 from user.models import Vendor, Customer, User
 
 

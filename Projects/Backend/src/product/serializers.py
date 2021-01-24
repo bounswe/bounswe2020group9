@@ -108,6 +108,7 @@ class SubOrderSerializer(serializers.ModelSerializer):
         fields = '__all__'
         extra_kwargs = {'purchased': {'write_only': True}}
 
+
 class PaymentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Payment
@@ -119,6 +120,8 @@ class PaymentSerializer(serializers.ModelSerializer):
             setattr(instance, key, value)
         instance.save()
         return instance
+
+
 class DeliverySerializer(serializers.ModelSerializer):
     class Meta:
         model = Delivery

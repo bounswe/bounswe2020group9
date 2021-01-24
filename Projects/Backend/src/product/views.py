@@ -8,6 +8,7 @@ from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_4
     HTTP_202_ACCEPTED
 from rest_framework.views import APIView
 from django.utils import timezone
+
 from product.functions import search_product_db, datamuse_call, filter_func, sort_func, calculate_rating
 from product.models import Product, ProductList, SubOrder, Comment, Category, Payment,Delivery,Order
 from product.serializers import ProductSerializer, ProductListSerializer, CommentSerializer, SubOrderSerializer, \
@@ -527,12 +528,12 @@ class OrderView(APIView):
             delivery["customer"] = user_id
             delivery["order"] = order.id
             delivery["delivery_time"] = "Not Yet Decided"
-            delivery["location"] = location
+            delivery["location"] = location_id
             serializer = DeliverySerializer(data=delivery)
             if serializer.is_valid():
                 serializer.save()
             else:
-                return Response({"message":"Bad Request"},status=status.HTTP_400_BAD_REQUEST)
+                return Response({"message":serializer.errors},status=status.HTTP_400_BAD_REQUEST)
         return Response(deliveries, status=status.HTTP_200_OK)   
     def put(self,request):
         delivery_id = request.data["delivery_id"]
