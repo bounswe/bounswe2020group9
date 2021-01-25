@@ -503,6 +503,18 @@ class VendorOrderView(APIView):
             status1 = request.data["status"]
             if status1 != 4:
                 delivery.current_status = status1
+                st = ""
+                if status1 == 1:
+                    st = "Preparing"
+                elif status1 ==2:
+                    st= "On The Way"
+                elif status1 == 3:
+                    st = "Delivered"
+                try:
+                    body = "Your delivery with id "+ str(delivery_id) + " is now " +st
+                    Notification.objects.create(user=User.objects.get(id=delivery.customer_id),body=body,timestamp=timezone.now())
+                except:
+                    pass
             else:
                 return Response({"message" : "Vendor can not cancel order"},status=status.HTTP_400_BAD_REQUEST)
         if "delivery_time" in request.data:
@@ -544,15 +556,19 @@ class OrderView(APIView):
             delivery["timestamp"] = timezone.now()
             delivery["customer"] = user_id
             delivery["order"] = order.id
-            delivery["delivery_time"] = "Not Yet Decided"
+            delivery["delivery_time"] = timezone.now() + timedelta(7)
             delivery["location"] = location_id
+            product_id = delivery["product"]
+            p1 = Product.objects.get(id = product_id)
+            v1 = p1.vendor_id
             serializer = DeliverySerializer(data=delivery)
             if serializer.is_valid():
                 serializer.save()
                 try:
-                    cart = SubOrder.objects.get(customer_id=user_id, product_id=delivery["product"], purchased=False)
-                    cart.purchased = True
-                    cart.save()
+                    u1 = User.objects.get(id=v1)
+                    body = str(u1.username) + " ordered " + str(p1.name) 
+                    Notification.objects.create(user=u1,body=body,timestamp=timezone.now())
+                    
                 except:
                     pass
             else:

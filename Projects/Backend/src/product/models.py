@@ -84,7 +84,7 @@ class Delivery(models.Model):
     )
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True, blank=True)
-    delivery_time = models.DateTimeField(auto_now_add=True, blank=True)
+    delivery_time = models.DateTimeField(blank=True)
     current_status = models.PositiveSmallIntegerField(choices=STATUS_TYPES, default=1)
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
