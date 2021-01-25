@@ -41,6 +41,11 @@ enum ApiRouter: URLRequestBuilder {
     case removeCustomerAddress(addressId:Int)
     case updateCustomerAddress(addressId:Int,addressName:String , fullAddress:String, country:String, city:String, postalCode:Int,user:Int)
     case deleteAccount(token:String)
+    case getConversations
+    case getMessages(id:Int)
+    case getConversationsWithMessages
+    case sendMessage(receiver_username:String,  body:String)
+    
   // MARK: - Path
     internal var path: String {
         switch self {
@@ -97,6 +102,14 @@ enum ApiRouter: URLRequestBuilder {
             return "api/location/byuser/\(addressId)/"
         case .updateCustomerAddress(let addressId, _,  _,  _,  _,  _,  _):
             return "api/location/byuser/\(addressId)/"
+        case .getConversations:
+            return "api/message/conversations/"
+        case .getMessages(let id):
+            return "api/message/\(id)/"
+        case .getConversationsWithMessages:
+            return "api/message/all/"
+        case .sendMessage(_,_):
+            return "/api/message/"
         }
     }
 
@@ -195,6 +208,9 @@ enum ApiRouter: URLRequestBuilder {
             params["city"] = city
             params["postal_code"] = postalCode
             params["user"] = user
+        case .sendMessage(let receiver_username, let body):
+            params["receiver_username"] = receiver_username
+            params["body"] = body
         default:
             break
         }
@@ -214,7 +230,7 @@ enum ApiRouter: URLRequestBuilder {
             if let token = UserDefaults.standard.value(forKey: K.token) as? String {
                 headers["Authorization"] = "Token \(token)"
             }
-        case .getCart, .addToCart, .editAmountInCart, .deleteProductFromCart, .placeOrder:
+        case .getCart, .addToCart, .editAmountInCart, .deleteProductFromCart, .placeOrder, .getConversations, .getMessages, .getConversationsWithMessages:
             headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
         case .getProfileInfo(let authorization):
             headers["Authorization"] = "Token \(authorization)"
@@ -237,9 +253,9 @@ enum ApiRouter: URLRequestBuilder {
     // MARK: - Methods
     internal var method: HTTPMethod {
         switch self {
-        case .authenticate, .addList,.addToList, .signUpCustomer, .signUpVendor, .resetPasswordEmail, .addToCart,.updatePassword, .googleSignIn, .addNewCreditCard, .addNewAddressForCustomer, .search, .placeOrder:
+        case .authenticate, .addList,.addToList, .signUpCustomer, .signUpVendor, .resetPasswordEmail, .addToCart,.updatePassword, .googleSignIn, .addNewCreditCard, .addNewAddressForCustomer, .search, .placeOrder, .sendMessage:
             return .post
-        case .getCustomerLists, .getComments, .getUsersComment, .getCart, .getProfileInfo, .getAllVendors, .getCreditCards, .getCustomerAddresses:
+        case .getCustomerLists, .getComments, .getUsersComment, .getCart, .getProfileInfo, .getAllVendors, .getCreditCards, .getCustomerAddresses, .getConversations, .getMessages, .getConversationsWithMessages:
             return .get
         case .deleteList, .deleteProductFromList,.deleteProductFromCart, .removeCreditCard, .removeCustomerAddress, .deleteAccount:
             return .delete
