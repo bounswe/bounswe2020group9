@@ -27,7 +27,7 @@ class VendorAddEditProductViewController: UIViewController {
     var delegate: VendorAddEditProductViewControllerDelegate?
     var categoryDropdown: DropDown?
     var subcategoryDropdown: DropDown?
-    var product:ProductData!
+    var product:ProductData?
     var isEdit: Bool!
     var subcategoryList:[String] = ["Subcategory"]
     var chosenCategory = ""
@@ -49,15 +49,24 @@ class VendorAddEditProductViewController: UIViewController {
         self.descriptionTextView.layer.borderWidth = 1.0
         self.descriptionTextView.layer.cornerRadius = 8
         if(isEdit) {
-            headerLabel.text = "Edit " + product.name
-            titleTextField.placeholder = product.name
-            brandTextField.placeholder = product.brand
-            priceTextField.placeholder = String(product.price)
-            imageURLTextField.placeholder = product.picture ?? "URL of the product's image"
-            descriptionTextField.placeholder = product.detail
-            descriptionTextView.text = product.detail
+            headerLabel.text = "Edit " + product!.name
+            titleTextField.placeholder = product!.name
+            brandTextField.placeholder = product!.brand
+            priceTextField.placeholder = String(product!.price)
+            imageURLTextField.placeholder = product!.picture ?? "URL of the product's image"
+            descriptionTextField.placeholder = product!.detail
+            descriptionTextView.text = product!.detail
             descriptionTextView.textColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
-            stockTextField.placeholder = String(product.stock)
+            stockTextField.placeholder = String(product!.stock)
+        } else {
+            headerLabel.text = "Add New Product"
+            titleTextField.placeholder = "Title"
+            brandTextField.placeholder = "Brand"
+            priceTextField.placeholder = "Price"
+            imageURLTextField.placeholder = "URL of the product's image"
+            descriptionTextView.text = ""
+            descriptionTextView.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+            stockTextField.placeholder = "Stock"
         }
         categoryDropdown = DropDown(anchorView: categoryStackView.plainView)
         categoryDropdown!.dataSource = categories
@@ -104,31 +113,31 @@ class VendorAddEditProductViewController: UIViewController {
     @IBAction func saveProductButtonPressed(_ sender: Any) {
         
         if (isEdit) {
-            var name = product.name
+            var name = product!.name
             if ((self.titleTextField.text != nil) && (self.titleTextField.text != "")) {
                 name = titleTextField.text!
             }
-            var brand = product.brand
+            var brand = product!.brand
             if ((self.brandTextField.text != nil) && (self.brandTextField.text != "")) {
                 brand = brandTextField.text!
             }
-            var price = product.price
+            var price = product!.price
             if ((self.brandTextField.text != nil) && (self.brandTextField.text != "")) {
-                price = Double(brandTextField.text!) ?? product.price
+                price = Double(brandTextField.text!) ?? product!.price
             }
-            var picture = product.picture
+            var picture = product!.picture
             if ((self.imageURLTextField.text != nil) && (self.imageURLTextField.text != "")) {
                 picture = imageURLTextField.text!
             }
-            var detail = product.detail
+            var detail = product!.detail
             if ((self.descriptionTextView.text != nil) && (self.descriptionTextView.text != "")) {
                 detail = descriptionTextView.text!
             }
-            var stock = product.stock
+            var stock = product!.stock
             if ((self.stockTextField.text != nil) && (self.stockTextField.text != "")) {
-                stock = Int(stockTextField.text!) ?? product.stock
+                stock = Int(stockTextField.text!) ?? product!.stock
             }
-            var categoryId = product.category.id
+            var categoryId = product!.category.id
             if(chosenSubcategory=="Other") {
                 let categoryKey = chosenSubcategory+chosenCategory
                 categoryId = categoryIdDict[categoryKey] ?? 3
@@ -140,12 +149,12 @@ class VendorAddEditProductViewController: UIViewController {
                 }
             }
             
-            APIManager().vendorEditProduct(prodID: product.id, title: name, brand: brand, price: price, stock: stock, description: detail, image: picture ?? "",categoryID: categoryId , completionHandler: { result in
+            APIManager().vendorEditProduct(prodID: product!.id, title: name, brand: brand, price: price, stock: stock, description: detail, image: picture ?? "",categoryID: categoryId , completionHandler: { result in
                 switch result {
                 case .success(let prod):
                     print(prod)
                     DispatchQueue.main.async {
-                        AllProducts.shared.allProducts = AllProducts.shared.allProducts.filter{$0.id != self.product.id}
+                        AllProducts.shared.allProducts = AllProducts.shared.allProducts.filter{$0.id != self.product!.id}
                         AllProducts.shared.allProducts.append(prod)
                         self.delegate?.vendorAddEditProductViewControllerResponse()
                         self.dismiss(animated: true, completion: nil)
@@ -179,7 +188,7 @@ class VendorAddEditProductViewController: UIViewController {
             }
             var price = 0.0
             if ((self.priceTextField.text != nil) && (self.priceTextField.text != "")) {
-                price = Double(priceTextField.text!) ?? product.price
+                price = Double(priceTextField.text!) ?? 0
             } else {
                 alertController.message = "Please provide a price for the product."
                 isEmptyFieldPresent = true
@@ -194,7 +203,7 @@ class VendorAddEditProductViewController: UIViewController {
             }
             var stock = 0
             if ((self.stockTextField.text != nil) && (self.stockTextField.text != "")) {
-                stock = Int(stockTextField.text!) ?? product.stock
+                stock = Int(stockTextField.text!) ?? 1
             } else {
                 alertController.message = "Please provide a stock information for the product."
                 isEmptyFieldPresent = true
