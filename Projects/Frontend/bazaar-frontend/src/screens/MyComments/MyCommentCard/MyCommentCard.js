@@ -34,7 +34,7 @@ export default class MyCommentCard extends Component {
 
   render() {
     return (
-      <div className={"commentWrapper"}>
+      <div className={"MycommentWrapper"}>
         <Col>
           <Row className={"commentRate"}>
             <StarRatings

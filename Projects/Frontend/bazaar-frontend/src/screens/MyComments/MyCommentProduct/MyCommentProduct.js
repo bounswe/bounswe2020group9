@@ -37,7 +37,7 @@ export default class MyCommentProduct extends Component {
             state: { product: this.props.product },
           }}
         >
-          <Card className={"productCard"}>
+          <Card className={"myCommentproductCard"}>
             <Card.Body className={"productCardBody"}>
               <Card.Title>{this.props.product.name}</Card.Title>
               <Card.Text>{this.categoryName}</Card.Text>
