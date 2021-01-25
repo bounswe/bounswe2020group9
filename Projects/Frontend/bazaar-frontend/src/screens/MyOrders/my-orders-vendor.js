@@ -113,7 +113,7 @@ export default class MyOrdersVendor extends Component {
                 if (orders_temp[i].current_status == 1) {
                   orders_temp[i].action =
                   <div>
-                    <Button variant="warning" className="delivery-button" 
+                    <Button variant="primary" className="delivery-button" 
                     onClick={(event) => this.setStatus(event, 2)} id={orders_temp[i].id}>
                       On the Way
                     </Button> 
@@ -125,7 +125,7 @@ export default class MyOrdersVendor extends Component {
                 } else if (orders_temp[i].current_status == 2) {
                   orders_temp[i].action = 
                     <Button variant="success" className="delivery-button" onClick={(event) => this.setStatus(event, 3)} id={orders_temp[i].id}>
-                      Set to Delivered
+                      Delivered
                     </Button> 
                 }
               }
@@ -164,6 +164,48 @@ export default class MyOrdersVendor extends Component {
     console.log(event.target.id)
     console.log(parameter)
 
+    let statusTypes = {
+      1: <div className="preparing">
+        <FontAwesomeIcon icon={faBoxOpen}/> Preparing
+        </div>,
+
+      2: <div className="on-the-way">
+      <FontAwesomeIcon icon={faTruck}/> On the Way
+      </div>,
+      3: <div className="delivered">
+      <FontAwesomeIcon icon={faCheckCircle}/> Delivered
+      </div>,
+      4: <div className="cancelled">
+      <FontAwesomeIcon icon={faBan}/> Cancelled
+      </div>
+    }
+
+    const {orders} = this.state;
+
+    let deliveryToModifyTemp = orders.filter(function (delivery) {
+      return delivery.id == event.target.id;
+    });
+    let deliveryToModify = deliveryToModifyTemp[0];
+    let deliveryToModifyID;
+    for (let i = 0; i < orders.length; i ++) {
+      if (orders[i].id = deliveryToModify.id) {
+        deliveryToModifyID = i;
+        break;
+      }
+    }
+    orders[deliveryToModifyID]["status"] = statusTypes[parameter]
+
+    if (parameter == 2) {
+      orders[deliveryToModifyID].action =
+      <div>
+        <Button variant="success" className="delivery-button" onClick={(event) => this.setStatus(event, 3)} id={orders[deliveryToModifyID].id}>
+          Delivered
+        </Button> 
+      </div> 
+    } else if (parameter == 3) {
+      orders[deliveryToModifyID].action = '';
+    }
+
     let myCookie = read_cookie('user');
     const header = {
       headers: {
@@ -193,18 +235,6 @@ export default class MyOrdersVendor extends Component {
       })
 
   }
-
-  handleSubmit = event => {
-
-
-  }
-
-  handleChange = (event) => {
-    // You can use setState or dispatch with something like Redux so we can use the retrieved data
-    this.setState({ [event.target.name]: event.target.value });
-    //console.log(this.state.category)
-  };
-
 
 
   render() {
