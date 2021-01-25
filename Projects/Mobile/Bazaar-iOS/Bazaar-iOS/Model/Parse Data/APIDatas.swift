@@ -145,6 +145,7 @@ struct OrderData_Cust: Codable {
     let timestamp:String
     let deliveries:[DeliveryData]
 }
+
 struct DeliveryData: Codable {
     let id:Int
     let product_id:Int
@@ -155,8 +156,9 @@ struct DeliveryData: Codable {
     let customer_id:Int
     let amount:Int
     let vendor:Int
-    let delivery_address:AddressData
+    let delivery_address:AddressData2
 }
+
 struct DeliveryWithoutAddress: Codable {
     let id:Int
     let product_id:Int
@@ -209,6 +211,18 @@ struct AddressData:Codable {
     let longitude:Float
     let latitude:Float
     let user:Int
+}
+
+struct AddressData2:Codable {
+    let id:Int
+    let address_name:String
+    let address:String
+    let country:String
+    let city:String
+    let postal_code:Int
+    let longitude:Float
+    let latitude:Float
+    let user_id:Int
 }
 struct VendorOrderData: Codable {
     let id:Int
