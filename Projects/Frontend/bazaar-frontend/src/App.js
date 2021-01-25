@@ -24,6 +24,7 @@ import SearchResults from "./screens/SearchResults/search-results"
 import Checkout from "./screens/Cart/Checkout/checkout"
 import Messages from "./screens/Messages/messages";
 import MyAddresses from "./screens/MyAdresses/MyAddresses"
+import MyOrdersVendor from "./screens/MyOrders/my-orders-vendor"
 
 //components
 import Header from "./components/Header/Header"
@@ -54,6 +55,10 @@ function App() {
         <Route path="/checkout">
           <Header />
           <Checkout />
+        </Route>
+        <Route path="/my-orders-vendor">
+          <Header />
+          <MyOrdersVendor />
         </Route>
         <Route 
           path="/resetpw=:id"  

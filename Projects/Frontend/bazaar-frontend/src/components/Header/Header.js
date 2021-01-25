@@ -309,6 +309,9 @@ class Header extends Component {
                 <a className="dropdown-item" href="/add-product">
                   Add Product
                 </a>
+                <a className="dropdown-item" href="/my-orders-vendor">
+                  My Orders
+                </a>
               </div>
             </li>
             <li className="nav-item dropdown">
