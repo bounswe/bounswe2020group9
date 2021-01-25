@@ -139,7 +139,7 @@ extension CustomerOrdersViewController:UITableViewDelegate,UITableViewDataSource
         //cell.Cancel_OrderButton.addTarget(self, action: #selector(cancel_button_clicked(sender:)), for: .touchUpInside)
         //cell.cellDelegate = self
         //cell.index = indexPath
-        
+        cell.Cancel_OrderButton.isHidden=true
         cell.Name_BrandLabel.text = product.name + " - " + product.brand//product.detail + ", " + 
         cell.Name_BrandLabel.font = UIFont.systemFont(ofSize: 10, weight: .regular)
         

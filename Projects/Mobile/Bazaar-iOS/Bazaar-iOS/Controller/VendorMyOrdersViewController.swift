@@ -114,6 +114,7 @@ extension VendorMyOrdersViewController:UITableViewDelegate,UITableViewDataSource
         print("setting order cell : "+String(indexPath.row))
         let cell = ordersTableView.dequeueReusableCell(withIdentifier: "ReusableOrderCell", for: indexPath) as! OrderCell
         cell.ProductImage?.image = UIImage(named:"xmark.circle")
+        cell.Cancel_OrderButton.isHidden=true
         //TODO change here
         let filteredOrders:[VendorOrderData] = allOrdersInstance.allOrders
         //let filteredProducts:[ProductData] = allProductsInstance.allProducts
