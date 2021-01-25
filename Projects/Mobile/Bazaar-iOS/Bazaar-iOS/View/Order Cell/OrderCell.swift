@@ -7,16 +7,22 @@
 
 import UIKit
 
+protocol TableViewNewProtocol {
+    func buttonClicked(index:Int)
+}
+
 class OrderCell: UITableViewCell {
 
+    @IBOutlet weak var Cancel_OrderButton: UIButton!
     @IBOutlet weak var ProductImage: UIImageView!
     @IBOutlet weak var Name_BrandLabel: UILabel!
     @IBOutlet weak var Price_StatusLabel: UILabel!
     @IBOutlet weak var VendorLabel: UILabel!
     @IBOutlet weak var DatesLabel: UILabel!
-    @IBOutlet weak var Cancel_OrderButton: UIButton!
     @IBOutlet weak var AmountLabel: UILabel!
     @IBOutlet weak var AdressLabel: UILabel!
+    var cellDelegate:TableViewNewProtocol?
+    var index:IndexPath?
  
     
     override func awakeFromNib() {
@@ -30,4 +36,7 @@ class OrderCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
+    @IBAction func buttonClicked(_ sender: Any) {
+        cellDelegate?.buttonClicked(index:(index?.row)!)
+    }
 }
