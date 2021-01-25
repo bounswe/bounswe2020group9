@@ -17,19 +17,19 @@
                 <rect key="frame" x="0.0" y="0.0" width="488" height="145"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QuQ-GF-fng" userLabel="Body Label">
-                        <rect key="frame" x="145" y="51" width="42" height="21"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QuQ-GF-fng" userLabel="Body Label">
+                        <rect key="frame" x="145" y="51" width="41.5" height="20.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3w4-XW-I9z" userLabel="Time Label">
-                        <rect key="frame" x="145" y="92" width="42" height="21"/>
+                        <rect key="frame" x="145" y="91.5" width="42" height="21"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="UMt-fw-zpm">
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="notification_icon" translatesAutoresizingMaskIntoConstraints="NO" id="UMt-fw-zpm">
                         <rect key="frame" x="5" y="5" width="130" height="130"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="130" id="8M9-iS-9Va"/>
@@ -74,4 +74,7 @@
             <point key="canvasLocation" x="-78.260869565217391" y="27.120535714285712"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="notification_icon" width="50" height="50"/>
+    </resources>
 </document>
