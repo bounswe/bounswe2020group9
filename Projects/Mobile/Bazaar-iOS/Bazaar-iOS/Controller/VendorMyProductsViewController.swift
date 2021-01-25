@@ -50,7 +50,7 @@ class VendorMyProductsViewController: UIViewController {
                 addEditProductVC.product = products[indexPath!.row]
                 addEditProductVC.isEdit = true
             } else {
-                addEditProductVC.product = products[0]
+                
                 addEditProductVC.isEdit = false
             }
         }

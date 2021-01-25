@@ -3619,10 +3619,10 @@ If you have any questions about these terms, please contact us.
                                         <rect key="frame" x="10" y="50.333333333333343" width="374" height="451.66666666666663"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="i6t-Th-mJW">
-                                                <rect key="frame" x="0.0" y="0.0" width="374" height="36.666666666666664"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="374" height="41"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title:" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZOb-J7-VMq">
-                                                        <rect key="frame" x="0.0" y="0.0" width="120" height="36.666666666666664"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="120" height="41"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="120" id="dzb-Ko-tFY"/>
                                                         </constraints>
@@ -3631,7 +3631,7 @@ If you have any questions about these terms, please contact us.
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Title" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vqf-1Y-2Si">
-                                                        <rect key="frame" x="140" y="0.0" width="234" height="36.666666666666664"/>
+                                                        <rect key="frame" x="140" y="0.0" width="234" height="41"/>
                                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
@@ -3640,10 +3640,10 @@ If you have any questions about these terms, please contact us.
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="k0q-oF-Wgv">
-                                                <rect key="frame" x="0.0" y="46.666666666666671" width="374" height="36.666666666666671"/>
+                                                <rect key="frame" x="0.0" y="51" width="374" height="40.666666666666657"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Brand:" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5W1-5s-Mzj">
-                                                        <rect key="frame" x="0.0" y="0.0" width="120" height="36.666666666666664"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="120" height="40.666666666666664"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="120" id="1bZ-yO-izq"/>
                                                         </constraints>
@@ -3652,7 +3652,7 @@ If you have any questions about these terms, please contact us.
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Brand" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fhW-HF-363">
-                                                        <rect key="frame" x="140" y="0.0" width="234" height="36.666666666666664"/>
+                                                        <rect key="frame" x="140" y="0.0" width="234" height="40.666666666666664"/>
                                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
@@ -3661,10 +3661,10 @@ If you have any questions about these terms, please contact us.
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="btI-Ys-NLa" userLabel="Category Stack View">
-                                                <rect key="frame" x="0.0" y="93.333333333333314" width="374" height="36.666666666666657"/>
+                                                <rect key="frame" x="0.0" y="101.66666666666666" width="374" height="41"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Category:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jaZ-d7-rJj" userLabel="category:">
-                                                        <rect key="frame" x="0.0" y="0.0" width="120" height="36.666666666666664"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="120" height="41"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="120" id="OEM-rS-Jfl"/>
                                                         </constraints>
@@ -3673,7 +3673,7 @@ If you have any questions about these terms, please contact us.
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="em2-Sv-R8t" userLabel="ChooseCategoryButton">
-                                                        <rect key="frame" x="140" y="0.0" width="234" height="36.666666666666664"/>
+                                                        <rect key="frame" x="140" y="0.0" width="234" height="41"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <color key="tintColor" red="0.25490196079999999" green="0.68235294120000001" blue="0.66274509800000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -3695,10 +3695,10 @@ If you have any questions about these terms, please contact us.
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="bOM-LU-bn0" userLabel="subcategory Stack View">
-                                                <rect key="frame" x="0.0" y="140" width="374" height="36.333333333333343"/>
+                                                <rect key="frame" x="0.0" y="152.66666666666666" width="374" height="41"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Subcategory:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wtu-fb-8hO" userLabel="category:">
-                                                        <rect key="frame" x="0.0" y="0.0" width="120" height="36.333333333333336"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="120" height="41"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="120" id="ZNe-7k-VSn"/>
                                                         </constraints>
@@ -3707,7 +3707,7 @@ If you have any questions about these terms, please contact us.
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FWJ-7a-Hmf" userLabel="ChooseCategoryButton">
-                                                        <rect key="frame" x="140" y="0.0" width="234" height="36.333333333333336"/>
+                                                        <rect key="frame" x="140" y="0.0" width="234" height="41"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <color key="tintColor" red="0.25490196079999999" green="0.68235294120000001" blue="0.66274509800000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -3729,10 +3729,10 @@ If you have any questions about these terms, please contact us.
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="pEg-4E-vBy">
-                                                <rect key="frame" x="0.0" y="186.33333333333331" width="374" height="36.666666666666657"/>
+                                                <rect key="frame" x="0.0" y="203.66666666666666" width="374" height="41"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Price:" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KfN-eK-bQq">
-                                                        <rect key="frame" x="0.0" y="0.0" width="120" height="36.666666666666664"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="120" height="41"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="120" id="2NA-J6-Qe9"/>
                                                         </constraints>
@@ -3741,7 +3741,7 @@ If you have any questions about these terms, please contact us.
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Price" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fby-xq-vZm">
-                                                        <rect key="frame" x="140" y="0.0" width="234" height="36.666666666666664"/>
+                                                        <rect key="frame" x="140" y="0.0" width="234" height="41"/>
                                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits" autocapitalizationType="words" keyboardType="numberPad"/>
@@ -3750,10 +3750,10 @@ If you have any questions about these terms, please contact us.
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="qJh-I7-lqO">
-                                                <rect key="frame" x="0.0" y="232.99999999999997" width="374" height="36.666666666666657"/>
+                                                <rect key="frame" x="0.0" y="254.66666666666666" width="374" height="40.666666666666657"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Stock:" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HLb-HU-0rM">
-                                                        <rect key="frame" x="0.0" y="0.0" width="120" height="36.666666666666664"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="120" height="40.666666666666664"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="120" id="MXW-Yo-vJh"/>
                                                         </constraints>
@@ -3762,10 +3762,10 @@ If you have any questions about these terms, please contact us.
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="19" translatesAutoresizingMaskIntoConstraints="NO" id="iev-wc-sh3">
-                                                        <rect key="frame" x="140" y="0.0" width="234" height="36.666666666666664"/>
+                                                        <rect key="frame" x="140" y="0.0" width="234" height="40.666666666666664"/>
                                                         <subviews>
                                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Stock" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="1QU-qt-oJh">
-                                                                <rect key="frame" x="0.0" y="0.0" width="234" height="36.666666666666664"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="234" height="40.666666666666664"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                 <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
                                                             </textField>
@@ -3775,7 +3775,7 @@ If you have any questions about these terms, please contact us.
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="1jK-dr-toO">
-                                                <rect key="frame" x="0.0" y="279.66666666666669" width="374" height="125.33333333333331"/>
+                                                <rect key="frame" x="0.0" y="305.33333333333337" width="374" height="146.33333333333337"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description:" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jg0-Te-6QS">
                                                         <rect key="frame" x="0.0" y="0.0" width="120" height="17"/>
@@ -3811,11 +3811,11 @@ If you have any questions about these terms, please contact us.
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             </stackView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="3Ea-gs-1Q9">
-                                                <rect key="frame" x="0.0" y="415" width="374" height="36.666666666666686"/>
+                                            <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="3Ea-gs-1Q9">
+                                                <rect key="frame" x="0.0" y="451.66666666666669" width="374" height="1"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Image URL:" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4aJ-gZ-F2f">
-                                                        <rect key="frame" x="0.0" y="0.0" width="120" height="36.666666666666664"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="120" height="1"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="120" id="tzD-Nx-T5E"/>
                                                         </constraints>
@@ -3824,13 +3824,16 @@ If you have any questions about these terms, please contact us.
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="URL of the product's image" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="j8m-Ud-ZHc">
-                                                        <rect key="frame" x="140" y="0.0" width="234" height="36.666666666666664"/>
+                                                        <rect key="frame" x="140" y="0.0" width="234" height="1"/>
                                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartInsertDeleteType="no" smartQuotesType="no" textContentType="url"/>
                                                     </textField>
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="1" id="PRc-C1-z0g"/>
+                                                </constraints>
                                             </stackView>
                                         </subviews>
                                         <constraints>
@@ -3848,7 +3851,6 @@ If you have any questions about these terms, please contact us.
                                             <constraint firstItem="i6t-Th-mJW" firstAttribute="height" secondItem="k0q-oF-Wgv" secondAttribute="height" id="dD7-xi-Vrp"/>
                                             <constraint firstItem="btI-Ys-NLa" firstAttribute="height" secondItem="k0q-oF-Wgv" secondAttribute="height" id="dKj-Rv-Hvx"/>
                                             <constraint firstAttribute="trailing" secondItem="3Ea-gs-1Q9" secondAttribute="trailing" id="e02-bp-SPH"/>
-                                            <constraint firstItem="i6t-Th-mJW" firstAttribute="height" secondItem="3Ea-gs-1Q9" secondAttribute="height" id="pA4-my-6V9"/>
                                             <constraint firstItem="pEg-4E-vBy" firstAttribute="leading" secondItem="NUc-Sp-XsL" secondAttribute="leading" id="rGQ-Q8-7wV"/>
                                             <constraint firstItem="k0q-oF-Wgv" firstAttribute="leading" secondItem="NUc-Sp-XsL" secondAttribute="leading" id="sle-5q-axu"/>
                                             <constraint firstItem="qJh-I7-lqO" firstAttribute="leading" secondItem="NUc-Sp-XsL" secondAttribute="leading" id="xSI-d3-GAX"/>
