@@ -8,7 +8,8 @@ from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST, HTTP_4
     HTTP_202_ACCEPTED
 from rest_framework.views import APIView
 from django.utils import timezone
-
+from datetime import timedelta
+from message.models import Notification
 from product.functions import search_product_db, datamuse_call, filter_func, sort_func, calculate_rating
 from product.models import Product, ProductList, SubOrder, Comment, Category, Payment,Delivery,Order
 from product.serializers import ProductSerializer, ProductListSerializer, CommentSerializer, SubOrderSerializer, \
