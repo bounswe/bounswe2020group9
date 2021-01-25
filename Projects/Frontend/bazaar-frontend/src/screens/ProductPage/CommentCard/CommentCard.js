@@ -12,7 +12,7 @@ export default class CommentCard extends Component {
         {!this.props.comment.is_anonymous ? (
           <Row className={"commentName"}>
             {this.props.comment.first_name}{" "}
-            {this.props.comment.first_name.substring(0, 1)}***{" "}
+            {this.props.comment.last_name.substring(0, 1)}******{" "}
           </Row>
         ) : (
           <Row className={"commentName"}>*Anonimous*</Row>
