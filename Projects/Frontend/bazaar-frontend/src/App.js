@@ -14,6 +14,7 @@ import Home from "./screens/Home/home"
 import ResetPassword from "./screens/Sign-In/reset-pw"
 import ForgotPassword from "./screens/Sign-In/forgot-password"
 import MyList from "./screens/MyList/MyList"
+import MyOrders from "./screens/MyOrders/my-orders"
 import AddProduct from "./screens/Add-Product/addproduct"
 import Inventory from "./screens/Inventory/inventory"
 import ProductPage from "./screens/ProductPage/ProductPage"
@@ -95,6 +96,10 @@ function App() {
         <Route path="/my-list">
           <Header />
           <MyList />
+        </Route>
+        <Route path="/my-orders">
+          <Header />
+          <MyOrders />
         </Route>
         <Route path="/add-product">
           <Header />

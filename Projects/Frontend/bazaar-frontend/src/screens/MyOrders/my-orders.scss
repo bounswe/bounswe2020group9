@@ -1,0 +1,102 @@
+.orders-page-header {
+  padding-top: 20px;
+}
+
+.orders-container {
+  max-width: 60rem;
+  padding-top: 10px;
+  padding-bottom: 80px;
+  margin: auto;
+
+  & .order-block {
+    border: solid;
+    border-width: 2px;
+    margin-top: 30px;
+
+    & .delivery-button-div {
+      padding-left: 0;
+      margin: auto;
+      margin-right: 15px;
+
+      & .delivery-button {
+        & :hover {
+        }
+      }
+    }
+    & .order-column {
+      margin: auto;
+
+      & .delivered {
+        color: darkgreen;
+        font-weight: 600;
+      }
+      & .on-the-way {
+        color: darkblue;
+        font-weight: 600;
+      }
+      & .preparing {
+        color: rgb(155, 155, 55);
+        font-weight: 600;
+      }
+      & .cancelled {
+        color: darkred;
+        font-weight: 600;
+      }
+
+
+    } 
+
+
+    & .order-header {
+      padding: 10px;
+      border-bottom: black;
+      border-bottom: solid;
+      border-width: 2px;
+
+
+      & .detail-button-div{
+        text-align: center;
+        & .detail-button {
+            background-color: #f3ac4f;
+        
+            color: black;
+              &:hover {
+                background-color: #f1ca1a;
+        
+                color: black;
+            }
+          }
+    }
+
+      & .order-question {
+        font-weight: 600;
+      }
+      & .order-value {
+        font-size: 80%;
+      }
+
+    }
+
+    & .delivery-block {
+      border: solid;
+      border-width: 1px;
+      border-color: gray;
+      padding: 20px;
+      margin: 20px;
+      font-size: 90%
+    }
+
+    & .orders-page-link {
+      color: black;
+
+
+    }
+
+  }
+
+
+}
+.orders-page-link:hover {
+  color: #f3ac4f!important;
+  text-decoration: none!important;
+}
