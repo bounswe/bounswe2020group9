@@ -529,7 +529,7 @@ struct APIManager {
         }
     }
     
-    func getNotifications( completionHandler: @escaping ([NotificationsData]?) -> Void) {
+    func getNotifications( completionHandler: @escaping (NotificationsData?) -> Void) {
         do {
             let request = try ApiRouter.getNotifications.asURLRequest()
             AF.request(request).responseJSON { (response) in
@@ -540,7 +540,7 @@ struct APIManager {
                         completionHandler(nil)
                         return
                     }
-                    if let decodedData:[NotificationsData] = APIParse().parseJSON(safeData: safeData){
+                    if let decodedData:NotificationsData = APIParse().parseJSON(safeData: safeData){
                         AllNotifications.shared.jsonParseError = false
                         AllNotifications.shared.apiFetchError = false
                         AllNotifications.shared.dataFetched = true

@@ -5376,7 +5376,7 @@
                                     <constraint firstItem="the-Un-GqZ" firstAttribute="leading" secondItem="Ncq-NP-fia" secondAttribute="leading" constant="20" id="fZw-EA-mmq"/>
                                 </constraints>
                             </view>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Fu6-xq-Asb" userLabel="Notifications Table View">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="250" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Fu6-xq-Asb" userLabel="Notifications Table View">
                                 <rect key="frame" x="0.0" y="100" width="414" height="708"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </tableView>
@@ -6234,8 +6234,8 @@
         <image name="settings_icon_blue" width="50" height="50"/>
         <image name="trash_icon" width="100" height="100"/>
         <image name="update_icon" width="100" height="100"/>
-        <image name="xmark.circle" width="13" height="13"/>
         <image name="xmark.circle" catalog="system" width="128" height="121"/>
+        <image name="xmark.circle" width="13" height="13"/>
         <systemColor name="darkTextColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

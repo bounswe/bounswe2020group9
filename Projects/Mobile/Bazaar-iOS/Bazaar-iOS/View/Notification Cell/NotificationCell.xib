@@ -13,32 +13,36 @@
         <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ReusableNotfCell" rowHeight="250" id="KGk-i7-Jjw" customClass="NotificationCell" customModule="Bazaar_iOS" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="488" height="145"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
                 <rect key="frame" x="0.0" y="0.0" width="488" height="145"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QuQ-GF-fng" userLabel="Body Label">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QuQ-GF-fng" userLabel="Body Label">
                         <rect key="frame" x="145" y="51" width="42" height="21"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3w4-XW-I9z" userLabel="Time Label">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3w4-XW-I9z" userLabel="Time Label">
                         <rect key="frame" x="145" y="92" width="42" height="21"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UMt-fw-zpm">
-                        <rect key="frame" x="20" y="23" width="104" height="107"/>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="UMt-fw-zpm">
+                        <rect key="frame" x="5" y="5" width="130" height="130"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="130" id="8M9-iS-9Va"/>
+                            <constraint firstAttribute="width" secondItem="UMt-fw-zpm" secondAttribute="height" multiplier="1:1" id="jSy-l0-UlC"/>
+                        </constraints>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GxX-bz-eo5" userLabel="Product Name">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GxX-bz-eo5" userLabel="Product Name">
                         <rect key="frame" x="145" y="10" width="42" height="21"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fCN-dP-bUA" userLabel="Seen Status Label">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fCN-dP-bUA" userLabel="Seen Status Label">
                         <rect key="frame" x="426" y="114" width="42" height="21"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
@@ -53,6 +57,7 @@
                     <constraint firstItem="GxX-bz-eo5" firstAttribute="leading" secondItem="UMt-fw-zpm" secondAttribute="trailing" constant="10" id="b2Q-aH-7Ql"/>
                     <constraint firstItem="GxX-bz-eo5" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="h72-lG-b1N"/>
                     <constraint firstItem="QuQ-GF-fng" firstAttribute="top" secondItem="GxX-bz-eo5" secondAttribute="bottom" constant="20" id="l2m-fH-7Jg"/>
+                    <constraint firstItem="UMt-fw-zpm" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="mLN-CH-hV0"/>
                     <constraint firstAttribute="bottom" secondItem="fCN-dP-bUA" secondAttribute="bottom" constant="10" id="mkZ-03-LiM"/>
                     <constraint firstItem="UMt-fw-zpm" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="5" id="uZy-w4-QVp"/>
                     <constraint firstItem="QuQ-GF-fng" firstAttribute="leading" secondItem="UMt-fw-zpm" secondAttribute="trailing" constant="10" id="zKl-5J-gsK"/>
