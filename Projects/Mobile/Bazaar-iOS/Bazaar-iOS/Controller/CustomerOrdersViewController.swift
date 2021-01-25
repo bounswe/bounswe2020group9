@@ -151,7 +151,7 @@ extension CustomerOrdersViewController:UITableViewDelegate,UITableViewDataSource
         cell.AmountLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         cell.DatesLabel.text = "Order Date: " + delivery.timestamp.prefix(10) + " Estimated Delivery : " + delivery.delivery_time.prefix(10)
         cell.DatesLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
-        cell.AdressLabel.text = "Order Adress: " + delivery.delivery_address.address + delivery.delivery_address.city
+        cell.AdressLabel.text = "Order Adress: " + delivery.delivery_address.address + " " + delivery.delivery_address.city
         cell.AdressLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         print("complete setting order cell")
         
