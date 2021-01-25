@@ -117,8 +117,8 @@ extension VendorNotificationViewController:UITableViewDelegate,UITableViewDataSo
         //let filteredNotifications:[Notification] = allNotificationsInstance.allNotifications
         let filteredProducts:[ProductData] = allProductsInstance.allProducts
         //let filteredVendors:[VendorData] = allVendorsInstance.allVendors
-        let notification = notifications[indexPath.row]
-        print("Notifications count:" + String(notifications.count))
+        let notification = allNotificationsInstance.allNotifications[indexPath.row]
+        print("Notifications count:" + String(allNotificationsInstance.allNotifications.count))
         print("Notifications ID: " + String(notification.id))
         let notf_id=notification.id
         let notf_body=notification.body
