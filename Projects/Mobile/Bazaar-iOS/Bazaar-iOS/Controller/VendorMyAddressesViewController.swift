@@ -16,7 +16,7 @@ class VendorMyAddressesViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        myAddressesTableView.layer.borderColor = #colorLiteral(red: 1, green: 0.6235294118, blue: 0, alpha: 1)
+        myAddressesTableView.layer.borderColor = #colorLiteral(red: 0.2549019608, green: 0.6823529412, blue: 0.662745098, alpha: 1)
         self.myAddressesTableView.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
         self.myAddressesTableView.dataSource = self
     }

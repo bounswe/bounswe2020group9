@@ -33,7 +33,24 @@ class VendorProfileForUserViewController: UIViewController {
     }
     
     func setAttributes() {
-        addressLabel.text = vendor.company  + vendor.company
+        APIManager().getLocationOfVendor(vendorId: vendor.id, completionHandler: { (result) in
+            switch result {
+            case .success(let addresses):
+                DispatchQueue.main.async {
+                    if addresses.count > 0 {
+                        self.addressLabel.text = addresses[0].address
+                    } else {
+                        self.addressLabel.isHidden = true
+                    }
+                }
+            case .failure(let err):
+                print(err)
+                DispatchQueue.main.async {
+                    self.addressLabel.isHidden = true
+                }
+            }
+                
+            })
         vendorNameLabel.text = vendor.company
         vendorNameLabel.adjustsFontSizeToFitWidth = true
         products = AllProducts.shared.allProducts.filter{$0.vendor == vendor.id}

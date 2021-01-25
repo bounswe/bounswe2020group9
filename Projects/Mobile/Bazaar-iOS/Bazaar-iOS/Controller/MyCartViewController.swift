@@ -43,6 +43,7 @@ class MyCartViewController: UIViewController {
             emptyCartLabel.isHidden = false
             buyContainerView.isHidden = true
             self.navigationController?.setNavigationBarHidden(true, animated: true)
+
         }
     }
     override func viewDidLoad() {
