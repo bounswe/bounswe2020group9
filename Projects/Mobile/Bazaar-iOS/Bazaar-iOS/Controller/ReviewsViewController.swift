@@ -23,6 +23,11 @@ class ReviewsViewController: UIViewController {
         super.viewWillAppear(animated)
         reviewsInstance.fetchReviews()
         reviewsTableView.reloadData()
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        self.navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
     override func viewDidLoad() {

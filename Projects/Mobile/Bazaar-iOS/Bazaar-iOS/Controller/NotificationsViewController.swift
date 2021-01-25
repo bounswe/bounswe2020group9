@@ -118,7 +118,7 @@ extension NotificationsViewController:UITableViewDelegate,UITableViewDataSource 
         //let filteredNotifications:[Notification] = allNotificationsInstance.allNotifications
         let filteredProducts:[ProductData] = allProductsInstance.allProducts
         //let filteredVendors:[VendorData] = allVendorsInstance.allVendors
-        let notification = allNotificationsInstance.allNotifications[indexPath.row]
+        let notification = allNotificationsInstance.allNotifications.sorted(by: { $0.id > $1.id })[indexPath.row]
         print("Notifications count:" + String(allNotificationsInstance.allNotifications.count))
         print("Notifications ID: " + String(notification.id))
         let notf_id=notification.id
@@ -126,6 +126,8 @@ extension NotificationsViewController:UITableViewDelegate,UITableViewDataSource 
         let notf_time=notification.timestamp.prefix(10)
         let notf_isVisited=notification.is_visited
         let notf_userId=notification.user
+        
+        let product=allProductsInstance.allProducts.filter{$0.id == notification.delivery[0].product_id}[0]
         
         //let order=orders_dict[notification.id]
         //let product_id=(order?.deliveries[0].product_id)!
@@ -140,8 +142,8 @@ extension NotificationsViewController:UITableViewDelegate,UITableViewDataSource 
             cell.bodyLabel.font = UIFont.systemFont(ofSize: 20, weight: .black)
             cell.seenStatusLabel.text = "New notification"
             cell.seenStatusLabel.font = UIFont.systemFont(ofSize: 15, weight: .black)
-            cell.productNameLabel.text = ""//"product.name"
-            //cell.productNameLabel.font = UIFont.systemFont(ofSize: 13, weight: .black)
+            cell.productNameLabel.text = product.name
+            cell.productNameLabel.font = UIFont.systemFont(ofSize: 13, weight: .black)
             cell.timeLabel.text = "Time : " + notf_time
             cell.timeLabel.font = UIFont.systemFont(ofSize: 13, weight: .black)
         }else{
@@ -149,22 +151,21 @@ extension NotificationsViewController:UITableViewDelegate,UITableViewDataSource 
             cell.bodyLabel.font = UIFont.systemFont(ofSize: 20, weight: .regular)
             cell.seenStatusLabel.text = "Seen"
             cell.seenStatusLabel.font = UIFont.systemFont(ofSize: 15, weight: .regular)
-            cell.productNameLabel.text = ""//"product.name"
-            //cell.productNameLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
+            cell.productNameLabel.text = product.name
+            cell.productNameLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
             cell.timeLabel.text = "Time : " + notf_time
             cell.timeLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         }
         
         
         print("complete setting order cell")
-        /*
-        if allProductsInstance.allImages.keys.contains(product_id) {
-            cell.ImageView.image = allProductsInstance.allImages[product_id]
+        if allProductsInstance.allImages.keys.contains(product.id) {
+            cell.ImageView.image = allProductsInstance.allImages[product.id]
             cell.ImageView.contentMode = .scaleAspectFit
-            print("1: Name: \(product!.name) :Product ID: \(product_id)")
+            print("1: Name: \(product.name) :Product ID: \(product.id)")
          } else {
-            print("2: \(product!.name)")
-            if let url = product?.picture {
+            print("2: \(product.name)")
+            if let url = product.picture {
                 do{
                     try cell.ImageView.loadImageUsingCache(withUrl: url, forProduct: product)
                     cell.ImageView.contentMode = .scaleAspectFit
@@ -175,7 +176,7 @@ extension NotificationsViewController:UITableViewDelegate,UITableViewDataSource 
                      cell.ImageView.contentMode = .center
                  }
              }
-         }*/
+         }
         
         return cell
     }

@@ -786,6 +786,7 @@ struct APIManager {
         do {
             let request = try ApiRouter.getCustomerAddresses.asURLRequest()
             AF.request(request).responseJSON { (response) in
+                print(response)
                 if (response.response?.statusCode != nil){
                     guard let safeData = response.data else  {
                         completionHandler(.failure(MyError.runtimeError("Error")))
@@ -974,6 +975,29 @@ struct APIManager {
                     }else {
                         completionHandler(.failure(MyError.runtimeError("Failed to parse json ")))
                     }
+                }
+            }
+        } catch let err {
+            completionHandler(.failure(err))
+        }
+    }
+    
+    func getLocationOfVendor(vendorId:Int, completionHandler: @escaping (Result<[AddressDataVendor] ,Error>) -> Void) {
+        do {
+            let request = try ApiRouter.getLocationOfVendor(vendorId: vendorId).asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if (response.response?.statusCode != nil){
+                    guard let safeData = response.data else  {
+                        completionHandler(.failure(MyError.runtimeError("Error")))
+                        return
+                    }
+                    if let decodedData:[AddressDataVendor] = APIParse().parseJSON(safeData: safeData){
+                        completionHandler(.success(decodedData))
+                    }else {
+                        completionHandler(.failure(MyError.runtimeError("Failed to parse json 2")))
+                    }
+                }else {
+                    completionHandler(.failure(MyError.runtimeError("Failed to parse json ")))
                 }
             }
         } catch let err {

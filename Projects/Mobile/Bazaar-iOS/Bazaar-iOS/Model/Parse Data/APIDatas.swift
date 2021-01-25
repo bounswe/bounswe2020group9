@@ -47,11 +47,12 @@ struct ProductData: Codable, Equatable {
   let rating: Double
   let vendor: Int
   var picture: String? = ""
-  struct Category: Codable {
-    let name: String
-    let parent: String?
-    let id: Int
-  }
+}
+
+struct Category: Codable {
+  let name: String
+  let parent: String
+  let id: Int
 }
 
 struct CustomerListData: Codable {
@@ -104,6 +105,7 @@ struct CommentData: Codable {
     let bazaar_point: Int!
     let company: String!
 }
+
 struct SearchProduct:Codable {
     let id: Int
     let name: String
@@ -138,12 +140,14 @@ struct VendorData: Codable {
     let bazaar_point:Double
     let company:String
 }
+
 struct OrderData_Cust: Codable {
     let id:Int
     let customer_id:Int
     let timestamp:String
     let deliveries:[DeliveryData]
 }
+
 struct DeliveryData: Codable {
     let id:Int
     let product_id:Int
@@ -154,9 +158,20 @@ struct DeliveryData: Codable {
     let customer_id:Int
     let amount:Int
     let vendor:Int
-    let delivery_address:AddressData
+    let delivery_address:AddressData2
 }
 
+struct DeliveryWithoutAddress: Codable {
+    let id:Int
+    let product_id:Int
+    let timestamp:String
+    let delivery_time:String
+    let current_status:Int
+    let order_id:Int
+    let customer_id:Int
+    let amount:Int
+    let location_id:Int
+}
 struct CreditCardData:Codable {
     let id:Int
     let name_on_card:String
@@ -197,6 +212,28 @@ struct AddressData:Codable {
     let postal_code:Int
     let longitude:Float
     let latitude:Float
+    let user:Int
+}
+
+struct AddressDataVendor:Codable {
+    let address:String?
+    let address_name:String?
+    let city:String?
+    let country:String?
+    let id:Int?
+    let user: Int?
+    
+}
+
+struct AddressData2:Codable {
+    let id:Int
+    let address_name:String
+    let address:String
+    let country:String
+    let city:String
+    let postal_code:Int
+    let longitude:Float
+    let latitude:Float
     let user_id:Int
 }
 struct VendorOrderData: Codable {
@@ -208,12 +245,13 @@ struct VendorOrderData: Codable {
     let order_id:Int
     let customer_id:Int
     let amount:Int
-    let delivery_address:AddressData
+    let delivery_address:AddressData2
 }
 struct NotificationsData:Codable {
     let new_notifications:Int
     let notifications:[Notification]
 }
+
 struct Notification:Codable {
     let id:Int
     let body:String
@@ -221,6 +259,8 @@ struct Notification:Codable {
     let type:String
     let is_visited:Bool
     let user:Int
+    let delivery_id:Int
+    let delivery:[DeliveryWithoutAddress]
 }
 
 struct ConversationData:Codable {
