@@ -11,6 +11,7 @@ struct ChatMessage {
     var text: String
     let isIncoming: Bool
     let date: String
+    let isVendor: Bool
 }
 
 
@@ -25,7 +26,11 @@ class ChatTableViewCell: UITableViewCell {
     
     var chatMessage: ChatMessage! {
         didSet {
-            bubbleBackgroundView.backgroundColor = chatMessage.isIncoming ? .darkGray : #colorLiteral(red: 1, green: 0.5462184466, blue: 0.1434018944, alpha: 1)
+            if chatMessage.isVendor {
+                bubbleBackgroundView.backgroundColor = chatMessage.isIncoming ? .darkGray : #colorLiteral(red: 0.3525703486, green: 0.7364420221, blue: 0.571648083, alpha: 1)
+            } else {
+                bubbleBackgroundView.backgroundColor = chatMessage.isIncoming ? .darkGray : #colorLiteral(red: 1, green: 0.5462184466, blue: 0.1434018944, alpha: 1)
+            }
             messageLabel.textColor = .white
             dateLabel.textColor = chatMessage.isIncoming ? .lightGray : #colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.5)
             

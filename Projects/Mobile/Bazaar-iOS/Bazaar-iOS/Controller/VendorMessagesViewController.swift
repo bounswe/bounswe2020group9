@@ -1,5 +1,5 @@
 //
-//  MessagesViewController.swift
+//  VendorMessagesViewController.swift
 //  Bazaar-iOS
 //
 //  Created by Beste Goger on 25.01.2021.
@@ -7,8 +7,8 @@
 
 import UIKit
 
-class MessagesViewController: UIViewController {
-    
+class VendorMessagesViewController: UIViewController {
+
     @IBOutlet weak var conversationsTableView: UITableView!
     @IBOutlet weak var loadingView: UIView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
@@ -46,14 +46,11 @@ class MessagesViewController: UIViewController {
 
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-            dismiss(animated: true, completion: nil)
-        
-            if let chatVC = segue.destination as? ChatViewController {
+            if let chatVC = segue.destination as? VendorChatViewController {
                 let index = self.conversationsTableView.indexPathForSelectedRow!.row
-                let conv = conversationsInstance.conversations.filter{$0.user_type==2}[index]
+                let conv = conversationsInstance.conversations.filter{$0.user_type==1}[index]
                 chatVC.id = conv.id
-                chatVC.companyName = conv.company
-                chatVC.companyEmail = conv.email
+                chatVC.userEmail = conv.email
             }
     }
     
@@ -61,28 +58,28 @@ class MessagesViewController: UIViewController {
         return self.conversationsTableView.indexPathForSelectedRow != nil
     }
     
-    
     @IBAction func backButtonPressed(_ sender: Any) {
-        self.navigationController?.popViewController(animated: true)
+        self.dismiss(animated: true, completion: nil)
     }
     
 }
 
-
-extension MessagesViewController:UITableViewDelegate,UITableViewDataSource {
+extension VendorMessagesViewController:UITableViewDelegate,UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.conversationsInstance.conversations.filter{$0.user_type==2}.count
+        return self.conversationsInstance.conversations.filter{$0.user_type==1}.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = conversationsTableView.dequeueReusableCell(withIdentifier: "ReusableConversationTableViewCell", for: indexPath) as! ConversationTableViewCell
-        let conversation:ConversationData = conversationsInstance.conversations.filter{$0.user_type==2}[indexPath.row]
-        cell.companyNameLabel.text = conversation.company
+        let conversation:ConversationData = conversationsInstance.conversations.filter{$0.user_type==1}[indexPath.row]
+        cell.companyNameLabel.text = conversation.email
+        cell.companyNameLabel.textColor = #colorLiteral(red: 0.5726149344, green: 0.7364420221, blue: 0.6515156055, alpha: 1)
         cell.lastMessageLabel.text = conversation.last_message_body
         cell.timeLabel.text = (conversation.last_message_timestamp.formatDate.components(separatedBy: " ")).joined(separator: "\n")
         if !conversation.is_visited {
+            cell.newMessageIndicator.tintColor = #colorLiteral(red: 0.5726149344, green: 0.7364420221, blue: 0.6515156055, alpha: 1)
             cell.newMessageIndicator.isHidden = false
         }
         
@@ -94,13 +91,13 @@ extension MessagesViewController:UITableViewDelegate,UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: "messagesToChatSegue", sender: nil)
-        self.selectedId = conversationsInstance.conversations.filter{$0.user_type==2}[indexPath.row].id
+        performSegue(withIdentifier: "vendorMessagesToChatSegue", sender: nil)
+        self.selectedId = conversationsInstance.conversations.filter{$0.user_type==1}[indexPath.row].id
     }
     
 }
 
-extension MessagesViewController: ConversationsFetchDelegate {
+extension VendorMessagesViewController: ConversationsFetchDelegate {
     func allConversationsAreFetched() {
         stopIndicator()
         self.conversationsTableView.reloadData()
@@ -124,7 +121,7 @@ extension MessagesViewController: ConversationsFetchDelegate {
     }
 }
 
-extension MessagesViewController {
+extension VendorMessagesViewController {
     func startIndicator() {
         self.view.bringSubviewToFront(loadingView)
         loadingView.isHidden = false
@@ -150,55 +147,5 @@ extension MessagesViewController {
             self.conversationsTableView.isUserInteractionEnabled = true
             self.conversationsTableView.reloadData()
         }
-    }
-}
-
-
-protocol ConversationsFetchDelegate {
-    func allConversationsAreFetched()
-    func conversationsCannotBeFetched()
-    func presentAlert()
-}
-
-class Conversations {
-    static let shared = Conversations()
-    var conversations: [ConversationData]
-    
-    var delegate: ConversationsFetchDelegate?
-    let dispatchGroup = DispatchGroup()
-    var dataFetched = false {
-        didSet{
-            if self.dataFetched{
-                delegate?.allConversationsAreFetched()
-            } else {
-                delegate?.conversationsCannotBeFetched()
-            }
-        }
-    }
-    var apiFetchError = false
-    var jsonParseError = false
-    
-    init(){
-        self.conversations = []
-    }
-    
-    func fetchConversations() {
-        dispatchGroup.enter()
-        APIManager().getConversations(completionHandler: { result in
-            switch result {
-            case .success(let allConvs):
-                self.dataFetched = true
-                self.conversations = allConvs.conversations
-                self.delegate?.allConversationsAreFetched()
-            case .failure(_):
-                self.dataFetched = false
-                self.conversations = []
-                self.delegate?.conversationsCannotBeFetched()
-            }
-        })
-        
-
-        dispatchGroup.leave()
-        dispatchGroup.wait()
     }
 }
