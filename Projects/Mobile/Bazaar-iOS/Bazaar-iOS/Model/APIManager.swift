@@ -59,9 +59,9 @@ struct APIManager {
         }
     }
     
-    func signUpVendor(firstName:String, lastName:String, username:String, password:String, user_type:String,addressName:String, address:String, postalCode:Int, latitude:Float, longitude:Float, companyName:String ,completionHandler: @escaping (Result<String ,Error>) -> Void) {
+    func signUpVendor(firstName:String, lastName:String, username:String, password:String, user_type:String,addressName:String, address:String, country:String , city:String, postalCode:Int, latitude:Float, longitude:Float, companyName:String ,completionHandler: @escaping (Result<String ,Error>) -> Void) {
         do {
-            let request = try ApiRouter.signUpVendor(firstName: firstName, lastName: lastName, username: username, password: password, user_type: user_type, addressName: addressName, address: address, postalCode: postalCode, latitude: latitude, lontitude: longitude, companyName: companyName).asURLRequest()
+            let request = try ApiRouter.signUpVendor(firstName: firstName, lastName: lastName, username: username, password: password, user_type: user_type, addressName: addressName, address: address, country: country, city: city, postalCode: postalCode, latitude: latitude, longitude: longitude, companyName: companyName).asURLRequest()
             AF.request(request).responseJSON { (response) in
                 if (response.response?.statusCode != nil){
                     guard let safeData = response.data else  {
@@ -216,7 +216,99 @@ struct APIManager {
             AllProducts.shared.dataFetched = false
             completionHandler(nil)
         }
-        
+    }
+
+    
+    func getCustomerOrders( completionHandler: @escaping ([OrderData_Cust]?) -> Void) {
+        do {
+            let request = try ApiRouter.getCustomerOrders.asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if (response.response?.statusCode != nil){
+                    guard let safeData = response.data else  {
+                        AllOrders.shared.jsonParseError = true
+                        AllOrders.shared.dataFetched = false
+                        completionHandler(nil)
+                        return
+                    }
+                    if let decodedData:[OrderData_Cust] = APIParse().parseJSON(safeData: safeData){
+                        AllOrders.shared.jsonParseError = false
+                        AllOrders.shared.apiFetchError = false
+                        AllOrders.shared.dataFetched = true
+                        completionHandler(decodedData)
+                    }else {
+                        AllOrders.shared.jsonParseError = true
+                        AllOrders.shared.dataFetched = false
+                        completionHandler(nil)
+                    }
+                }
+            }
+        }catch let err {
+            print(err)
+            AllOrders.shared.jsonParseError = true
+            AllOrders.shared.dataFetched = false
+            completionHandler(nil)
+        }
+    }
+    
+    func getVendorOrders( completionHandler: @escaping ([VendorOrderData]?) -> Void) {
+        do {
+            let request = try ApiRouter.getVendorOrders.asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if (response.response?.statusCode != nil){
+                    guard let safeData = response.data else  {
+                        AllOrders_vendor.shared.jsonParseError = true
+                        AllOrders_vendor.shared.dataFetched = false
+                        completionHandler(nil)
+                        return
+                    }
+                    if let decodedData:[VendorOrderData] = APIParse().parseJSON(safeData: safeData){
+                        AllOrders_vendor.shared.jsonParseError = false
+                        AllOrders_vendor.shared.apiFetchError = false
+                        AllOrders_vendor.shared.dataFetched = true
+                        completionHandler(decodedData)
+                    }else {
+                        AllOrders_vendor.shared.jsonParseError = true
+                        AllOrders_vendor.shared.dataFetched = false
+                        completionHandler(nil)
+                    }
+                }
+            }
+        }catch let err {
+            print(err)
+            AllOrders_vendor.shared.jsonParseError = true
+            AllOrders_vendor.shared.dataFetched = false
+            completionHandler(nil)
+        }
+    }
+    
+    func deleteOrder(delivery_id:Int ,status:Int, completionHandler: @escaping (Result<String ,Error>) -> Void) {
+        do {
+            let request = try ApiRouter.deleteOrder(delivery_id: delivery_id, status:status).asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if response.response?.statusCode == 204 {
+                    completionHandler(.success("success"))
+                }
+                else if (response.response?.statusCode != nil){
+                    guard let safeData = response.data else  {
+                        completionHandler(.failure(MyError.runtimeError("Error")))
+                        return
+                    }
+                    if let decodedData:[String:String] = APIParse().parseJSON(safeData: safeData){
+                        if (decodedData["message"]=="Updated Successfully"){
+                            completionHandler(.success("success"))
+                        }else{
+                            print("Failed to parse returned message: " + decodedData["message"]!)
+                            completionHandler(.failure(MyError.runtimeError("Error")))
+                        }
+                        
+                    }else {
+                        completionHandler(.failure(MyError.runtimeError("Error")))
+                    }
+                }
+            }
+        }catch let err {
+            completionHandler(.failure(err))
+        }
     }
     
     func getCustomerLists(userId:Int, isCustomerLoggedIn:Bool, completionHandler: @escaping (Result<[CustomerListData] , Error>) -> Void) {
@@ -239,6 +331,7 @@ struct APIManager {
             completionHandler(.failure(err))
         }
     }
+    
     
     func addList(name:String, userId:Int, isPrivate:Bool, completionHandler: @escaping (Result<CustomerListData ,Error>) -> Void) {
         do {
@@ -526,6 +619,37 @@ struct APIManager {
             }
         } catch let error {
             completionHandler(.failure(error))
+        }
+    }
+    
+    func getNotifications( completionHandler: @escaping (NotificationsData?) -> Void) {
+        do {
+            let request = try ApiRouter.getNotifications.asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if (response.response?.statusCode != nil){
+                    guard let safeData = response.data else  {
+                        AllNotifications.shared.jsonParseError = true
+                        AllNotifications.shared.dataFetched = false
+                        completionHandler(nil)
+                        return
+                    }
+                    if let decodedData:NotificationsData = APIParse().parseJSON(safeData: safeData){
+                        AllNotifications.shared.jsonParseError = false
+                        AllNotifications.shared.apiFetchError = false
+                        AllNotifications.shared.dataFetched = true
+                        completionHandler(decodedData)
+                    }else {
+                        AllNotifications.shared.jsonParseError = true
+                        AllNotifications.shared.dataFetched = false
+                        completionHandler(nil)
+                    }
+                }
+            }
+        }catch let err {
+            print(err)
+            AllNotifications.shared.jsonParseError = true
+            AllNotifications.shared.dataFetched = false
+            completionHandler(nil)
         }
     }
     
