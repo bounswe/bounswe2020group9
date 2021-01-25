@@ -27,10 +27,11 @@ export default class MyList extends Component {
     super(props);
     this.state = {
       productLists: [],
-      whichList: 1,
+      whichList: 0,
       productList: {},
       list_name: "",
       list_is_private: false,
+      isAuthorizedUser: true,
     };
   }
 
@@ -50,6 +51,7 @@ export default class MyList extends Component {
         .catch((error) => {
           if (error.response) {
             if (error.response.status == 401) {
+              this.setState({isAuthorizedUser: false})
               axios
                 .get(serverUrl + `api/user/${myCookie.user_id}/lists/`, {})
                 .then((res) => {
@@ -95,13 +97,17 @@ export default class MyList extends Component {
           console.log(error.response.status);
         }
       });
+      if (this.state.productLists.length > 0) {
+        this.setState({whichList: 2})
+      }
   }
 
   componentDidUpdate(prevProps, prevState) {
     let myCookie = read_cookie("user");
 
     if (prevState.whichList !== this.state.whichList) {
-      axios
+      if (this.state.isAuthorizedUser) {
+        axios
         .get(
           serverUrl +
             `api/user/${myCookie.user_id}/list/${this.state.whichList}/`,
@@ -114,10 +120,22 @@ export default class MyList extends Component {
         .then((res) => {
           this.setState({ productList: res.data });
         });
+      } else {
+        axios
+        .get(
+          serverUrl +
+            `api/user/${myCookie.user_id}/list/${this.state.whichList}/`
+        )
+        .then((res) => {
+          this.setState({ productList: res.data });
+        });
+      }
     }
   }
 
   renderList() {
+
+    console.log("whichlist: ", this.state.whichList)
     let productCards = this.state.productList.products?.map((product) => {
       return (
         <Col sm="3">
@@ -125,7 +143,7 @@ export default class MyList extends Component {
             className="listProductRemoveButton"
             onClick={(event) => this.onDeleteListProductButton(event, product)}
           >
-            <img src={removeListIcon} />
+            <img src={removeListIcon} hidden={!this.state.isAuthorizedUser}/>
           </button>
           <ProductCard product={product}></ProductCard>
         </Col>
@@ -247,7 +265,7 @@ export default class MyList extends Component {
             className="listRemoveButton"
             onClick={(event) => this.onDeleteListButton(event, list)}
           >
-            <img src={removeListIcon} />
+            <img src={removeListIcon} hidden={!this.state.isAuthorizedUser}/>
           </button>
         </Row>
       );
@@ -261,7 +279,7 @@ export default class MyList extends Component {
               <h2>My Lists</h2>
             </Row>
             <ListGroup variant="flush">{listNames}</ListGroup>
-            <Row className="addListRow">
+            <Row className="addListRow" hidden={!this.state.isAuthorizedUser}>
               <Form.Group>
                 <Form.Control
                   size="sm"
@@ -270,7 +288,7 @@ export default class MyList extends Component {
                   onChange={this.onListNameChange}
                 />
 
-                <div className="isFormPrivate">
+                <div className="isFormPrivate" >
                   <Form.Check
                     type="switch"
                     id="custom-switch"
