@@ -44,6 +44,7 @@ enum ApiRouter: URLRequestBuilder {
     case removeCustomerAddress(addressId:Int)
     case updateCustomerAddress(addressId:Int,addressName:String , fullAddress:String, country:String, city:String, postalCode:Int,user:Int)
     case deleteAccount(token:String)
+    case getNotifications
   // MARK: - Path
     internal var path: String {
         switch self {
@@ -106,6 +107,8 @@ enum ApiRouter: URLRequestBuilder {
             return "api/location/byuser/\(addressId)/"
         case .updateCustomerAddress(let addressId, _,  _,  _,  _,  _,  _):
             return "api/location/byuser/\(addressId)/"
+        case .getNotifications:
+            return "api/message/notifications/"
         }
     }
 
@@ -228,7 +231,7 @@ enum ApiRouter: URLRequestBuilder {
             if let token = UserDefaults.standard.value(forKey: K.token) as? String {
                 headers["Authorization"] = "Token \(token)"
             }
-        case .getCart, .addToCart, .editAmountInCart, .deleteProductFromCart, .placeOrder:
+        case .getCart, .addToCart, .editAmountInCart, .deleteProductFromCart, .placeOrder,.getNotifications:
             headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
         case .getProfileInfo(let authorization):
             headers["Authorization"] = "Token \(authorization)"
@@ -253,7 +256,7 @@ enum ApiRouter: URLRequestBuilder {
         switch self {
         case .authenticate, .addList,.addToList, .signUpCustomer, .signUpVendor, .resetPasswordEmail, .addToCart,.updatePassword, .googleSignIn, .addNewCreditCard, .addNewAddressForCustomer, .search, .placeOrder:
             return .post
-        case .getCustomerLists, .getComments, .getUsersComment, .getCart, .getProfileInfo, .getAllVendors, .getCreditCards, .getCustomerAddresses, .getCustomerOrders, .getVendorOrders:
+        case .getCustomerLists, .getComments, .getUsersComment, .getCart, .getProfileInfo, .getAllVendors, .getCreditCards, .getCustomerAddresses, .getCustomerOrders, .getVendorOrders,.getNotifications:
             return .get
         case .deleteList, .deleteProductFromList,.deleteProductFromCart, .removeCreditCard, .removeCustomerAddress, .deleteAccount:
             return .delete

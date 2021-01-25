@@ -622,6 +622,37 @@ struct APIManager {
         }
     }
     
+    func getNotifications( completionHandler: @escaping (NotificationsData?) -> Void) {
+        do {
+            let request = try ApiRouter.getNotifications.asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if (response.response?.statusCode != nil){
+                    guard let safeData = response.data else  {
+                        AllNotifications.shared.jsonParseError = true
+                        AllNotifications.shared.dataFetched = false
+                        completionHandler(nil)
+                        return
+                    }
+                    if let decodedData:NotificationsData = APIParse().parseJSON(safeData: safeData){
+                        AllNotifications.shared.jsonParseError = false
+                        AllNotifications.shared.apiFetchError = false
+                        AllNotifications.shared.dataFetched = true
+                        completionHandler(decodedData)
+                    }else {
+                        AllNotifications.shared.jsonParseError = true
+                        AllNotifications.shared.dataFetched = false
+                        completionHandler(nil)
+                    }
+                }
+            }
+        }catch let err {
+            print(err)
+            AllNotifications.shared.jsonParseError = true
+            AllNotifications.shared.dataFetched = false
+            completionHandler(nil)
+        }
+    }
+    
     func addNewCreditCard(owner:Int, nameOnCard:String, cardNumber:String, month:String, year:String, cvv:String, cardName:String,completionHandler: @escaping (Result<CreditCardData ,Error>) -> Void) {
         do {
             let request = try ApiRouter.addNewCreditCard(owner: owner, nameOnCard: nameOnCard, cardNumber: cardNumber, month: month, year: year, cvv: cvv, cardName: cardName).asURLRequest()
