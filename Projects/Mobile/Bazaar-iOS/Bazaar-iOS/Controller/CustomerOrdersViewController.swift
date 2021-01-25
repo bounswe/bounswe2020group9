@@ -1,33 +1,40 @@
 //
-//  VendorMyOrderViewController.swift
+//  CustomerOrdersViewController.swift
 //  Bazaar-iOS
 //
-//  Created by Muhsin Etki on 12.01.2021.
+//  Created by Uysal, Sadi on 20.01.2021.
 //
 
 import UIKit
 
-class VendorMyOrdersViewController: UIViewController {
+class CustomerOrdersViewController: UIViewController{
+    
+
     @IBOutlet weak var ordersTableView: UITableView!
-    var allOrdersInstance = AllOrders_vendor.shared
+    var allOrdersInstance = AllOrders.shared
     
     var allProductsInstance = AllProducts.shared
     var allVendorsInstance = AllVendors.shared
+    var cancel_button_delivery_id :Int = -1
     
     let orderStatusArray = ["", "Preparing", "On the Way", "Delivered", "Canceled"]
     
-    var cancel_button_delivery_id :Int = -1
-    var cancel_button_status :Int = -1
     var products_dict: [Int: ProductData] = [:]
     var vendors_dict: [Int: VendorData] = [:]
     
-    var orders: [VendorOrderData] = []
+    var orders: [OrderData_Cust] = []
     var products: [ProductData] = []
     var vendors:[VendorData] = []
     
     var networkFailedAlert:UIAlertController = UIAlertController(title: "Error while retrieving orders", message: "We encountered a problem while retrieving the orders, please check your internet connection.", preferredStyle: .alert)
     
     
+    @IBAction func backButtonPressed(_ sender: UIButton) {
+        
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+
     
     override func viewWillAppear(_ animated: Bool) {
         ordersTableView.reloadData()
@@ -79,7 +86,7 @@ class VendorMyOrdersViewController: UIViewController {
     
 }
 
-extension VendorMyOrdersViewController:UITableViewDelegate,UITableViewDataSource {
+extension CustomerOrdersViewController:UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //return 10
         print("returned order count")
@@ -91,19 +98,18 @@ extension VendorMyOrdersViewController:UITableViewDelegate,UITableViewDataSource
             return 5
         }
     }
-    @objc func cancel_button_clicked(_ sender : UIButton){
+    @objc func cancel_button_clicked(sender : UIButton){
         print("Button clicked. ")
-        // need to take status information and set to cancel_button_status
         let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
-        APIManager().deleteOrder(delivery_id: cancel_button_delivery_id,status:cancel_button_status) { (result) in
+        APIManager().deleteOrder(delivery_id: cancel_button_delivery_id,status:4) { (result) in
             switch result {
             case .success(let message):
                 self.dismiss(animated: false, completion: nil)
-                alertController.message = "Order status succesfully changed."
+                alertController.message = "Order succesfully canceled."
                 self.present(alertController, animated: true, completion: nil)
             case .failure(_):
-                alertController.message = "Order status did not changed. Try again later."
+                alertController.message = "Order could not canceled. Try again later."
                 self.present(alertController, animated: true, completion: nil)
             }
         }
@@ -113,32 +119,37 @@ extension VendorMyOrdersViewController:UITableViewDelegate,UITableViewDataSource
         
         print("setting order cell : "+String(indexPath.row))
         let cell = ordersTableView.dequeueReusableCell(withIdentifier: "ReusableOrderCell", for: indexPath) as! OrderCell
+
+        
         cell.ProductImage?.image = UIImage(named:"xmark.circle")
         //TODO change here
-        let filteredOrders:[VendorOrderData] = allOrdersInstance.allOrders
+        let filteredOrders:[OrderData_Cust] = allOrdersInstance.allOrders
         //let filteredProducts:[ProductData] = allProductsInstance.allProducts
         //let filteredVendors:[VendorData] = allVendorsInstance.allVendors
         let order = filteredOrders[indexPath.row]
-        //print("Order deliveries count:" + String(order.deliveries.count))
-        let delivery = order
+        print("Order deliveries count:" + String(order.deliveries.count))
+        let delivery = order.deliveries[0]
         print("Product ID: " + String(delivery.product_id))
         let product = products_dict[delivery.product_id]!                //filteredProducts[delivery.product_id]
-        //let vendor = vendors_dict[delivery.vendor]!
+        let vendor = vendors_dict[delivery.vendor]!
         let orderStatus=orderStatusArray[delivery.current_status]
+        let delivery_id=delivery.id
+        cancel_button_delivery_id=delivery_id
         //cell.Cancel_OrderButton.tag = indexPath.row
-        cancel_button_delivery_id=delivery.id
-        //cell.Cancel_OrderButton.addTarget(self, action: #selector(self.cancel_button_clicked(_:)), for: .allTouchEvents);
+        //cell.Cancel_OrderButton.addTarget(self, action: #selector(cancel_button_clicked(sender:)), for: .touchUpInside)
+        //cell.cellDelegate = self
+        //cell.index = indexPath
         
         cell.Name_BrandLabel.text = product.detail + ", " + product.brand
         cell.Name_BrandLabel.font = UIFont.systemFont(ofSize: 10, weight: .regular)
         
         cell.Price_StatusLabel.text = "₺" + String(product.price) + ", Status: " + orderStatus
         cell.Price_StatusLabel.font = UIFont.systemFont(ofSize: 13, weight: .black)
-        cell.VendorLabel.text = "Order Date: " + delivery.timestamp.prefix(10)
+        cell.VendorLabel.text = "Vendor Company : "+vendor.company
         cell.VendorLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         cell.AmountLabel.text = "Amount : " + String(delivery.amount)
         cell.AmountLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
-        cell.DatesLabel.text = "Estimated Delivery : " + delivery.delivery_time.prefix(10)
+        cell.DatesLabel.text = "Order Date: " + delivery.timestamp.prefix(10) + " Estimated Delivery : " + delivery.delivery_time.prefix(10)
         cell.DatesLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
         cell.AdressLabel.text = "Order Adress: " + delivery.delivery_address.address + delivery.delivery_address.city
         cell.AdressLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
@@ -175,14 +186,13 @@ extension VendorMyOrdersViewController:UITableViewDelegate,UITableViewDataSource
     }
     
 }
-extension VendorMyOrdersViewController: AllProductsFetchDelegate {
+extension CustomerOrdersViewController: AllProductsFetchDelegate {
     func allProductsAreFetched() {
         for prod in allProductsInstance.allProducts {
             products_dict[prod.id]=prod
             print("ADDED " + String(prod.id))
         }
         self.stopIndicator()
-        self.ordersTableView.reloadData()
     }
     
     func productsCannotBeFetched() {
@@ -204,25 +214,23 @@ extension VendorMyOrdersViewController: AllProductsFetchDelegate {
     }
 }
 
-extension VendorMyOrdersViewController: AllVendorsFetchDelegate {
+extension CustomerOrdersViewController: AllVendorsFetchDelegate {
     func allVendorsAreFetched() {
-        self.stopIndicator()
         self.vendors = self.allVendorsInstance.allVendors
         for vendor in allVendorsInstance.allVendors {
             vendors_dict[vendor.id]=vendor
         }
-        self.ordersTableView.reloadData()
+        self.stopIndicator()
     }
     
     func vendorsCannotBeFetched() {
         startIndicator()
     }
 }
-extension VendorMyOrdersViewController: AllOrdersVendorFetchDelegate {
+extension CustomerOrdersViewController: AllOrdersFetchDelegate {
     func allOrdersAreFetched() {
-        self.stopIndicator()
         self.orders = self.allOrdersInstance.allOrders
-        self.ordersTableView.reloadData()
+        self.stopIndicator()
     }
     
     func ordersCannotBeFetched() {
@@ -231,11 +239,17 @@ extension VendorMyOrdersViewController: AllOrdersVendorFetchDelegate {
 }
 
 
-
+extension CustomerOrdersViewController:TableViewNewProtocol {
+    func buttonClicked(index:Int) {
+        print("Index:" + String(index))
+        
+        ordersTableView.reloadData()
+    }
+}
 
 
 // MARK: - IndicatorView
-extension VendorMyOrdersViewController {
+extension CustomerOrdersViewController {
     func startIndicator() {
         //self.view.bringSubviewToFront(loadingView)
         //loadingView.isHidden = false
@@ -264,12 +278,12 @@ extension VendorMyOrdersViewController {
     }
 }
 
-class AllOrders_vendor {
-    static let shared = AllOrders_vendor()
-    var allOrders: [VendorOrderData]
+class AllOrders {
+    static let shared = AllOrders()
+    var allOrders: [OrderData_Cust]
     private let saveKey = "AllOrders"
     
-    var delegate: AllOrdersVendorFetchDelegate?
+    var delegate: AllOrdersFetchDelegate?
     let dispatchGroup = DispatchGroup()
     var dataFetched = false {
         didSet{
@@ -289,7 +303,7 @@ class AllOrders_vendor {
     
     func fetchAllOrders() {
         dispatchGroup.enter()
-        APIManager().getVendorOrders(completionHandler: { orders in
+        APIManager().getCustomerOrders(completionHandler: { orders in
             if orders != nil {
                 
                 self.dataFetched = true
@@ -309,7 +323,7 @@ class AllOrders_vendor {
         
 }
 
-protocol AllOrdersVendorFetchDelegate {
+protocol AllOrdersFetchDelegate {
     func allOrdersAreFetched()
     func ordersCannotBeFetched()
 }

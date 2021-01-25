@@ -30,7 +30,7 @@ class SignUpViewController: UIViewController {
     @IBOutlet weak var addressTextField: UITextField!
     @IBOutlet weak var vendorInfoView: UIView!
     @IBOutlet weak var upDownConstraint: NSLayoutConstraint!
-    @IBOutlet weak var addressLabel: UILabel!
+    @IBOutlet weak var fullAddressTextView: UITextView!
     
     var signUpUserType: UserType?
     var delegate:SignUpViewControllerDelegate?
@@ -38,8 +38,10 @@ class SignUpViewController: UIViewController {
     var mapViewController = MapViewController()
     var latitude:Float?
     var longitude:Float?
+    var country:String?
+    var city:String?
     var addressAnnotation: MKPointAnnotation?
-    var openAddress:String?
+    var fullAddress:String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,7 +54,7 @@ class SignUpViewController: UIViewController {
         super.viewDidAppear(animated)
         passwordTextField.textContentType = .oneTimeCode
         isPressedLoginHere = false
-        openAddress = nil
+        fullAddress = nil
         upDownConstraint.constant = 15
         if let isloggedin = UserDefaults.standard.value(forKey: K.isLoggedinKey){
             if isloggedin as! Bool{
@@ -124,25 +126,32 @@ class SignUpViewController: UIViewController {
                                                                 alertController.message = "Address title must be at least 1 characters in length"
                                                                 self.present(alertController, animated: true, completion: nil)
                                                             }else {
-                                                                if let latitude = self.latitude, let longitude = self.longitude, let openAddress = self.openAddress {
-                                                                    APIManager().signUpVendor(firstName: firstName, lastName: lastName, username: email, password: password, user_type: "\(userType.rawValue+1)", addressName: addressTitle, address: openAddress, postalCode: userType.rawValue, latitude: latitude, longitude: longitude, companyName: companyName) { (result) in
-                                                                        switch result {
-                                                                        
-                                                                        case .success(_):
-                                                                            let alertController2 = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
-                                                                            alertController2.message = "You have successfully signed up! To login, a mail has been sent to your e-mail address, please check and verify your e-mail"
-                                                                            alertController2.addAction(UIAlertAction(title: "Go To Login", style: UIAlertAction.Style.default){ (action:UIAlertAction!) in
-                                                                                self.dismiss(animated: true, completion: nil)
-                                                                            })
-                                                                            self.present(alertController2, animated: true, completion: nil)
-                                                                        case .failure(_):
-                                                                            alertController.message = "A user with that email already exists."
+                                                                if let fullAddress = fullAddressTextView.text {
+                                                                    if fullAddress.count == 0 {
+                                                                        alertController.message = "Full address must be at least 1 characters in length"
+                                                                        self.present(alertController, animated: true, completion: nil)
+                                                                    }else {
+                                                                        if let latitude = self.latitude, let longitude = self.longitude, let fullAddress = self.fullAddress , let country = self.country, let city = self.city
+                                                                        {
+                                                                            APIManager().signUpVendor(firstName: firstName, lastName: lastName, username: email, password: password, user_type: "\(userType.rawValue+1)", addressName: addressTitle, address: fullAddress, country: country, city: city, postalCode: userType.rawValue, latitude: latitude, longitude: longitude, companyName: companyName) { (result) in
+                                                                                switch result {
+                                                                                case .success(_):
+                                                                                    let alertController2 = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
+                                                                                    alertController2.message = "You have successfully signed up! To login, a mail has been sent to your e-mail address, please check and verify your e-mail"
+                                                                                    alertController2.addAction(UIAlertAction(title: "Go To Login", style: UIAlertAction.Style.default){ (action:UIAlertAction!) in
+                                                                                        self.dismiss(animated: true, completion: nil)
+                                                                                    })
+                                                                                    self.present(alertController2, animated: true, completion: nil)
+                                                                                case .failure(_):
+                                                                                    alertController.message = "A user with that email already exists."
+                                                                                    self.present(alertController, animated: true, completion: nil)
+                                                                                }
+                                                                            }
+                                                                        }else {
+                                                                            alertController.message = "We could not get your address information, Please click the Find Address button, then long click to select your location on the map that opens."
                                                                             self.present(alertController, animated: true, completion: nil)
                                                                         }
                                                                     }
-                                                                }else {
-                                                                    alertController.message = "We could not get your address information, please try again! You have to long press when selecting your address."
-                                                                    self.present(alertController, animated: true, completion: nil)
                                                                 }
                                                             }
                                                         }
@@ -176,7 +185,7 @@ class SignUpViewController: UIViewController {
             }
             DispatchQueue.main.async {
                 self.vendorInfoView.isHidden = false
-                self.upDownConstraint.constant = 130+self.addressLabel.frame.height
+                self.upDownConstraint.constant = 220
             }
             self.signUpUserType = UserType.Vendor
         } else{
@@ -216,45 +225,47 @@ class SignUpViewController: UIViewController {
     func getAddressFromLatLon(pdblLatitude: String, withLongitude pdblLongitude: String) {
         var center : CLLocationCoordinate2D = CLLocationCoordinate2D()
         let lat: Double = Double("\(pdblLatitude)")!
-        //21.228124
         let lon: Double = Double("\(pdblLongitude)")!
-        //72.833770
         let ceo: CLGeocoder = CLGeocoder()
         center.latitude = lat
         center.longitude = lon
         
         let loc: CLLocation = CLLocation(latitude:center.latitude, longitude: center.longitude)
         
-        
         ceo.reverseGeocodeLocation(loc, completionHandler:{(placemarks, error) in
-            if (error != nil)
-            {
-                print("reverse geodcode fail: \(error!.localizedDescription)")
+            if (error != nil){
+                let alertController = UIAlertController(title: "Alert!", message: "We could not get your address information, please try again! You have to long press when selecting your address.", preferredStyle: .alert)
+                alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+                self.present(alertController, animated: true, completion: nil)
             }
             let pm = placemarks! as [CLPlacemark]
             
             if pm.count > 0 {
                 let pm = placemarks![0]
                 var addressString : String = ""
-                if pm.subLocality != nil {
-                    addressString = addressString + pm.subLocality! + ", "
-                }
                 if pm.thoroughfare != nil {
                     addressString = addressString + pm.thoroughfare! + ", "
                 }
                 if pm.locality != nil {
                     addressString = addressString + pm.locality! + ", "
                 }
+                if pm.administrativeArea != nil {
+                    self.city = pm.administrativeArea!
+                    addressString = addressString + pm.administrativeArea! + ", "
+                }
                 if pm.country != nil {
+                    self.country = pm.country!
                     addressString = addressString + pm.country! + ", "
                 }
                 if pm.postalCode != nil {
                     addressString = addressString + pm.postalCode! + " "
                 }
                 if addressString.count != 0 {
-                    self.openAddress = addressString
+                    self.fullAddress = addressString
+                    let alertController = UIAlertController(title: "Alert!", message: "We have successfully received your address! Your address: \(addressString)", preferredStyle: .alert)
+                    alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+                    self.present(alertController, animated: true, completion: nil)
                 }
-                self.addressLabel.text = "Address: \(addressString)"
             }
         })
     }
@@ -267,15 +278,14 @@ extension SignUpViewController:MapViewControllerDelegate{
         self.addressAnnotation = annotation
         getAddressFromLatLon(pdblLatitude: "\(latitude)", withLongitude: "\(longitude)")
         DispatchQueue.main.async {
-            self.upDownConstraint.constant = 140+self.addressLabel.frame.height
+            self.upDownConstraint.constant = 220
         }
     }
     
     func mapViewControllerDidFail() {
-        self.addressLabel.text = "Address: "
-        self.openAddress = nil
+        self.fullAddress = nil
         DispatchQueue.main.async {
-            self.upDownConstraint.constant = 140+self.addressLabel.frame.height
+            self.upDownConstraint.constant = 220
         }
         let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))

@@ -138,6 +138,24 @@ struct VendorData: Codable {
     let bazaar_point:Double
     let company:String
 }
+struct OrderData_Cust: Codable {
+    let id:Int
+    let customer_id:Int
+    let timestamp:String
+    let deliveries:[DeliveryData]
+}
+struct DeliveryData: Codable {
+    let id:Int
+    let product_id:Int
+    let timestamp:String
+    let delivery_time:String
+    let current_status:Int
+    let order_id:Int
+    let customer_id:Int
+    let amount:Int
+    let vendor:Int
+    let delivery_address:AddressData
+}
 
 struct CreditCardData:Codable {
     let id:Int
@@ -160,4 +178,89 @@ struct AddEditProductData: Codable {
     let stock: Int
     let image: String
     let description: String
+}
+struct OrderData:Codable {
+    let product:Int
+    let amount:Int
+    let timestamp:String
+    let customer:Int
+    let order:Int
+    let delivery_time:String
+}
+
+struct AddressData:Codable {
+    let id:Int
+    let address_name:String
+    let address:String
+    let country:String
+    let city:String
+    let postal_code:Int
+    let longitude:Float
+    let latitude:Float
+    let user_id:Int
+}
+struct VendorOrderData: Codable {
+    let id:Int
+    let product_id:Int
+    let timestamp:String
+    let delivery_time:String
+    let current_status:Int
+    let order_id:Int
+    let customer_id:Int
+    let amount:Int
+    let delivery_address:AddressData
+}
+struct NotificationsData:Codable {
+    let new_notifications:Int
+    let notifications:[Notification]
+}
+struct Notification:Codable {
+    let id:Int
+    let body:String
+    let timestamp:String
+    let type:String
+    let is_visited:Bool
+    let user:Int
+}
+
+struct ConversationData:Codable {
+    let id:Int
+    let last_message_body:String
+    let last_message_timestamp:String
+    let user_id:Int
+    let email:String
+    let first_name:String
+    let last_name:String
+    let date_joined:String
+    let last_login:String
+    let user_type:Int
+    let bazaar_point:Int
+    let company:String
+    let is_visited:Bool
+    let messages:[MessageData]!
+}
+
+struct AllConversationsData:Codable {
+    let new_messages:Int
+    let conversations:[ConversationData]
+}
+
+struct MessageData:Codable {
+    let id:Int
+    let timestamp:String
+    let body:String
+    let is_user1:Bool
+    let is_visited_by_user1:Bool
+    let is_visited_by_user2:Bool
+    let conversation:Int
+    let am_I_user1:Bool!
+    let email:String!
+    let first_name:String!
+    let last_name:String!
+    let date_joined:String!
+    let last_login:String!
+    let user_type:Int!
+    let bazaar_point:Int!
+    let company:String!
+    let user_id:Int!
 }
