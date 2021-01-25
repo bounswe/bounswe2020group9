@@ -131,7 +131,7 @@ extension CustomerOrdersViewController:UITableViewDelegate,UITableViewDataSource
         let delivery = order.deliveries[0]
         print("Product ID: " + String(delivery.product_id))
         let product = products_dict[delivery.product_id]!                //filteredProducts[delivery.product_id]
-        let vendor = vendors_dict[delivery.vendor]!
+        //let vendor = vendors_dict[delivery.vendor]!
         let orderStatus=orderStatusArray[delivery.current_status]
         let delivery_id=delivery.id
         cancel_button_delivery_id=delivery_id
@@ -140,12 +140,12 @@ extension CustomerOrdersViewController:UITableViewDelegate,UITableViewDataSource
         //cell.cellDelegate = self
         //cell.index = indexPath
         
-        cell.Name_BrandLabel.text = product.detail + ", " + product.brand
+        cell.Name_BrandLabel.text = product.name + " - " + product.brand//product.detail + ", " + 
         cell.Name_BrandLabel.font = UIFont.systemFont(ofSize: 10, weight: .regular)
         
         cell.Price_StatusLabel.text = "₺" + String(product.price) + ", Status: " + orderStatus
         cell.Price_StatusLabel.font = UIFont.systemFont(ofSize: 13, weight: .black)
-        cell.VendorLabel.text = "Vendor Company : "+vendor.company
+        cell.VendorLabel.text = "Vendor Company : " + AllVendors.shared.allVendors.filter{$0.id == product.vendor}[0].company//vendor.company
         cell.VendorLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         cell.AmountLabel.text = "Amount : " + String(delivery.amount)
         cell.AmountLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)

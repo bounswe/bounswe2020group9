@@ -27,6 +27,7 @@ class ChatViewController: UIViewController {
         APIManager().getMessages(id: self.id) { (result) in
             switch result{
             case .success(let messages):
+                self.chatMessages = []
                 for msg in messages {
                     let date = msg.timestamp.formatDate
                     let isIncoming = !(msg.is_user1 == msg.am_I_user1)
@@ -38,6 +39,7 @@ class ChatViewController: UIViewController {
                             self.chatMessages.append(ChatMessage(text:msg.body, isIncoming: isIncoming, date: date))
                         }
                     } else {
+                        
                         self.chatMessages.append(ChatMessage(text:msg.body, isIncoming: isIncoming, date: date))
                     }
                     
@@ -78,6 +80,7 @@ class ChatViewController: UIViewController {
                     APIManager().getMessages(id: self.id) { (result) in
                         switch result{
                         case .success(let messages):
+                            self.chatMessages = []
                             for msg in messages {
                                 let date = msg.timestamp.formatDate
                                 let isIncoming = !(msg.is_user1 == msg.am_I_user1)

@@ -786,6 +786,7 @@ struct APIManager {
         do {
             let request = try ApiRouter.getCustomerAddresses.asURLRequest()
             AF.request(request).responseJSON { (response) in
+                print(response)
                 if (response.response?.statusCode != nil){
                     guard let safeData = response.data else  {
                         completionHandler(.failure(MyError.runtimeError("Error")))

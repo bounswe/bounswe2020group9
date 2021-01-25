@@ -47,11 +47,12 @@ struct ProductData: Codable, Equatable {
   let rating: Double
   let vendor: Int
   var picture: String? = ""
-  struct Category: Codable {
-    let name: String
-    let parent: String?
-    let id: Int
-  }
+}
+
+struct Category: Codable {
+  let name: String
+  let parent: String
+  let id: Int
 }
 
 struct CustomerListData: Codable {
@@ -197,7 +198,7 @@ struct AddressData:Codable {
     let postal_code:Int
     let longitude:Float
     let latitude:Float
-    let user_id:Int
+    let user:Int
 }
 struct VendorOrderData: Codable {
     let id:Int
