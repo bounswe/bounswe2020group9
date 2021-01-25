@@ -66,8 +66,8 @@ extension NotificationsViewController:UITableViewDelegate,UITableViewDataSource 
        //return 10
        print("returned notification count")
        if tableView == NotificationTableView {
-           print(allNotificationsInstance.allOrders.count)
-           return allNotificationsInstance.allOrders.count
+        print(allNotificationsInstance.allNotifications.count)
+        return allNotificationsInstance.allNotifications.count
        }else {
            print("Should not see this.")
            return 5
@@ -233,6 +233,7 @@ extension NotificationsViewController: AllProductsFetchDelegate {
         }
     }
 }
+/*
 extension NotificationsViewController: AllOrdersFetchDelegate {
     func allOrdersAreFetched() {
         self.stopIndicator()
@@ -242,7 +243,7 @@ extension NotificationsViewController: AllOrdersFetchDelegate {
     func ordersCannotBeFetched() {
         startIndicator()
     }
-}
+}*/
 
 class AllNotifications {
    static let shared = AllNotifications()
