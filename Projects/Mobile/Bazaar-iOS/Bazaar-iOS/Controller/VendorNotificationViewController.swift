@@ -1,32 +1,31 @@
 //
-//  NotificationsViewController.swift
+//  VendorNotificationViewController.swift
 //  Bazaar-iOS
 //
-//  Created by Uysal, Sadi on 24.01.2021.
+//  Created by Uysal, Sadi on 25.01.2021.
 //
 
 import UIKit
-class NotificationsViewController: UIViewController{
-    
+class VendorNotificationViewController: UIViewController{
     
     @IBOutlet weak var NotificationTableView: UITableView!
     var allNotificationsInstance = AllNotifications.shared
     var allProductsInstance = AllProducts.shared
-    var allOrdersInstance = AllOrders.shared
+    var allOrdersInstance = AllOrders_vendor.shared
     
-    var orders_dict:[Int: OrderData_Cust] = [:]
+    var orders_dict:[Int: VendorOrderData] = [:]
     var products_dict: [Int: ProductData] = [:]
     
     var notifications:[Notification]=[]
-    var orders: [OrderData_Cust] = []
+    var orders: [VendorOrderData] = []
     var products: [ProductData] = []
     
     var networkFailedAlert:UIAlertController = UIAlertController(title: "Error while retrieving orders", message: "We encountered a problem while retrieving the orders, please check your internet connection.", preferredStyle: .alert)
     
+    
     @IBAction func backButtonPressed(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }
-    
     
     override func viewWillAppear(_ animated: Bool) {
         NotificationTableView.reloadData()
@@ -78,7 +77,7 @@ class NotificationsViewController: UIViewController{
     
 }
 
-extension NotificationsViewController:UITableViewDelegate,UITableViewDataSource {
+extension VendorNotificationViewController:UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //return 10
         print("returned notification count")
@@ -182,7 +181,7 @@ extension NotificationsViewController:UITableViewDelegate,UITableViewDataSource 
     
 }
 
-extension NotificationsViewController: AllNotificationsFetchDelegate {
+extension VendorNotificationViewController: AllNotificationsFetchDelegate {
     func allNotificationsAreFetched() {
         self.stopIndicator()
         self.notifications = self.allNotificationsInstance.allNotifications.sorted(by: { $0.id > $1.id })
@@ -193,7 +192,7 @@ extension NotificationsViewController: AllNotificationsFetchDelegate {
         startIndicator()
     }
 }
-extension NotificationsViewController: AllProductsFetchDelegate {
+extension VendorNotificationViewController: AllProductsFetchDelegate {
     func allProductsAreFetched() {
         for prod in allProductsInstance.allProducts {
             products_dict[prod.id]=prod
@@ -221,7 +220,7 @@ extension NotificationsViewController: AllProductsFetchDelegate {
         }
     }
 }
-extension NotificationsViewController: AllOrdersFetchDelegate {
+extension VendorNotificationViewController: AllOrdersVendorFetchDelegate {
     func allOrdersAreFetched() {
         self.stopIndicator()
         self.orders = self.allOrdersInstance.allOrders
@@ -241,7 +240,7 @@ extension NotificationsViewController: AllOrdersFetchDelegate {
 
 
 // MARK: - IndicatorView
-extension NotificationsViewController {
+extension VendorNotificationViewController {
     func startIndicator() {
         //self.view.bringSubviewToFront(loadingView)
         //loadingView.isHidden = false
@@ -269,69 +268,4 @@ extension NotificationsViewController {
         }
     }
 }
-
-/*
- extension NotificationsViewController: AllOrdersFetchDelegate {
- func allOrdersAreFetched() {
- self.stopIndicator()
- self.orders = self.allOrdersInstance.allOrders
- }
- 
- func ordersCannotBeFetched() {
- startIndicator()
- }
- }*/
-
-class AllNotifications {
-    static let shared = AllNotifications()
-    var allNotifications: [Notification]
-    private let saveKey = "AllNotifications"
-    
-    var delegate: AllNotificationsFetchDelegate?
-    let dispatchGroup = DispatchGroup()
-    var dataFetched = false {
-        didSet{
-            if self.dataFetched{
-                delegate?.allNotificationsAreFetched()
-            } else {
-                delegate?.notificationsCannotBeFetched()
-            }
-        }
-    }
-    var apiFetchError = false
-    var jsonParseError = false
-    
-    init(){
-        self.allNotifications = []
-    }
-    
-    func fetchAllNotifications() {
-        dispatchGroup.enter()
-        APIManager().getNotifications(completionHandler: { Notifications in
-            if Notifications != nil {
-                
-                self.dataFetched = true
-                self.allNotifications = Notifications!.notifications
-                self.delegate?.allNotificationsAreFetched()
-                print("Fetched notifications.")
-            } else {
-                self.dataFetched = false
-                self.allNotifications = []
-                self.delegate?.notificationsCannotBeFetched()
-                print("Could not fetch notifications.")
-            }
-        })
-        dispatchGroup.leave()
-        dispatchGroup.wait()
-    }
-    
-}
-
-protocol AllNotificationsFetchDelegate {
-    func allNotificationsAreFetched()
-    func notificationsCannotBeFetched()
-}
-
-
-
 
