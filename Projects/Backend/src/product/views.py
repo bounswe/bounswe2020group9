@@ -566,9 +566,10 @@ class OrderView(APIView):
             if serializer.is_valid():
                 delivery_id = serializer.save()
                 try:
-                    u1 = User.objects.get(id=v1)
-                    body = str(u1.username) + " ordered " + str(p1.name) 
-                    Notification.objects.create(user=u1,body=body,timestamp=timezone.now(), delivery_id=delivery_id)
+                    u1 = User.objects.get(id=user_id)
+                    body = str(u1.username) + " ordered " + str(p1.name)
+                    vendor = User.objects.get(id=v1)
+                    Notification.objects.create(user=vendor,body=body,timestamp=timezone.now(), delivery_id=delivery_id)
                     
                 except:
                     pass
