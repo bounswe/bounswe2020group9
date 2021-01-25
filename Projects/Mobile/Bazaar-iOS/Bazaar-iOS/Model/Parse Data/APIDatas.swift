@@ -46,7 +46,7 @@ struct ProductData: Codable, Equatable {
   let sell_counter: Int
   let rating: Double
   let vendor: Int
-  let picture: String?
+  var picture: String? = ""
   struct Category: Codable {
     let name: String
     let parent: String?
@@ -120,7 +120,7 @@ struct SearchProduct:Codable {
 }
 
 struct SearchProductList:Codable {
-    let product_list:[SearchProduct]
+    let product_list:[ProductData]?
 }
 
   struct GoogleSignInData:Codable {

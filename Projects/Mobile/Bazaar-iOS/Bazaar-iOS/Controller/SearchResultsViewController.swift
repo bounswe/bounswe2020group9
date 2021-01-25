@@ -187,13 +187,14 @@ class SearchResultsViewController: UIViewController {
                 switch result {
                 case .success(let searchResultList):
                     DispatchQueue.main.async {
-                        let searchResultIDs = searchResultList.product_list.map{$0.id}
+                        /*let searchResultIDs = searchResultList.product_list.map{$0.id}
                         self.products = []
                         for id in searchResultIDs {
                             if self.allProductsInstance.allProducts.filter({$0.id == id}).count > 0 {
                                 self.products.append(self.allProductsInstance.allProducts.filter{$0.id == id}[0])
                             }
-                        }
+                        }*/
+                        self.products = searchResultList.product_list ?? []
                         //self.products = self.allProductsInstance.allProducts.filter{searchResultIDs.contains($0.id)}
                         if(self.products.count == 0) {
                             self.searchResultsTableView.isHidden = true

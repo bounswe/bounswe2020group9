@@ -207,6 +207,7 @@ enum ApiRouter: URLRequestBuilder {
         case .search(_, _, _):
             if let token = UserDefaults.standard.value(forKey: K.token) as? String {
                 headers["Authorization"] = "Token \(token)"
+                print(token)
             }else {
                 headers["Authorization"] = "Token 57bcb0493429453fad027bc6552cc1b28d6df955"
             }

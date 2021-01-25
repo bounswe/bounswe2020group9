@@ -460,15 +460,17 @@ struct APIManager {
         do {
             let request = try ApiRouter.search(filterType: filterType, sortType: sortType, searchWord: searchWord).asURLRequest()
             AF.request(request).responseJSON { response in
+                print(response)
+                
                 if (response.response?.statusCode != nil) {
                     guard let safeData = response.data else  {
-                        completionHandler(.failure(MyError.runtimeError("Error-searchapicall-response")))
+                        completionHandler(.failure(MyError.runtimeError("Error-searchapicall-response-1")))
                         return
                     }
                     if let decodedData:SearchProductList = APIParse().parseJSON(safeData: safeData){
                         completionHandler(.success(decodedData))
                     }else {
-                        completionHandler(.failure(MyError.runtimeError("Error-searchapicall-decode")))
+                        completionHandler(.failure(MyError.runtimeError("Error-searchapicall-decode-2")))
                     }
                 }
                 
@@ -596,6 +598,7 @@ struct APIManager {
         do {
             let request = try ApiRouter.getVendorsProducts(vendorId: vendorId).asURLRequest()
             AF.request(request).responseJSON { response in
+                print(response)
                 if (response.response?.statusCode != nil ) {
                     guard let safeData = response.data else {
                         completionHandler(.failure(MyError.runtimeError("Error")))

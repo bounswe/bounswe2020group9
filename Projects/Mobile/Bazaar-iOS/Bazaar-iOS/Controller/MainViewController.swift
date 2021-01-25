@@ -132,7 +132,7 @@ class MainViewController: UIViewController{
         self.view.sendSubviewToBack(searchHistoryTableView)
         //searchResults = searchHistory
         if let searchResultsVC = segue.destination as? SearchResultsViewController {
-            searchResultsVC.searchWord = searchTextField?.text
+            searchResultsVC.searchWord = searchTextField!.text ?? ""
             let indexpath = searchHistoryTableView.indexPathForSelectedRow
             if indexpath != nil {
                 searchResultsVC.filterType = "none"
