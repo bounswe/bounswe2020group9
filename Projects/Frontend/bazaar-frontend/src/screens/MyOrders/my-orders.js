@@ -114,23 +114,18 @@ export default class MyOrders extends Component {
     console.log(event.target.id)
 
     let myCookie = read_cookie('user');
-    const header = {headers: {Authorization: "Token "+myCookie.token}};
-
-    const body = new FormData();
-    body.append("delivery_id", event.target.id);
-    body.append("status", 4);
-    console.log(body.delivery_id)
-
-    axios.put(serverUrl+'api/product/order/', {
-      
-      data: {
-        delivery_id: event.target.id,
-        status: 4
-      },
+    const header = {
       headers: {
-        Authorization: "Token "+myCookie.token
+        Authorization: "Token " + myCookie.token
       }
-    })
+    };
+
+    const data = {
+      delivery_id: event.target.id,
+      status: 4
+    }
+
+    axios.put(serverUrl + 'api/product/order/', data, header)
     .then(res => {
       //this.setState({orders: res})
       console.log(res.data)
