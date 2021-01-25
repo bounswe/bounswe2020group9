@@ -14,6 +14,7 @@ import Home from "./screens/Home/home"
 import ResetPassword from "./screens/Sign-In/reset-pw"
 import ForgotPassword from "./screens/Sign-In/forgot-password"
 import MyList from "./screens/MyList/MyList"
+import MyOrders from "./screens/MyOrders/my-orders"
 import AddProduct from "./screens/Add-Product/addproduct"
 import Inventory from "./screens/Inventory/inventory"
 import ProductPage from "./screens/ProductPage/ProductPage"
@@ -23,6 +24,7 @@ import SearchResults from "./screens/SearchResults/search-results"
 import Checkout from "./screens/Cart/Checkout/checkout"
 import Messages from "./screens/Messages/messages";
 import MyAddresses from "./screens/MyAdresses/MyAddresses"
+import MyOrdersVendor from "./screens/MyOrders/my-orders-vendor"
 
 //components
 import Header from "./components/Header/Header"
@@ -53,6 +55,10 @@ function App() {
         <Route path="/checkout">
           <Header />
           <Checkout />
+        </Route>
+        <Route path="/my-orders-vendor">
+          <Header />
+          <MyOrdersVendor />
         </Route>
         <Route 
           path="/resetpw=:id"  
@@ -96,6 +102,10 @@ function App() {
         <Route path="/my-list">
           <Header />
           <MyList />
+        </Route>
+        <Route path="/my-orders">
+          <Header />
+          <MyOrders />
         </Route>
         <Route path="/MyAddresses">
           <Header />

@@ -220,6 +220,9 @@ class Header extends Component {
                 Profile
               </a>
               <div className="dropdown-menu" aria-labelledby="ddlProfile">
+                <a className="dropdown-item" href="/my-orders">
+                  My Orders
+                </a>
                 <a className="dropdown-item" href="/profile-page">
                   View Profile
                 </a>
@@ -330,6 +333,9 @@ class Header extends Component {
                 </a>
                 <a className="dropdown-item" href="/add-product">
                   Add Product
+                </a>
+                <a className="dropdown-item" href="/my-orders-vendor">
+                  My Orders
                 </a>
               </div>
             </li>
