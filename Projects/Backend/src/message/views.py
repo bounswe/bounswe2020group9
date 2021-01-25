@@ -200,7 +200,7 @@ class Notifications(APIView):
         for notification in notifications:
             res = NotificationSerializer(notification).data
             delivery_id = notification.delivery_id
-            delivery = Delivery.objects.filter(id=delivery_id).values()
+            delivery = Delivery.objects.filter(id=delivery_id.id).values()
             res["delivery"] = delivery
             responseList.append(res)
             if not notification.is_visited:
