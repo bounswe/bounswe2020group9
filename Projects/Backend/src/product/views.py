@@ -61,9 +61,9 @@ class ProductDetailAPIView(APIView):
 
     def get(self, request, id):
         product = self.get_product(id)
-        serializer = ProductSerializer(product)
-        try:
-            return Response(serializer.data)
+        serializer = ProductSerializer(product,context={'request': request})
+        try:    
+            return Response(serializer.data)  
         except:
             return HttpResponse("product id " + str(id) + " not found", status=HTTP_404_NOT_FOUND)
 
@@ -631,11 +631,7 @@ class SearchAPIView(APIView):
                 product_list = sort_func(sort_type, product_list)
                 product_list2 = []
                 for i in range(len(product_list)):
-                    product = ProductSerializer(Product.objects.get(id=product_list[i]["id"])).data
-                    try:
-                        product["picture"] = "http://" + domain + product["picture"]
-                    except:
-                        product["picture"] = ""
+                    product = ProductSerializer(Product.objects.get(id=product_list[i]["id"]), context={'request': request}).data
                     product_list2.append(product)
                 product_dict = {}
                 product_dict["product_list"] = product_list2
@@ -650,11 +646,7 @@ class SearchAPIView(APIView):
             product_list = filter_func(filter_types, product_list)
             product_list = sort_func(sort_type, product_list)
             for i in range(len(product_list)):
-                product = ProductSerializer(Product.objects.get(id=product_list[i]["id"])).data
-                try:
-                    product["picture"] = "http://" + domain + product["picture"]
-                except:
-                    product["picture"] = ""
+                product = ProductSerializer(Product.objects.get(id=product_list[i]["id"]), context={'request': request}).data
                 product_list.append(product)
             product_dict = {}
             product_dict["product_list"] = product_list
