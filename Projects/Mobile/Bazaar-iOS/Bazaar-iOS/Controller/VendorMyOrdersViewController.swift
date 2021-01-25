@@ -129,7 +129,7 @@ extension VendorMyOrdersViewController:UITableViewDelegate,UITableViewDataSource
         cancel_button_delivery_id=delivery.id
         //cell.Cancel_OrderButton.addTarget(self, action: #selector(self.cancel_button_clicked(_:)), for: .allTouchEvents);
         
-        cell.Name_BrandLabel.text = product.detail + ", " + product.brand
+        cell.Name_BrandLabel.text = product.name + " - " + product.brand
         cell.Name_BrandLabel.font = UIFont.systemFont(ofSize: 10, weight: .regular)
         
         cell.Price_StatusLabel.text = "₺" + String(product.price) + ", Status: " + orderStatus

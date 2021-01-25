@@ -245,7 +245,7 @@ struct VendorOrderData: Codable {
     let order_id:Int
     let customer_id:Int
     let amount:Int
-    let delivery_address:AddressData
+    let delivery_address:AddressData2
 }
 struct NotificationsData:Codable {
     let new_notifications:Int
