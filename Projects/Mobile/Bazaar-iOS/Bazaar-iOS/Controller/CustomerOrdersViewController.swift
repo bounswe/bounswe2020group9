@@ -15,6 +15,7 @@ class CustomerOrdersViewController: UIViewController{
     
     var allProductsInstance = AllProducts.shared
     var allVendorsInstance = AllVendors.shared
+    var cancel_button_delivery_id :Int = -1
     
     let orderStatusArray = ["", "Preparing", "On the Way", "Delivered", "Canceled"]
     
@@ -29,6 +30,7 @@ class CustomerOrdersViewController: UIViewController{
     
     
     @IBAction func backButtonPressed(_ sender: UIButton) {
+        
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -96,11 +98,11 @@ extension CustomerOrdersViewController:UITableViewDelegate,UITableViewDataSource
             return 5
         }
     }
-    @objc func cancel_button_clicked(_ sender : UIButton, delivery_id: Int){
+    @objc func cancel_button_clicked(_ sender : UIButton){
         print("Button clicked. ")
         let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
-        APIManager().deleteOrder(delivery_id: delivery_id) { (result) in
+        APIManager().deleteOrder(delivery_id: cancel_button_delivery_id,status:4) { (result) in
             switch result {
             case .success(let message):
                 self.dismiss(animated: false, completion: nil)
@@ -129,9 +131,10 @@ extension CustomerOrdersViewController:UITableViewDelegate,UITableViewDataSource
         let product = products_dict[delivery.product_id]!                //filteredProducts[delivery.product_id]
         let vendor = vendors_dict[delivery.vendor]!
         let orderStatus=orderStatusArray[delivery.current_status]
-        
+        let delivery_id=delivery.id
         cell.Cancel_OrderButton.tag = indexPath.row
-        cell.Cancel_OrderButton.addTarget(self, action: #selector(self.cancel_button_clicked(_:delivery_id:)), for: .allTouchEvents);
+        cancel_button_delivery_id=delivery_id
+        cell.Cancel_OrderButton.addTarget(self, action: #selector(self.cancel_button_clicked(_:)), for: .allTouchEvents);
         
         cell.Name_BrandLabel.text = product.detail + ", " + product.brand
         cell.Name_BrandLabel.font = UIFont.systemFont(ofSize: 10, weight: .regular)
