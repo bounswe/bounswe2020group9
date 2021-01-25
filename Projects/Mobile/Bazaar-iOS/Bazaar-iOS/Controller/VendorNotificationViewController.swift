@@ -21,7 +21,7 @@ class VendorNotificationViewController: UIViewController{
     var orders: [VendorOrderData] = []
     var products: [ProductData] = []
     
-    var networkFailedAlert:UIAlertController = UIAlertController(title: "Error while retrieving orders", message: "We encountered a problem while retrieving the orders, please check your internet connection.", preferredStyle: .alert)
+    var networkFailedAlert:UIAlertController = UIAlertController(title: "Error while retrieving notification", message: "We encountered a problem while retrieving the notification, please check your internet connection.", preferredStyle: .alert)
     
     
     @IBAction func backButtonPressed(_ sender: Any) {
@@ -68,7 +68,7 @@ class VendorNotificationViewController: UIViewController{
             }
         }
         if !(allNotificationsInstance.dataFetched) {
-            print("orders not fetched yet,tryin to fetch right now")
+            print("notification not fetched yet,tryin to fetch right now")
             notificationsCannotBeFetched()
             self.allNotificationsInstance.fetchAllNotifications()
         }
@@ -128,8 +128,7 @@ extension VendorNotificationViewController:UITableViewDelegate,UITableViewDataSo
         let notf_isVisited=notification.is_visited
         let notf_userId=notification.user
         
-        //let order=orders_dict[notification.id]
-        //let product_id=(order?.deliveries[0].product_id)!
+        let product=allProductsInstance.allProducts.filter{$0.id == notification.delivery[0].product_id}[0]
         //let product=products_dict[product_id]
         
         //cell.Cancel_OrderButton.tag = indexPath.row
@@ -141,8 +140,8 @@ extension VendorNotificationViewController:UITableViewDelegate,UITableViewDataSo
             cell.bodyLabel.font = UIFont.systemFont(ofSize: 20, weight: .black)
             cell.seenStatusLabel.text = "New notification"
             cell.seenStatusLabel.font = UIFont.systemFont(ofSize: 15, weight: .black)
-            cell.productNameLabel.text = ""//"product.name"
-            //cell.productNameLabel.font = UIFont.systemFont(ofSize: 13, weight: .black)
+            cell.productNameLabel.text = product.name
+            cell.productNameLabel.font = UIFont.systemFont(ofSize: 13, weight: .black)
             cell.timeLabel.text = "Time : " + notf_time
             cell.timeLabel.font = UIFont.systemFont(ofSize: 13, weight: .black)
         }else{
@@ -150,22 +149,21 @@ extension VendorNotificationViewController:UITableViewDelegate,UITableViewDataSo
             cell.bodyLabel.font = UIFont.systemFont(ofSize: 20, weight: .regular)
             cell.seenStatusLabel.text = "Seen"
             cell.seenStatusLabel.font = UIFont.systemFont(ofSize: 15, weight: .regular)
-            cell.productNameLabel.text = ""//"product.name"
-            //cell.productNameLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
+            cell.productNameLabel.text = product.name
+            cell.productNameLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
             cell.timeLabel.text = "Time : " + notf_time
             cell.timeLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         }
         
         
-        print("complete setting order cell")
-        /*
-        if allProductsInstance.allImages.keys.contains(product_id) {
-            cell.ImageView.image = allProductsInstance.allImages[product_id]
+        print("complete setting notification cell")
+        if allProductsInstance.allImages.keys.contains(product.id) {
+            cell.ImageView.image = allProductsInstance.allImages[product.id]
             cell.ImageView.contentMode = .scaleAspectFit
-            print("1: Name: \(product!.name) :Product ID: \(product_id)")
+            print("1: Name: \(product.name) :Product ID: \(product.id)")
          } else {
-            print("2: \(product!.name)")
-            if let url = product?.picture {
+            print("2: \(product.name)")
+            if let url = product.picture {
                 do{
                     try cell.ImageView.loadImageUsingCache(withUrl: url, forProduct: product)
                     cell.ImageView.contentMode = .scaleAspectFit
@@ -176,7 +174,7 @@ extension VendorNotificationViewController:UITableViewDelegate,UITableViewDataSo
                      cell.ImageView.contentMode = .center
                  }
              }
-         }*/
+         }
         
         return cell
     }

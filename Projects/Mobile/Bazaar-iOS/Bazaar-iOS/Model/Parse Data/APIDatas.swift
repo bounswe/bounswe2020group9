@@ -105,6 +105,7 @@ struct CommentData: Codable {
     let bazaar_point: Int!
     let company: String!
 }
+
 struct SearchProduct:Codable {
     let id: Int
     let name: String
@@ -139,6 +140,7 @@ struct VendorData: Codable {
     let bazaar_point:Double
     let company:String
 }
+
 struct OrderData_Cust: Codable {
     let id:Int
     let customer_id:Int
@@ -168,7 +170,7 @@ struct DeliveryWithoutAddress: Codable {
     let order_id:Int
     let customer_id:Int
     let amount:Int
-    let vendor:Int
+    let location_id:Int
 }
 struct CreditCardData:Codable {
     let id:Int
@@ -239,6 +241,7 @@ struct NotificationsData:Codable {
     let new_notifications:Int
     let notifications:[Notification]
 }
+
 struct Notification:Codable {
     let id:Int
     let body:String
@@ -247,7 +250,7 @@ struct Notification:Codable {
     let is_visited:Bool
     let user:Int
     let delivery_id:Int
-    //let delivery:DeliveryWithoutAddress
+    let delivery:[DeliveryWithoutAddress]
 }
 
 struct ConversationData:Codable {
