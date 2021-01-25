@@ -157,7 +157,17 @@ struct DeliveryData: Codable {
     let vendor:Int
     let delivery_address:AddressData
 }
-
+struct DeliveryWithoutAddress: Codable {
+    let id:Int
+    let product_id:Int
+    let timestamp:String
+    let delivery_time:String
+    let current_status:Int
+    let order_id:Int
+    let customer_id:Int
+    let amount:Int
+    let vendor:Int
+}
 struct CreditCardData:Codable {
     let id:Int
     let name_on_card:String
@@ -222,6 +232,8 @@ struct Notification:Codable {
     let type:String
     let is_visited:Bool
     let user:Int
+    let delivery_id:Int
+    //let delivery:DeliveryWithoutAddress
 }
 
 struct ConversationData:Codable {
