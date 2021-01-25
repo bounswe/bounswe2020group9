@@ -6,24 +6,26 @@ import "./App.css";
 //screens
 import ProfilePage from "./screens/Profile-page/profile-page";
 import UserPage from "./screens/Profile-page/user-page";
-import SignIn from "./screens/Sign-In/sign-in";
-import SignUp from "./screens/Sign-Up/sign-up";
-import Activate from "./screens/Sign-Up/activate";
-import SignUpVendor from "./screens/Sign-Up/sign-up-vendor";
-import Home from "./screens/Home/home";
-import ResetPassword from "./screens/Sign-In/reset-pw";
-import ForgotPassword from "./screens/Sign-In/forgot-password";
-import MyList from "./screens/MyList/MyList";
-import AddProduct from "./screens/Add-Product/addproduct";
-import Inventory from "./screens/Inventory/inventory";
-import ProductPage from "./screens/ProductPage/ProductPage";
-import ViewCategory from "./screens/ViewCategory/view-category";
-import Cart from "./screens/Cart/Cart";
-import SearchResults from "./screens/SearchResults/search-results";
-import Checkout from "./screens/Cart/Checkout/checkout";
+
+import SignIn from "./screens/Sign-In/sign-in"
+import SignUp from "./screens/Sign-Up/sign-up"
+import Activate from "./screens/Sign-Up/activate"
+import SignUpVendor from "./screens/Sign-Up/sign-up-vendor"
+import Home from "./screens/Home/home"
+import ResetPassword from "./screens/Sign-In/reset-pw"
+import ForgotPassword from "./screens/Sign-In/forgot-password"
+import MyList from "./screens/MyList/MyList"
+import MyOrders from "./screens/MyOrders/my-orders"
+import AddProduct from "./screens/Add-Product/addproduct"
+import Inventory from "./screens/Inventory/inventory"
+import ProductPage from "./screens/ProductPage/ProductPage"
+import ViewCategory from "./screens/ViewCategory/view-category"
+import Cart from "./screens/Cart/Cart"
+import SearchResults from "./screens/SearchResults/search-results"
+import Checkout from "./screens/Cart/Checkout/checkout"
 import Messages from "./screens/Messages/messages";
-import MyAddresses from "./screens/MyAdresses/MyAddresses";
-import MyComments from "./screens/MyComments/MyComments";
+import MyAddresses from "./screens/MyAdresses/MyAddresses"
+import MyOrdersVendor from "./screens/MyOrders/my-orders-vendor"
 
 //components
 import Header from "./components/Header/Header";
@@ -53,24 +55,29 @@ function App() {
           <Header />
           <Checkout />
         </Route>
-        <Route
-          path="/resetpw=:id"
-          render={(props) => (
-            <div>
-              <Header />
-              <ResetPassword {...props} />
-            </div>
-          )}
-        />
-        <Route
-          path="/activate=:id"
-          render={(props) => (
-            <div>
-              <Header />
-              <Activate {...props} />
-            </div>
-          )}
-        />
+
+        <Route path="/my-orders-vendor">
+          <Header />
+          <MyOrdersVendor />
+        </Route>
+        <Route 
+          path="/resetpw=:id"  
+          render={(props) => 
+              <div>
+                  <Header />
+                  <ResetPassword {...props} />
+              </div> 
+          } 
+      />
+        <Route 
+          path="/activate=:id"  
+          render={(props) => 
+              <div>
+                  <Header />
+                  <Activate {...props} />
+              </div> 
+          } 
+      />
         <Route path="/forgot-password">
           <Header />
           <ForgotPassword />
@@ -99,6 +106,9 @@ function App() {
         <Route path="/my-comments">
           <Header />
           <MyComments />
+        <Route path="/my-orders">
+          <Header />
+          <MyOrders />
         </Route>
         <Route path="/MyAddresses">
           <Header />

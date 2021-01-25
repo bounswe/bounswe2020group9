@@ -250,7 +250,7 @@ export default class Inventory extends Component {
     })
 
     return (
-      <div className="profile-form background">
+      <div className="inventory-display background">
 
         <Modal show={this.state.isOpen} onHide={this.closeModal}>
           <Modal.Header closeButton>
@@ -377,6 +377,7 @@ export default class Inventory extends Component {
           onRowClicked={this.rowClicked}
           highlightOnHover
           pointerOnHover
+          theme="custom-theme"
         />
       </div>
 
