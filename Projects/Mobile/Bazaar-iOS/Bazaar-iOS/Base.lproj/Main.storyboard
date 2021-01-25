@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="n1Y-by-cQR">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="n1Y-by-cQR">
     <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -3465,8 +3465,9 @@ If you have any questions about these terms, please contact us.
                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="aNb-Mh-6b0">
                                 <rect key="frame" x="10" y="44" width="394" height="53.666666666666657"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="2OZ-42-Xnh">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo_blue" translatesAutoresizingMaskIntoConstraints="NO" id="2OZ-42-Xnh">
                                         <rect key="frame" x="0.0" y="5.3333333333333357" width="39.333333333333336" height="43"/>
+                                        <color key="backgroundColor" red="0.25490196078431371" green="0.68235294117647061" blue="0.66274509803921566" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                 <integer key="value" value="10"/>
@@ -3482,7 +3483,7 @@ If you have any questions about these terms, please contact us.
                                     <button opaque="NO" contentMode="left" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="k5F-MK-naT" userLabel="Add List Button">
                                         <rect key="frame" x="171" y="15" width="223" height="24"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
-                                        <color key="tintColor" systemColor="systemOrangeColor"/>
+                                        <color key="tintColor" red="0.25490196079999999" green="0.68235294120000001" blue="0.66274509800000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <state key="normal">
                                             <imageReference key="image" image="plus" catalog="system" symbolScale="large"/>
                                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" weight="medium"/>
@@ -3530,7 +3531,7 @@ If you have any questions about these terms, please contact us.
                             <constraint firstItem="aNb-Mh-6b0" firstAttribute="leading" secondItem="rJn-7k-AKz" secondAttribute="leading" constant="10" id="on5-r8-cqv"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="My Products" id="xV1-qr-9cC"/>
+                    <tabBarItem key="tabBarItem" title="My Products" image="bag" catalog="system" id="xV1-qr-9cC"/>
                     <connections>
                         <outlet property="addProductButton" destination="k5F-MK-naT" id="dio-R7-tw3"/>
                         <outlet property="productsTableView" destination="DSq-ck-E7f" id="nAG-oR-jSa"/>
@@ -3555,7 +3556,7 @@ If you have any questions about these terms, please contact us.
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add New Product" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r04-5S-tIP" userLabel="Add New Product">
                                         <rect key="frame" x="39.333333333333343" y="9.9999999999999982" width="315.33333333333326" height="20.333333333333329"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="1" green="0.62352941179999999" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="textColor" red="0.25490196078431371" green="0.68235294117647061" blue="0.66274509803921566" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="boolean" keyPath="adjustsFontSizeToFitWidth" value="YES"/>
@@ -3563,7 +3564,9 @@ If you have any questions about these terms, please contact us.
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D6D-9K-4r0" userLabel="Save Product">
                                         <rect key="frame" x="278" y="512" width="96" height="30"/>
-                                        <state key="normal" title="Save Product "/>
+                                        <state key="normal" title="Save Product ">
+                                            <color key="titleColor" red="0.25490196079999999" green="0.68235294120000001" blue="0.66274509800000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
                                                 <integer key="value" value="1"/>
@@ -3588,7 +3591,9 @@ If you have any questions about these terms, please contact us.
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="akD-3a-N5t" userLabel="Cancel Button">
                                         <rect key="frame" x="20" y="512" width="48" height="30"/>
-                                        <state key="normal" title="Cancel"/>
+                                        <state key="normal" title="Cancel">
+                                            <color key="titleColor" red="0.25490196078431371" green="0.68235294117647061" blue="0.66274509803921566" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.borderWidth">
                                                 <integer key="value" value="1"/>
@@ -3623,7 +3628,7 @@ If you have any questions about these terms, please contact us.
                                                             <constraint firstAttribute="width" constant="120" id="dzb-Ko-tFY"/>
                                                         </constraints>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                        <color key="textColor" red="1" green="0.62352941179999999" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <color key="textColor" red="0.25490196078431371" green="0.68235294117647061" blue="0.66274509803921566" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Title" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vqf-1Y-2Si">
@@ -3644,7 +3649,7 @@ If you have any questions about these terms, please contact us.
                                                             <constraint firstAttribute="width" constant="120" id="1bZ-yO-izq"/>
                                                         </constraints>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                        <color key="textColor" red="1" green="0.62352941179999999" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <color key="textColor" red="0.25490196078431371" green="0.68235294117647061" blue="0.66274509803921566" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Brand" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fhW-HF-363">
@@ -3665,13 +3670,14 @@ If you have any questions about these terms, please contact us.
                                                             <constraint firstAttribute="width" constant="120" id="OEM-rS-Jfl"/>
                                                         </constraints>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                        <color key="textColor" red="0.96776050329999996" green="0.6416403651" blue="0.1417042017" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                        <color key="textColor" red="0.25490196078431371" green="0.68235294117647061" blue="0.66274509803921566" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="em2-Sv-R8t" userLabel="ChooseCategoryButton">
                                                         <rect key="frame" x="140" y="0.0" width="234" height="36.666666666666664"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <color key="tintColor" red="0.25490196079999999" green="0.68235294120000001" blue="0.66274509800000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <inset key="contentEdgeInsets" minX="3" minY="6" maxX="3" maxY="6"/>
                                                         <inset key="titleEdgeInsets" minX="5" minY="0.0" maxX="3" maxY="0.0"/>
                                                         <inset key="imageEdgeInsets" minX="-3" minY="0.0" maxX="10" maxY="0.0"/>
@@ -3698,13 +3704,14 @@ If you have any questions about these terms, please contact us.
                                                             <constraint firstAttribute="width" constant="120" id="ZNe-7k-VSn"/>
                                                         </constraints>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                        <color key="textColor" red="0.96776050329999996" green="0.6416403651" blue="0.1417042017" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                                        <color key="textColor" red="0.25490196078431371" green="0.68235294117647061" blue="0.66274509803921566" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FWJ-7a-Hmf" userLabel="ChooseCategoryButton">
                                                         <rect key="frame" x="140" y="0.0" width="234" height="36.333333333333336"/>
                                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <color key="tintColor" red="0.25490196079999999" green="0.68235294120000001" blue="0.66274509800000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <inset key="contentEdgeInsets" minX="3" minY="6" maxX="3" maxY="6"/>
                                                         <inset key="titleEdgeInsets" minX="5" minY="0.0" maxX="3" maxY="0.0"/>
                                                         <inset key="imageEdgeInsets" minX="-3" minY="0.0" maxX="10" maxY="0.0"/>
@@ -3731,7 +3738,7 @@ If you have any questions about these terms, please contact us.
                                                             <constraint firstAttribute="width" constant="120" id="2NA-J6-Qe9"/>
                                                         </constraints>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                        <color key="textColor" red="1" green="0.62352941179999999" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <color key="textColor" red="0.25490196078431371" green="0.68235294117647061" blue="0.66274509803921566" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Price" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fby-xq-vZm">
@@ -3752,7 +3759,7 @@ If you have any questions about these terms, please contact us.
                                                             <constraint firstAttribute="width" constant="120" id="MXW-Yo-vJh"/>
                                                         </constraints>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                        <color key="textColor" red="1" green="0.62352941179999999" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <color key="textColor" red="0.25490196078431371" green="0.68235294117647061" blue="0.66274509803921566" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="19" translatesAutoresizingMaskIntoConstraints="NO" id="iev-wc-sh3">
@@ -3777,7 +3784,7 @@ If you have any questions about these terms, please contact us.
                                                             <constraint firstAttribute="width" constant="120" id="kEK-Ld-NZF"/>
                                                         </constraints>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                        <color key="textColor" red="1" green="0.62352941179999999" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <color key="textColor" red="0.25490196078431371" green="0.68235294117647061" blue="0.66274509803921566" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Product Description" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="div-we-ncl">
@@ -3814,7 +3821,7 @@ If you have any questions about these terms, please contact us.
                                                             <constraint firstAttribute="width" constant="120" id="tzD-Nx-T5E"/>
                                                         </constraints>
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                        <color key="textColor" red="1" green="0.62352941179999999" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <color key="textColor" red="0.25490196078431371" green="0.68235294117647061" blue="0.66274509803921566" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="URL of the product's image" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="j8m-Ud-ZHc">
@@ -3912,7 +3919,7 @@ If you have any questions about these terms, please contact us.
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TwD-HF-4xZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1752" y="3966"/>
+            <point key="canvasLocation" x="1771" y="3958"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="KQk-5Y-yOF">
@@ -6154,7 +6161,7 @@ If you have any questions about these terms, please contact us.
                             <constraint firstItem="4jt-dV-Fkz" firstAttribute="leading" secondItem="K7r-gM-XcI" secondAttribute="leading" id="zQC-gQ-nkc"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="My Orders" id="cdN-Gf-k8T"/>
+                    <tabBarItem key="tabBarItem" title="My Orders" image="doc.text" catalog="system" id="cdN-Gf-k8T"/>
                     <connections>
                         <outlet property="ordersTableView" destination="K7r-gM-XcI" id="O0g-Nq-5ly"/>
                     </connections>
@@ -7400,6 +7407,7 @@ If you have any questions about these terms, please contact us.
     <resources>
         <image name="address_icon" width="100" height="100"/>
         <image name="address_icon_blue" width="100" height="100"/>
+        <image name="bag" catalog="system" width="128" height="128"/>
         <image name="cart" catalog="system" width="128" height="102"/>
         <image name="cart.fill" catalog="system" width="128" height="102"/>
         <image name="chevron.down" width="11" height="7"/>
@@ -7407,6 +7415,7 @@ If you have any questions about these terms, please contact us.
         <image name="chevron.right" catalog="system" width="96" height="128"/>
         <image name="clock" catalog="system" width="128" height="121"/>
         <image name="credit_cards_icon" width="100" height="100"/>
+        <image name="doc.text" catalog="system" width="115" height="128"/>
         <image name="exit_icon" width="100" height="100"/>
         <image name="exit_icon_blue" width="100" height="100"/>
         <image name="heart" catalog="system" width="128" height="109"/>
@@ -7446,9 +7455,6 @@ If you have any questions about these terms, please contact us.
         </systemColor>
         <systemColor name="opaqueSeparatorColor">
             <color red="0.77647058823529413" green="0.77647058823529413" blue="0.78431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="scrollViewTexturedBackgroundColor">
-            <color red="0.43529411764705878" green="0.44313725490196082" blue="0.47450980392156861" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="scrollViewTexturedBackgroundColor">
             <color red="0.43529411764705878" green="0.44313725490196082" blue="0.47450980392156861" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

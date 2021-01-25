@@ -111,6 +111,7 @@ extension VendorMyProductsViewController: UITableViewDelegate, UITableViewDataSo
             }
         }
         cell.arrowImageView.image = UIImage(systemName: "pencil")
+        cell.arrowImageView.tintColor = #colorLiteral(red: 0.2549019608, green: 0.6823529412, blue: 0.662745098, alpha: 1)
         return cell
     }
     
