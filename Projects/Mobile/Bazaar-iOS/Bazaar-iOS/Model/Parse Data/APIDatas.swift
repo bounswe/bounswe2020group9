@@ -138,6 +138,24 @@ struct VendorData: Codable {
     let bazaar_point:Double
     let company:String
 }
+struct OrderData_Cust: Codable {
+    let id:Int
+    let customer_id:Int
+    let timestamp:String
+    let deliveries:[DeliveryData]
+}
+struct DeliveryData: Codable {
+    let id:Int
+    let product_id:Int
+    let timestamp:String
+    let delivery_time:String
+    let current_status:Int
+    let order_id:Int
+    let customer_id:Int
+    let amount:Int
+    let vendor:Int
+    let delivery_address:AddressData
+}
 
 struct CreditCardData:Codable {
     let id:Int
@@ -163,7 +181,6 @@ struct OrderData:Codable {
     let delivery_time:String
 }
 
-
 struct AddressData:Codable {
     let id:Int
     let address_name:String
@@ -173,8 +190,19 @@ struct AddressData:Codable {
     let postal_code:Int
     let longitude:Float
     let latitude:Float
+    let user_id:Int
 }
-
+struct VendorOrderData: Codable {
+    let id:Int
+    let product_id:Int
+    let timestamp:String
+    let delivery_time:String
+    let current_status:Int
+    let order_id:Int
+    let customer_id:Int
+    let amount:Int
+    let delivery_address:AddressData
+}
 struct NotificationsData:Codable {
     let new_notifications:Int
     let notifications:[Notification]
