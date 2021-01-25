@@ -68,6 +68,13 @@
 		996B676825BAC87000F7A1EC /* PaymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 996B676725BAC87000F7A1EC /* PaymentViewController.swift */; };
 		996B678425BC6EC300F7A1EC /* DistanceSellingAgreement.txt in Resources */ = {isa = PBXBuildFile; fileRef = 996B678325BC6EC300F7A1EC /* DistanceSellingAgreement.txt */; };
 		9996E88D2585121000986DB1 /* ListDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9996E88C2585121000986DB1 /* ListDetailViewController.swift */; };
+		99A654BF25BE0DED00A22B95 /* ConversationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A654BD25BE0DED00A22B95 /* ConversationTableViewCell.swift */; };
+		99A654C025BE0DED00A22B95 /* ConversationTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 99A654BE25BE0DED00A22B95 /* ConversationTableViewCell.xib */; };
+		99A654C525BE1E1100A22B95 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A654C425BE1E1100A22B95 /* MessagesViewController.swift */; };
+		99A654CA25BE2DFF00A22B95 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A654C925BE2DFF00A22B95 /* ChatViewController.swift */; };
+		99A654D725BEEFD500A22B95 /* ChatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A654D525BEEFD500A22B95 /* ChatTableViewCell.swift */; };
+		99A654D825BEEFD500A22B95 /* ChatTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 99A654D625BEEFD500A22B95 /* ChatTableViewCell.xib */; };
+		99A654E125BF2D3500A22B95 /* SendMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A654E025BF2D3400A22B95 /* SendMessageViewController.swift */; };
 		99DE0AE825967DD3004BAFDA /* ReviewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DE0AE725967DD3004BAFDA /* ReviewsViewController.swift */; };
 		99DE0AEF25967E10004BAFDA /* ReviewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DE0AED25967E10004BAFDA /* ReviewTableViewCell.swift */; };
 		99DE0AF025967E10004BAFDA /* ReviewTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 99DE0AEE25967E10004BAFDA /* ReviewTableViewCell.xib */; };
@@ -174,6 +181,13 @@
 		996B676725BAC87000F7A1EC /* PaymentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentViewController.swift; sourceTree = "<group>"; };
 		996B678325BC6EC300F7A1EC /* DistanceSellingAgreement.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = DistanceSellingAgreement.txt; sourceTree = "<group>"; };
 		9996E88C2585121000986DB1 /* ListDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListDetailViewController.swift; sourceTree = "<group>"; };
+		99A654BD25BE0DED00A22B95 /* ConversationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationTableViewCell.swift; sourceTree = "<group>"; };
+		99A654BE25BE0DED00A22B95 /* ConversationTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConversationTableViewCell.xib; sourceTree = "<group>"; };
+		99A654C425BE1E1100A22B95 /* MessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
+		99A654C925BE2DFF00A22B95 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
+		99A654D525BEEFD500A22B95 /* ChatTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTableViewCell.swift; sourceTree = "<group>"; };
+		99A654D625BEEFD500A22B95 /* ChatTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatTableViewCell.xib; sourceTree = "<group>"; };
+		99A654E025BF2D3400A22B95 /* SendMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMessageViewController.swift; sourceTree = "<group>"; };
 		99DE0AE725967DD3004BAFDA /* ReviewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewsViewController.swift; sourceTree = "<group>"; };
 		99DE0AED25967E10004BAFDA /* ReviewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewTableViewCell.swift; sourceTree = "<group>"; };
 		99DE0AEE25967E10004BAFDA /* ReviewTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReviewTableViewCell.xib; sourceTree = "<group>"; };
@@ -412,6 +426,8 @@
 		93EE3CDF25594A9400B504DF /* View */ = {
 			isa = PBXGroup;
 			children = (
+				99A654D425BEEFB800A22B95 /* ChatTableViewCell */,
+				99A654BC25BE0DB400A22B95 /* Conversation Cell */,
 				FC23060725BE103500106F2E /* Notification Cell */,
 				FC49043725BC7CF500849906 /* Order Cell */,
 				99DE0AEC25967DE3004BAFDA /* Review Cell */,
@@ -460,6 +476,9 @@
 				935A22E425BCA57E007B8A21 /* AddNewAddressViewController.swift */,
 				93E3C20525BDA23A007255A3 /* VendorMyAddressesViewController.swift */,
 				93E3C20A25BDA5A5007255A3 /* VendorAddNewAddressViewController.swift */,
+				99A654C425BE1E1100A22B95 /* MessagesViewController.swift */,
+				99A654C925BE2DFF00A22B95 /* ChatViewController.swift */,
+				99A654E025BF2D3400A22B95 /* SendMessageViewController.swift */,
 				FC4E9F5325BDF727008BAA8F /* NotificationsViewController.swift */,
 				93B76B3725BDE9A3004A281A /* LegalPolicyViewController.swift */,
 				FC5F73C925BF1D1C003684D6 /* VendorNotificationViewController.swift */,
@@ -473,6 +492,24 @@
 				996B678325BC6EC300F7A1EC /* DistanceSellingAgreement.txt */,
 			);
 			path = Contracts;
+			sourceTree = "<group>";
+		};
+		99A654BC25BE0DB400A22B95 /* Conversation Cell */ = {
+			isa = PBXGroup;
+			children = (
+				99A654BD25BE0DED00A22B95 /* ConversationTableViewCell.swift */,
+				99A654BE25BE0DED00A22B95 /* ConversationTableViewCell.xib */,
+			);
+			path = "Conversation Cell";
+			sourceTree = "<group>";
+		};
+		99A654D425BEEFB800A22B95 /* ChatTableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				99A654D525BEEFD500A22B95 /* ChatTableViewCell.swift */,
+				99A654D625BEEFD500A22B95 /* ChatTableViewCell.xib */,
+			);
+			path = ChatTableViewCell;
 			sourceTree = "<group>";
 		};
 		99DE0AEC25967DE3004BAFDA /* Review Cell */ = {
@@ -638,11 +675,13 @@
 			files = (
 				938A1553256AD19100572844 /* CategoryCollectionViewCell.xib in Resources */,
 				996B678425BC6EC300F7A1EC /* DistanceSellingAgreement.txt in Resources */,
+				99A654C025BE0DED00A22B95 /* ConversationTableViewCell.xib in Resources */,
 				93EE3CB22558822700B504DF /* LaunchScreen.storyboard in Resources */,
 				93EE3CDB25594A6800B504DF /* ProductCell.xib in Resources */,
 				FC23060B25BE10B700106F2E /* NotificationCell.xib in Resources */,
 				93EE3CAF2558822700B504DF /* Assets.xcassets in Resources */,
 				FCE56DDB25855C5800A119FA /* SubCategoryCell.xib in Resources */,
+				99A654D825BEEFD500A22B95 /* ChatTableViewCell.xib in Resources */,
 				93EE3CAA2558822500B504DF /* Main.storyboard in Resources */,
 				6929E5F6257FD4FE008F32D3 /* StarRatingStackView.xib in Resources */,
 				696B5E22258E988800CF1FB8 /* CartTableViewCell.xib in Resources */,
@@ -824,6 +863,7 @@
 				6929E5F7257FD4FE008F32D3 /* StarRatingStackView.swift in Sources */,
 				935A22E025BC898E007B8A21 /* AddressCell.swift in Sources */,
 				6994EAD6255DBF4A00AC48F6 /* MyCartViewController.swift in Sources */,
+				99A654C525BE1E1100A22B95 /* MessagesViewController.swift in Sources */,
 				9996E88D2585121000986DB1 /* ListDetailViewController.swift in Sources */,
 				99F3379D256ADD460095105F /* ProfileViewController.swift in Sources */,
 				93B76B3825BDE9A3004A281A /* LegalPolicyViewController.swift in Sources */,
@@ -866,8 +906,12 @@
 				69B21FBD25B7117600BC4E0D /* VendorProfileForUserViewController.swift in Sources */,
 				9377BEB925AD0D8600AE8CC2 /* VendorMyOrdersViewController.swift in Sources */,
 				935A22E525BCA57E007B8A21 /* AddNewAddressViewController.swift in Sources */,
+				99A654BF25BE0DED00A22B95 /* ConversationTableViewCell.swift in Sources */,
 				99DE0AE825967DD3004BAFDA /* ReviewsViewController.swift in Sources */,
 				6929E5F8257FD4FE008F32D3 /* StarRatingView.swift in Sources */,
+				99A654D725BEEFD500A22B95 /* ChatTableViewCell.swift in Sources */,
+				99A654CA25BE2DFF00A22B95 /* ChatViewController.swift in Sources */,
+				99A654E125BF2D3500A22B95 /* SendMessageViewController.swift in Sources */,
 				93FC745E2597BB7900236D54 /* MapViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

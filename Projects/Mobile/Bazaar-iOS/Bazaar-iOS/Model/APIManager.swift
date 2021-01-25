@@ -832,6 +832,88 @@ struct APIManager {
            //
         }
     }
+    
+    func getConversations(completionHandler: @escaping (Result<AllConversationsData ,Error>) -> Void) {
+        do {
+            let request = try ApiRouter.getConversations.asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if (response.response?.statusCode != nil){
+                    guard let safeData = response.data else  {
+                        completionHandler(.failure(MyError.runtimeError("Error")))
+                        return
+                    }
+                    if let decodedData:AllConversationsData = APIParse().parseJSON(safeData: safeData){
+                        completionHandler(.success(decodedData))
+                    }else {
+                        completionHandler(.failure(MyError.runtimeError("Failed to parse json ")))
+                    }
+                }
+            }
+        }catch let err {
+            completionHandler(.failure(err))
+        }
+    }
+
+    func getMessages(id:Int, completionHandler: @escaping (Result<[MessageData] ,Error>) -> Void) {
+        do {
+            let request = try ApiRouter.getMessages(id: id).asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if (response.response?.statusCode != nil){
+                    guard let safeData = response.data else  {
+                        completionHandler(.failure(MyError.runtimeError("Error")))
+                        return
+                    }
+                    if let decodedData:[MessageData] = APIParse().parseJSON(safeData: safeData){
+                        completionHandler(.success(decodedData))
+                    }else {
+                        completionHandler(.failure(MyError.runtimeError("Failed to parse json ")))
+                    }
+                }
+            }
+        }catch let err {
+            completionHandler(.failure(err))
+        }
+    }
+
+    func getConversationsWithMessages( completionHandler: @escaping (Result<AllConversationsData ,Error>) -> Void) {
+        do {
+            let request = try ApiRouter.getConversationsWithMessages.asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if (response.response?.statusCode != nil){
+                    guard let safeData = response.data else  {
+                        completionHandler(.failure(MyError.runtimeError("Error")))
+                        return
+                    }
+                    if let decodedData:AllConversationsData = APIParse().parseJSON(safeData: safeData){
+                        completionHandler(.success(decodedData))
+                    }else {
+                        completionHandler(.failure(MyError.runtimeError("Failed to parse json ")))
+                    }
+                }
+            }
+        }catch let err {
+            completionHandler(.failure(err))
+        }
+    }
+
+    func sendMessage(receiver:String, body:String, completionHandler: @escaping (Result<String ,Error>) -> Void) {
+        do {
+            let request = try ApiRouter.sendMessage(receiver_username: receiver, body: body).asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if (response.response?.statusCode != nil){
+                    if response.response?.statusCode == 201 {
+                        completionHandler(.success("Success"))
+                    }else {
+                        completionHandler(.failure(MyError.runtimeError("Failed to parse json ")))
+                    }
+                }
+            }
+        }catch let err {
+            completionHandler(.failure(err))
+        }
+    }
+
+    
 }
 
 
