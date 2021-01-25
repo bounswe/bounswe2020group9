@@ -89,7 +89,7 @@ class SearchResultsViewController: UIViewController {
     func fetchSearchResults(filterType:String, sortType:String) {
         if (isCategory) {
             self.searchResultsTableView.isHidden = true
-            self.products = allProductsInstance.allProducts.filter{$0.category.parent!.lowercased().contains(searchWord!.lowercased()) || $0.category.name.lowercased().contains(searchWord!.lowercased())}
+            self.products = allProductsInstance.allProducts.filter{$0.category.parent.lowercased().contains(searchWord!.lowercased()) || $0.category.name.lowercased().contains(searchWord!.lowercased())}
             if filterType != "none" {
                 let filters = filterType.split(separator: "&")
                 let filtersValues = filters.map {$0.split(separator: "=")}
