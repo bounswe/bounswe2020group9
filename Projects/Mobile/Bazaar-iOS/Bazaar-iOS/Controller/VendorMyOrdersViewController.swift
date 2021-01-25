@@ -125,9 +125,9 @@ extension VendorMyOrdersViewController:UITableViewDelegate,UITableViewDataSource
         let product = products_dict[delivery.product_id]!                //filteredProducts[delivery.product_id]
         //let vendor = vendors_dict[delivery.vendor]!
         let orderStatus=orderStatusArray[delivery.current_status]
-        cell.Cancel_OrderButton.tag = indexPath.row
+        //cell.Cancel_OrderButton.tag = indexPath.row
         cancel_button_delivery_id=delivery.id
-        cell.Cancel_OrderButton.addTarget(self, action: #selector(self.cancel_button_clicked(_:)), for: .allTouchEvents);
+        //cell.Cancel_OrderButton.addTarget(self, action: #selector(self.cancel_button_clicked(_:)), for: .allTouchEvents);
         
         cell.Name_BrandLabel.text = product.detail + ", " + product.brand
         cell.Name_BrandLabel.font = UIFont.systemFont(ofSize: 10, weight: .regular)

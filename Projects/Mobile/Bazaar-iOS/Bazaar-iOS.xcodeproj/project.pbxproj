@@ -16,6 +16,7 @@
 		6949C910257D8F5B00175AC5 /* SearchResultsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6949C90F257D8F5B00175AC5 /* SearchResultsViewController.swift */; };
 		696B5E21258E988800CF1FB8 /* CartTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 696B5E1F258E988800CF1FB8 /* CartTableViewCell.swift */; };
 		696B5E22258E988800CF1FB8 /* CartTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 696B5E20258E988800CF1FB8 /* CartTableViewCell.xib */; };
+		6972887325BC7F9900483AF1 /* VendorAddEditProductViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6972887225BC7F9900483AF1 /* VendorAddEditProductViewController.swift */; };
 		6994EACD255DA3D400AC48F6 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6994EACB255DA3D400AC48F6 /* MainTabBarController.swift */; };
 		6994EACE255DA3D400AC48F6 /* MainTabBarController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6994EACC255DA3D400AC48F6 /* MainTabBarController.xib */; };
 		6994EAD0255DB7BC00AC48F6 /* WishlistViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6994EACF255DB7BC00AC48F6 /* WishlistViewController.swift */; };
@@ -68,23 +69,30 @@
 		996B676825BAC87000F7A1EC /* PaymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 996B676725BAC87000F7A1EC /* PaymentViewController.swift */; };
 		996B678425BC6EC300F7A1EC /* DistanceSellingAgreement.txt in Resources */ = {isa = PBXBuildFile; fileRef = 996B678325BC6EC300F7A1EC /* DistanceSellingAgreement.txt */; };
 		9996E88D2585121000986DB1 /* ListDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9996E88C2585121000986DB1 /* ListDetailViewController.swift */; };
+		99A654BF25BE0DED00A22B95 /* ConversationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A654BD25BE0DED00A22B95 /* ConversationTableViewCell.swift */; };
+		99A654C025BE0DED00A22B95 /* ConversationTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 99A654BE25BE0DED00A22B95 /* ConversationTableViewCell.xib */; };
+		99A654C525BE1E1100A22B95 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A654C425BE1E1100A22B95 /* MessagesViewController.swift */; };
+		99A654CA25BE2DFF00A22B95 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A654C925BE2DFF00A22B95 /* ChatViewController.swift */; };
+		99A654D725BEEFD500A22B95 /* ChatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A654D525BEEFD500A22B95 /* ChatTableViewCell.swift */; };
+		99A654D825BEEFD500A22B95 /* ChatTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 99A654D625BEEFD500A22B95 /* ChatTableViewCell.xib */; };
+		99A654E125BF2D3500A22B95 /* SendMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A654E025BF2D3400A22B95 /* SendMessageViewController.swift */; };
 		99DE0AE825967DD3004BAFDA /* ReviewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DE0AE725967DD3004BAFDA /* ReviewsViewController.swift */; };
 		99DE0AEF25967E10004BAFDA /* ReviewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DE0AED25967E10004BAFDA /* ReviewTableViewCell.swift */; };
 		99DE0AF025967E10004BAFDA /* ReviewTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 99DE0AEE25967E10004BAFDA /* ReviewTableViewCell.xib */; };
 		99F3379D256ADD460095105F /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F3379C256ADD460095105F /* ProfileViewController.swift */; };
 		99F6E84D257EBDBB0045C7BD /* ListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F6E848257EBDBB0045C7BD /* ListCell.swift */; };
 		99F6E84E257EBDBB0045C7BD /* ListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 99F6E849257EBDBB0045C7BD /* ListCell.xib */; };
+		C81F3F53A413BAA1CEC2BE54 /* Pods_Bazaar_iOS_Bazaar_iOSUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CCA62DF56EEA5170A37DD4F /* Pods_Bazaar_iOS_Bazaar_iOSUITests.framework */; };
+		C905631B37795D0BFA6BC1F4 /* Pods_Bazaar_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D147AB84EB93AF832C6CC59A /* Pods_Bazaar_iOS.framework */; };
 		FC23060A25BE10B700106F2E /* NotificationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC23060825BE10B700106F2E /* NotificationCell.swift */; };
 		FC23060B25BE10B700106F2E /* NotificationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC23060925BE10B700106F2E /* NotificationCell.xib */; };
-		FC4E9F5425BDF727008BAA8F /* NotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC4E9F5325BDF727008BAA8F /* NotificationsViewController.swift */; };
 		FC49043125BC7C9300849906 /* OrderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC49042F25BC7C9200849906 /* OrderCell.swift */; };
 		FC49043225BC7C9300849906 /* OrderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC49043025BC7C9200849906 /* OrderCell.xib */; };
 		FC49044725BD7F0D00849906 /* CustomerOrdersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC49044625BD7F0D00849906 /* CustomerOrdersViewController.swift */; };
+		FC4E9F5425BDF727008BAA8F /* NotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC4E9F5325BDF727008BAA8F /* NotificationsViewController.swift */; };
+		FC5F73CA25BF1D1C003684D6 /* VendorNotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC5F73C925BF1D1C003684D6 /* VendorNotificationViewController.swift */; };
 		FCE56DDA25855C5800A119FA /* SubCategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCE56DD825855C5800A119FA /* SubCategoryCell.swift */; };
 		FCE56DDB25855C5800A119FA /* SubCategoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCE56DD925855C5800A119FA /* SubCategoryCell.xib */; };
-		C81F3F53A413BAA1CEC2BE54 /* Pods_Bazaar_iOS_Bazaar_iOSUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CCA62DF56EEA5170A37DD4F /* Pods_Bazaar_iOS_Bazaar_iOSUITests.framework */; };
-		C905631B37795D0BFA6BC1F4 /* Pods_Bazaar_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D147AB84EB93AF832C6CC59A /* Pods_Bazaar_iOS.framework */; };
-		
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -115,6 +123,7 @@
 		6949C90F257D8F5B00175AC5 /* SearchResultsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsViewController.swift; sourceTree = "<group>"; };
 		696B5E1F258E988800CF1FB8 /* CartTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartTableViewCell.swift; sourceTree = "<group>"; };
 		696B5E20258E988800CF1FB8 /* CartTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CartTableViewCell.xib; sourceTree = "<group>"; };
+		6972887225BC7F9900483AF1 /* VendorAddEditProductViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VendorAddEditProductViewController.swift; sourceTree = "<group>"; };
 		6994EACB255DA3D400AC48F6 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		6994EACC255DA3D400AC48F6 /* MainTabBarController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainTabBarController.xib; sourceTree = "<group>"; };
 		6994EACF255DB7BC00AC48F6 /* WishlistViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WishlistViewController.swift; path = "Bazaar-iOS/Controller/WishlistViewController.swift"; sourceTree = SOURCE_ROOT; };
@@ -174,25 +183,33 @@
 		996B676725BAC87000F7A1EC /* PaymentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentViewController.swift; sourceTree = "<group>"; };
 		996B678325BC6EC300F7A1EC /* DistanceSellingAgreement.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = DistanceSellingAgreement.txt; sourceTree = "<group>"; };
 		9996E88C2585121000986DB1 /* ListDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListDetailViewController.swift; sourceTree = "<group>"; };
+		99A654BD25BE0DED00A22B95 /* ConversationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationTableViewCell.swift; sourceTree = "<group>"; };
+		99A654BE25BE0DED00A22B95 /* ConversationTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConversationTableViewCell.xib; sourceTree = "<group>"; };
+		99A654C425BE1E1100A22B95 /* MessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
+		99A654C925BE2DFF00A22B95 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
+		99A654D525BEEFD500A22B95 /* ChatTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTableViewCell.swift; sourceTree = "<group>"; };
+		99A654D625BEEFD500A22B95 /* ChatTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatTableViewCell.xib; sourceTree = "<group>"; };
+		99A654E025BF2D3400A22B95 /* SendMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMessageViewController.swift; sourceTree = "<group>"; };
 		99DE0AE725967DD3004BAFDA /* ReviewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewsViewController.swift; sourceTree = "<group>"; };
 		99DE0AED25967E10004BAFDA /* ReviewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewTableViewCell.swift; sourceTree = "<group>"; };
 		99DE0AEE25967E10004BAFDA /* ReviewTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReviewTableViewCell.xib; sourceTree = "<group>"; };
 		99F3379C256ADD460095105F /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		99F6E848257EBDBB0045C7BD /* ListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListCell.swift; sourceTree = "<group>"; };
 		99F6E849257EBDBB0045C7BD /* ListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListCell.xib; sourceTree = "<group>"; };
-		FC23060825BE10B700106F2E /* NotificationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCell.swift; sourceTree = "<group>"; };
-		FC23060925BE10B700106F2E /* NotificationCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NotificationCell.xib; sourceTree = "<group>"; };
-		FC4E9F5325BDF727008BAA8F /* NotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsViewController.swift; sourceTree = "<group>"; };
-		FC49042F25BC7C9200849906 /* OrderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderCell.swift; sourceTree = "<group>"; };
-		FC49043025BC7C9200849906 /* OrderCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OrderCell.xib; sourceTree = "<group>"; };
-		FC49044625BD7F0D00849906 /* CustomerOrdersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerOrdersViewController.swift; sourceTree = "<group>"; };
-		FCE56DD825855C5800A119FA /* SubCategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubCategoryCell.swift; sourceTree = "<group>"; };
-		FCE56DD925855C5800A119FA /* SubCategoryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SubCategoryCell.xib; sourceTree = "<group>"; };
 		A85CF019F70A791D259865C3 /* Pods-Bazaar-iOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bazaar-iOSTests.debug.xcconfig"; path = "Target Support Files/Pods-Bazaar-iOSTests/Pods-Bazaar-iOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		AFCE404E29F7D49B363A2C8E /* Pods_Bazaar_iOSTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Bazaar_iOSTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C2CE009AFB6282C4354EBE10 /* Pods-Bazaar-iOS-Bazaar-iOSUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bazaar-iOS-Bazaar-iOSUITests.debug.xcconfig"; path = "Target Support Files/Pods-Bazaar-iOS-Bazaar-iOSUITests/Pods-Bazaar-iOS-Bazaar-iOSUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		D147AB84EB93AF832C6CC59A /* Pods_Bazaar_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Bazaar_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1954329F55FC30FDF3065EB /* Pods-Bazaar-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bazaar-iOS.debug.xcconfig"; path = "Target Support Files/Pods-Bazaar-iOS/Pods-Bazaar-iOS.debug.xcconfig"; sourceTree = "<group>"; };
+		FC23060825BE10B700106F2E /* NotificationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCell.swift; sourceTree = "<group>"; };
+		FC23060925BE10B700106F2E /* NotificationCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NotificationCell.xib; sourceTree = "<group>"; };
+		FC49042F25BC7C9200849906 /* OrderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderCell.swift; sourceTree = "<group>"; };
+		FC49043025BC7C9200849906 /* OrderCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OrderCell.xib; sourceTree = "<group>"; };
+		FC49044625BD7F0D00849906 /* CustomerOrdersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerOrdersViewController.swift; sourceTree = "<group>"; };
+		FC4E9F5325BDF727008BAA8F /* NotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsViewController.swift; sourceTree = "<group>"; };
+		FC5F73C925BF1D1C003684D6 /* VendorNotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VendorNotificationViewController.swift; sourceTree = "<group>"; };
+		FCE56DD825855C5800A119FA /* SubCategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubCategoryCell.swift; sourceTree = "<group>"; };
+		FCE56DD925855C5800A119FA /* SubCategoryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SubCategoryCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -411,6 +428,8 @@
 		93EE3CDF25594A9400B504DF /* View */ = {
 			isa = PBXGroup;
 			children = (
+				99A654D425BEEFB800A22B95 /* ChatTableViewCell */,
+				99A654BC25BE0DB400A22B95 /* Conversation Cell */,
 				FC23060725BE103500106F2E /* Notification Cell */,
 				FC49043725BC7CF500849906 /* Order Cell */,
 				99DE0AEC25967DE3004BAFDA /* Review Cell */,
@@ -455,12 +474,17 @@
 				996B676725BAC87000F7A1EC /* PaymentViewController.swift */,
 				9315419525B8B40E001549AC /* MyCreditCardsViewController.swift */,
 				93BD6B7925B9FD11006CA357 /* AddCreditCardViewController.swift */,
+				6972887225BC7F9900483AF1 /* VendorAddEditProductViewController.swift */,
 				935A22DA25BC8842007B8A21 /* CustomerMyAddressesViewController.swift */,
 				935A22E425BCA57E007B8A21 /* AddNewAddressViewController.swift */,
 				93E3C20525BDA23A007255A3 /* VendorMyAddressesViewController.swift */,
 				93E3C20A25BDA5A5007255A3 /* VendorAddNewAddressViewController.swift */,
+				99A654C425BE1E1100A22B95 /* MessagesViewController.swift */,
+				99A654C925BE2DFF00A22B95 /* ChatViewController.swift */,
+				99A654E025BF2D3400A22B95 /* SendMessageViewController.swift */,
 				FC4E9F5325BDF727008BAA8F /* NotificationsViewController.swift */,
 				93B76B3725BDE9A3004A281A /* LegalPolicyViewController.swift */,
+				FC5F73C925BF1D1C003684D6 /* VendorNotificationViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -471,6 +495,24 @@
 				996B678325BC6EC300F7A1EC /* DistanceSellingAgreement.txt */,
 			);
 			path = Contracts;
+			sourceTree = "<group>";
+		};
+		99A654BC25BE0DB400A22B95 /* Conversation Cell */ = {
+			isa = PBXGroup;
+			children = (
+				99A654BD25BE0DED00A22B95 /* ConversationTableViewCell.swift */,
+				99A654BE25BE0DED00A22B95 /* ConversationTableViewCell.xib */,
+			);
+			path = "Conversation Cell";
+			sourceTree = "<group>";
+		};
+		99A654D425BEEFB800A22B95 /* ChatTableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				99A654D525BEEFD500A22B95 /* ChatTableViewCell.swift */,
+				99A654D625BEEFD500A22B95 /* ChatTableViewCell.xib */,
+			);
+			path = ChatTableViewCell;
 			sourceTree = "<group>";
 		};
 		99DE0AEC25967DE3004BAFDA /* Review Cell */ = {
@@ -636,11 +678,13 @@
 			files = (
 				938A1553256AD19100572844 /* CategoryCollectionViewCell.xib in Resources */,
 				996B678425BC6EC300F7A1EC /* DistanceSellingAgreement.txt in Resources */,
+				99A654C025BE0DED00A22B95 /* ConversationTableViewCell.xib in Resources */,
 				93EE3CB22558822700B504DF /* LaunchScreen.storyboard in Resources */,
 				93EE3CDB25594A6800B504DF /* ProductCell.xib in Resources */,
 				FC23060B25BE10B700106F2E /* NotificationCell.xib in Resources */,
 				93EE3CAF2558822700B504DF /* Assets.xcassets in Resources */,
 				FCE56DDB25855C5800A119FA /* SubCategoryCell.xib in Resources */,
+				99A654D825BEEFD500A22B95 /* ChatTableViewCell.xib in Resources */,
 				93EE3CAA2558822500B504DF /* Main.storyboard in Resources */,
 				6929E5F6257FD4FE008F32D3 /* StarRatingStackView.xib in Resources */,
 				696B5E22258E988800CF1FB8 /* CartTableViewCell.xib in Resources */,
@@ -822,6 +866,7 @@
 				6929E5F7257FD4FE008F32D3 /* StarRatingStackView.swift in Sources */,
 				935A22E025BC898E007B8A21 /* AddressCell.swift in Sources */,
 				6994EAD6255DBF4A00AC48F6 /* MyCartViewController.swift in Sources */,
+				99A654C525BE1E1100A22B95 /* MessagesViewController.swift in Sources */,
 				9996E88D2585121000986DB1 /* ListDetailViewController.swift in Sources */,
 				99F3379D256ADD460095105F /* ProfileViewController.swift in Sources */,
 				93B76B3825BDE9A3004A281A /* LegalPolicyViewController.swift in Sources */,
@@ -853,6 +898,7 @@
 				9315419625B8B40E001549AC /* MyCreditCardsViewController.swift in Sources */,
 				93BD6B7A25B9FD11006CA357 /* AddCreditCardViewController.swift in Sources */,
 				696B5E21258E988800CF1FB8 /* CartTableViewCell.swift in Sources */,
+				FC5F73CA25BF1D1C003684D6 /* VendorNotificationViewController.swift in Sources */,
 				FC49043125BC7C9300849906 /* OrderCell.swift in Sources */,
 				93EE3CAD2558822500B504DF /* Bazaar_iOS.xcdatamodeld in Sources */,
 				93E3C20B25BDA5A5007255A3 /* VendorAddNewAddressViewController.swift in Sources */,
@@ -860,11 +906,16 @@
 				930C1FA6256C09FC0086E1DC /* ApiRouter.swift in Sources */,
 				996B676825BAC87000F7A1EC /* PaymentViewController.swift in Sources */,
 				6994EAE22566F8D300AC48F6 /* Product.swift in Sources */,
+				6972887325BC7F9900483AF1 /* VendorAddEditProductViewController.swift in Sources */,
 				69B21FBD25B7117600BC4E0D /* VendorProfileForUserViewController.swift in Sources */,
 				9377BEB925AD0D8600AE8CC2 /* VendorMyOrdersViewController.swift in Sources */,
 				935A22E525BCA57E007B8A21 /* AddNewAddressViewController.swift in Sources */,
+				99A654BF25BE0DED00A22B95 /* ConversationTableViewCell.swift in Sources */,
 				99DE0AE825967DD3004BAFDA /* ReviewsViewController.swift in Sources */,
 				6929E5F8257FD4FE008F32D3 /* StarRatingView.swift in Sources */,
+				99A654D725BEEFD500A22B95 /* ChatTableViewCell.swift in Sources */,
+				99A654CA25BE2DFF00A22B95 /* ChatViewController.swift in Sources */,
+				99A654E125BF2D3500A22B95 /* SendMessageViewController.swift in Sources */,
 				93FC745E2597BB7900236D54 /* MapViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

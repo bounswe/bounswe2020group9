@@ -98,7 +98,7 @@ extension CustomerOrdersViewController:UITableViewDelegate,UITableViewDataSource
             return 5
         }
     }
-    @objc func cancel_button_clicked(_ sender : UIButton){
+    @objc func cancel_button_clicked(sender : UIButton){
         print("Button clicked. ")
         let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
@@ -119,6 +119,8 @@ extension CustomerOrdersViewController:UITableViewDelegate,UITableViewDataSource
         
         print("setting order cell : "+String(indexPath.row))
         let cell = ordersTableView.dequeueReusableCell(withIdentifier: "ReusableOrderCell", for: indexPath) as! OrderCell
+
+        
         cell.ProductImage?.image = UIImage(named:"xmark.circle")
         //TODO change here
         let filteredOrders:[OrderData_Cust] = allOrdersInstance.allOrders
@@ -132,9 +134,11 @@ extension CustomerOrdersViewController:UITableViewDelegate,UITableViewDataSource
         let vendor = vendors_dict[delivery.vendor]!
         let orderStatus=orderStatusArray[delivery.current_status]
         let delivery_id=delivery.id
-        cell.Cancel_OrderButton.tag = indexPath.row
         cancel_button_delivery_id=delivery_id
-        cell.Cancel_OrderButton.addTarget(self, action: #selector(self.cancel_button_clicked(_:)), for: .allTouchEvents);
+        //cell.Cancel_OrderButton.tag = indexPath.row
+        //cell.Cancel_OrderButton.addTarget(self, action: #selector(cancel_button_clicked(sender:)), for: .touchUpInside)
+        //cell.cellDelegate = self
+        //cell.index = indexPath
         
         cell.Name_BrandLabel.text = product.detail + ", " + product.brand
         cell.Name_BrandLabel.font = UIFont.systemFont(ofSize: 10, weight: .regular)
@@ -189,7 +193,6 @@ extension CustomerOrdersViewController: AllProductsFetchDelegate {
             print("ADDED " + String(prod.id))
         }
         self.stopIndicator()
-        self.ordersTableView.reloadData()
     }
     
     func productsCannotBeFetched() {
@@ -213,12 +216,11 @@ extension CustomerOrdersViewController: AllProductsFetchDelegate {
 
 extension CustomerOrdersViewController: AllVendorsFetchDelegate {
     func allVendorsAreFetched() {
-        self.stopIndicator()
         self.vendors = self.allVendorsInstance.allVendors
         for vendor in allVendorsInstance.allVendors {
             vendors_dict[vendor.id]=vendor
         }
-        self.ordersTableView.reloadData()
+        self.stopIndicator()
     }
     
     func vendorsCannotBeFetched() {
@@ -227,9 +229,8 @@ extension CustomerOrdersViewController: AllVendorsFetchDelegate {
 }
 extension CustomerOrdersViewController: AllOrdersFetchDelegate {
     func allOrdersAreFetched() {
-        self.stopIndicator()
         self.orders = self.allOrdersInstance.allOrders
-        self.ordersTableView.reloadData()
+        self.stopIndicator()
     }
     
     func ordersCannotBeFetched() {
@@ -238,7 +239,13 @@ extension CustomerOrdersViewController: AllOrdersFetchDelegate {
 }
 
 
-
+extension CustomerOrdersViewController:TableViewNewProtocol {
+    func buttonClicked(index:Int) {
+        print("Index:" + String(index))
+        
+        ordersTableView.reloadData()
+    }
+}
 
 
 // MARK: - IndicatorView
@@ -320,5 +327,4 @@ protocol AllOrdersFetchDelegate {
     func allOrdersAreFetched()
     func ordersCannotBeFetched()
 }
-
 

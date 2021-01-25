@@ -38,7 +38,7 @@ struct ProductData: Codable, Equatable {
   let id:Int
   let name: String
   let brand: String
-  let labels: [String]
+  let labels: [String]?
   let detail: String
   let category: Category
   let price: Double
@@ -46,7 +46,7 @@ struct ProductData: Codable, Equatable {
   let sell_counter: Int
   let rating: Double
   let vendor: Int
-  let picture: String?
+  var picture: String? = ""
   struct Category: Codable {
     let name: String
     let parent: String?
@@ -120,7 +120,7 @@ struct SearchProduct:Codable {
 }
 
 struct SearchProductList:Codable {
-    let product_list:[SearchProduct]
+    let product_list:[ProductData]?
 }
 
   struct GoogleSignInData:Codable {
@@ -171,7 +171,14 @@ struct removeCreditCardData: Codable{
     let message: String
 }
 
-
+struct AddEditProductData: Codable {
+    let name: String
+    let brand: String
+    let price: Double
+    let stock: Int
+    let image: String
+    let description: String
+}
 struct OrderData:Codable {
     let product:Int
     let amount:Int
@@ -214,4 +221,46 @@ struct Notification:Codable {
     let type:String
     let is_visited:Bool
     let user:Int
+}
+
+struct ConversationData:Codable {
+    let id:Int
+    let last_message_body:String
+    let last_message_timestamp:String
+    let user_id:Int
+    let email:String
+    let first_name:String
+    let last_name:String
+    let date_joined:String
+    let last_login:String
+    let user_type:Int
+    let bazaar_point:Int
+    let company:String
+    let is_visited:Bool
+    let messages:[MessageData]!
+}
+
+struct AllConversationsData:Codable {
+    let new_messages:Int
+    let conversations:[ConversationData]
+}
+
+struct MessageData:Codable {
+    let id:Int
+    let timestamp:String
+    let body:String
+    let is_user1:Bool
+    let is_visited_by_user1:Bool
+    let is_visited_by_user2:Bool
+    let conversation:Int
+    let am_I_user1:Bool!
+    let email:String!
+    let first_name:String!
+    let last_name:String!
+    let date_joined:String!
+    let last_login:String!
+    let user_type:Int!
+    let bazaar_point:Int!
+    let company:String!
+    let user_id:Int!
 }

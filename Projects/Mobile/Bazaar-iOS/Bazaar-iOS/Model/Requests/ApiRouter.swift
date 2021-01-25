@@ -38,13 +38,21 @@ enum ApiRouter: URLRequestBuilder {
     case addNewCreditCard(owner:Int, nameOnCard:String, cardNumber:String, month:String, year:String, cvv:String, cardName:String)
     case getCreditCards
     case removeCreditCard(id:Int, owner:Int)
+    case getVendorsProducts(vendorId: Int)
+    case vendorAddProduct(title:String, brand:String, price:Double, stock:Int, description:String, image:String, categoryID: Int)
+    case vendorEditProduct(prodId: Int, title:String, brand:String, price:Double, stock:Int, description:String, image:String, categoryID: Int)
     case placeOrder(userId:Int, products:[Int:Int], add_id:Int)
     case addNewAddressForCustomer(addressName:String , fullAddress:String, country:String, city:String, postalCode:Int,user:Int)
     case getCustomerAddresses
     case removeCustomerAddress(addressId:Int)
     case updateCustomerAddress(addressId:Int,addressName:String , fullAddress:String, country:String, city:String, postalCode:Int,user:Int)
     case deleteAccount(token:String)
+    case getConversations
+    case getMessages(id:Int)
+    case getConversationsWithMessages
+    case sendMessage(receiver_username:String,  body:String)
     case getNotifications
+
   // MARK: - Path
     internal var path: String {
         switch self {
@@ -85,7 +93,7 @@ enum ApiRouter: URLRequestBuilder {
             return "api/product/comment/\(product_id)/"
         case .getUsersComment(let product_id, let user_id):
             return "api/product/comment/\(product_id)/\(user_id)/"
-        case .search(let filterType, let sortType, let searchWord):
+        case .search(let filterType, let sortType, let _):
             return "api/product/search/\(filterType)/\(sortType)/"
         case .googleSignIn:
             return "api/user/googleuser/"
@@ -99,6 +107,12 @@ enum ApiRouter: URLRequestBuilder {
             return "api/product/vendor_order/"
         case .addNewCreditCard,.getCreditCards,.removeCreditCard:
             return "api/product/payment/"
+        case .getVendorsProducts(let vendorId):
+            return "api/product/vendor/\(vendorId)/"
+        case .vendorAddProduct(_,_,_,_,_,_,_):
+            return "api/product/"
+        case .vendorEditProduct(let prodId, _,_,_,_,_,_,_):
+            return "api/product/\(prodId)/"
         case .placeOrder:
             return "api/product/order/"
         case .addNewAddressForCustomer, .getCustomerAddresses:
@@ -107,6 +121,14 @@ enum ApiRouter: URLRequestBuilder {
             return "api/location/byuser/\(addressId)/"
         case .updateCustomerAddress(let addressId, _,  _,  _,  _,  _,  _):
             return "api/location/byuser/\(addressId)/"
+        case .getConversations:
+            return "api/message/conversations/"
+        case .getMessages(let id):
+            return "api/message/\(id)/"
+        case .getConversationsWithMessages:
+            return "api/message/all/"
+        case .sendMessage(_,_):
+            return "api/message/"
         case .getNotifications:
             return "api/message/notifications/"
         }
@@ -153,7 +175,7 @@ enum ApiRouter: URLRequestBuilder {
             params["user_id"] = userID
             params["old_password"] = currentPassword
             params["new_password"] = newPassword
-        case .search(let filterType, let sortType, let searchWord):
+        case .search(_, let sortType, let searchWord):
             params["searched"] = searchWord.lowercased()
         case .googleSignIn(let userName, let token, let firstName, let lastName):
             params["username"] = userName
@@ -188,6 +210,20 @@ enum ApiRouter: URLRequestBuilder {
         case .removeCreditCard(let id, let owner):
             params["owner"] = owner
             params["id"] = id
+        case .vendorAddProduct(let title, let brand, let price, let stock, let description, _, let categoryId):
+            params["name"] = title
+            params["brand"] = brand
+            params["price"] = price
+            params["stock"] = stock
+            params["detail"] = description
+            params["category_id"] = categoryId
+        case .vendorEditProduct(_,let title, let brand, let price, let stock, let description, _, let categoryId):
+            params["name"] = title
+            params["brand"] = brand
+            params["price"] = price
+            params["stock"] = stock
+            params["detail"] = description
+            params["category_id"] = categoryId
         case .placeOrder(let userId, let products, let add_id):
             params["user_id"] = userId
             var arr:[[String:Int]] = []
@@ -212,6 +248,10 @@ enum ApiRouter: URLRequestBuilder {
             params["city"] = city
             params["postal_code"] = postalCode
             params["user"] = user
+        case .sendMessage(let receiver_username, let body):
+            params["receiver_username"] = receiver_username
+            params["body"] = body
+            print(params)
         default:
             break
         }
@@ -227,11 +267,11 @@ enum ApiRouter: URLRequestBuilder {
             if isCustomerLoggedIn {
                 headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
             }
-        case .addList, .deleteList, .deleteProductFromList , .editList, .addToList, .getUsersComment, .addNewCreditCard, .getCreditCards, .removeCreditCard, .addNewAddressForCustomer, .getCustomerAddresses, .removeCustomerAddress, .updateCustomerAddress, .getCustomerOrders,.deleteOrder,.getVendorOrders:
+        case .vendorAddProduct, .vendorEditProduct, .addList, .deleteList, .deleteProductFromList , .editList, .addToList, .getUsersComment, .addNewCreditCard, .getCreditCards, .removeCreditCard, .addNewAddressForCustomer, .getCustomerAddresses, .removeCustomerAddress, .updateCustomerAddress, .getCustomerOrders,.deleteOrder,.getVendorOrders:
             if let token = UserDefaults.standard.value(forKey: K.token) as? String {
                 headers["Authorization"] = "Token \(token)"
             }
-        case .getCart, .addToCart, .editAmountInCart, .deleteProductFromCart, .placeOrder,.getNotifications:
+        case .getCart, .addToCart, .editAmountInCart, .deleteProductFromCart, .placeOrder, .getConversations, .getMessages, .getConversationsWithMessages, .sendMessage, .getNotifications:
             headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
         case .getProfileInfo(let authorization):
             headers["Authorization"] = "Token \(authorization)"
@@ -240,6 +280,7 @@ enum ApiRouter: URLRequestBuilder {
         case .search(_, _, _):
             if let token = UserDefaults.standard.value(forKey: K.token) as? String {
                 headers["Authorization"] = "Token \(token)"
+                print(token)
             }else {
                 headers["Authorization"] = "Token 57bcb0493429453fad027bc6552cc1b28d6df955"
             }
@@ -254,13 +295,13 @@ enum ApiRouter: URLRequestBuilder {
     // MARK: - Methods
     internal var method: HTTPMethod {
         switch self {
-        case .authenticate, .addList,.addToList, .signUpCustomer, .signUpVendor, .resetPasswordEmail, .addToCart,.updatePassword, .googleSignIn, .addNewCreditCard, .addNewAddressForCustomer, .search, .placeOrder:
+        case .authenticate, .addList,.addToList, .signUpCustomer, .signUpVendor, .resetPasswordEmail, .addToCart,.updatePassword, .googleSignIn, .addNewCreditCard, .addNewAddressForCustomer, .search, .placeOrder, .sendMessage, .vendorAddProduct:
             return .post
-        case .getCustomerLists, .getComments, .getUsersComment, .getCart, .getProfileInfo, .getAllVendors, .getCreditCards, .getCustomerAddresses, .getCustomerOrders, .getVendorOrders,.getNotifications:
+        case .getCustomerLists, .getComments, .getUsersComment, .getCart, .getProfileInfo, .getAllVendors, .getCreditCards, .getCustomerAddresses, .getConversations, .getMessages, .getConversationsWithMessages, .getCustomerOrders, .getVendorOrders,.getNotifications, .getVendorsProducts:
             return .get
         case .deleteList, .deleteProductFromList,.deleteProductFromCart, .removeCreditCard, .removeCustomerAddress, .deleteAccount:
             return .delete
-        case .editList,.editAmountInCart,.setProfileInfo, .updateCustomerAddress,.deleteOrder:
+        case .editList,.editAmountInCart,.setProfileInfo, .updateCustomerAddress,.deleteOrder, .vendorEditProduct:
             return .put
         }
     }

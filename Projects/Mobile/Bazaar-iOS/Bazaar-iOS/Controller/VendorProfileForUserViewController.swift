@@ -17,6 +17,7 @@ class VendorProfileForUserViewController: UIViewController {
     @IBOutlet weak var productsTableView: UITableView!
     @IBOutlet weak var progressBar: UIProgressView!
     
+    var delegate: VendorProfileForUserViewController?
     var products: [ProductData] = []
     
     override func viewDidLoad() {
@@ -57,6 +58,7 @@ class VendorProfileForUserViewController: UIViewController {
     }
 
     @IBAction func messageButtonPressed(_ sender: Any) {
+        self.performSegue(withIdentifier: "vendorProfileToSendMessageSegue", sender: nil)
     }
     
     func calcAverageRating() -> Double {
@@ -74,6 +76,8 @@ class VendorProfileForUserViewController: UIViewController {
             if indexPath != nil {
                 productDetailVC.product = products[indexPath!.row]
             }
+        } else if let sendMsgVC = segue.destination as? SendMessageViewController {
+            sendMsgVC.company = self.vendor.email
         }
     }
     
@@ -84,7 +88,6 @@ class VendorProfileForUserViewController: UIViewController {
         return false
     }
     
-
 }
 
 extension VendorProfileForUserViewController: UITableViewDelegate, UITableViewDataSource {
@@ -116,6 +119,10 @@ extension VendorProfileForUserViewController: UITableViewDelegate, UITableViewDa
                     cell.productImageView.tintColor = UIColor.lightGray
                     cell.productImageView.contentMode = .center
                 }
+            } else {
+                cell.productImageView.image = UIImage(named:"xmark.circle")
+                cell.productImageView.tintColor = UIColor.lightGray
+                cell.productImageView.contentMode = .center
             }
         }
         return cell
