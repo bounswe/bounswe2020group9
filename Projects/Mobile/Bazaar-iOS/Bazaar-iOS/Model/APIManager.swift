@@ -553,15 +553,17 @@ struct APIManager {
         do {
             let request = try ApiRouter.search(filterType: filterType, sortType: sortType, searchWord: searchWord).asURLRequest()
             AF.request(request).responseJSON { response in
+                print(response)
+                
                 if (response.response?.statusCode != nil) {
                     guard let safeData = response.data else  {
-                        completionHandler(.failure(MyError.runtimeError("Error-searchapicall-response")))
+                        completionHandler(.failure(MyError.runtimeError("Error-searchapicall-response-1")))
                         return
                     }
                     if let decodedData:SearchProductList = APIParse().parseJSON(safeData: safeData){
                         completionHandler(.success(decodedData))
                     }else {
-                        completionHandler(.failure(MyError.runtimeError("Error-searchapicall-decode")))
+                        completionHandler(.failure(MyError.runtimeError("Error-searchapicall-decode-2")))
                     }
                 }
                 
@@ -716,6 +718,28 @@ struct APIManager {
         }
     }
     
+    func getVendorsProducts(vendorId:Int, completionHandler: @escaping (Result<[ProductData] ,Error>) -> Void) {
+        do {
+            let request = try ApiRouter.getVendorsProducts(vendorId: vendorId).asURLRequest()
+            AF.request(request).responseJSON { response in
+                print(response)
+                if (response.response?.statusCode != nil ) {
+                    guard let safeData = response.data else {
+                        completionHandler(.failure(MyError.runtimeError("Error")))
+                        return
+                    }
+                    if let decodedData:[ProductData] = APIParse().parseJSON(safeData: safeData) {
+                        completionHandler(.success(decodedData))
+                    } else {
+                      completionHandler(.failure(MyError.runtimeError("Failed to parse json ")))
+                    }
+                }
+             }
+          } catch let err {
+            completionHandler(.failure(err))
+          }
+      }
+
     func addNewAddressForCustomer(addressName:String , fullAddress:String, country:String, city:String, postalCode:Int,user:Int, completionHandler: @escaping (Result<AddressData ,Error>) -> Void) {
         do {
             let request = try ApiRouter.addNewAddressForCustomer(addressName: addressName, fullAddress: fullAddress, country: country, city: city, postalCode: postalCode, user: user).asURLRequest()
@@ -732,11 +756,32 @@ struct APIManager {
                     }
                 }
             }
-        }catch let err {
+        } catch let err {
             completionHandler(.failure(err))
         }
     }
     
+    func vendorAddProduct(title:String, brand:String, price:Double, stock:Int, description:String, image:String, categoryID: Int, completionHandler: @escaping (Result<ProductData ,Error>) -> Void) {
+        do {
+            let request = try ApiRouter.vendorAddProduct(title: title, brand: brand, price: price, stock: stock, description: description, image: image, categoryID: categoryID).asURLRequest()
+            AF.request(request).responseJSON { response in
+                print(response)
+                if (response.response?.statusCode != nil ) {
+                    guard let safeData = response.data else {
+                        completionHandler(.failure(MyError.runtimeError("Error")))
+                        return
+                    }
+                    if let decodedData:ProductData = APIParse().parseJSON(safeData: safeData) {
+                        completionHandler(.success(decodedData))
+                    } else {
+                        completionHandler(.failure(MyError.runtimeError("Failed to parse json ")))
+                    }
+                }
+            }
+          }catch let err {
+            completionHandler(.failure(err))
+        }
+    }
     func getCustomerAddresses(completionHandler: @escaping (Result<[AddressData] ,Error>) -> Void) {
         do {
             let request = try ApiRouter.getCustomerAddresses.asURLRequest()
@@ -758,6 +803,29 @@ struct APIManager {
         }
     }
     
+
+    func vendorEditProduct(prodID:Int, title:String, brand:String, price:Double, stock:Int, description:String, image:String, categoryID: Int, completionHandler: @escaping (Result<ProductData ,Error>) -> Void) {
+        do {
+            let request = try ApiRouter.vendorEditProduct(prodId:prodID, title: title, brand: brand, price: price, stock: stock, description: description, image: image, categoryID: categoryID).asURLRequest()
+            AF.request(request).responseJSON { response in
+                print("api:", response)
+
+                if (response.response?.statusCode != nil ) {
+                    guard let safeData = response.data else {
+                        completionHandler(.failure(MyError.runtimeError("Error")))
+                        return
+                    }
+                    if let decodedData:ProductData = APIParse().parseJSON(safeData: safeData) {
+                        completionHandler(.success(decodedData))
+                    } else {
+                        completionHandler(.failure(MyError.runtimeError("Failed to parse json ")))
+                    }
+                }
+            }
+        }catch let err {
+            completionHandler(.failure(err))
+        }
+    }
     func removeCustomerAddress(addressId:Int ,completionHandler: @escaping (Result<[AddressData] ,Error>) -> Void) {
         do {
             let request = try ApiRouter.removeCustomerAddress(addressId: addressId).asURLRequest()
@@ -908,12 +976,10 @@ struct APIManager {
                     }
                 }
             }
-        }catch let err {
+        } catch let err {
             completionHandler(.failure(err))
         }
     }
-
-    
 }
 
 

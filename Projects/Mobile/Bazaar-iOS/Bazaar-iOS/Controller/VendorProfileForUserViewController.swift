@@ -119,6 +119,10 @@ extension VendorProfileForUserViewController: UITableViewDelegate, UITableViewDa
                     cell.productImageView.tintColor = UIColor.lightGray
                     cell.productImageView.contentMode = .center
                 }
+            } else {
+                cell.productImageView.image = UIImage(named:"xmark.circle")
+                cell.productImageView.tintColor = UIColor.lightGray
+                cell.productImageView.contentMode = .center
             }
         }
         return cell

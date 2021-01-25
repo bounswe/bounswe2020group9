@@ -187,13 +187,14 @@ class SearchResultsViewController: UIViewController {
                 switch result {
                 case .success(let searchResultList):
                     DispatchQueue.main.async {
-                        let searchResultIDs = searchResultList.product_list.map{$0.id}
+                        /*let searchResultIDs = searchResultList.product_list.map{$0.id}
                         self.products = []
                         for id in searchResultIDs {
                             if self.allProductsInstance.allProducts.filter({$0.id == id}).count > 0 {
                                 self.products.append(self.allProductsInstance.allProducts.filter{$0.id == id}[0])
                             }
-                        }
+                        }*/
+                        self.products = searchResultList.product_list ?? []
                         //self.products = self.allProductsInstance.allProducts.filter{searchResultIDs.contains($0.id)}
                         if(self.products.count == 0) {
                             self.searchResultsTableView.isHidden = true
@@ -290,9 +291,7 @@ extension SearchResultsViewController: UITableViewDelegate, UITableViewDataSourc
         if allProductsInstance.allImages.keys.contains(product.id) {
             cell.productImageView.image = allProductsInstance.allImages[product.id]
             cell.productImageView.contentMode = .scaleAspectFit
-            print("1: \(product.name)")
         } else {
-            print("2: \(product.name)")
             if let url = product.picture {
                 do{
                     try cell.productImageView.loadImageUsingCache(withUrl: url, forProduct: product)
@@ -303,6 +302,10 @@ extension SearchResultsViewController: UITableViewDelegate, UITableViewDataSourc
                     cell.productImageView.tintColor = UIColor.lightGray
                     cell.productImageView.contentMode = .center
                 }
+            }  else {
+                cell.productImageView.image = UIImage(named:"xmark.circle")
+                cell.productImageView.tintColor = UIColor.lightGray
+                cell.productImageView.contentMode = .center
             }
         }
         return cell

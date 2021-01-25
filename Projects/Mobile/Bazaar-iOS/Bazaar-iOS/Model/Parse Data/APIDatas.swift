@@ -38,7 +38,7 @@ struct ProductData: Codable, Equatable {
   let id:Int
   let name: String
   let brand: String
-  let labels: [String]
+  let labels: [String]?
   let detail: String
   let category: Category
   let price: Double
@@ -46,7 +46,7 @@ struct ProductData: Codable, Equatable {
   let sell_counter: Int
   let rating: Double
   let vendor: Int
-  let picture: String?
+  var picture: String? = ""
   struct Category: Codable {
     let name: String
     let parent: String?
@@ -120,7 +120,7 @@ struct SearchProduct:Codable {
 }
 
 struct SearchProductList:Codable {
-    let product_list:[SearchProduct]
+    let product_list:[ProductData]?
 }
 
   struct GoogleSignInData:Codable {
@@ -171,7 +171,14 @@ struct removeCreditCardData: Codable{
     let message: String
 }
 
-
+struct AddEditProductData: Codable {
+    let name: String
+    let brand: String
+    let price: Double
+    let stock: Int
+    let image: String
+    let description: String
+}
 struct OrderData:Codable {
     let product:Int
     let amount:Int
