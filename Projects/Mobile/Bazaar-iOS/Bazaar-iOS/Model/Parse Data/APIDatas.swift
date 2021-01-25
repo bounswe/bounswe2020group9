@@ -138,7 +138,7 @@ struct VendorData: Codable {
     let bazaar_point:Double
     let company:String
 }
-struct OrderData: Codable {
+struct OrderData_Cust: Codable {
     let id:Int
     let customer_id:Int
     let timestamp:String
@@ -156,6 +156,31 @@ struct DeliveryData: Codable {
     let vendor:Int
     let delivery_address:AddressData
 }
+
+struct CreditCardData:Codable {
+    let id:Int
+    let name_on_card:String
+    let card_id:String
+    let date_month:String
+    let date_year:String
+    let cvv:String
+    let card_name:String
+}
+
+struct removeCreditCardData: Codable{
+    let message: String
+}
+
+
+struct OrderData:Codable {
+    let product:Int
+    let amount:Int
+    let timestamp:String
+    let customer:Int
+    let order:Int
+    let delivery_time:String
+}
+
 struct AddressData:Codable {
     let id:Int
     let address_name:String
