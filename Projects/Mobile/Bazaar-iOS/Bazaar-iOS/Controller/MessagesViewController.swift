@@ -50,12 +50,20 @@ class MessagesViewController: UIViewController {
         
             if let chatVC = segue.destination as? ChatViewController {
                 let index = self.conversationsTableView.indexPathForSelectedRow!.row
-                chatVC.id = conversationsInstance.conversations[index].id
+                let conv = conversationsInstance.conversations[index]
+                chatVC.id = conv.id
+                chatVC.companyName = conv.company
+                chatVC.companyEmail = conv.email
             }
     }
     
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
         return self.conversationsTableView.indexPathForSelectedRow != nil
+    }
+    
+    
+    @IBAction func backButtonPressed(_ sender: Any) {
+        self.navigationController?.popViewController(animated: true)
     }
     
 }

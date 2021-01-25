@@ -772,17 +772,13 @@ struct APIManager {
         }
     }
 
-    func sendMessage(receiver:String, body:String, completionHandler: @escaping (Result<MessageData ,Error>) -> Void) {
+    func sendMessage(receiver:String, body:String, completionHandler: @escaping (Result<String ,Error>) -> Void) {
         do {
             let request = try ApiRouter.sendMessage(receiver_username: receiver, body: body).asURLRequest()
             AF.request(request).responseJSON { (response) in
                 if (response.response?.statusCode != nil){
-                    guard let safeData = response.data else  {
-                        completionHandler(.failure(MyError.runtimeError("Error")))
-                        return
-                    }
-                    if let decodedData:MessageData = APIParse().parseJSON(safeData: safeData){
-                        completionHandler(.success(decodedData))
+                    if response.response?.statusCode == 201 {
+                        completionHandler(.success("Success"))
                     }else {
                         completionHandler(.failure(MyError.runtimeError("Failed to parse json ")))
                     }

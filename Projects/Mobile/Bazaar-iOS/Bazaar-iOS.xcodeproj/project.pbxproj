@@ -74,6 +74,7 @@
 		99A654CF25BECFE100A22B95 /* MessageBubbleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A654CE25BECFE100A22B95 /* MessageBubbleTableViewCell.swift */; };
 		99A654D725BEEFD500A22B95 /* ChatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A654D525BEEFD500A22B95 /* ChatTableViewCell.swift */; };
 		99A654D825BEEFD500A22B95 /* ChatTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 99A654D625BEEFD500A22B95 /* ChatTableViewCell.xib */; };
+		99A654E125BF2D3500A22B95 /* SendMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A654E025BF2D3400A22B95 /* SendMessageViewController.swift */; };
 		99DE0AE825967DD3004BAFDA /* ReviewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DE0AE725967DD3004BAFDA /* ReviewsViewController.swift */; };
 		99DE0AEF25967E10004BAFDA /* ReviewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DE0AED25967E10004BAFDA /* ReviewTableViewCell.swift */; };
 		99DE0AF025967E10004BAFDA /* ReviewTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 99DE0AEE25967E10004BAFDA /* ReviewTableViewCell.xib */; };
@@ -179,6 +180,7 @@
 		99A654CE25BECFE100A22B95 /* MessageBubbleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBubbleTableViewCell.swift; sourceTree = "<group>"; };
 		99A654D525BEEFD500A22B95 /* ChatTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTableViewCell.swift; sourceTree = "<group>"; };
 		99A654D625BEEFD500A22B95 /* ChatTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatTableViewCell.xib; sourceTree = "<group>"; };
+		99A654E025BF2D3400A22B95 /* SendMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMessageViewController.swift; sourceTree = "<group>"; };
 		99DE0AE725967DD3004BAFDA /* ReviewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewsViewController.swift; sourceTree = "<group>"; };
 		99DE0AED25967E10004BAFDA /* ReviewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewTableViewCell.swift; sourceTree = "<group>"; };
 		99DE0AEE25967E10004BAFDA /* ReviewTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReviewTableViewCell.xib; sourceTree = "<group>"; };
@@ -460,6 +462,7 @@
 				93E3C20A25BDA5A5007255A3 /* VendorAddNewAddressViewController.swift */,
 				99A654C425BE1E1100A22B95 /* MessagesViewController.swift */,
 				99A654C925BE2DFF00A22B95 /* ChatViewController.swift */,
+				99A654E025BF2D3400A22B95 /* SendMessageViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -864,6 +867,7 @@
 				6929E5F8257FD4FE008F32D3 /* StarRatingView.swift in Sources */,
 				99A654D725BEEFD500A22B95 /* ChatTableViewCell.swift in Sources */,
 				99A654CA25BE2DFF00A22B95 /* ChatViewController.swift in Sources */,
+				99A654E125BF2D3500A22B95 /* SendMessageViewController.swift in Sources */,
 				93FC745E2597BB7900236D54 /* MapViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
