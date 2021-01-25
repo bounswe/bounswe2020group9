@@ -22,7 +22,7 @@ class CustomerOrdersViewController: UIViewController{
     var products_dict: [Int: ProductData] = [:]
     var vendors_dict: [Int: VendorData] = [:]
     
-    var orders: [OrderData] = []
+    var orders: [OrderData_Cust] = []
     var products: [ProductData] = []
     var vendors:[VendorData] = []
     
@@ -121,7 +121,7 @@ extension CustomerOrdersViewController:UITableViewDelegate,UITableViewDataSource
         let cell = ordersTableView.dequeueReusableCell(withIdentifier: "ReusableOrderCell", for: indexPath) as! OrderCell
         cell.ProductImage?.image = UIImage(named:"xmark.circle")
         //TODO change here
-        let filteredOrders:[OrderData] = allOrdersInstance.allOrders
+        let filteredOrders:[OrderData_Cust] = allOrdersInstance.allOrders
         //let filteredProducts:[ProductData] = allProductsInstance.allProducts
         //let filteredVendors:[VendorData] = allVendorsInstance.allVendors
         let order = filteredOrders[indexPath.row]
@@ -273,7 +273,7 @@ extension CustomerOrdersViewController {
 
 class AllOrders {
     static let shared = AllOrders()
-    var allOrders: [OrderData]
+    var allOrders: [OrderData_Cust]
     private let saveKey = "AllOrders"
     
     var delegate: AllOrdersFetchDelegate?

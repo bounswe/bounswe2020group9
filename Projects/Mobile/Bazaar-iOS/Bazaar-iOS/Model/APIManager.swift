@@ -219,7 +219,7 @@ struct APIManager {
     }
 
     
-    func getCustomerOrders( completionHandler: @escaping ([OrderData]?) -> Void) {
+    func getCustomerOrders( completionHandler: @escaping ([OrderData_Cust]?) -> Void) {
         do {
             let request = try ApiRouter.getCustomerOrders.asURLRequest()
             AF.request(request).responseJSON { (response) in
@@ -230,7 +230,7 @@ struct APIManager {
                         completionHandler(nil)
                         return
                     }
-                    if let decodedData:[OrderData] = APIParse().parseJSON(safeData: safeData){
+                    if let decodedData:[OrderData_Cust] = APIParse().parseJSON(safeData: safeData){
                         AllOrders.shared.jsonParseError = false
                         AllOrders.shared.apiFetchError = false
                         AllOrders.shared.dataFetched = true

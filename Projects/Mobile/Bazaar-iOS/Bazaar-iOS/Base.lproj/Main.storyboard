@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="n1Y-by-cQR">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="n1Y-by-cQR">
     <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -951,11 +951,11 @@
             <objects>
                 <viewController id="Ghz-qv-MNd" customClass="LoginViewController" customModule="Bazaar_iOS" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="kDy-OH-hcB">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="842"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rKZ-Cf-yGq">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SRL-WQ-xqY" userLabel="Content View">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="725.66666666666663"/>
@@ -1010,7 +1010,7 @@
                                                         </connections>
                                                     </button>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-- OR --" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oo2-pd-AR1">
-                                                        <rect key="frame" x="159" y="221" width="56.333333333333343" height="18"/>
+                                                        <rect key="frame" x="159" y="220.99999999999994" width="56.333333333333343" height="18"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                         <color key="textColor" red="0.43921568630000002" green="0.43921568630000002" blue="0.43921568630000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                         <nil key="highlightedColor"/>
@@ -3100,22 +3100,6 @@ If you have any questions about these terms, please contact us.
             </objects>
             <point key="canvasLocation" x="1325" y="3096"/>
         </scene>
-        <!--My Orders-->
-        <scene sceneID="ws2-5P-94B">
-            <objects>
-                <viewController id="Tqt-58-jBo" customClass="VendorMyOrdersViewController" customModule="Bazaar_iOS" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="5dg-js-nb1">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="PU1-6z-dAq"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="My Orders" id="cdN-Gf-k8T"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="11U-Gh-BNK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="809" y="4688"/>
-        </scene>
         <!--Profile-->
         <scene sceneID="xae-tP-R1T">
             <objects>
@@ -3497,6 +3481,9 @@ If you have any questions about these terms, please contact us.
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Ob-xd-ckR">
                                                 <rect key="frame" x="0.0" y="0.0" width="354" height="70"/>
+                                                <connections>
+                                                    <segue destination="Ea4-C5-o3e" kind="presentation" id="HLZ-5h-d5c"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -6399,7 +6386,7 @@ If you have any questions about these terms, please contact us.
             </objects>
             <point key="canvasLocation" x="4041" y="5494"/>
         </scene>
-              <!--CustomerOrdersViewController-->
+        <!--CustomerOrdersViewController-->
         <scene sceneID="bPX-R1-gzi">
             <objects>
                 <viewController title="CustomerOrdersViewController" id="Ea4-C5-o3e" customClass="CustomerOrdersViewController" customModule="Bazaar_iOS" customModuleProvider="target" sceneMemberID="viewController">
@@ -6480,14 +6467,12 @@ If you have any questions about these terms, please contact us.
         </designable>
     </designables>
     <inferredMetricsTieBreakers>
-        <segue reference="4Ek-xd-hSS"/>
         <segue reference="wg2-uU-39g"/>
         <segue reference="HSB-zT-ihT"/>
-        <segue reference="iKO-xp-CV1"/>
         <segue reference="F5l-V4-YaC"/>
         <segue reference="bek-xH-bIt"/>
         <segue reference="NHr-zy-FFi"/>
-        <segue reference="ybP-Ln-r90"/>
+        <segue reference="Jgp-et-rMS"/>
         <segue reference="PGv-xX-z7j"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.96776050329999996" green="0.6416403651" blue="0.1417042017" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
@@ -6539,9 +6524,6 @@ If you have any questions about these terms, please contact us.
         </systemColor>
         <systemColor name="opaqueSeparatorColor">
             <color red="0.77647058823529413" green="0.77647058823529413" blue="0.78431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="scrollViewTexturedBackgroundColor">
-            <color red="0.43529411764705878" green="0.44313725490196082" blue="0.47450980392156861" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="scrollViewTexturedBackgroundColor">
             <color red="0.43529411764705878" green="0.44313725490196082" blue="0.47450980392156861" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
