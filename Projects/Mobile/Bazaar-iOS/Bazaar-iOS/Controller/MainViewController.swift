@@ -58,6 +58,28 @@ class MainViewController: UIViewController{
                 searchTextField = searchField
             }
         }
+        DispatchQueue.global(qos: .background).async {
+            APIManager().getAllProducts(completionHandler: { products in
+                if let prodlist = products {
+                    DispatchQueue.main.async {
+                        self.allProductsInstance.allProducts = prodlist
+                    }
+                }
+            })
+            APIManager().getAllVendors(str: "", completionHandler: { result in
+                switch result {
+                case .success(let vendors):
+                    DispatchQueue.main.async {
+                        self.allVendorsInstance.allVendors = vendors
+                    }
+                case .failure(let err):
+                    print(err)
+                }
+                
+            })
+            //self.allVendorsInstance.fetchAllVendors()
+        }
+        
         searchTextField?.alpha = 1.0
         searchResults = searchHistory
         historyEndIndex = searchHistory.count
@@ -104,12 +126,11 @@ class MainViewController: UIViewController{
             startIndicator()
             self.allProductsInstance.fetchAllProducts()
         }
-        if !(allVendorsInstance.dataFetched) {
-            self.searchBar.resignFirstResponder()
-            self.searchBar.isUserInteractionEnabled = false
-            startIndicator()
-            self.allVendorsInstance.fetchAllVendors()
-        }
+        /*DispatchQueue.global(qos: .background).async {
+            if !(self.allVendorsInstance.dataFetched) {
+                self.allVendorsInstance.fetchAllVendors()
+            }
+        }*/
         searchResults = searchHistory
         historyEndIndex = searchHistory.count
         
