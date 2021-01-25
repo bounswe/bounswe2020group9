@@ -215,6 +215,16 @@ struct AddressData:Codable {
     let user:Int
 }
 
+struct AddressDataVendor:Codable {
+    let address:String?
+    let address_name:String?
+    let city:String?
+    let country:String?
+    let id:Int?
+    let user: Int?
+    
+}
+
 struct AddressData2:Codable {
     let id:Int
     let address_name:String
