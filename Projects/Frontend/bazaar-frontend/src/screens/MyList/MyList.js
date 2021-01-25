@@ -37,15 +37,35 @@ export default class MyList extends Component {
   componentDidMount() {
     let myCookie = read_cookie("user");
 
-    axios
-      .get(serverUrl + `api/user/${myCookie.user_id}/lists/`, {
-        headers: {
-          Authorization: `Token ${myCookie.token}`,
-        },
-      })
-      .then((res) => {
-        this.setState({ productLists: res.data });
-      });
+    if (myCookie.length != 0) {
+      axios
+        .get(serverUrl + `api/user/${myCookie.user_id}/lists/`, {
+          headers: {
+            Authorization: `Token ${myCookie.token}`,
+          },
+        })
+        .then((res) => {
+          this.setState({ productLists: res.data });
+        })
+        .catch((error) => {
+          if (error.response) {
+            if (error.response.status == 401) {
+              axios
+                .get(serverUrl + `api/user/${myCookie.user_id}/lists/`, {})
+                .then((res) => {
+                  this.setState({ productLists: res.data });
+                });
+            }
+            console.log(error.response.status);
+          }
+        });
+    } else {
+      axios
+        .get(serverUrl + `api/user/${myCookie.user_id}/lists/`, {})
+        .then((res) => {
+          this.setState({ productLists: res.data });
+        });
+    }
 
     axios
       .get(
@@ -59,6 +79,21 @@ export default class MyList extends Component {
       )
       .then((res) => {
         this.setState({ productList: res.data });
+      })
+      .catch((error) => {
+        if (error.response) {
+          if (error.response.status == 401) {
+            axios
+              .get(
+                serverUrl +
+                  `api/user/${myCookie.user_id}/list/${this.state.whichList}/`
+              )
+              .then((res) => {
+                this.setState({ productList: res.data });
+              });
+          }
+          console.log(error.response.status);
+        }
       });
   }
 
