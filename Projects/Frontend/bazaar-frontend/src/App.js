@@ -23,6 +23,8 @@ import SearchResults from "./screens/SearchResults/search-results"
 import Checkout from "./screens/Cart/Checkout/checkout"
 import Messages from "./screens/Messages/messages";
 import MyAddresses from "./screens/MyAdresses/MyAddresses"
+import MyCredictCards from "./screens/MyCredictCards/MyCredictCards"
+
 
 //components
 import Header from "./components/Header/Header"
@@ -100,6 +102,10 @@ function App() {
         <Route path="/MyAddresses">
           <Header />
           <MyAddresses />
+        </Route>
+        <Route path="/MyCredictCards">
+          <Header />
+          <MyCredictCards />
         </Route>
         <Route path="/add-product">
           <Header />
