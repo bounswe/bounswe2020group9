@@ -5228,10 +5228,80 @@
                     <view key="view" contentMode="scaleToFill" id="0Vr-cP-IlF">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="aSO-MN-uib">
+                                <rect key="frame" x="10" y="54" width="394" height="53.666666666666657"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="ssE-vg-NJw">
+                                        <rect key="frame" x="0.0" y="5.3333333333333357" width="39.333333333333336" height="43"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Messages" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bYp-p8-Dio" userLabel="Company Name Label">
+                                        <rect key="frame" x="59.333333333333343" y="15.333333333333329" width="334.66666666666663" height="23"/>
+                                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="19"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="ssE-vg-NJw" firstAttribute="width" secondItem="aSO-MN-uib" secondAttribute="width" multiplier="0.1" id="MVH-z7-ahl"/>
+                                    <constraint firstItem="ssE-vg-NJw" firstAttribute="height" secondItem="aSO-MN-uib" secondAttribute="height" multiplier="0.8" id="bXa-9Q-dR2"/>
+                                </constraints>
+                            </stackView>
+                            <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fw7-gd-Jtb" userLabel="loadingView">
+                                <rect key="frame" x="10" y="117.66666666666669" width="394" height="685.33333333333326"/>
+                                <subviews>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="5ya-gD-Brn" userLabel="Activity Indicator">
+                                        <rect key="frame" x="187" y="332.66666666666663" width="20" height="20"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="color" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </activityIndicatorView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="5ya-gD-Brn" firstAttribute="centerX" secondItem="Fw7-gd-Jtb" secondAttribute="centerX" id="LA6-3g-EIP"/>
+                                    <constraint firstItem="5ya-gD-Brn" firstAttribute="centerY" secondItem="Fw7-gd-Jtb" secondAttribute="centerY" id="tps-bf-g4R"/>
+                                </constraints>
+                            </view>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="Tuk-Je-T3X" userLabel="Chat Table View">
+                                <rect key="frame" x="10" y="127.66666666666669" width="394" height="685.33333333333326"/>
+                                <color key="backgroundColor" systemColor="opaqueSeparatorColor"/>
+                                <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <color key="sectionIndexBackgroundColor" systemColor="systemBackgroundColor"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="Ypc-CN-XK9" id="t8C-KU-4Kn"/>
+                                    <outlet property="delegate" destination="Ypc-CN-XK9" id="hQE-cJ-vJ4"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="SA4-dC-RDL"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="SA4-dC-RDL" firstAttribute="trailing" secondItem="Tuk-Je-T3X" secondAttribute="trailing" constant="10" id="6wu-zE-KeT"/>
+                            <constraint firstItem="Tuk-Je-T3X" firstAttribute="leading" secondItem="SA4-dC-RDL" secondAttribute="leading" constant="10" id="8DC-7B-J8Y"/>
+                            <constraint firstItem="Fw7-gd-Jtb" firstAttribute="trailing" secondItem="Tuk-Je-T3X" secondAttribute="trailing" id="9eE-SC-GJo"/>
+                            <constraint firstItem="aSO-MN-uib" firstAttribute="top" secondItem="SA4-dC-RDL" secondAttribute="top" constant="10" id="BVt-xx-Hdc"/>
+                            <constraint firstAttribute="trailing" secondItem="aSO-MN-uib" secondAttribute="trailing" constant="10" id="QbT-Ij-9CR"/>
+                            <constraint firstItem="Fw7-gd-Jtb" firstAttribute="leading" secondItem="Tuk-Je-T3X" secondAttribute="leading" id="RtV-qs-yes"/>
+                            <constraint firstItem="Fw7-gd-Jtb" firstAttribute="top" secondItem="aSO-MN-uib" secondAttribute="bottom" constant="10" id="Ta4-Zm-KqT"/>
+                            <constraint firstItem="Tuk-Je-T3X" firstAttribute="top" secondItem="aSO-MN-uib" secondAttribute="bottom" constant="20" id="cOh-LF-EAp"/>
+                            <constraint firstItem="aSO-MN-uib" firstAttribute="leading" secondItem="SA4-dC-RDL" secondAttribute="leading" constant="10" id="r59-wP-9LL"/>
+                            <constraint firstItem="SA4-dC-RDL" firstAttribute="bottom" secondItem="Fw7-gd-Jtb" secondAttribute="bottom" constant="10" id="whe-JL-JlD"/>
+                            <constraint firstItem="SA4-dC-RDL" firstAttribute="bottom" secondItem="Tuk-Je-T3X" secondAttribute="bottom" id="wrI-1o-tRq"/>
+                            <constraint firstItem="aSO-MN-uib" firstAttribute="height" secondItem="0Vr-cP-IlF" secondAttribute="height" multiplier="0.06" id="ypH-tD-Da7"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Nuo-x5-YRx"/>
+                    <connections>
+                        <outlet property="activityIndicator" destination="5ya-gD-Brn" id="1Oe-xc-tfd"/>
+                        <outlet property="chatTableView" destination="Tuk-Je-T3X" id="bhZ-7M-OXB"/>
+                        <outlet property="companyNameLabel" destination="bYp-p8-Dio" id="vrf-Dz-URG"/>
+                        <outlet property="loadingView" destination="Fw7-gd-Jtb" id="RGf-Pj-0Zo"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yqq-cC-nXW" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

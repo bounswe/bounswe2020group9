@@ -47,12 +47,11 @@ class MessagesViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
             dismiss(animated: true, completion: nil)
-        /*
+        
             if let chatVC = segue.destination as? ChatViewController {
                 let index = self.conversationsTableView.indexPathForSelectedRow!.row
                 chatVC.id = conversationsInstance.conversations[index].id
             }
-        */
     }
     
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
