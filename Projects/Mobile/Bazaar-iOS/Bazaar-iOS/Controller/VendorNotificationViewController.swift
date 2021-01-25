@@ -181,5 +181,91 @@ extension VendorNotificationViewController:UITableViewDelegate,UITableViewDataSo
     
 }
 
+extension VendorNotificationViewController: AllNotificationsFetchDelegate {
+    func allNotificationsAreFetched() {
+        self.stopIndicator()
+        self.notifications = self.allNotificationsInstance.allNotifications.sorted(by: { $0.id > $1.id })
+        self.NotificationTableView.reloadData()
+    }
+    
+    func notificationsCannotBeFetched() {
+        startIndicator()
+    }
+}
+extension VendorNotificationViewController: AllProductsFetchDelegate {
+    func allProductsAreFetched() {
+        for prod in allProductsInstance.allProducts {
+            products_dict[prod.id]=prod
+            print("ADDED " + String(prod.id))
+        }
+        self.stopIndicator()
+        self.NotificationTableView.reloadData()
+    }
+    
+    func productsCannotBeFetched() {
+        startIndicator()
+        presentAlert()
+        
+    }
+    
+    func presentAlert() {
+        if allProductsInstance.apiFetchError {
+            self.networkFailedAlert.message = "We couldn't connect to the network, please check your internet connection."
+        }
+        if allProductsInstance.jsonParseError {
+            self.networkFailedAlert.message = "There is an internal problem in the system."
+        }
+        if !self.networkFailedAlert.isBeingPresented {
+            self.present(networkFailedAlert, animated:true, completion: nil)
+        }
+    }
+}
+extension VendorNotificationViewController: AllOrdersVendorFetchDelegate {
+    func allOrdersAreFetched() {
+        self.stopIndicator()
+        self.orders = self.allOrdersInstance.allOrders
+        for order in allOrdersInstance.allOrders {
+            orders_dict[order.id]=order
+        }
+        self.NotificationTableView.reloadData()
+    }
+    
+    func ordersCannotBeFetched() {
+        startIndicator()
+    }
+}
 
+
+
+
+
+// MARK: - IndicatorView
+extension VendorNotificationViewController {
+    func startIndicator() {
+        //self.view.bringSubviewToFront(loadingView)
+        //loadingView.isHidden = false
+        //activityIndicator.isHidden = false
+        //activityIndicator.startAnimating()
+        NotificationTableView.isHidden = true
+        print("Start-Indicator")
+    }
+    
+    func createIndicatorView() {
+        //loadingView.isHidden = false
+        //activityIndicator.isHidden = false
+        //activityIndicator.startAnimating()
+        NotificationTableView.isHidden = true
+    }
+    
+    func stopIndicator() {
+        DispatchQueue.main.async {
+            //self.loadingView.isHidden = true
+            //self.activityIndicator.isHidden = true
+            //self.activityIndicator.stopAnimating()
+            self.NotificationTableView.isHidden = false
+            self.NotificationTableView.reloadData()
+            
+        }
+    }
+}
 
