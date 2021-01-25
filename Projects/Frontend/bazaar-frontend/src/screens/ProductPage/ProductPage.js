@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./productpage.scss";
 import { Redirect } from "react-router-dom";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 //components
 import StarRatings from "../../../node_modules/react-star-ratings";
@@ -33,6 +34,7 @@ export default class Productpage extends Component {
       rating: "",
       is_anonymous: false,
       user: [],
+      listProducts: [],
     };
   }
 
@@ -47,6 +49,16 @@ export default class Productpage extends Component {
       )
       .then((res) => {
         this.setState({ comments: res.data });
+      });
+
+    axios
+      .get(serverUrl + `api/user/${myCookie.user_id}/lists/`, {
+        headers: {
+          Authorization: `Token ${myCookie.token}`,
+        },
+      })
+      .then((res) => {
+        this.setState({ listProducts: res.data });
       });
   };
 
@@ -130,7 +142,44 @@ export default class Productpage extends Component {
     this.setState({ is_anonimous: event.target.checked });
   };
 
+  onDropdownListClick = (event, list) => {
+    event.preventDefault();
+
+    let myCookie = read_cookie("user");
+
+    const headers = {
+      Authorization: `Token ${myCookie.token}`,
+    };
+
+    const data = {
+      product_id: this.props.location.state.product.id,
+    };
+
+    console.log(data);
+
+    axios
+      .post(
+        serverUrl + `api/user/${myCookie.user_id}/list/${list.id}/edit/`,
+        data,
+        {
+          headers: headers,
+        }
+      )
+      .then((res) => {});
+  };
+
   render() {
+    let listItems = this.state.listProducts.map((list) => {
+      return (
+        <button
+          className="dropdown-item"
+          onClick={(event) => this.onDropdownListClick(event, list)}
+        >
+          {list.name}
+        </button>
+      );
+    });
+
     const { product } = this.props.location.state;
 
     if (this.state.isGuest) {
@@ -239,12 +288,19 @@ export default class Productpage extends Component {
                     </Col>
                     <Col>
                       <button
-                        className={"productButton"}
+                        className={"nav-link dropdown-toggle productButton"}
+                        id="ddlList"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
                         onClick={this.onListButtonClick}
                       >
                         <span>Add to List</span>
                         <img src={AddToListIcon} />
                       </button>
+                      <div className="dropdown-menu" aria-labelledby="ddlList">
+                        {listItems}
+                      </div>
                     </Col>
                   </Row>
                 </div>
