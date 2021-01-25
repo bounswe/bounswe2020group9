@@ -78,11 +78,12 @@ def delete_order(order_id):
     Order.delete(deleting_order)
 
 
-def create_notification(type, user_id, body):
+def create_notification(type, user_id, body, delivery_id):
     user = User.objects.get(id=user_id)
     new_notification = Notification(user=user)
     new_notification.type = type
     new_notification.body = body
+    new_notification.delivery_id =delivery_id
     new_notification.save()
     return new_notification
 
