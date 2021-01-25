@@ -6,7 +6,7 @@ import axios from "axios";
 import StarRatings from "../../../../node_modules/react-star-ratings";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import ProductCard from "../../../components/ProductCard/productCard";
+import MyCommentProduct from "../MyCommentProduct/MyCommentProduct";
 import { bake_cookie, read_cookie, delete_cookie } from "sfcookies";
 import { serverUrl } from "../../../utils/get-url";
 
@@ -55,11 +55,9 @@ export default class MyCommentCard extends Component {
         </Col>
         <Col>
           <Row>
-            <Col sm="3">
-              {this.state.product && (
-                <ProductCard product={this.state.product}></ProductCard>
-              )}
-            </Col>
+            {this.state.product && (
+              <MyCommentProduct product={this.state.product}></MyCommentProduct>
+            )}
           </Row>
         </Col>
       </div>
