@@ -71,7 +71,6 @@
 		99A654C025BE0DED00A22B95 /* ConversationTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 99A654BE25BE0DED00A22B95 /* ConversationTableViewCell.xib */; };
 		99A654C525BE1E1100A22B95 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A654C425BE1E1100A22B95 /* MessagesViewController.swift */; };
 		99A654CA25BE2DFF00A22B95 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A654C925BE2DFF00A22B95 /* ChatViewController.swift */; };
-		99A654CF25BECFE100A22B95 /* MessageBubbleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A654CE25BECFE100A22B95 /* MessageBubbleTableViewCell.swift */; };
 		99A654D725BEEFD500A22B95 /* ChatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A654D525BEEFD500A22B95 /* ChatTableViewCell.swift */; };
 		99A654D825BEEFD500A22B95 /* ChatTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 99A654D625BEEFD500A22B95 /* ChatTableViewCell.xib */; };
 		99A654E125BF2D3500A22B95 /* SendMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A654E025BF2D3400A22B95 /* SendMessageViewController.swift */; };
@@ -177,7 +176,6 @@
 		99A654BE25BE0DED00A22B95 /* ConversationTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConversationTableViewCell.xib; sourceTree = "<group>"; };
 		99A654C425BE1E1100A22B95 /* MessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
 		99A654C925BE2DFF00A22B95 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
-		99A654CE25BECFE100A22B95 /* MessageBubbleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageBubbleTableViewCell.swift; sourceTree = "<group>"; };
 		99A654D525BEEFD500A22B95 /* ChatTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTableViewCell.swift; sourceTree = "<group>"; };
 		99A654D625BEEFD500A22B95 /* ChatTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatTableViewCell.xib; sourceTree = "<group>"; };
 		99A654E025BF2D3400A22B95 /* SendMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMessageViewController.swift; sourceTree = "<group>"; };
@@ -344,7 +342,6 @@
 				939AB4F725694B76007815C8 /* StringHelper.swift */,
 				93E99DDE2577E91B00BCFDAD /* RadioButton.swift */,
 				9333667B25794FDB0010E82F /* Constants.swift */,
-				99A654CE25BECFE100A22B95 /* MessageBubbleTableViewCell.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -824,7 +821,6 @@
 				99A654C525BE1E1100A22B95 /* MessagesViewController.swift in Sources */,
 				9996E88D2585121000986DB1 /* ListDetailViewController.swift in Sources */,
 				99F3379D256ADD460095105F /* ProfileViewController.swift in Sources */,
-				99A654CF25BECFE100A22B95 /* MessageBubbleTableViewCell.swift in Sources */,
 				6994EAD2255DB9F500AC48F6 /* CategoriesViewController.swift in Sources */,
 				FCE56DDA25855C5800A119FA /* SubCategoryCell.swift in Sources */,
 				93D91AC625867A3B007B238C /* MyAccountViewController.swift in Sources */,
