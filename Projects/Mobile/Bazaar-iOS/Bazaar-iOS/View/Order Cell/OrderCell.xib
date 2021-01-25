@@ -53,9 +53,6 @@
                                     </label>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <accessibility key="accessibilityConfiguration">
-                                    <accessibilityTraits key="traits" notEnabled="YES"/>
-                                </accessibility>
                                 <constraints>
                                     <constraint firstItem="uoq-XW-hLg" firstAttribute="top" secondItem="aYh-jl-fIE" secondAttribute="bottom" constant="10" id="1w5-52-5MU"/>
                                     <constraint firstItem="aYh-jl-fIE" firstAttribute="leading" secondItem="Osm-Yi-7Hl" secondAttribute="leading" constant="10" id="5pf-A0-Pmr"/>
@@ -73,9 +70,6 @@
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="i3A-s4-Xi5" userLabel="Vendor Label">
                                         <rect key="frame" x="10" y="20" width="568" height="20.5"/>
-                                        <accessibility key="accessibilityConfiguration">
-                                            <accessibilityTraits key="traits" staticText="YES" notEnabled="YES"/>
-                                        </accessibility>
                                         <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -107,12 +101,9 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" pointerInteraction="YES" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="o37-yG-uGW">
+                                    <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="o37-yG-uGW">
                                         <rect key="frame" x="-4" y="182" width="74" height="22"/>
                                         <color key="backgroundColor" systemColor="systemRedColor"/>
-                                        <accessibility key="accessibilityConfiguration">
-                                            <accessibilityTraits key="traits" button="YES" staticText="YES"/>
-                                        </accessibility>
                                         <color key="tintColor" systemColor="systemBackgroundColor"/>
                                         <state key="normal" image="x.circle.fill" catalog="system">
                                             <attributedString key="attributedTitle">
@@ -134,12 +125,12 @@
                                                 </fragment>
                                             </attributedString>
                                         </state>
+                                        <connections>
+                                            <action selector="buttonClicked:" destination="-1" eventType="touchUpInside" id="h0L-1l-jM8"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <accessibility key="accessibilityConfiguration">
-                                    <accessibilityTraits key="traits" notEnabled="YES"/>
-                                </accessibility>
                                 <constraints>
                                     <constraint firstItem="o37-yG-uGW" firstAttribute="top" secondItem="KhF-4T-yEA" secondAttribute="bottom" constant="20" id="4Fj-Hd-pyv"/>
                                     <constraint firstItem="i3A-s4-Xi5" firstAttribute="top" secondItem="dIk-Jf-Wey" secondAttribute="top" constant="20" id="8o6-k1-kUn"/>
@@ -158,9 +149,6 @@
                             </view>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                        <accessibility key="accessibilityConfiguration">
-                            <accessibilityTraits key="traits" notEnabled="YES"/>
-                        </accessibility>
                         <constraints>
                             <constraint firstItem="Osm-Yi-7Hl" firstAttribute="width" secondItem="mTe-uJ-ZVK" secondAttribute="width" multiplier="0.4" id="0R0-GN-oaF"/>
                             <constraint firstItem="Osm-Yi-7Hl" firstAttribute="leading" secondItem="mTe-uJ-ZVK" secondAttribute="leading" id="Dyh-aO-1Fe"/>
@@ -186,7 +174,7 @@
             <connections>
                 <outlet property="AdressLabel" destination="zMS-LX-1W6" id="Ttw-ja-Chw"/>
                 <outlet property="AmountLabel" destination="HfK-3r-haA" id="tXH-0B-j2z"/>
-                <outlet property="Cancel_OrderButton" destination="o37-yG-uGW" id="Zcl-pj-KEw"/>
+                <outlet property="Cancel_OrderButton" destination="o37-yG-uGW" id="Oyi-Qp-WeU"/>
                 <outlet property="DatesLabel" destination="KhF-4T-yEA" id="izJ-PK-MAw"/>
                 <outlet property="Name_BrandLabel" destination="uoq-XW-hLg" id="a2X-ix-JP4"/>
                 <outlet property="Price_StatusLabel" destination="UwG-ug-UY2" id="7Th-Ob-Ek6"/>
