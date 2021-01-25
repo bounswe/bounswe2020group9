@@ -14,7 +14,7 @@ from message.models import Message, Conversation, Notification
 from message.serializers import MessageSerializer, NotificationSerializer, ConversationSerializer
 from user.models import User, Customer, Vendor
 from user.serializers import UserSerializer
-
+from product.models import Delivery
 
 
 class AllMessages(APIView):
@@ -198,13 +198,18 @@ class Notifications(APIView):
         number_of_unseen = 0
         responseList = []
         for notification in notifications:
-            responseList.append(NotificationSerializer(notification).data)
+            res = NotificationSerializer(notification).data
+            delivery_id = notification.delivery_id
+            delivery = Delivery.objects.filter(id=delivery_id).values()
+            res["delivery"] = delivery
+            responseList.append(res)
             if not notification.is_visited:
                 number_of_unseen = number_of_unseen + 1
 
         response = {}
         response["new_notifications"] = number_of_unseen
         response["notifications"] = responseList
+        
         return Response(response)
 
     def post(self, request):
