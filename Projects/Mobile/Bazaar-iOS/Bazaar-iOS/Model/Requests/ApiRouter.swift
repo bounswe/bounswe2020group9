@@ -32,6 +32,8 @@ enum ApiRouter: URLRequestBuilder {
     case search(filterType: String, sortType: String, searchWord: String)
     case googleSignIn(userName:String, token:String, firstName:String, lastName:String)
     case getAllVendors(str:String)
+    case getCustomerOrders
+    case deleteOrder(delivery_id:Int)
     case addNewCreditCard(owner:Int, nameOnCard:String, cardNumber:String, month:String, year:String, cvv:String, cardName:String)
     case getCreditCards
     case removeCreditCard(id:Int, owner:Int)
@@ -87,6 +89,10 @@ enum ApiRouter: URLRequestBuilder {
             return "api/user/googleuser/"
         case .getAllVendors:
             return "api/user/vendor/"
+        case .getCustomerOrders:
+            return "api/product/order/"
+        case .deleteOrder:
+            return "api/product/order/"
         case .addNewCreditCard,.getCreditCards,.removeCreditCard:
             return "api/product/payment/"
         case .placeOrder:
@@ -162,6 +168,8 @@ enum ApiRouter: URLRequestBuilder {
             params["latitude"] = latitude
             params["longitude"] = longitude
             params["company"] = companyName
+        case .deleteOrder(let delivery_id):
+            params["delivery_id"] = delivery_id
         case .addNewCreditCard(let owner, let nameOnCard, let cardNumber, let month, let year, let cvv, let cardName):
             params["owner"] = owner
             params["name_on_card"] = nameOnCard
@@ -212,7 +220,7 @@ enum ApiRouter: URLRequestBuilder {
             if isCustomerLoggedIn {
                 headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
             }
-        case .addList, .deleteList, .deleteProductFromList , .editList, .addToList, .getUsersComment, .addNewCreditCard, .getCreditCards, .removeCreditCard, .addNewAddressForCustomer, .getCustomerAddresses, .removeCustomerAddress, .updateCustomerAddress:
+        case .addList, .deleteList, .deleteProductFromList , .editList, .addToList, .getUsersComment, .addNewCreditCard, .getCreditCards, .removeCreditCard, .addNewAddressForCustomer, .getCustomerAddresses, .removeCustomerAddress, .updateCustomerAddress, .getCustomerOrders,.deleteOrder:
             if let token = UserDefaults.standard.value(forKey: K.token) as? String {
                 headers["Authorization"] = "Token \(token)"
             }
@@ -241,11 +249,11 @@ enum ApiRouter: URLRequestBuilder {
         switch self {
         case .authenticate, .addList,.addToList, .signUpCustomer, .signUpVendor, .resetPasswordEmail, .addToCart,.updatePassword, .googleSignIn, .addNewCreditCard, .addNewAddressForCustomer, .search, .placeOrder:
             return .post
-        case .getCustomerLists, .getComments, .getUsersComment, .getCart, .getProfileInfo, .getAllVendors, .getCreditCards, .getCustomerAddresses:
+        case .getCustomerLists, .getComments, .getUsersComment, .getCart, .getProfileInfo, .getAllVendors, .getCreditCards, .getCustomerAddresses, .getCustomerOrders:
             return .get
         case .deleteList, .deleteProductFromList,.deleteProductFromCart, .removeCreditCard, .removeCustomerAddress, .deleteAccount:
             return .delete
-        case .editList,.editAmountInCart,.setProfileInfo, .updateCustomerAddress:
+        case .editList,.editAmountInCart,.setProfileInfo, .updateCustomerAddress,.deleteOrder:
             return .put
         }
     }
