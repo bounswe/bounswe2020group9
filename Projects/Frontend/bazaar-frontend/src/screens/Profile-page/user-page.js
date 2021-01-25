@@ -334,7 +334,13 @@ export default class ProfilePage extends Component {
           </Modal.Header>
           <Modal.Body>
             <div className="row myTitle">
-              <Link className="btn btn-info col-12" to={{ pathname: `#` }}>
+              <Link
+                className="btn btn-info col-12"
+                to={{
+                  pathname: `/showlist`,
+                  state: { user: this.state.user.id },
+                }}
+              >
                 View All
               </Link>
             </div>
