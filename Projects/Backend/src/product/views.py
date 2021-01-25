@@ -513,7 +513,7 @@ class VendorOrderView(APIView):
                     st = "Delivered"
                 try:
                     body = "Your delivery with id "+ str(delivery_id) + " is now " +st
-                    Notification.objects.create(user=User.objects.get(id=delivery.customer_id),body=body,timestamp=timezone.now())
+                    Notification.objects.create(user=User.objects.get(id=delivery.customer_id),body=body,timestamp=timezone.now(), delivery_id=delivery)
                 except:
                     pass
             else:
@@ -564,11 +564,11 @@ class OrderView(APIView):
             v1 = p1.vendor_id
             serializer = DeliverySerializer(data=delivery)
             if serializer.is_valid():
-                serializer.save()
+                delivery_id = serializer.save()
                 try:
                     u1 = User.objects.get(id=v1)
                     body = str(u1.username) + " ordered " + str(p1.name) 
-                    Notification.objects.create(user=u1,body=body,timestamp=timezone.now())
+                    Notification.objects.create(user=u1,body=body,timestamp=timezone.now(), delivery_id=delivery_id)
                     
                 except:
                     pass

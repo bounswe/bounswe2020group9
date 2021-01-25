@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 
 from user.models import User
+from product.models import Delivery
 
 
 # Create your models here.
@@ -27,4 +28,5 @@ class Notification(models.Model):
     body = models.CharField(max_length=255)
     timestamp = models.DateTimeField(default=timezone.now)
     type = models.CharField(max_length=255)
+    delivery_id = models.ForeignKey(Delivery, on_delete=models.CASCADE, null=True, default=None)
     is_visited = models.BooleanField(default=False)
