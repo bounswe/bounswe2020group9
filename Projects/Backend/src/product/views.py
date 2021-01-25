@@ -632,7 +632,10 @@ class SearchAPIView(APIView):
                 product_list2 = []
                 for i in range(len(product_list)):
                     product = ProductSerializer(Product.objects.get(id=product_list[i]["id"])).data
-                    product["picture"] = "http://" + domain + product["picture"]
+                    try:
+                        product["picture"] = "http://" + domain + product["picture"]
+                    except:
+                        product["picture"] = ""
                     product_list2.append(product)
                 product_dict = {}
                 product_dict["product_list"] = product_list2
@@ -648,7 +651,10 @@ class SearchAPIView(APIView):
             product_list = sort_func(sort_type, product_list)
             for i in range(len(product_list)):
                 product = ProductSerializer(Product.objects.get(id=product_list[i]["id"])).data
-                product["picture"] = "http://" + domain + product["picture"]
+                try:
+                    product["picture"] = "http://" + domain + product["picture"]
+                except:
+                    product["picture"] = ""
                 product_list.append(product)
             product_dict = {}
             product_dict["product_list"] = product_list
