@@ -206,26 +206,30 @@ export default class MyOrders extends Component {
         return (
           <div className="delivery-block">
             <div className="row">
-              <div className="col-lg-2 col-md-2 col-sm-2 order-column">
+              <div className="col-lg-1 col-md-1 col-sm-1 order-column">
                 {statusTypes[delivery.current_status]}
+              </div>
+              
+              <div className="col-lg-1 col-md-1 col-sm-1 order-column amount-column">
+              {splitTime[0].substring(8, 10)} {months[splitTime[0].substring(5, 7)]}
               </div>
               <div className="col-lg-2 col-md-2 col-sm-2 order-column">
                 <a className="orders-page-link" href={"/user/"+vendor?.id}>
                   {vendor?.first_name} {vendor?.last_name}  
                 </a>
               </div>
-              <div className="col-lg-3 col-md-3 col-sm-3 order-column">
+              <div className="col-lg-2 col-md-2 col-sm-2 order-column">
                 <Link className="orders-page-link" to={{pathname: `/product/${product?.id}`, state: {product: product} }} >
                   {product?.name}
                 </Link>
                 <a className="orders-page-link"  href={"/products/"+product?.id}  product={product}>
                 </a>
               </div>
-              <div className="col-lg-2 col-md-2 col-sm-2 order-column">
+              <div className="col-lg-1 col-md-1 col-sm-1 order-column">
                 {product?.price} TL
               </div>
-              <div className="col-lg-1 col-md-1 col-sm-1 order-column amount-column">
-                {delivery.id}
+              <div className="col-lg-1 col-md-1 col-sm-1 order-column">
+                {delivery.amount}
               </div>
               <div className="col-lg-1 col-md-1 col-sm-1 delivery-button-div" hidden={!(delivery.current_status == 1)}>
                 <Button variant="danger" className="delivery-button" onClick={this.cancelDelivery} id={delivery.id}>

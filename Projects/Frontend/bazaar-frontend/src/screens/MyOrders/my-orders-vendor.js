@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import axios from 'axios'
 import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 import Cookies from 'js-cookie';
-import DataTable, {createTheme} from 'react-data-table-component';
+import DataTable, { createTheme } from 'react-data-table-component';
 import { Modal, Button, Alert } from "react-bootstrap";
 import { serverUrl } from '../../utils/get-url'
 
@@ -65,17 +65,17 @@ export default class MyOrdersVendor extends Component {
     }
     let statusTypes = {
       1: <div className="preparing">
-        <FontAwesomeIcon icon={faBoxOpen}/> Preparing
+        <FontAwesomeIcon icon={faBoxOpen} /> Preparing
         </div>,
 
       2: <div className="on-the-way">
-      <FontAwesomeIcon icon={faTruck}/> On the Way
+        <FontAwesomeIcon icon={faTruck} /> On the Way
       </div>,
       3: <div className="delivered">
-      <FontAwesomeIcon icon={faCheckCircle}/> Delivered
+        <FontAwesomeIcon icon={faCheckCircle} /> Delivered
       </div>,
       4: <div className="cancelled">
-      <FontAwesomeIcon icon={faBan}/> Cancelled
+        <FontAwesomeIcon icon={faBan} /> Cancelled
       </div>
     }
     let myCookie = read_cookie('user');
@@ -91,42 +91,42 @@ export default class MyOrdersVendor extends Component {
         console.log("res.data", res.data)
         const { orders } = this.state;
         for (let i = 0; i < orders.length; i++) {
-
+          console.log(orders[i].id, "delivery id")
           axios.get(serverUrl + 'api/product/' + orders[i].product_id + '/', header)
             .then(res => {
               //this.setState({orders: res})
               products.push(res.data)
               let orders_temp = orders
               orders_temp[i]["product_name"] = res.data.name
-              orders_temp[i]["price"] = res.data.price
+              orders_temp[i]["del_id"] = res.data.id
               orders_temp[i]["status"] = statusTypes[orders_temp[i].current_status]
-              
+
               let order_timestamp = orders[i].timestamp.split("T")
-              orders_temp[i]["order_time"] = order_timestamp[0].substring(8, 10)+" "+months[order_timestamp[0].substring(5, 7)]+" "+order_timestamp[0].substring(0, 4)
-              
+              orders_temp[i]["order_time"] = order_timestamp[0].substring(8, 10) + " " + months[order_timestamp[0].substring(5, 7)] + " " + order_timestamp[0].substring(0, 4)
+
               let delivery_timestamp = orders[i].delivery_time.split("T")
-              
+
               if (orders_temp[i].current_status == 3) {
-                orders_temp[i]["delivery_time"] = delivery_timestamp[0].substring(8, 10)+" "+months[delivery_timestamp[0].substring(5, 7)]+" "+delivery_timestamp[0].substring(0, 4)
+                orders_temp[i]["delivery_time"] = delivery_timestamp[0].substring(8, 10) + " " + months[delivery_timestamp[0].substring(5, 7)] + " " + delivery_timestamp[0].substring(0, 4)
               } else {
                 orders_temp[i]["delivery_time"] = "-"
                 if (orders_temp[i].current_status == 1) {
                   orders_temp[i].action =
-                  <div>
-                    <Button variant="warning" className="delivery-button" 
-                    onClick={(event) => this.setStatus(event, 2)} id={orders_temp[i].id}>
-                      On the Way
-                    </Button> 
-                    <Button variant="danger" className="delivery-button" 
-                    onClick={(event) => this.setStatus(event, 4)} id={orders_temp[i].id}>
-                      Cancel
-                    </Button> 
-                  </div> 
+                    <div>
+                      <Button variant="primary" className="delivery-button"
+                        onClick={(event) => this.setStatus(event, 2)} id={orders_temp[i].id}>
+                        On the Way
+                    </Button>
+                      <Button variant="danger" className="delivery-button"
+                        onClick={(event) => this.setStatus(event, 4)} id={orders_temp[i].id}>
+                        Cancel
+                    </Button>
+                    </div>
                 } else if (orders_temp[i].current_status == 2) {
-                  orders_temp[i].action = 
+                  orders_temp[i].action =
                     <Button variant="success" className="delivery-button" onClick={(event) => this.setStatus(event, 3)} id={orders_temp[i].id}>
-                      Set to Delivered
-                    </Button> 
+                      Delivered
+                    </Button>
                 }
               }
 
@@ -149,7 +149,7 @@ export default class MyOrdersVendor extends Component {
               console.log("error: " + JSON.stringify(error))
             })
 
-          
+
 
 
         }
@@ -163,6 +163,51 @@ export default class MyOrdersVendor extends Component {
     console.log("set status button pressed")
     console.log(event.target.id)
     console.log(parameter)
+
+    let statusTypes = {
+      1: <div className="preparing">
+        <FontAwesomeIcon icon={faBoxOpen} /> Preparing
+        </div>,
+
+      2: <div className="on-the-way">
+        <FontAwesomeIcon icon={faTruck} /> On the Way
+      </div>,
+      3: <div className="delivered">
+        <FontAwesomeIcon icon={faCheckCircle} /> Delivered
+      </div>,
+      4: <div className="cancelled">
+        <FontAwesomeIcon icon={faBan} /> Cancelled
+      </div>
+    }
+
+    let orders_temp = this.state.orders
+
+    let deliveryToModifyTemp = orders_temp.filter(function (delivery) {
+      return delivery.id == event.target.id;
+    });
+    let deliveryToModify = deliveryToModifyTemp[0];
+    let deliveryToModifyID;
+    for (let i = 0; i < orders_temp.length; i++) {
+      if (orders_temp[i].id == deliveryToModify.id) {
+        deliveryToModifyID = i;
+        break;
+      }
+    }
+    orders_temp[deliveryToModifyID]["status"] = statusTypes[parameter]
+    console.log("orders:  ", orders_temp)
+    console.log("deliveryToModifyID:  ", deliveryToModifyID)
+
+    if (parameter == 2) {
+      orders_temp[deliveryToModifyID].action =
+        <div>
+          <Button variant="success" className="delivery-button" onClick={(event) => this.setStatus(event, 3)} id={deliveryToModifyID}>
+            Delivered
+        </Button>
+        </div>
+    } else if (parameter == 3) {
+      orders_temp[deliveryToModifyID].action = '';
+    }
+    this.setState({ orders: orders_temp })
 
     let myCookie = read_cookie('user');
     const header = {
@@ -186,7 +231,32 @@ export default class MyOrdersVendor extends Component {
         //this.setState({orders: res})
         console.log(res.data)
 
+        let deliveryToModifyTemp = orders_temp.filter(function (delivery) {
+          return delivery.id == event.target.id;
+        });
+        let deliveryToModify = deliveryToModifyTemp[0];
+        let deliveryToModifyID;
+        for (let i = 0; i < orders_temp.length; i++) {
+          if (orders_temp[i].id == deliveryToModify.id) {
+            deliveryToModifyID = i;
+            break;
+          }
+        }
+        orders_temp[deliveryToModifyID]["status"] = statusTypes[parameter]
+        console.log("orders:  ", orders_temp)
+        console.log("deliveryToModifyID:  ", deliveryToModifyID)
 
+        if (parameter == 2) {
+          orders_temp[deliveryToModifyID].action =
+            <div>
+              <Button variant="success" className="delivery-button" onClick={(event) => this.setStatus(event, 3)} id={deliveryToModifyID}>
+                Delivered
+            </Button>
+            </div>
+        } else if (parameter == 3) {
+          orders_temp[deliveryToModifyID].action = '';
+        }
+        this.setState({ orders: orders_temp })
 
       }).catch(res => {
         console.log(res)
@@ -194,23 +264,11 @@ export default class MyOrdersVendor extends Component {
 
   }
 
-  handleSubmit = event => {
-
-
-  }
-
-  handleChange = (event) => {
-    // You can use setState or dispatch with something like Redux so we can use the retrieved data
-    this.setState({ [event.target.name]: event.target.value });
-    //console.log(this.state.category)
-  };
-
-
 
   render() {
 
     const columns = [
-      
+
       {
         name: "Brand",
         selector: "product_name",
@@ -218,7 +276,7 @@ export default class MyOrdersVendor extends Component {
       },
       {
         name: "Price",
-        selector: "price",
+        selector: "id",
         sortable: true,
         right: true
       },
@@ -239,7 +297,7 @@ export default class MyOrdersVendor extends Component {
         selector: "status",
         sortable: true,
         right: true
-      },{
+      }, {
         name: "Order Time",
         selector: "order_time",
         sortable: true,

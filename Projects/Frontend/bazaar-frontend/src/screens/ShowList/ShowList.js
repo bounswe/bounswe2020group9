@@ -32,11 +32,22 @@ export default class ShowList extends Component {
       list_name: "",
       list_is_private: false,
       isAuthorizedUser: true,
+      lists_owner: {}
     };
   }
 
   componentDidMount() {
     let myCookie = read_cookie("user");
+    axios
+    .get(serverUrl + `api/user/${this.props.location.state.user}/`)
+    .then((res) => {
+      this.setState({ lists_owner: res.data });
+      if (myCookie.user_id != res.data.id){
+        this.setState({isAuthorizedUser: false})
+      }
+
+    })
+
 
     if (myCookie.length != 0) {
       axios
@@ -73,6 +84,8 @@ export default class ShowList extends Component {
         )
         .then((res) => {
           this.setState({ productLists: res.data });
+          this.setState({ isAuthorizedUser: false });
+
         });
     }
 
@@ -92,6 +105,8 @@ export default class ShowList extends Component {
       .catch((error) => {
         if (error.response) {
           if (error.response.status == 401) {
+            this.setState({ isAuthorizedUser: false });
+
             axios
               .get(
                 serverUrl +
@@ -142,6 +157,8 @@ export default class ShowList extends Component {
 
   renderList() {
     console.log("whichlist: ", this.state.whichList);
+    console.log("lists owner: ", this.state.lists_owner);
+
     let productCards = this.state.productList.products?.map((product) => {
       return (
         <Col sm="3">
@@ -258,6 +275,7 @@ export default class ShowList extends Component {
   };
 
   render() {
+    console.log("props: ",this.props)
     let listNames = this.state.productLists?.map((list) => {
       return (
         <Row className="listRow">
@@ -282,7 +300,7 @@ export default class ShowList extends Component {
         <Row className={"listWrapper"}>
           <Col xs={3} className={"lists"}>
             <Row>
-              <h2>My Lists</h2>
+              <h2>{this.state.lists_owner.first_name}'s List</h2>
             </Row>
             <ListGroup variant="flush">{listNames}</ListGroup>
             <Row className="addListRow" hidden={!this.state.isAuthorizedUser}>
