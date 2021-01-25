@@ -27,6 +27,7 @@ import Messages from "./screens/Messages/messages";
 import MyAddresses from "./screens/MyAdresses/MyAddresses";
 import MyOrdersVendor from "./screens/MyOrders/my-orders-vendor";
 import MyComments from "./screens/MyComments/MyComments";
+import ShowList from "./screens/ShowList/ShowList";
 
 //components
 import Header from "./components/Header/Header";
@@ -76,6 +77,15 @@ function App() {
             <div>
               <Header />
               <Activate {...props} />
+            </div>
+          )}
+        />
+        <Route
+          path="/showlist"
+          render={(props) => (
+            <div>
+              <Header />
+              <ShowList {...props} />
             </div>
           )}
         />

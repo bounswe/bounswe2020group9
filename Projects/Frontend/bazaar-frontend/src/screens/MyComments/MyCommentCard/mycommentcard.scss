@@ -22,4 +22,12 @@
   .commentContent {
     margin-left: 0rem;
   }
+
+  & .commentRemoveButton {
+    border: 0rem;
+    background: transparent;
+    & img {
+      max-width: 2rem;
+    }
+  }
 }
