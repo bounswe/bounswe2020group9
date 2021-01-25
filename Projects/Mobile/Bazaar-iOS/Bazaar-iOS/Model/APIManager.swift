@@ -59,9 +59,9 @@ struct APIManager {
         }
     }
     
-    func signUpVendor(firstName:String, lastName:String, username:String, password:String, user_type:String,addressName:String, address:String, postalCode:Int, latitude:Float, longitude:Float, companyName:String ,completionHandler: @escaping (Result<String ,Error>) -> Void) {
+    func signUpVendor(firstName:String, lastName:String, username:String, password:String, user_type:String,addressName:String, address:String, country:String , city:String, postalCode:Int, latitude:Float, longitude:Float, companyName:String ,completionHandler: @escaping (Result<String ,Error>) -> Void) {
         do {
-            let request = try ApiRouter.signUpVendor(firstName: firstName, lastName: lastName, username: username, password: password, user_type: user_type, addressName: addressName, address: address, postalCode: postalCode, latitude: latitude, lontitude: longitude, companyName: companyName).asURLRequest()
+            let request = try ApiRouter.signUpVendor(firstName: firstName, lastName: lastName, username: username, password: password, user_type: user_type, addressName: addressName, address: address, country: country, city: city, postalCode: postalCode, latitude: latitude, longitude: longitude, companyName: companyName).asURLRequest()
             AF.request(request).responseJSON { (response) in
                 if (response.response?.statusCode != nil){
                     guard let safeData = response.data else  {
@@ -621,4 +621,186 @@ struct APIManager {
             completionHandler(.failure(error))
         }
     }
+    
+    func addNewCreditCard(owner:Int, nameOnCard:String, cardNumber:String, month:String, year:String, cvv:String, cardName:String,completionHandler: @escaping (Result<CreditCardData ,Error>) -> Void) {
+        do {
+            let request = try ApiRouter.addNewCreditCard(owner: owner, nameOnCard: nameOnCard, cardNumber: cardNumber, month: month, year: year, cvv: cvv, cardName: cardName).asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if (response.response?.statusCode != nil){
+                    guard let safeData = response.data else  {
+                        completionHandler(.failure(MyError.runtimeError("Error")))
+                        return
+                    }
+                    if let decodedData:CreditCardData = APIParse().parseJSON(safeData: safeData){
+                        completionHandler(.success(decodedData))
+                    }else {
+                        completionHandler(.failure(MyError.runtimeError("Failed to parse json ")))
+                    }
+                }
+            }
+        }catch let err {
+            completionHandler(.failure(err))
+        }
+    }
+    
+    func getCreditCards(completionHandler: @escaping (Result<[CreditCardData] ,Error>) -> Void) {
+        do {
+            let request = try ApiRouter.getCreditCards.asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if (response.response?.statusCode != nil){
+                    guard let safeData = response.data else  {
+                        completionHandler(.failure(MyError.runtimeError("Error")))
+                        return
+                    }
+                    if let decodedData:[CreditCardData] = APIParse().parseJSON(safeData: safeData){
+                        completionHandler(.success(decodedData))
+                    }else {
+                        completionHandler(.failure(MyError.runtimeError("Failed to parse json ")))
+                    }
+                }
+            }
+        }catch let err {
+            completionHandler(.failure(err))
+        }
+    }
+    
+    func removeCreditCard(id:Int, owner:Int,completionHandler: @escaping (Result<String ,Error>) -> Void) {
+        do {
+            let request = try ApiRouter.removeCreditCard(id: id, owner: owner).asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if (response.response?.statusCode != nil){
+                    guard let safeData = response.data else  {
+                        completionHandler(.failure(MyError.runtimeError("Error")))
+                        return
+                    }
+                    if let decodedData:removeCreditCardData = APIParse().parseJSON(safeData: safeData){
+                        completionHandler(.success(decodedData.message))
+                    }else {
+                        completionHandler(.failure(MyError.runtimeError("Failed to parse json ")))
+                    }
+                }
+            }
+        }catch let err {
+            completionHandler(.failure(err))
+        }
+    }
+    
+    func addNewAddressForCustomer(addressName:String , fullAddress:String, country:String, city:String, postalCode:Int,user:Int, completionHandler: @escaping (Result<AddressData ,Error>) -> Void) {
+        do {
+            let request = try ApiRouter.addNewAddressForCustomer(addressName: addressName, fullAddress: fullAddress, country: country, city: city, postalCode: postalCode, user: user).asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if (response.response?.statusCode != nil){
+                    guard let safeData = response.data else  {
+                        completionHandler(.failure(MyError.runtimeError("Error")))
+                        return
+                    }
+                    if let decodedData:AddressData = APIParse().parseJSON(safeData: safeData){
+                        completionHandler(.success(decodedData))
+                    }else {
+                        completionHandler(.failure(MyError.runtimeError("Failed to parse json ")))
+                    }
+                }
+            }
+        }catch let err {
+            completionHandler(.failure(err))
+        }
+    }
+    
+    func getCustomerAddresses(completionHandler: @escaping (Result<[AddressData] ,Error>) -> Void) {
+        do {
+            let request = try ApiRouter.getCustomerAddresses.asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if (response.response?.statusCode != nil){
+                    guard let safeData = response.data else  {
+                        completionHandler(.failure(MyError.runtimeError("Error")))
+                        return
+                    }
+                    if let decodedData:[AddressData] = APIParse().parseJSON(safeData: safeData){
+                        completionHandler(.success(decodedData))
+                    }else {
+                        completionHandler(.failure(MyError.runtimeError("Failed to parse json ")))
+                    }
+                }
+            }
+        }catch let err {
+            completionHandler(.failure(err))
+        }
+    }
+    
+    func removeCustomerAddress(addressId:Int ,completionHandler: @escaping (Result<[AddressData] ,Error>) -> Void) {
+        do {
+            let request = try ApiRouter.removeCustomerAddress(addressId: addressId).asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if (response.response?.statusCode != nil){
+                    guard let safeData = response.data else  {
+                        completionHandler(.failure(MyError.runtimeError("Error")))
+                        return
+                    }
+                    if let decodedData:[AddressData] = APIParse().parseJSON(safeData: safeData){
+                        completionHandler(.success(decodedData))
+                    }else {
+                        completionHandler(.failure(MyError.runtimeError("Failed to parse json ")))
+                    }
+                }
+            }
+        }catch let err {
+            completionHandler(.failure(err))
+        }
+    }
+    
+    func updateCustomerAddress(addressId:Int,addressName:String , fullAddress:String, country:String, city:String, postalCode:Int,user:Int, completionHandler: @escaping (Result<AddressData ,Error>) -> Void) {
+        do {
+            let request = try ApiRouter.updateCustomerAddress(addressId: addressId, addressName: addressName, fullAddress: fullAddress, country: country, city: city, postalCode: postalCode, user: user).asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if (response.response?.statusCode != nil){
+                    guard let safeData = response.data else  {
+                        completionHandler(.failure(MyError.runtimeError("Error")))
+                        return
+                    }
+                    if let decodedData:AddressData = APIParse().parseJSON(safeData: safeData){
+                        completionHandler(.success(decodedData))
+                    }else {
+                        completionHandler(.failure(MyError.runtimeError("Failed to parse json ")))
+                    }
+                }
+            }
+        }catch let err {
+            completionHandler(.failure(err))
+        }
+    }
+    
+    func placeOrder(userId:Int, products:[Int:Int], add_id:Int, completionHandler: @escaping (Result<[OrderData] ,Error>) -> Void) {
+        do {
+            let request = try ApiRouter.placeOrder(userId: userId, products: products, add_id: add_id).asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if (response.response?.statusCode != nil){
+                    guard let safeData = response.data else  {
+                        completionHandler(.failure(MyError.runtimeError("Error")))
+                        return
+                    }
+                    if let decodedData:[OrderData] = APIParse().parseJSON(safeData: safeData){
+                        completionHandler(.success(decodedData))
+                    }else {
+                        completionHandler(.failure(MyError.runtimeError("Failed to parse json ")))
+                    }
+                }
+            }
+        }catch let err {
+            completionHandler(.failure(err))
+        }
+    }
+
+    func deleteAccount(token: String) {
+        do {
+            let request = try ApiRouter.deleteAccount(token: token).asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if (response.response?.statusCode != nil){
+                }
+            }
+        }catch {
+           //
+        }
+    }
 }
+
+
