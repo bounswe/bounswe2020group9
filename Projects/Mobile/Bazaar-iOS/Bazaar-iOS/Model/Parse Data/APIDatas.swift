@@ -190,4 +190,28 @@ struct AddressData:Codable {
     let postal_code:Int
     let longitude:Float
     let latitude:Float
+    let user_id:Int
+}
+struct VendorOrderData: Codable {
+    let id:Int
+    let product_id:Int
+    let timestamp:String
+    let delivery_time:String
+    let current_status:Int
+    let order_id:Int
+    let customer_id:Int
+    let amount:Int
+    let delivery_address:AddressData
+}
+struct NotificationsData:Codable {
+    let new_notifications:Int
+    let notifications:[Notification]
+}
+struct Notification:Codable {
+    let id:Int
+    let body:String
+    let timestamp:String
+    let type:String
+    let is_visited:Bool
+    let user:Int
 }

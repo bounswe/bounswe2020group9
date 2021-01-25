@@ -33,7 +33,8 @@ enum ApiRouter: URLRequestBuilder {
     case googleSignIn(userName:String, token:String, firstName:String, lastName:String)
     case getAllVendors(str:String)
     case getCustomerOrders
-    case deleteOrder(delivery_id:Int)
+    case deleteOrder(delivery_id:Int,status:Int)
+    case getVendorOrders
     case addNewCreditCard(owner:Int, nameOnCard:String, cardNumber:String, month:String, year:String, cvv:String, cardName:String)
     case getCreditCards
     case removeCreditCard(id:Int, owner:Int)
@@ -43,6 +44,7 @@ enum ApiRouter: URLRequestBuilder {
     case removeCustomerAddress(addressId:Int)
     case updateCustomerAddress(addressId:Int,addressName:String , fullAddress:String, country:String, city:String, postalCode:Int,user:Int)
     case deleteAccount(token:String)
+    case getNotifications
   // MARK: - Path
     internal var path: String {
         switch self {
@@ -93,6 +95,8 @@ enum ApiRouter: URLRequestBuilder {
             return "api/product/order/"
         case .deleteOrder:
             return "api/product/order/"
+        case .getVendorOrders:
+            return "api/product/vendor_order/"
         case .addNewCreditCard,.getCreditCards,.removeCreditCard:
             return "api/product/payment/"
         case .placeOrder:
@@ -103,6 +107,8 @@ enum ApiRouter: URLRequestBuilder {
             return "api/location/byuser/\(addressId)/"
         case .updateCustomerAddress(let addressId, _,  _,  _,  _,  _,  _):
             return "api/location/byuser/\(addressId)/"
+        case .getNotifications:
+            return "api/message/notifications/"
         }
     }
 
@@ -168,8 +174,9 @@ enum ApiRouter: URLRequestBuilder {
             params["latitude"] = latitude
             params["longitude"] = longitude
             params["company"] = companyName
-        case .deleteOrder(let delivery_id):
+        case .deleteOrder(let delivery_id,let status):
             params["delivery_id"] = delivery_id
+            params["status"] = status
         case .addNewCreditCard(let owner, let nameOnCard, let cardNumber, let month, let year, let cvv, let cardName):
             params["owner"] = owner
             params["name_on_card"] = nameOnCard
@@ -220,11 +227,11 @@ enum ApiRouter: URLRequestBuilder {
             if isCustomerLoggedIn {
                 headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
             }
-        case .addList, .deleteList, .deleteProductFromList , .editList, .addToList, .getUsersComment, .addNewCreditCard, .getCreditCards, .removeCreditCard, .addNewAddressForCustomer, .getCustomerAddresses, .removeCustomerAddress, .updateCustomerAddress, .getCustomerOrders,.deleteOrder:
+        case .addList, .deleteList, .deleteProductFromList , .editList, .addToList, .getUsersComment, .addNewCreditCard, .getCreditCards, .removeCreditCard, .addNewAddressForCustomer, .getCustomerAddresses, .removeCustomerAddress, .updateCustomerAddress, .getCustomerOrders,.deleteOrder,.getVendorOrders:
             if let token = UserDefaults.standard.value(forKey: K.token) as? String {
                 headers["Authorization"] = "Token \(token)"
             }
-        case .getCart, .addToCart, .editAmountInCart, .deleteProductFromCart, .placeOrder:
+        case .getCart, .addToCart, .editAmountInCart, .deleteProductFromCart, .placeOrder,.getNotifications:
             headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
         case .getProfileInfo(let authorization):
             headers["Authorization"] = "Token \(authorization)"
@@ -249,7 +256,7 @@ enum ApiRouter: URLRequestBuilder {
         switch self {
         case .authenticate, .addList,.addToList, .signUpCustomer, .signUpVendor, .resetPasswordEmail, .addToCart,.updatePassword, .googleSignIn, .addNewCreditCard, .addNewAddressForCustomer, .search, .placeOrder:
             return .post
-        case .getCustomerLists, .getComments, .getUsersComment, .getCart, .getProfileInfo, .getAllVendors, .getCreditCards, .getCustomerAddresses, .getCustomerOrders:
+        case .getCustomerLists, .getComments, .getUsersComment, .getCart, .getProfileInfo, .getAllVendors, .getCreditCards, .getCustomerAddresses, .getCustomerOrders, .getVendorOrders,.getNotifications:
             return .get
         case .deleteList, .deleteProductFromList,.deleteProductFromCart, .removeCreditCard, .removeCustomerAddress, .deleteAccount:
             return .delete

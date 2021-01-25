@@ -74,13 +74,17 @@
 		99F3379D256ADD460095105F /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F3379C256ADD460095105F /* ProfileViewController.swift */; };
 		99F6E84D257EBDBB0045C7BD /* ListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99F6E848257EBDBB0045C7BD /* ListCell.swift */; };
 		99F6E84E257EBDBB0045C7BD /* ListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 99F6E849257EBDBB0045C7BD /* ListCell.xib */; };
-		C81F3F53A413BAA1CEC2BE54 /* Pods_Bazaar_iOS_Bazaar_iOSUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CCA62DF56EEA5170A37DD4F /* Pods_Bazaar_iOS_Bazaar_iOSUITests.framework */; };
-		C905631B37795D0BFA6BC1F4 /* Pods_Bazaar_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D147AB84EB93AF832C6CC59A /* Pods_Bazaar_iOS.framework */; };
+		FC23060A25BE10B700106F2E /* NotificationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC23060825BE10B700106F2E /* NotificationCell.swift */; };
+		FC23060B25BE10B700106F2E /* NotificationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC23060925BE10B700106F2E /* NotificationCell.xib */; };
+		FC4E9F5425BDF727008BAA8F /* NotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC4E9F5325BDF727008BAA8F /* NotificationsViewController.swift */; };
 		FC49043125BC7C9300849906 /* OrderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC49042F25BC7C9200849906 /* OrderCell.swift */; };
 		FC49043225BC7C9300849906 /* OrderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FC49043025BC7C9200849906 /* OrderCell.xib */; };
 		FC49044725BD7F0D00849906 /* CustomerOrdersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC49044625BD7F0D00849906 /* CustomerOrdersViewController.swift */; };
 		FCE56DDA25855C5800A119FA /* SubCategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCE56DD825855C5800A119FA /* SubCategoryCell.swift */; };
 		FCE56DDB25855C5800A119FA /* SubCategoryCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FCE56DD925855C5800A119FA /* SubCategoryCell.xib */; };
+		C81F3F53A413BAA1CEC2BE54 /* Pods_Bazaar_iOS_Bazaar_iOSUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7CCA62DF56EEA5170A37DD4F /* Pods_Bazaar_iOS_Bazaar_iOSUITests.framework */; };
+		C905631B37795D0BFA6BC1F4 /* Pods_Bazaar_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D147AB84EB93AF832C6CC59A /* Pods_Bazaar_iOS.framework */; };
+		
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -176,16 +180,19 @@
 		99F3379C256ADD460095105F /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		99F6E848257EBDBB0045C7BD /* ListCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListCell.swift; sourceTree = "<group>"; };
 		99F6E849257EBDBB0045C7BD /* ListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListCell.xib; sourceTree = "<group>"; };
-		A85CF019F70A791D259865C3 /* Pods-Bazaar-iOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bazaar-iOSTests.debug.xcconfig"; path = "Target Support Files/Pods-Bazaar-iOSTests/Pods-Bazaar-iOSTests.debug.xcconfig"; sourceTree = "<group>"; };
-		AFCE404E29F7D49B363A2C8E /* Pods_Bazaar_iOSTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Bazaar_iOSTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		C2CE009AFB6282C4354EBE10 /* Pods-Bazaar-iOS-Bazaar-iOSUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bazaar-iOS-Bazaar-iOSUITests.debug.xcconfig"; path = "Target Support Files/Pods-Bazaar-iOS-Bazaar-iOSUITests/Pods-Bazaar-iOS-Bazaar-iOSUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		D147AB84EB93AF832C6CC59A /* Pods_Bazaar_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Bazaar_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E1954329F55FC30FDF3065EB /* Pods-Bazaar-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bazaar-iOS.debug.xcconfig"; path = "Target Support Files/Pods-Bazaar-iOS/Pods-Bazaar-iOS.debug.xcconfig"; sourceTree = "<group>"; };
+		FC23060825BE10B700106F2E /* NotificationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationCell.swift; sourceTree = "<group>"; };
+		FC23060925BE10B700106F2E /* NotificationCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NotificationCell.xib; sourceTree = "<group>"; };
+		FC4E9F5325BDF727008BAA8F /* NotificationsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsViewController.swift; sourceTree = "<group>"; };
 		FC49042F25BC7C9200849906 /* OrderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderCell.swift; sourceTree = "<group>"; };
 		FC49043025BC7C9200849906 /* OrderCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OrderCell.xib; sourceTree = "<group>"; };
 		FC49044625BD7F0D00849906 /* CustomerOrdersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerOrdersViewController.swift; sourceTree = "<group>"; };
 		FCE56DD825855C5800A119FA /* SubCategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubCategoryCell.swift; sourceTree = "<group>"; };
 		FCE56DD925855C5800A119FA /* SubCategoryCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SubCategoryCell.xib; sourceTree = "<group>"; };
+		A85CF019F70A791D259865C3 /* Pods-Bazaar-iOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bazaar-iOSTests.debug.xcconfig"; path = "Target Support Files/Pods-Bazaar-iOSTests/Pods-Bazaar-iOSTests.debug.xcconfig"; sourceTree = "<group>"; };
+		AFCE404E29F7D49B363A2C8E /* Pods_Bazaar_iOSTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Bazaar_iOSTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C2CE009AFB6282C4354EBE10 /* Pods-Bazaar-iOS-Bazaar-iOSUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bazaar-iOS-Bazaar-iOSUITests.debug.xcconfig"; path = "Target Support Files/Pods-Bazaar-iOS-Bazaar-iOSUITests/Pods-Bazaar-iOS-Bazaar-iOSUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		D147AB84EB93AF832C6CC59A /* Pods_Bazaar_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Bazaar_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E1954329F55FC30FDF3065EB /* Pods-Bazaar-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Bazaar-iOS.debug.xcconfig"; path = "Target Support Files/Pods-Bazaar-iOS/Pods-Bazaar-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -404,6 +411,7 @@
 		93EE3CDF25594A9400B504DF /* View */ = {
 			isa = PBXGroup;
 			children = (
+				FC23060725BE103500106F2E /* Notification Cell */,
 				FC49043725BC7CF500849906 /* Order Cell */,
 				99DE0AEC25967DE3004BAFDA /* Review Cell */,
 				696B5E1E258E987000CF1FB8 /* Cart Cell */,
@@ -451,6 +459,7 @@
 				935A22E425BCA57E007B8A21 /* AddNewAddressViewController.swift */,
 				93E3C20525BDA23A007255A3 /* VendorMyAddressesViewController.swift */,
 				93E3C20A25BDA5A5007255A3 /* VendorAddNewAddressViewController.swift */,
+				FC4E9F5325BDF727008BAA8F /* NotificationsViewController.swift */,
 				93B76B3725BDE9A3004A281A /* LegalPolicyViewController.swift */,
 			);
 			path = Controller;
@@ -480,6 +489,15 @@
 				99F6E849257EBDBB0045C7BD /* ListCell.xib */,
 			);
 			path = "List Cell";
+			sourceTree = "<group>";
+		};
+		FC23060725BE103500106F2E /* Notification Cell */ = {
+			isa = PBXGroup;
+			children = (
+				FC23060825BE10B700106F2E /* NotificationCell.swift */,
+				FC23060925BE10B700106F2E /* NotificationCell.xib */,
+			);
+			path = "Notification Cell";
 			sourceTree = "<group>";
 		};
 		FC49043725BC7CF500849906 /* Order Cell */ = {
@@ -620,6 +638,7 @@
 				996B678425BC6EC300F7A1EC /* DistanceSellingAgreement.txt in Resources */,
 				93EE3CB22558822700B504DF /* LaunchScreen.storyboard in Resources */,
 				93EE3CDB25594A6800B504DF /* ProductCell.xib in Resources */,
+				FC23060B25BE10B700106F2E /* NotificationCell.xib in Resources */,
 				93EE3CAF2558822700B504DF /* Assets.xcassets in Resources */,
 				FCE56DDB25855C5800A119FA /* SubCategoryCell.xib in Resources */,
 				93EE3CAA2558822500B504DF /* Main.storyboard in Resources */,
@@ -794,8 +813,10 @@
 				9907F0F42582A53F00026DB0 /* AddListViewController.swift in Sources */,
 				93EE3CA72558822500B504DF /* MainViewController.swift in Sources */,
 				6949C910257D8F5B00175AC5 /* SearchResultsViewController.swift in Sources */,
+				FC4E9F5425BDF727008BAA8F /* NotificationsViewController.swift in Sources */,
 				93EE3CA32558822500B504DF /* AppDelegate.swift in Sources */,
 				9315419B25B8B99F001549AC /* CreditCardCell.swift in Sources */,
+				FC23060A25BE10B700106F2E /* NotificationCell.swift in Sources */,
 				930C1FAF256C0D9D0086E1DC /* APIDatas.swift in Sources */,
 				FC49044725BD7F0D00849906 /* CustomerOrdersViewController.swift in Sources */,
 				6929E5F7257FD4FE008F32D3 /* StarRatingStackView.swift in Sources */,

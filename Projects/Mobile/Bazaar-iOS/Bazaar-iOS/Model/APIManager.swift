@@ -219,7 +219,7 @@ struct APIManager {
     }
 
     
-    func getCustomerOrders( completionHandler: @escaping ([OrderData]?) -> Void) {
+    func getCustomerOrders( completionHandler: @escaping ([OrderData_Cust]?) -> Void) {
         do {
             let request = try ApiRouter.getCustomerOrders.asURLRequest()
             AF.request(request).responseJSON { (response) in
@@ -230,7 +230,7 @@ struct APIManager {
                         completionHandler(nil)
                         return
                     }
-                    if let decodedData:[OrderData] = APIParse().parseJSON(safeData: safeData){
+                    if let decodedData:[OrderData_Cust] = APIParse().parseJSON(safeData: safeData){
                         AllOrders.shared.jsonParseError = false
                         AllOrders.shared.apiFetchError = false
                         AllOrders.shared.dataFetched = true
@@ -250,9 +250,40 @@ struct APIManager {
         }
     }
     
-    func deleteOrder(delivery_id:Int , completionHandler: @escaping (Result<String ,Error>) -> Void) {
+    func getVendorOrders( completionHandler: @escaping ([VendorOrderData]?) -> Void) {
         do {
-            let request = try ApiRouter.deleteOrder(delivery_id: delivery_id).asURLRequest()
+            let request = try ApiRouter.getVendorOrders.asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if (response.response?.statusCode != nil){
+                    guard let safeData = response.data else  {
+                        AllOrders_vendor.shared.jsonParseError = true
+                        AllOrders_vendor.shared.dataFetched = false
+                        completionHandler(nil)
+                        return
+                    }
+                    if let decodedData:[VendorOrderData] = APIParse().parseJSON(safeData: safeData){
+                        AllOrders_vendor.shared.jsonParseError = false
+                        AllOrders_vendor.shared.apiFetchError = false
+                        AllOrders_vendor.shared.dataFetched = true
+                        completionHandler(decodedData)
+                    }else {
+                        AllOrders_vendor.shared.jsonParseError = true
+                        AllOrders_vendor.shared.dataFetched = false
+                        completionHandler(nil)
+                    }
+                }
+            }
+        }catch let err {
+            print(err)
+            AllOrders_vendor.shared.jsonParseError = true
+            AllOrders_vendor.shared.dataFetched = false
+            completionHandler(nil)
+        }
+    }
+    
+    func deleteOrder(delivery_id:Int ,status:Int, completionHandler: @escaping (Result<String ,Error>) -> Void) {
+        do {
+            let request = try ApiRouter.deleteOrder(delivery_id: delivery_id, status:status).asURLRequest()
             AF.request(request).responseJSON { (response) in
                 if response.response?.statusCode == 204 {
                     completionHandler(.success("success"))
@@ -588,6 +619,37 @@ struct APIManager {
             }
         } catch let error {
             completionHandler(.failure(error))
+        }
+    }
+    
+    func getNotifications( completionHandler: @escaping (NotificationsData?) -> Void) {
+        do {
+            let request = try ApiRouter.getNotifications.asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if (response.response?.statusCode != nil){
+                    guard let safeData = response.data else  {
+                        AllNotifications.shared.jsonParseError = true
+                        AllNotifications.shared.dataFetched = false
+                        completionHandler(nil)
+                        return
+                    }
+                    if let decodedData:NotificationsData = APIParse().parseJSON(safeData: safeData){
+                        AllNotifications.shared.jsonParseError = false
+                        AllNotifications.shared.apiFetchError = false
+                        AllNotifications.shared.dataFetched = true
+                        completionHandler(decodedData)
+                    }else {
+                        AllNotifications.shared.jsonParseError = true
+                        AllNotifications.shared.dataFetched = false
+                        completionHandler(nil)
+                    }
+                }
+            }
+        }catch let err {
+            print(err)
+            AllNotifications.shared.jsonParseError = true
+            AllNotifications.shared.dataFetched = false
+            completionHandler(nil)
         }
     }
     
