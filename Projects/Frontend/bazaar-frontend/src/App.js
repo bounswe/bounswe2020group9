@@ -22,6 +22,7 @@ import Cart from "./screens/Cart/Cart"
 import SearchResults from "./screens/SearchResults/search-results"
 import Checkout from "./screens/Cart/Checkout/checkout"
 import Messages from "./screens/Messages/messages";
+import MyAddresses from "./screens/MyAdresses/MyAddresses"
 
 //components
 import Header from "./components/Header/Header"
@@ -95,6 +96,10 @@ function App() {
         <Route path="/my-list">
           <Header />
           <MyList />
+        </Route>
+        <Route path="/MyAddresses">
+          <Header />
+          <MyAddresses />
         </Route>
         <Route path="/add-product">
           <Header />
