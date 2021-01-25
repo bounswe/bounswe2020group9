@@ -7,8 +7,13 @@ import StarRatings from "../../../../node_modules/react-star-ratings";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import MyCommentProduct from "../MyCommentProduct/MyCommentProduct";
+
+//helpers
 import { bake_cookie, read_cookie, delete_cookie } from "sfcookies";
 import { serverUrl } from "../../../utils/get-url";
+
+//icons
+import removeListIcon from "../../../assets/icons/remove.svg";
 
 export default class MyCommentCard extends Component {
   constructor(props) {
@@ -32,7 +37,26 @@ export default class MyCommentCard extends Component {
       });
   }
 
+  onDeleteCommentButton = (event, comment) => {
+    let myCookie = read_cookie("user");
+
+    const headers = {
+      Authorization: `Token ${myCookie.token}`,
+    };
+
+    axios
+      .delete(
+        serverUrl + `api/product/comment/update/${this.props.comment.id}/ `,
+        {
+          headers: headers,
+        }
+      )
+      .then((res) => {});
+  };
+
   render() {
+    let comment = this.props.comment;
+
     return (
       <div className={"MycommentWrapper"}>
         <Col>
@@ -60,6 +84,13 @@ export default class MyCommentCard extends Component {
             )}
           </Row>
         </Col>
+        <button
+          className="commentRemoveButton"
+          onClick={(event) => this.onDeleteCommentButton(event, comment)}
+        >
+          <img src={removeListIcon} />
+        </button>
+        <Col></Col>
       </div>
     );
   }
