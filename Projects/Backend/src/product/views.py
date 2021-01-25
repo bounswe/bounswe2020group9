@@ -566,6 +566,12 @@ class OrderView(APIView):
             if serializer.is_valid():
                 delivery_id = serializer.save()
                 try:
+                    cart = SubOrder.objects.get(customer_id=user_id, purchased=False)
+                    cart.purchased = True
+                    cart.save()
+                except:
+                    pass
+                try:
                     u1 = User.objects.get(id=user_id)
                     body = str(u1.username) + " ordered " + str(p1.name)
                     vendor = User.objects.get(id=v1)
