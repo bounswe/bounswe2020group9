@@ -1,11 +1,12 @@
 import React, { Fragment } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-import './App.css';
+import "./App.css";
 
 //screens
 import ProfilePage from "./screens/Profile-page/profile-page";
 import UserPage from "./screens/Profile-page/user-page";
+
 import SignIn from "./screens/Sign-In/sign-in"
 import SignUp from "./screens/Sign-Up/sign-up"
 import Activate from "./screens/Sign-Up/activate"
@@ -27,14 +28,12 @@ import MyAddresses from "./screens/MyAdresses/MyAddresses"
 import MyOrdersVendor from "./screens/MyOrders/my-orders-vendor"
 
 //components
-import Header from "./components/Header/Header"
-import Footer from "./components/Footer/Footer"
-
+import Header from "./components/Header/Header";
+import Footer from "./components/Footer/Footer";
 
 function App() {
   return (
     <Router>
-
       <Switch>
         <Route exact path="/">
           <Header />
@@ -43,7 +42,7 @@ function App() {
         <Route path="/signUp">
           <Header />
           <SignUp />
-        </Route>        
+        </Route>
         <Route path="/signUp-vendor">
           <Header />
           <SignUpVendor />
@@ -56,6 +55,7 @@ function App() {
           <Header />
           <Checkout />
         </Route>
+
         <Route path="/my-orders-vendor">
           <Header />
           <MyOrdersVendor />
@@ -88,12 +88,12 @@ function App() {
         </Route>
         <Route
           path="/user/:user_id"
-          render={(props) =>
+          render={(props) => (
             <div>
               <Header />
               <UserPage {...props} />
             </div>
-          }
+          )}
         />
         <Route path="/messages">
           <Header />
@@ -103,6 +103,9 @@ function App() {
           <Header />
           <MyList />
         </Route>
+        <Route path="/my-comments">
+          <Header />
+          <MyComments />
         <Route path="/my-orders">
           <Header />
           <MyOrders />
@@ -121,44 +124,43 @@ function App() {
         </Route>
         <Route
           path="/product/:id"
-          render={(props) =>
+          render={(props) => (
             <div>
               <Header />
               <ProductPage {...props} />
             </div>
-        }
+          )}
         />
         <Route
           path="/search=:keywords"
-          render={(props) =>
-              <div>
-                  <Header />
-                  <SearchResults {...props} />
-              </div>
-          }
+          render={(props) => (
+            <div>
+              <Header />
+              <SearchResults {...props} />
+            </div>
+          )}
         />
         <Route
           path="/category/:id"
-          render={(props) =>
-              <div>
-                  <Header />
-                  <ViewCategory {...props} />
-              </div>
-          }
+          render={(props) => (
+            <div>
+              <Header />
+              <ViewCategory {...props} />
+            </div>
+          )}
         />
         <Route
           path="/cart"
-          render={(props) =>
-              <div>
-                  <Header />
-                  <Cart {...props} />
-              </div>
-          }
+          render={(props) => (
+            <div>
+              <Header />
+              <Cart {...props} />
+            </div>
+          )}
         />
       </Switch>
 
       <Footer />
-
     </Router>
   );
 }
