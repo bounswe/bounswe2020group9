@@ -1,4 +1,6 @@
 .chatBox {
+  height: 32rem;
+  overflow-y: scroll;
   background-color: #f6f6f6;
 }
 
@@ -10,15 +12,20 @@
 }
 
 .user1 {
-  background-color: #A7A298;
+  background-color: #a7a298;
   margin-right: 10px;
 }
 
 .user2 {
-  background-color: #42AEA8;
+  background-color: #42aea8;
   margin-left: 10px;
 }
 
 .unread {
   font-weight: bold;
+}
+
+.leftColWrapper {
+  height: 27rem;
+  overflow-y: scroll;
 }

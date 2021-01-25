@@ -216,6 +216,9 @@ class Header extends Component {
                 <a className="dropdown-item" href="/profile-page">
                   View Profile
                 </a>
+                <a className="dropdown-item" href="/MyAddresses">
+                  My Addresses
+                </a>
                 <a className="dropdown-item" href="/my-list">
                   My Lists
                 </a>
