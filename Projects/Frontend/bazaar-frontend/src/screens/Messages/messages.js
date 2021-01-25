@@ -148,7 +148,13 @@ export default class Messages extends Component {
           role="tabpanel"
           aria-labelledby={"v-pills-" + conversation.user_id + "-tab"}
         >
-          <h4 className="text-center">{conversation.email}</h4>
+            <h4 className="text-center">{conversation.email}</h4>
+            <a
+              className="btn btn-info col-lg-6"
+              href={"/user/"+conversation.user_id}
+            >
+              View Profile
+            </a>
           <div className="container chatBox">
             {
               //This is magnificent coding in act, selects the related conversation of the user
