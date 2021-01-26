@@ -446,14 +446,14 @@ class UpdateCommentAPIView(APIView):
         except Comment.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
         if comment.customer.user_id == user_id:
-            comment.delete()
-            comments = Comment.objects.all()
+            comments = Comment.objects.filter(product=product)
             if len(comments) == 0:
                 product.rating = 0
             else:
                 avg_rating = calculate_rating(product.id)
                 product.rating = avg_rating
             product.save()
+            comment.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         return Response({"message": "Token and user id didn't match"}, status=status.HTTP_401_UNAUTHORIZED)
 
