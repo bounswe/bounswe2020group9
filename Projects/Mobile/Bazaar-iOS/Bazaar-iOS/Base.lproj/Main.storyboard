@@ -511,7 +511,7 @@
                                 <rect key="frame" x="10" y="146" width="394" height="53.666666666666657"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bOO-Bd-GRi" userLabel="Rating">
-                                        <rect key="frame" x="0.0" y="9.6666666666666572" width="42" height="34"/>
+                                        <rect key="frame" x="0.0" y="8.3333333333333144" width="42" height="34"/>
                                         <color key="backgroundColor" systemColor="systemGreenColor"/>
                                         <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <inset key="contentEdgeInsets" minX="10" minY="6" maxX="10" maxY="6"/>

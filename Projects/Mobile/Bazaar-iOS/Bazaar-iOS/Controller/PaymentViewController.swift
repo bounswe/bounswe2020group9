@@ -165,14 +165,12 @@ class PaymentViewController: UIViewController {
                 if let userId =  UserDefaults.standard.value(forKey: K.userIdKey) as? Int{
                     APIManager().placeOrder(userId: userId, products: deliveries, add_id: self.addressesArray[self.selectedAddressIndex!-1].id) { (result) in
                         switch result{
-                        case .success(let orders):
+                        case .success(_):
                             let alertController = UIAlertController(title: "Alert!", message: "Your order is successfully placed.", preferredStyle: .alert)
-                            self.orders = orders
-                            alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.destructive, handler: {
-                                    action in
-                                    self.navigationController?.popViewController(animated: true)
-                                    self.performSegue(withIdentifier: "paymentToOrderDetailSegue", sender: nil)
-                                }))
+                            alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: {
+                                action in
+                                self.navigationController?.popViewController(animated: true)
+                            }))
                             self.present(alertController, animated: true, completion: nil)
                         case .failure(_):
                             let alertController = UIAlertController(title: "Alert!", message: "Order could not be placed successfully. Please be sure that you have entered valid information.", preferredStyle: .alert)
