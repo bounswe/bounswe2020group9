@@ -79,6 +79,8 @@ class CustomerOrdersViewController: UIViewController{
             print("orders not fetched yet,tryin to fetch right now")
             ordersCannotBeFetched()
             self.allOrdersInstance.fetchAllOrders()
+        }else{
+            allOrdersInstance.fetchAllOrders()
         }
         
     }
@@ -127,7 +129,7 @@ extension CustomerOrdersViewController:UITableViewDelegate,UITableViewDataSource
         cell.Price_StatusLabel.text = "₺" + String(product.price) + ", Status: " + orderStatus
         cell.Price_StatusLabel.font = UIFont.systemFont(ofSize: 13, weight: .black)
         
-        cell.VendorLabel.text = "Order deliveries count :" + String(order.deliveries.count-1)
+        cell.VendorLabel.text = "Order deliveries count :" + String(order.deliveries.count)
         cell.VendorLabel.font = UIFont.systemFont(ofSize: 15, weight: .regular)
         
         cell.AmountLabel.text = "Order Date: " + delivery.timestamp.prefix(10) + " Estimated Delivery : " + delivery.delivery_time.prefix(10)
