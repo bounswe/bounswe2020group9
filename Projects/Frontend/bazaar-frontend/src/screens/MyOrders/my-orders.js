@@ -237,9 +237,12 @@ export default class MyOrders extends Component {
                 </Button>              
               </div>
               <div className="col-lg-1 col-md-1 col-sm-1 delivery-button-div" hidden={!(delivery.current_status == 3)}>
-                <Button variant="warning" className="delivery-button" >
-                  Rate
-                </Button>              
+                <Link className="orders-page-link" to={{pathname: `/product/${product?.id}`, state: {product: product} }} >
+                  <Button variant="warning" className="delivery-button" >
+                    Rate
+                  </Button> 
+                </Link>
+             
               </div>
             </div>
           </div>
@@ -282,7 +285,7 @@ export default class MyOrders extends Component {
                   {totalCost} TL
                 </div>
               </div>
-              <div className="col-lg-2 col-md-2 col-sm-2 order-column detail-button-div">
+              <div className="col-lg-2 col-md-2 col-sm-2 order-column detail-button-div" hidden={true}>
                 <Button className="detail-button">
                   Order Details
                 </Button>

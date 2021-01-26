@@ -64,6 +64,9 @@ export default class Inventory extends Component {
     axios.get(serverUrl + `api/product/`)
       .then(res => {
         let myProducts = res.data.filter(product => product.vendor === myCookie.user_id)
+        for (let i = 0;i<myProducts.length;i++){
+          myProducts[i].price = myProducts[i].price+" TL"
+        }
         this.setState({ products: myProducts })
       })
 
@@ -133,6 +136,9 @@ export default class Inventory extends Component {
             axios.get(serverUrl + `api/product/`)
               .then(res => {
                 let myProducts = res.data.filter(product => product.vendor === myCookie.user_id)
+                for (let i = 0;i<myProducts.length;i++){
+                  myProducts[i].price = myProducts[i].price+" TL"
+                }
                 this.setState({ products: myProducts })
               })
 
@@ -186,7 +192,7 @@ export default class Inventory extends Component {
     this.setState({ name: event.name })
     this.setState({ id: event.id })
     this.setState({ brand: event.brand })
-    this.setState({ price: event.price })
+    this.setState({ price: event.price.substring(0, event.price.length-3) })
     this.setState({ stock: event.stock })
     this.setState({ detail: event.detail })
     this.setState({ category: event.category["parent"] })
@@ -285,7 +291,7 @@ export default class Inventory extends Component {
                 Something went wrong.
               </Alert>
               <div className="form-group row">
-                <label className="col-4 align-middle">Name:</label>
+                <label className="col-4 align-middle label-margin">Name:</label>
                 <div className="col-6">
                   <input type="text" name="name" className="form-control col" value={this.state.name}
                     onChange={this.handleChange} required />
@@ -293,14 +299,14 @@ export default class Inventory extends Component {
                 </div>
               </div>
               <div className="form-group row">
-                <label className="col-4 align-middle">Detail:</label>
+                <label className="col-4 align-middle label-margin">Detail:</label>
                 <div className="col-6">
                   <input type="text" name="detail" className="form-control col" value={this.state.detail}
                     onChange={this.handleChange} />
                 </div>
               </div>
               <div className="form-group row">
-                <label className="col-4 align-middle">Brand:</label>
+                <label className="col-4 align-middle label-margin">Brand:</label>
                 <div className="col-4">
                   <input type="text" name="brand" className="form-control col" value={this.state.brand}
                     onChange={this.handleChange} required />
@@ -309,7 +315,7 @@ export default class Inventory extends Component {
                 </div>
               </div>
               <div className="form-group row">
-                <label className="col-4 align-middle">Category:</label>
+                <label className="col-4 align-middle label-margin">Category:</label>
                 <div className="col-4">
                   <select className="form-control col" name="category" id="category1" defaultValue={this.state.category}
                     onChange={this.handleChange} required>
@@ -320,7 +326,7 @@ export default class Inventory extends Component {
                 </div>
               </div>
               <div className="form-group row">
-                <label className="col-4 align-middle">Subcategory:</label>
+                <label className="col-4 align-middle label-margin">Subcategory:</label>
                 <div className="col-4">
                   <select className="form-control col" name="subcategory" id="category2" defaultValue={this.state.subcategory}
                     onChange={this.handleChange}>
@@ -331,15 +337,15 @@ export default class Inventory extends Component {
                 </div>
               </div>
               <div className="form-group row">
-                <label className="col-4 align-middle">Price:</label>
-                <div className="col-3">
-                  <input type="text" name="price" className="form-control col" value={this.state.price}
-                    onChange={this.handleChange} required />
+                <label className="col-4 align-middle label-margin">Price:</label>
+                <div className="col-4 price-block row">
+                  <input type="text" name="price" className="form-control col-8" value={this.state.price}
+                    onChange={this.handleChange} required /> <div className="align-middle col-1 tl-div label-margin">TL</div>
                   <div className="error">{this.state.errors["price"]}</div>
                 </div>
               </div>
               <div className="form-group row">
-                <label className="col-4 align-middle">Stock:</label>
+                <label className="col-4 align-middle label-margin">Stock:</label>
                 <div className="col-3">
                   <input type="text" name="stock" className="form-control col" value={this.state.stock}
                     onChange={this.handleChange} required />

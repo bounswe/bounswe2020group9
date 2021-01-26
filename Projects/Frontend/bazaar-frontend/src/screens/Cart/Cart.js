@@ -96,10 +96,12 @@ export default class Cart extends Component {
             <Card style={{ width: "18rem" }}>
               <Card.Body>
                 <Card.Title>Total: ₺{totalAmount}</Card.Title>
-                <Button variant="success" style={{ marginRight: "20px" }}>
-                  Buy
-                </Button>
-                <Button variant="danger">Empty Cart</Button>
+                <a href="/checkout" hidden={this.state.cart.length == 0}>
+                  <Button variant="success" style={{ marginRight: "20px" }} >
+                    Buy
+                  </Button>
+                </a>
+                <Button variant="danger" hidden={this.state.cart.length == 0}>Empty Cart</Button>
               </Card.Body>
             </Card>
           </Container>
