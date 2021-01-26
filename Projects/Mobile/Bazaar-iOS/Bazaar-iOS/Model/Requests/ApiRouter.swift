@@ -53,7 +53,8 @@ enum ApiRouter: URLRequestBuilder {
     case sendMessage(receiver_username:String,  body:String)
     case getNotifications
     case getLocationOfVendor(vendorId:Int)
-
+    case getProduct(p_id:Int)
+    
   // MARK: - Path
     internal var path: String {
         switch self {
@@ -112,7 +113,7 @@ enum ApiRouter: URLRequestBuilder {
             return "api/product/vendor/\(vendorId)/"
         case .vendorAddProduct(_,_,_,_,_,_,_):
             return "api/product/"
-        case .vendorEditProduct(let prodId, _,_,_,_,_,_,_):
+        case .vendorEditProduct(let prodId, _,_,_,_,_,_,_), .getProduct(let prodId):
             return "api/product/\(prodId)/"
         case .placeOrder:
             return "api/product/order/"
@@ -300,7 +301,7 @@ enum ApiRouter: URLRequestBuilder {
         switch self {
         case .authenticate, .addList,.addToList, .signUpCustomer, .signUpVendor, .resetPasswordEmail, .addToCart,.updatePassword, .googleSignIn, .addNewCreditCard, .addNewAddressForCustomer, .search, .placeOrder, .sendMessage, .vendorAddProduct:
             return .post
-        case .getCustomerLists, .getComments, .getUsersComment, .getCart, .getProfileInfo, .getAllVendors, .getCreditCards, .getCustomerAddresses, .getConversations, .getMessages, .getConversationsWithMessages, .getCustomerOrders, .getVendorOrders,.getNotifications, .getVendorsProducts, .getLocationOfVendor:
+        case .getCustomerLists, .getComments, .getUsersComment, .getCart, .getProfileInfo, .getAllVendors, .getCreditCards, .getCustomerAddresses, .getConversations, .getMessages, .getConversationsWithMessages, .getCustomerOrders, .getVendorOrders,.getNotifications, .getVendorsProducts, .getLocationOfVendor, .getProduct:
             return .get
         case .deleteList, .deleteProductFromList,.deleteProductFromCart, .removeCreditCard, .removeCustomerAddress, .deleteAccount:
             return .delete

@@ -35,6 +35,7 @@ class PaymentViewController: UIViewController {
     var addresses:[String] = []
     var selectedAddressIndex:Int?
     
+    var orders:[OrderData]!
     
 
     override func viewWillAppear(_ animated: Bool) {
@@ -164,11 +165,15 @@ class PaymentViewController: UIViewController {
                 if let userId =  UserDefaults.standard.value(forKey: K.userIdKey) as? Int{
                     APIManager().placeOrder(userId: userId, products: deliveries, add_id: self.addressesArray[self.selectedAddressIndex!-1].id) { (result) in
                         switch result{
-                        case .success(_):
-                            alertController.message = "Your order is successfully placed. Go to \"My Orders\" page in Profile to track your orders."
+                        case .success(let orders):
+                            let alertController = UIAlertController(title: "Alert!", message: "Your order is successfully placed.", preferredStyle: .alert)
+                            self.orders = orders
+                            alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.destructive, handler: {
+                                    action in
+                                    self.navigationController?.popViewController(animated: true)
+                                    self.performSegue(withIdentifier: "paymentToOrderDetailSegue", sender: nil)
+                                }))
                             self.present(alertController, animated: true, completion: nil)
-                            //self.navigationController?.popViewController(animated: true)
-                            //TODO send to ORDER DETAIL
                         case .failure(_):
                             let alertController = UIAlertController(title: "Alert!", message: "Order could not be placed successfully. Please be sure that you have entered valid information.", preferredStyle: .alert)
                             alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
@@ -181,6 +186,13 @@ class PaymentViewController: UIViewController {
         } else {
             alertController.message = "You need to accept \"Distance Selling Agreement\""
             self.present(alertController, animated: true, completion: nil)
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let orderVC = segue.destination as? OrderDetailViewController {
+            orderVC.amounts = deliveries
+            orderVC.orders = orders
         }
     }
     

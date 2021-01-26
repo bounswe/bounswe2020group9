@@ -1004,6 +1004,29 @@ struct APIManager {
             completionHandler(.failure(err))
         }
     }
+    
+    func getProduct(p_id:Int, completionHandler: @escaping (Result<ProductData ,Error>) -> Void) {
+        do {
+            let request = try ApiRouter.getProduct(p_id: p_id).asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if (response.response?.statusCode != nil){
+                    guard let safeData = response.data else  {
+                        completionHandler(.failure(MyError.runtimeError("Error")))
+                        return
+                    }
+                    if let decodedData:ProductData = APIParse().parseJSON(safeData: safeData){
+                        completionHandler(.success(decodedData))
+                    }else {
+                        completionHandler(.failure(MyError.runtimeError("Failed to parse json 2")))
+                    }
+                }else {
+                    completionHandler(.failure(MyError.runtimeError("Failed to parse json ")))
+                }
+            }
+        } catch let err {
+            completionHandler(.failure(err))
+        }
+    }
 }
 
 

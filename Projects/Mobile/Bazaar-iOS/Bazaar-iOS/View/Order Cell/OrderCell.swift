@@ -23,6 +23,7 @@ class OrderCell: UITableViewCell {
     @IBOutlet weak var AdressLabel: UILabel!
     var cellDelegate:TableViewNewProtocol?
     var index:IndexPath?
+    var delivery_id:Int!
  
     
     override func awakeFromNib() {

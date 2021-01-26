@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -58,6 +58,12 @@
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </stackView>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Amount:" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="23G-e5-b9l" userLabel="Amount Label">
+                                <rect key="frame" x="284.5" y="104.5" width="63.5" height="19.5"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -65,6 +71,8 @@
                             <constraint firstItem="CUz-Y7-NJd" firstAttribute="leading" secondItem="3f4-wI-RcL" secondAttribute="leading" constant="10" id="9KY-8d-6XR"/>
                             <constraint firstAttribute="trailing" secondItem="CUz-Y7-NJd" secondAttribute="trailing" constant="10" id="Avl-0w-Aj0"/>
                             <constraint firstAttribute="bottom" secondItem="CUz-Y7-NJd" secondAttribute="bottom" constant="10" id="LqN-wm-6P2"/>
+                            <constraint firstAttribute="bottom" secondItem="23G-e5-b9l" secondAttribute="bottom" constant="10" id="oVs-Cs-KzS"/>
+                            <constraint firstAttribute="trailing" secondItem="23G-e5-b9l" secondAttribute="trailing" constant="15" id="yRq-Bn-3Jg"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -82,13 +90,14 @@
                 <constraint firstItem="XbW-Cr-6zF" firstAttribute="width" secondItem="njF-e1-oar" secondAttribute="width" multiplier="0.1" id="isk-Up-HhO"/>
             </constraints>
             <connections>
+                <outlet property="amountLabel" destination="23G-e5-b9l" id="6V5-Cp-CjR"/>
                 <outlet property="arrowImageView" destination="XbW-Cr-6zF" id="3Ea-YT-jdG"/>
                 <outlet property="productDescriptionLabel" destination="IyX-4i-qfR" id="wN3-oe-6XQ"/>
                 <outlet property="productImageView" destination="Giw-Wt-0fS" id="VVi-Wk-sXI"/>
                 <outlet property="productNameLabel" destination="vKi-TA-wkk" id="JHV-md-o9E"/>
                 <outlet property="productPriceLabel" destination="Qiv-u0-nWQ" id="zsz-wb-BTE"/>
             </connections>
-            <point key="canvasLocation" x="-37" y="-16"/>
+            <point key="canvasLocation" x="-38.405797101449281" y="-16.071428571428569"/>
         </tableViewCell>
     </objects>
     <resources>
