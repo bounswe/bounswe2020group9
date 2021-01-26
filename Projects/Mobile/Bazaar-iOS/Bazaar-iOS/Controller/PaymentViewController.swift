@@ -191,8 +191,8 @@ class PaymentViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let orderVC = segue.destination as? OrderDetailViewController {
-            orderVC.amounts = deliveries
-            orderVC.orders = orders
+            //orderVC.order_id = deliveries[0].
+            //orderVC.orders = orders
         }
     }
     

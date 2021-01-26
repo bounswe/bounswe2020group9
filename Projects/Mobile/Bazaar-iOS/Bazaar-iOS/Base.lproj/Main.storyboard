@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="n1Y-by-cQR">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="n1Y-by-cQR">
     <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -7368,6 +7368,7 @@ If you have any questions about these terms, please contact us.
                     </view>
                     <connections>
                         <outlet property="ordersTableView" destination="w4G-iP-HTX" id="KoI-tE-y2b"/>
+                        <segue destination="xq2-qy-UJ5" kind="show" identifier="orderToDetailSegue" id="nqL-k4-z4V"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fHo-BA-6rV" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -7601,13 +7602,13 @@ If you have any questions about these terms, please contact us.
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WrX-x2-AFB" userLabel="Address/Card Info Stack View">
-                                <rect key="frame" x="10" y="161.66666666666663" width="394" height="179.33333333333337"/>
+                                <rect key="frame" x="10" y="117.66666666666667" width="394" height="179.33333333333331"/>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="inA-PR-tUy">
-                                <rect key="frame" x="10" y="98" width="150" height="53.666666666666657"/>
+                                <rect key="frame" x="10" y="54" width="209" height="53.666666666666657"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="E7X-em-xI4">
-                                        <rect key="frame" x="0.0" y="5.3333333333333286" width="53.666666666666664" height="43"/>
+                                        <rect key="frame" x="0.0" y="5.3333333333333357" width="53.666666666666664" height="43"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                 <integer key="value" value="10"/>
@@ -7625,8 +7626,8 @@ If you have any questions about these terms, please contact us.
                                             <action selector="didBackButtonPressed:" destination="xq2-qy-UJ5" eventType="touchUpInside" id="GUo-kY-5Vd"/>
                                         </connections>
                                     </button>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ufz-hD-vu1">
-                                        <rect key="frame" x="108.66666666666667" y="16.666666666666671" width="41.333333333333329" height="20.333333333333329"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Order Details" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ufz-hD-vu1">
+                                        <rect key="frame" x="108.66666666666669" y="16.666666666666671" width="100.33333333333331" height="20.333333333333329"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -7636,8 +7637,8 @@ If you have any questions about these terms, please contact us.
                                     <constraint firstItem="E7X-em-xI4" firstAttribute="height" secondItem="inA-PR-tUy" secondAttribute="height" multiplier="0.8" id="3t3-GZ-8WN"/>
                                 </constraints>
                             </stackView>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="150" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="i2i-T7-aTp" userLabel="List Products Table View">
-                                <rect key="frame" x="10" y="351" width="394" height="452"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="250" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="i2i-T7-aTp" userLabel="List Products Table View">
+                                <rect key="frame" x="10" y="307" width="394" height="545"/>
                                 <color key="backgroundColor" systemColor="tertiarySystemFillColor"/>
                                 <color key="separatorColor" systemColor="tertiarySystemFillColor"/>
                                 <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -7666,12 +7667,12 @@ If you have any questions about these terms, please contact us.
                     </view>
                     <navigationItem key="navigationItem" id="srt-Rx-Yfq"/>
                     <connections>
-                        <outlet property="productListTableView" destination="i2i-T7-aTp" id="Lso-9r-8xz"/>
+                        <outlet property="ordersTableView" destination="i2i-T7-aTp" id="qCe-v8-dR7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3Pk-96-aiz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6570" y="2590"/>
+            <point key="canvasLocation" x="6559" y="2628"/>
         </scene>
     </scenes>
     <designables>
@@ -7692,6 +7693,7 @@ If you have any questions about these terms, please contact us.
         </designable>
     </designables>
     <inferredMetricsTieBreakers>
+        <segue reference="nqL-k4-z4V"/>
         <segue reference="wg2-uU-39g"/>
         <segue reference="HSB-zT-ihT"/>
         <segue reference="F5l-V4-YaC"/>
@@ -7742,8 +7744,8 @@ If you have any questions about these terms, please contact us.
         <image name="settings_icon_blue" width="50" height="50"/>
         <image name="trash_icon" width="100" height="100"/>
         <image name="update_icon" width="100" height="100"/>
-        <image name="xmark.circle" width="13" height="13"/>
         <image name="xmark.circle" catalog="system" width="128" height="121"/>
+        <image name="xmark.circle" width="13" height="13"/>
         <systemColor name="darkTextColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
@@ -7752,9 +7754,6 @@ If you have any questions about these terms, please contact us.
         </systemColor>
         <systemColor name="opaqueSeparatorColor">
             <color red="0.77647058823529413" green="0.77647058823529413" blue="0.78431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="scrollViewTexturedBackgroundColor">
-            <color red="0.43529411764705878" green="0.44313725490196082" blue="0.47450980392156861" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="scrollViewTexturedBackgroundColor">
             <color red="0.43529411764705878" green="0.44313725490196082" blue="0.47450980392156861" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
