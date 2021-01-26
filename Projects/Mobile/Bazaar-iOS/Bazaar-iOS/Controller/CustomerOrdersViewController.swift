@@ -45,6 +45,7 @@ class CustomerOrdersViewController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         ordersTableView.dataSource = self
+        ordersTableView.delegate = self
         allProductsInstance.delegate = self
         allVendorsInstance.delegate = self
         allOrdersInstance.delegate = self
@@ -114,7 +115,7 @@ extension CustomerOrdersViewController:UITableViewDelegate,UITableViewDataSource
         print("Order deliveries count:" + String(order.deliveries.count))
         let delivery = order.deliveries[0]
         print("Product ID: " + String(delivery.product_id))
-        let product = products_dict[delivery.product_id]!                //filteredProducts[delivery.product_id]
+        let product = allProductsInstance.allProducts.filter{$0.id==delivery.product_id}[0]                //filteredProducts[delivery.product_id]
         //let vendor = vendors_dict[delivery.vendor]!
         let orderStatus=orderStatusArray[delivery.current_status]
         cell.delivery_id=delivery.id
@@ -125,12 +126,17 @@ extension CustomerOrdersViewController:UITableViewDelegate,UITableViewDataSource
         
         cell.Price_StatusLabel.text = "₺" + String(product.price) + ", Status: " + orderStatus
         cell.Price_StatusLabel.font = UIFont.systemFont(ofSize: 13, weight: .black)
-        cell.VendorLabel.text = "Vendor Company : " + AllVendors.shared.allVendors.filter{$0.id == product.vendor}[0].company//vendor.company
-        cell.VendorLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
-        cell.AmountLabel.text = "Amount : " + String(delivery.amount)
-        cell.AmountLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
-        cell.DatesLabel.text = "Order Date: " + delivery.timestamp.prefix(10) + " Estimated Delivery : " + delivery.delivery_time.prefix(10)
-        cell.DatesLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
+        
+        cell.VendorLabel.text = "Order deliveries count :" + String(order.deliveries.count)
+        cell.VendorLabel.font = UIFont.systemFont(ofSize: 15, weight: .regular)
+        
+        cell.AmountLabel.text = "Order Date: " + delivery.timestamp.prefix(10) + " Estimated Delivery : " + delivery.delivery_time.prefix(10)
+        cell.AmountLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
+        cell.DatesLabel.text = "Click to see order details."
+        cell.DatesLabel.font = UIFont.systemFont(ofSize: 15, weight: .black)
+        //cell.AmountLabel.isHidden=true
+        //cell.DatesLabel.isHidden=true
+        
         cell.AdressLabel.text = "Order Adress: " + delivery.delivery_address.address + " " + delivery.delivery_address.city
         cell.AdressLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         print("complete setting order cell")
@@ -191,6 +197,31 @@ extension CustomerOrdersViewController:UITableViewDelegate,UITableViewDataSource
         
     }
     
+    
+    // MARK: - Navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let indexPath = ordersTableView.indexPathForSelectedRow
+        let order_id = allOrdersInstance.allOrders[indexPath!.row].id
+        if let detailResults = segue.destination as? OrderDetailViewController {
+            detailResults.order_id = order_id
+        }
+    
+    }
+    
+    
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("HERE CLICKED")
+        
+        performSegue(withIdentifier: "orderToDetailSegue", sender: nil)
+        
+    }
+    
+    
+    
+    
+    
+    
 }
 extension CustomerOrdersViewController: AllProductsFetchDelegate {
     func allProductsAreFetched() {
@@ -218,6 +249,10 @@ extension CustomerOrdersViewController: AllProductsFetchDelegate {
             self.present(networkFailedAlert, animated:true, completion: nil)
         }
     }
+    
+    
+    
+    
 }
 
 extension CustomerOrdersViewController: AllVendorsFetchDelegate {
