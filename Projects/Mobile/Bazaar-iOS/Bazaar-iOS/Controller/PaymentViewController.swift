@@ -165,10 +165,12 @@ class PaymentViewController: UIViewController {
                     APIManager().placeOrder(userId: userId, products: deliveries, add_id: self.addressesArray[self.selectedAddressIndex!-1].id) { (result) in
                         switch result{
                         case .success(_):
-                            alertController.message = "Your order is successfully placed. Go to \"My Orders\" page in Profile to track your orders."
+                            let alertController = UIAlertController(title: "Alert!", message: "Your order is successfully placed.", preferredStyle: .alert)
+                            alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: {
+                                action in
+                                self.navigationController?.popViewController(animated: true)
+                            }))
                             self.present(alertController, animated: true, completion: nil)
-                            //self.navigationController?.popViewController(animated: true)
-                            //TODO send to ORDER DETAIL
                         case .failure(_):
                             let alertController = UIAlertController(title: "Alert!", message: "Order could not be placed successfully. Please be sure that you have entered valid information.", preferredStyle: .alert)
                             alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
