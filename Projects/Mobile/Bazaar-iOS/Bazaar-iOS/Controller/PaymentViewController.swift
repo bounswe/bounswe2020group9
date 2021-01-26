@@ -166,7 +166,7 @@ class PaymentViewController: UIViewController {
                     APIManager().placeOrder(userId: userId, products: deliveries, add_id: self.addressesArray[self.selectedAddressIndex!-1].id) { (result) in
                         switch result{
                         case .success(_):
-                            let alertController = UIAlertController(title: "Alert!", message: "Your order is successfully placed.", preferredStyle: .alert)
+                            let alertController = UIAlertController(title: "Alert!", message: "Your order is successfully placed. Go to \"My Orders\" under your profile to track your orders.", preferredStyle: .alert)
                             alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: {
                                 action in
                                 self.navigationController?.popViewController(animated: true)
@@ -187,11 +187,12 @@ class PaymentViewController: UIViewController {
         }
     }
     
+    /*
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let orderVC = segue.destination as? OrderDetailViewController {
             //orderVC.order_id = deliveries[0].
             //orderVC.orders = orders
         }
-    }
+    }*/
     
 }
