@@ -44,6 +44,25 @@ class MessagesViewController: UIViewController {
         self.conversationsTableView.backgroundColor = UIColor.systemBackground
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        self.conversationsInstance.fetchConversations()
+        if !(conversationsInstance.dataFetched) {
+            startIndicator()
+            self.conversationsInstance.fetchConversations()
+        }
+        self.conversationsTableView.reloadData()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        self.conversationsInstance.fetchConversations()
+        if !(conversationsInstance.dataFetched) {
+            startIndicator()
+            self.conversationsInstance.fetchConversations()
+        }
+        self.conversationsTableView.reloadData()
+    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
             dismiss(animated: true, completion: nil)
@@ -82,9 +101,9 @@ extension MessagesViewController:UITableViewDelegate,UITableViewDataSource {
         cell.companyNameLabel.text = conversation.company
         cell.lastMessageLabel.text = conversation.last_message_body
         cell.timeLabel.text = (conversation.last_message_timestamp.formatDate.components(separatedBy: " ")).joined(separator: "\n")
-        if !conversation.is_visited {
-            cell.newMessageIndicator.isHidden = false
-        }
+        
+        cell.newMessageIndicator.isHidden = conversation.is_visited
+        
         
         return cell
     }

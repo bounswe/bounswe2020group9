@@ -24,6 +24,7 @@ class VendorChatViewController: UIViewController {
         APIManager().getMessages(id: self.id) { (result) in
             switch result{
             case .success(let messages):
+                self.chatMessages = []
                 for msg in messages {
                     let date = msg.timestamp.formatDate
                     let isIncoming = !(msg.is_user1 == msg.am_I_user1)
@@ -72,6 +73,7 @@ class VendorChatViewController: UIViewController {
                     APIManager().getMessages(id: self.id) { (result) in
                         switch result{
                         case .success(let messages):
+                            self.chatMessages = []
                             for msg in messages {
                                 let date = msg.timestamp.formatDate
                                 let isIncoming = !(msg.is_user1 == msg.am_I_user1)

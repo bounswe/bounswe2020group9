@@ -43,6 +43,26 @@ class VendorMessagesViewController: UIViewController {
         self.conversationsTableView.reloadData()
         self.conversationsTableView.backgroundColor = UIColor.systemBackground
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        self.conversationsInstance.fetchConversations()
+        if !(conversationsInstance.dataFetched) {
+            startIndicator()
+            self.conversationsInstance.fetchConversations()
+        }
+        self.conversationsTableView.reloadData()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        self.conversationsInstance.fetchConversations()
+        if !(conversationsInstance.dataFetched) {
+            startIndicator()
+            self.conversationsInstance.fetchConversations()
+        }
+        self.conversationsTableView.reloadData()
+    }
 
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -81,6 +101,8 @@ extension VendorMessagesViewController:UITableViewDelegate,UITableViewDataSource
         if !conversation.is_visited {
             cell.newMessageIndicator.tintColor = #colorLiteral(red: 0.5726149344, green: 0.7364420221, blue: 0.6515156055, alpha: 1)
             cell.newMessageIndicator.isHidden = false
+        } else {
+            cell.newMessageIndicator.isHidden = true
         }
         
         return cell
