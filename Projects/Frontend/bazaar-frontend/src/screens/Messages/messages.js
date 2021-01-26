@@ -35,7 +35,6 @@ export default class Messages extends Component {
       .then((response) => {
         let conversations = response.data.conversations;
         conversations.forEach((conversation)=>{
-          console.warn(conversation.am_I_user1===true);
           conversation.messages.forEach((message)=>{
             message.is_me = conversation.am_I_user1 === message.is_user1;
           });
@@ -91,7 +90,6 @@ export default class Messages extends Component {
       });
       return;
     }
-    console.log("reached");
 
     const body = new FormData();
     body.append("receiver_username", this.state.message_username);
@@ -120,7 +118,6 @@ export default class Messages extends Component {
   };
 
   render() {
-    console.log("API returns:", this.state.conversations);
 
     const { conversations } = this.state;
     let messages = conversations.map((conversation) => {
