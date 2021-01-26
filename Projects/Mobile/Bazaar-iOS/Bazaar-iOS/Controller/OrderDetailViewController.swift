@@ -88,7 +88,7 @@ extension OrderDetailViewController: UITableViewDelegate, UITableViewDataSource 
         print("returned order count")
         if tableView == ordersTableView {
             print(allOrdersInstance.allOrders.filter{$0.id==order_id}.count)
-            return allOrdersInstance.allOrders.filter{$0.id==order_id}.count
+            return (allOrdersInstance.allOrders.filter{$0.id==order_id})[0].deliveries.count
         }else {
             print("Should not see this.")
             return 5
@@ -105,9 +105,9 @@ extension OrderDetailViewController: UITableViewDelegate, UITableViewDataSource 
         let filteredOrders:[OrderData_Cust] = allOrdersInstance.allOrders.filter{$0.id==order_id}
         //let filteredProducts:[ProductData] = allProductsInstance.allProducts
         //let filteredVendors:[VendorData] = allVendorsInstance.allVendors
-        let order = filteredOrders[indexPath.row]
+        let order = filteredOrders[0]
         print("Order deliveries count:" + String(order.deliveries.count))
-        let delivery = order.deliveries[0]
+        let delivery = order.deliveries[indexPath.row]
         print("Product ID: " + String(delivery.product_id))
         let product = allProductsInstance.allProducts.filter{$0.id==delivery.product_id}[0]            //filteredProducts[delivery.product_id]
         //let vendor = vendors_dict[delivery.vendor]!
