@@ -60,7 +60,7 @@ class OrderDetailViewController: UIViewController {
     
     @IBAction func didBackButtonPressed(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
-        
+
     }
     
     
@@ -127,6 +127,7 @@ extension OrderDetailViewController: UITableViewDelegate, UITableViewDataSource 
         cell.AdressLabel.text = "Order Adress: " + delivery.delivery_address.address + " " + delivery.delivery_address.city
         cell.AdressLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         print("complete setting order cell")
+        cell.isUserInteractionEnabled=false
         
         if allProductsInstance.allImages.keys.contains(product.id) {
             cell.ProductImage.image = allProductsInstance.allImages[product.id]
