@@ -149,6 +149,9 @@
                             </view>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <accessibility key="accessibilityConfiguration">
+                            <accessibilityTraits key="traits" selected="YES" allowsDirectInteraction="YES"/>
+                        </accessibility>
                         <constraints>
                             <constraint firstItem="Osm-Yi-7Hl" firstAttribute="width" secondItem="mTe-uJ-ZVK" secondAttribute="width" multiplier="0.4" id="0R0-GN-oaF"/>
                             <constraint firstItem="Osm-Yi-7Hl" firstAttribute="leading" secondItem="mTe-uJ-ZVK" secondAttribute="leading" id="Dyh-aO-1Fe"/>

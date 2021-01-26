@@ -35,6 +35,7 @@ class PaymentViewController: UIViewController {
     var addresses:[String] = []
     var selectedAddressIndex:Int?
     
+    var orders:[OrderData]!
     
 
     override func viewWillAppear(_ animated: Bool) {
@@ -183,6 +184,13 @@ class PaymentViewController: UIViewController {
         } else {
             alertController.message = "You need to accept \"Distance Selling Agreement\""
             self.present(alertController, animated: true, completion: nil)
+        }
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let orderVC = segue.destination as? OrderDetailViewController {
+            //orderVC.order_id = deliveries[0].
+            //orderVC.orders = orders
         }
     }
     

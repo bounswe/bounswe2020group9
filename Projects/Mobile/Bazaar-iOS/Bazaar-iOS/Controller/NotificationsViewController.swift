@@ -180,8 +180,10 @@ extension NotificationsViewController:UITableViewDelegate,UITableViewDataSource 
         
         return cell
     }
-    
 }
+    
+    
+    
 
 extension NotificationsViewController: AllNotificationsFetchDelegate {
     func allNotificationsAreFetched() {

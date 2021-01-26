@@ -68,6 +68,7 @@
 		9907F0F42582A53F00026DB0 /* AddListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9907F0F32582A53F00026DB0 /* AddListViewController.swift */; };
 		9916E57F25BF4D51004C7832 /* VendorMessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9916E57E25BF4D51004C7832 /* VendorMessagesViewController.swift */; };
 		9916E58425BF4D68004C7832 /* VendorChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9916E58325BF4D68004C7832 /* VendorChatViewController.swift */; };
+		9916E58F25BFE6B4004C7832 /* OrderDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9916E58E25BFE6B4004C7832 /* OrderDetailViewController.swift */; };
 		996B676825BAC87000F7A1EC /* PaymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 996B676725BAC87000F7A1EC /* PaymentViewController.swift */; };
 		996B678425BC6EC300F7A1EC /* DistanceSellingAgreement.txt in Resources */ = {isa = PBXBuildFile; fileRef = 996B678325BC6EC300F7A1EC /* DistanceSellingAgreement.txt */; };
 		9996E88D2585121000986DB1 /* ListDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9996E88C2585121000986DB1 /* ListDetailViewController.swift */; };
@@ -184,6 +185,7 @@
 		9907F0F32582A53F00026DB0 /* AddListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddListViewController.swift; sourceTree = "<group>"; };
 		9916E57E25BF4D51004C7832 /* VendorMessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VendorMessagesViewController.swift; sourceTree = "<group>"; };
 		9916E58325BF4D68004C7832 /* VendorChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VendorChatViewController.swift; sourceTree = "<group>"; };
+		9916E58E25BFE6B4004C7832 /* OrderDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailViewController.swift; sourceTree = "<group>"; };
 		996B676725BAC87000F7A1EC /* PaymentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentViewController.swift; sourceTree = "<group>"; };
 		996B678325BC6EC300F7A1EC /* DistanceSellingAgreement.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = DistanceSellingAgreement.txt; sourceTree = "<group>"; };
 		9996E88C2585121000986DB1 /* ListDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListDetailViewController.swift; sourceTree = "<group>"; };
@@ -491,6 +493,7 @@
 				FC5F73C925BF1D1C003684D6 /* VendorNotificationViewController.swift */,
 				9916E57E25BF4D51004C7832 /* VendorMessagesViewController.swift */,
 				9916E58325BF4D68004C7832 /* VendorChatViewController.swift */,
+				9916E58E25BFE6B4004C7832 /* OrderDetailViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -908,6 +911,7 @@
 				696B5E21258E988800CF1FB8 /* CartTableViewCell.swift in Sources */,
 				FC5F73CA25BF1D1C003684D6 /* VendorNotificationViewController.swift in Sources */,
 				FC49043125BC7C9300849906 /* OrderCell.swift in Sources */,
+				9916E58F25BFE6B4004C7832 /* OrderDetailViewController.swift in Sources */,
 				93EE3CAD2558822500B504DF /* Bazaar_iOS.xcdatamodeld in Sources */,
 				93E3C20B25BDA5A5007255A3 /* VendorAddNewAddressViewController.swift in Sources */,
 				93EE3CA52558822500B504DF /* SceneDelegate.swift in Sources */,
