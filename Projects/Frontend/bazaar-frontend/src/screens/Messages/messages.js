@@ -33,9 +33,16 @@ export default class Messages extends Component {
         headers: headers,
       })
       .then((response) => {
+        let conversations = response.data.conversations;
+        conversations.forEach((conversation)=>{
+          console.warn(conversation.am_I_user1===true);
+          conversation.messages.forEach((message)=>{
+            message.is_me = conversation.am_I_user1 === message.is_user1;
+          });
+        });
         this.setState({
           token: myCookie.token,
-          conversations: response.data.conversations,
+          conversations: conversations,
         });
         console.log("API returns:", this.state.conversations);
       });
@@ -113,6 +120,8 @@ export default class Messages extends Component {
   };
 
   render() {
+    console.log("API returns:", this.state.conversations);
+
     const { conversations } = this.state;
     let messages = conversations.map((conversation) => {
       return [conversation.email, conversation.messages];
@@ -125,12 +134,12 @@ export default class Messages extends Component {
         return (
           <div
             className={
-              "row justify-content-" + (message.is_user1 ? "end" : "start")
+              "row justify-content-" + (message.is_me ? "end" : "start")
             }
           >
             <div
               className={
-                "col-8 chatText " + (message.is_user1 ? "user1" : "user2")
+                "col-8 chatText " + (message.is_me ? "user1" : "user2")
               }
             >
               {message.body}
@@ -148,13 +157,13 @@ export default class Messages extends Component {
           role="tabpanel"
           aria-labelledby={"v-pills-" + conversation.user_id + "-tab"}
         >
-            <h4 className="text-center">{conversation.email}</h4>
-            <a
-              className="btn btn-info col-lg-6"
-              href={"/user/"+conversation.user_id}
-            >
+            <h4 className="text-center col-md-12">{conversation.email}</h4>
+          <div className="textCenter">
+            <a className="btn btn-info justify-content-center"
+              href={"/user/"+conversation.user_id}>
               View Profile
             </a>
+          </div>
           <div className="container chatBox">
             {
               //This is magnificent coding in act, selects the related conversation of the user
