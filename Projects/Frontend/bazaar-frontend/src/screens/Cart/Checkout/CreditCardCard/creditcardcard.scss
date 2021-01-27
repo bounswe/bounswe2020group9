@@ -1,0 +1,28 @@
+.creditcard-card {
+
+  border-width: 0!important;
+
+  & .creditcard-card-header {
+
+
+  }
+
+  & .creditcard-card-body {
+
+    padding: 0;
+
+    & .credit-card {
+
+      zoom: 60%;
+
+      & .rccs__card--front {
+        background: default;
+      }
+
+    }
+
+  }
+  
+
+
+}

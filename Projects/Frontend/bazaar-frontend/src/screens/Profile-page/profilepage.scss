@@ -1,0 +1,82 @@
+.profile-container {
+    align-content: center;
+    max-width: 60rem;
+    margin: auto;
+    font-size: 80%;
+    padding-top: 20px;
+    padding-bottom: 40px;
+
+    & .alert {
+        text-align: center;
+    }
+
+    & .profile-form {
+        padding: 15px;
+
+        & #header3 {
+            align-content: center;
+        }
+        
+        & .no-padding-left {
+            padding-left: 0!important;
+
+            & .account-update {
+                padding-right: 15px;
+                margin-right: 15px;
+            }
+
+            & .heading-2 {
+                margin-top: 8px;
+
+                margin-bottom: 25px;
+            }
+
+            & #save-changes-div{
+                text-align: center;
+                margin-left: 20px;
+                & #save-changes {
+                    border-color: #F4A133;
+                    background-color: #F4A133;
+                
+                    color: black;
+                      &:hover {
+                        background-color: #f1ca1a;
+                
+                        color: black;
+                    }
+                  }
+            }
+
+            & .form-group {
+                & input {
+                    background-color: #f6f6f6;
+                    margin: auto;
+                }
+
+                & .password-input {
+                    padding-left: 0;
+                    padding-right: 30px;
+                }
+
+                & label{
+                    margin-bottom: 0;
+                }
+
+                & .align-middle { 
+                    margin-bottom: 10px!important;
+                    margin-top: 10px!important;
+                }
+
+                & .error {
+                    color: red;
+                }
+            }
+        }
+
+    }
+}
+
+
+
+
+

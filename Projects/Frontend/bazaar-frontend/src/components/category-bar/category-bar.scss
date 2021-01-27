@@ -1,0 +1,46 @@
+.myPagination{
+  margin: auto;
+  align-items: center;
+  align-self: auto;
+  display: flex;
+  flex-direction: column;
+  padding-top: 1rem;
+  background-color: #e8ffff;
+  padding-top: 5px;
+
+  & .dropdown{
+      
+      & .dropdown-head {
+          background-color: #e8ffff;
+          color: #41aea9;
+          border-radius: 5px;
+      }
+      & :hover {
+          background-color: #41aea9;
+          & .dropdown-head{
+              background-color: #41aea9;
+              color: white;
+          }
+
+          & .dropdown-list {
+              border-radius: 0!important;
+              margin-top: 0px!important;
+              padding: 0;
+              display: block;
+              background-color: #41aea9;
+              & .item-custom {
+                  color: white;
+              }
+              & :hover {
+                  color: black;
+              }
+          }
+      }
+
+      & .page-link {
+          padding:0;
+          border: 0px;
+      }
+  }
+
+}

@@ -1,0 +1,46 @@
+.inventory-display {
+  padding-left: 15rem;
+  padding-right: 15rem;
+  margin: auto;
+}
+
+.image-container {
+  padding: 1rem;
+  text-align: center;
+  margin-right: 10%;
+  margin-left: 10%;
+  border-width: 3px;
+  border-style: solid;
+  margin-bottom: 10px;
+  border-color: lightgray;
+  border-radius: 5rem;
+}
+.product-image {
+  max-height: 15rem;
+  max-width: 15rem;
+  align-content: center;
+  cursor: pointer;
+
+}
+#save-changes-product {
+  border-color: #F4A133;
+  background-color: #F4A133;
+  color: black;
+    &:hover {
+      background-color: #f1ca1a;
+
+      color: black;
+  }
+}
+
+.price-block {
+  margin-left: 0!important;
+}
+.tl-div {
+  padding-left: 5px!important;
+}
+.label-margin {
+  vertical-align: middle!important;
+  margin-bottom: auto;
+  margin-top: auto;
+}
