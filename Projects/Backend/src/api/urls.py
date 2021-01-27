@@ -29,9 +29,7 @@ urlpatterns = format_suffix_patterns([
     path('api/product/', include("product.urls")),
     path('api/user/', include("user.urls")),
     path('api/location/', include("location.urls")),
+    path('api/message/', include("message.urls")),
     path('favicon.ico', RedirectView.as_view(url=staticfiles_storage.url('images/favicon.ico'))),
     path('static/images/favicon.ico', RedirectView.as_view(url=staticfiles_storage.url('images/favicon.ico'))),
-    # path('api/user/suzan_uskudarli', ProductDetailAPIView.as_view(), id=17), # vendor (databasede bulunsun ama kullanılmayacak)
-    # path('api/user/1', ProductDetailAPIView.as_view(), pk=1), # customer (login olacak)
-    # TODO name, surname, adres, puan(int), email, date_joined, last_login
 ]) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

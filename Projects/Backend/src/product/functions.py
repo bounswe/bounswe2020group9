@@ -1,9 +1,9 @@
+import requests
 from django.utils import timezone
 
 from message.models import Notification
 from product.models import Product, ProductList, Label, Category, Order, Comment, Payment
 from user.models import Vendor, Customer, User
-import requests
 
 
 def create_product(name, brand, price, vendor_id, stock=0):
@@ -78,11 +78,12 @@ def delete_order(order_id):
     Order.delete(deleting_order)
 
 
-def create_notification(type, user_id, body):
+def create_notification(type, user_id, body, delivery_id):
     user = User.objects.get(id=user_id)
     new_notification = Notification(user=user)
     new_notification.type = type
     new_notification.body = body
+    new_notification.delivery_id =delivery_id
     new_notification.save()
     return new_notification
 
@@ -137,6 +138,7 @@ def delete_payment(payment_id):
     deleting_payment = Payment.objects.get(pk=payment_id)
     Payment.delete(deleting_payment)
 
+
 def remove_duplicates(dict_list):
     seen = set()
     new_list = []
@@ -147,43 +149,47 @@ def remove_duplicates(dict_list):
             new_list.append(dictionary)
     return new_list
 
-def search_product_db(word_array,word_searched):
+
+def search_product_db(word_array, word_searched):
     results = []
-    results = results + list(Product.objects.filter(name__icontains = word_searched).values())
-    results = results + list(Product.objects.filter(detail__icontains = word_searched).values())
-    results = results + list(Product.objects.filter(brand__icontains = word_searched).values())
+    results = results + list(Product.objects.filter(name__icontains=word_searched).values())
+    results = results + list(Product.objects.filter(detail__icontains=word_searched).values())
+    results = results + list(Product.objects.filter(brand__icontains=word_searched).values())
     for words in word_array:
-        results = results + list(Product.objects.filter(name__icontains = words).values())
-        results = results + list(Product.objects.filter(detail__icontains = words).values())
-        results = results + list(Product.objects.filter(brand__icontains = word_searched).values())
+        results = results + list(Product.objects.filter(name__icontains=words).values())
+        results = results + list(Product.objects.filter(detail__icontains=words).values())
+        results = results + list(Product.objects.filter(brand__icontains=word_searched).values())
     results = remove_duplicates(results)
     return results
+
 
 def datamuse_call(word):
     result = []
     word_array = word.split()
-    max_word = int(24/len(word_array))
+    max_word = int(24 / len(word_array))
     words_string = ""
     for i in range(len(word_array)):
-        words_string+=word_array[i]
-        if i != len(word_array)-1:
-            words_string+="+"
-    response = requests.get('https://api.datamuse.com/words?ml='+words_string+"&max="+str(max_word))
+        words_string += word_array[i]
+        if i != len(word_array) - 1:
+            words_string += "+"
+    response = requests.get('https://api.datamuse.com/words?ml=' + words_string + "&max=" + str(max_word))
     response = response.json()
     for element in response:
         result.append(element["word"])
     for words in word_array:
-        response = requests.get('https://api.datamuse.com/words?ml='+words+"&max="+str(max_word))
+        response = requests.get('https://api.datamuse.com/words?ml=' + words + "&max=" + str(max_word))
         response = response.json()
         for element in response:
             result.append(element["word"])
     res = set(result)
     return list(res)
-def filter_func(filter_types,product_list):
+
+
+def filter_func(filter_types, product_list):
     for filter_type in filter_types:
-        if filter_type == "none": #no filter
+        if filter_type == "none":  # no filter
             filtered_array = product_list
-        elif filter_type[:4] == "prc=": # price filter
+        elif filter_type[:4] == "prc=":  # price filter
             price_arr = filter_type[4:].split("-")
             first_num = float(price_arr[0])
             second_num = float(price_arr[1])
@@ -191,28 +197,28 @@ def filter_func(filter_types,product_list):
             for element in product_list:
                 if float(element["price"]) >= first_num and float(element["price"]) <= second_num:
                     filtered_array.append(element)
-            product_list=filtered_array
-        elif filter_type[:3] == "pr=" : # customer reviews
+            product_list = filtered_array
+        elif filter_type[:3] == "pr=":  # customer reviews
             filtered_array = []
             rating = float(filter_type[3:])
             for element in product_list:
                 if float(element["rating"]) >= rating:
                     filtered_array.append(element)
-            product_list=filtered_array
-        elif filter_type[:3] == "br=" : # brand name filter
+            product_list = filtered_array
+        elif filter_type[:3] == "br=":  # brand name filter
             filtered_array = []
             brand_arr = filter_type[3:].split("-")
             brand = ""
             for i in range(len(brand_arr)):
-                brand = brand +brand_arr[i]
-                if i != len(brand_arr) -1:
+                brand = brand + brand_arr[i]
+                if i != len(brand_arr) - 1:
                     brand += " "
             for element in product_list:
                 if str(element["brand"]) == brand:
                     filtered_array.append(element)
-            product_list=filtered_array
-        #TODO sort by vendor
-        elif filter_type[:3] == "ss=": # stock filter
+            product_list = filtered_array
+        # TODO sort by vendor
+        elif filter_type[:3] == "ss=":  # stock filter
             stock_arr = filter_type[4:].split("-")
             first_num = int(stock_arr[0])
             second_num = int(stock_arr[1])
@@ -220,17 +226,27 @@ def filter_func(filter_types,product_list):
             for element in product_list:
                 if int(element["stock"]) >= first_num and int(element["stock"]) <= second_num:
                     filtered_array.append(element)
-            product_list=filtered_array
+            product_list = filtered_array
     return product_list
-def sort_func(sort_type,product_list):
+
+
+def sort_func(sort_type, product_list):
     if sort_type == "bs":
-        return sorted(product_list, key = lambda i: i['sell_counter'],reverse=True)
+        return sorted(product_list, key=lambda i: i['sell_counter'], reverse=True)
     elif sort_type == "mf":
-        return sorted(product_list, key = lambda i: i['rating'],reverse=True)
+        return sorted(product_list, key=lambda i: i['rating'], reverse=True)
     elif sort_type == "pr_des":
-        return sorted(product_list, key = lambda i: i['price'],reverse=True)
+        return sorted(product_list, key=lambda i: i['price'], reverse=True)
     elif sort_type == "pr_asc":
-        return sorted(product_list, key = lambda i: i['price'])
-    #TODO release date, comment num
+        return sorted(product_list, key=lambda i: i['price'])
+    # TODO release date, comment num
     else:
         return product_list
+
+
+def calculate_rating(product_id):
+    commentsOfProduct = Comment.objects.filter(product_id=product_id)
+    sum_of_ratings = 0
+    for comment in commentsOfProduct:
+        sum_of_ratings = sum_of_ratings + comment.rating
+    return (sum_of_ratings/1.0)/len(commentsOfProduct)

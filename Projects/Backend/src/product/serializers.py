@@ -2,14 +2,11 @@ from pygments.lexers import get_all_lexers
 from pygments.styles import get_all_styles
 from rest_framework import serializers
 
-
-from .models import Product, Label, Category, ProductList, Comment, SubOrder,SearchHistory
-
+from .models import Product, Label, Category, ProductList, Comment, SubOrder, SearchHistory, Payment, Delivery
 
 LEXERS = [item for item in get_all_lexers() if item[1]]
 LANGUAGE_CHOICES = sorted([(item[1][0], item[0]) for item in LEXERS])
 STYLE_CHOICES = sorted([(item, item) for item in get_all_styles()])
-
 
 
 class LabelSerializer(serializers.ModelSerializer):
@@ -29,10 +26,12 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ("name", "parent", "id")
+
     def get_fields(self):
         fields = super(CategorySerializer, self).get_fields()
         fields['parent'] = serializers.StringRelatedField()
         return fields
+
     def to_representation(self, instance):
         data = super().to_representation(instance)
         if not data['parent']:
@@ -77,10 +76,10 @@ class ProductListSerializer(serializers.ModelSerializer):
     # for some reason, this causes POST requests to not work, commenting out for now
     # customer = serializers.StringRelatedField(read_only=True)
     products = ProductSerializer(many=True, source="product_set", required=False)
+
     class Meta:
         model = ProductList
         fields = ("id", "name", "customer", "products", "is_private")
-
 
 
 class SearchHistorySerializer(serializers.ModelSerializer):
@@ -90,16 +89,18 @@ class SearchHistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = SearchHistory
         fields = ("user", "searched")
-    def create(self,validated_data):
-        return SearchHistory.objects.create(**validated_data)
 
+    def create(self, validated_data):
+        return SearchHistory.objects.create(**validated_data)
 
 
 class CommentSerializer(serializers.ModelSerializer):
     customer_name = serializers.RelatedField(source='user', read_only=True)
+
     class Meta:
         model = Comment
         fields = '__all__'
+
 
 class SubOrderSerializer(serializers.ModelSerializer):
     class Meta:
@@ -107,3 +108,23 @@ class SubOrderSerializer(serializers.ModelSerializer):
         fields = '__all__'
         extra_kwargs = {'purchased': {'write_only': True}}
 
+
+class PaymentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Payment
+        fields = '__all__'
+    def create(self, validated_data):
+        return Payment.objects.create(**validated_data)
+    def update(self, instance, validated_data):
+        for (key, value) in validated_data.items():
+            setattr(instance, key, value)
+        instance.save()
+        return instance
+
+
+class DeliverySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Delivery
+        fields = '__all__'
+    def create(self, validated_data):
+        return Delivery.objects.create(**validated_data)
