@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./productpage.scss";
 import { Redirect } from "react-router-dom";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 //components
 import StarRatings from "../../../node_modules/react-star-ratings";
@@ -11,6 +12,9 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { bake_cookie, read_cookie, delete_cookie } from "sfcookies";
 import CommentCard from "./CommentCard/CommentCard";
+import CategoryBar from "../../components/category-bar/category-bar";
+import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 
 //icons
 import AddToCartIcon from "../../assets/icons/add-to-cart.svg";
@@ -25,31 +29,38 @@ export default class Productpage extends Component {
     super(props);
     this.state = {
       isGuest: false,
-      comments: [
-        {
-          name: "Hasan Demirkiran",
-          rate: 4.5,
-          date: "20.01.2020",
-          content:
-            "But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure",
-        },
-        {
-          name: "Hasan Demirkiran",
-          rate: 3.0,
-          date: "20.01.2020",
-          content:
-            "But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure",
-        },
-        {
-          name: "Hasan Demirkiran",
-          rate: 5.0,
-          date: "20.01.2020",
-          content:
-            "But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure",
-        },
-      ],
+      comments: [],
+      body: "",
+      rating: "",
+      is_anonymous: false,
+      user: [],
+      listProducts: [],
     };
   }
+
+  componentDidMount = () => {
+    let myCookie = read_cookie("user");
+    this.setState({ user: myCookie });
+    // get request to get all comments
+    axios
+      .get(
+        serverUrl +
+          `api/product/comment/${this.props.location.state.product.id}/`
+      )
+      .then((res) => {
+        this.setState({ comments: res.data });
+      });
+
+    axios
+      .get(serverUrl + `api/user/${myCookie.user_id}/lists/`, {
+        headers: {
+          Authorization: `Token ${myCookie.token}`,
+        },
+      })
+      .then((res) => {
+        this.setState({ listProducts: res.data });
+      });
+  };
 
   onCartButtonClick = () => {
     const { product } = this.props.location.state;
@@ -86,7 +97,89 @@ export default class Productpage extends Component {
     }
   };
 
+  onSubmitComment = (event) => {
+    event.preventDefault();
+
+    let myCookie = read_cookie("user");
+
+    const headers = {
+      Authorization: `Token ${myCookie.token}`,
+    };
+
+    const data = {
+      body: this.state.body,
+      rating: this.state.rating,
+      customer: myCookie.user_id,
+      is_anonymous: this.state.is_anonymous,
+      product: this.props.location.state.product.id,
+    };
+
+    if (myCookie.length === 0) {
+      this.setState({ isGuest: true });
+    } else {
+      axios
+        .post(serverUrl + `api/product/comment/`, data, {
+          headers: headers,
+        })
+        .then((res) => {
+          axios
+            .get(
+              serverUrl +
+                `api/product/comment/${this.props.location.state.product.id}/`
+            )
+            .then((res) => {
+              this.setState({ comments: res.data });
+            });
+        });
+    }
+  };
+
+  onCommentChange = (event, type) => {
+    this.setState({ [type]: event.target.value });
+  };
+
+  onCommentChangeAnonimous = (event) => {
+    this.setState({ is_anonimous: event.target.checked });
+  };
+
+  onDropdownListClick = (event, list) => {
+    event.preventDefault();
+
+    let myCookie = read_cookie("user");
+
+    const headers = {
+      Authorization: `Token ${myCookie.token}`,
+    };
+
+    const data = {
+      product_id: this.props.location.state.product.id,
+    };
+
+    console.log(data);
+
+    axios
+      .post(
+        serverUrl + `api/user/${myCookie.user_id}/list/${list.id}/edit/`,
+        data,
+        {
+          headers: headers,
+        }
+      )
+      .then((res) => {});
+  };
+
   render() {
+    let listItems = this.state.listProducts.map((list) => {
+      return (
+        <button
+          className="dropdown-item"
+          onClick={(event) => this.onDropdownListClick(event, list)}
+        >
+          {list.name}
+        </button>
+      );
+    });
+
     const { product } = this.props.location.state;
 
     if (this.state.isGuest) {
@@ -110,8 +203,9 @@ export default class Productpage extends Component {
     }
 
     return (
-      <div>
+      <div className="background">
         <Container>
+          <CategoryBar></CategoryBar>
           <Row className={"productPart"}>
             <Col>
               <Carousel className={"productCarousel"}>
@@ -194,12 +288,19 @@ export default class Productpage extends Component {
                     </Col>
                     <Col>
                       <button
-                        className={"productButton"}
+                        className={"nav-link dropdown-toggle productButton"}
+                        id="ddlList"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
                         onClick={this.onListButtonClick}
                       >
                         <span>Add to List</span>
                         <img src={AddToListIcon} />
                       </button>
+                      <div className="dropdown-menu" aria-labelledby="ddlList">
+                        {listItems}
+                      </div>
                     </Col>
                   </Row>
                 </div>
@@ -208,8 +309,80 @@ export default class Productpage extends Component {
           </Row>
           <Row className={"commentPart"}>
             <Col>
-              <h2>Comments</h2>
+              <Row>
+                <h2>Comments</h2>
+              </Row>
               {CommentCards}
+              {this.state.user.length === 0 ? (
+                <div></div>
+              ) : (
+                <div>
+                  <Form className="formWrapper">
+                    <Form.Row className="align-items-center formRow">
+                      <Col xs="auto" className="my-1">
+                        <Form.Control
+                          as="select"
+                          className="mr-sm-2"
+                          id="inlineFormCustomSelect"
+                          custom
+                          onChange={(event) =>
+                            this.onCommentChange(event, "rating")
+                          }
+                        >
+                          <option value="0">Rating...</option>
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                        </Form.Control>
+                      </Col>
+
+                      <Col xs="auto" className="my-1">
+                        <Form.Check
+                          type="switch"
+                          id="custom-switch"
+                          label="Anonimous"
+                          onChange={this.onCommentChangeAnonimous}
+                        />
+                      </Col>
+                    </Form.Row>
+
+                    <Form.Row className="formRow">
+                      <Col>
+                        <Form.File
+                          id="custom-file-translate-scss"
+                          label="Please upload an image"
+                          lang="en"
+                          custom
+                        />
+                      </Col>
+                    </Form.Row>
+
+                    <Form.Row
+                      controlId="exampleForm.ControlTextarea1"
+                      className="formRow"
+                    >
+                      <Col>
+                        <Form.Label>Comment</Form.Label>
+                        <Form.Control
+                          as="textarea"
+                          rows={4}
+                          onChange={(event) =>
+                            this.onCommentChange(event, "body")
+                          }
+                        />
+                      </Col>
+                    </Form.Row>
+
+                    <Form.Row className="formRow">
+                      <Col xs="auto" className="my-1 commentSubmitButton">
+                        <Button onClick={this.onSubmitComment}>Submit</Button>
+                      </Col>
+                    </Form.Row>
+                  </Form>
+                </div>
+              )}
             </Col>
           </Row>
         </Container>

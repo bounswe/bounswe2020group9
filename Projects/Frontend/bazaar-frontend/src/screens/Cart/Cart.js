@@ -10,6 +10,8 @@ import Row from "react-bootstrap/Row";
 import Container from "react-bootstrap/Container";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
+import CategoryBar from "../../components/category-bar/category-bar";
+
 
 //helpers
 import { serverUrl } from "../../utils/get-url";
@@ -85,6 +87,8 @@ export default class Cart extends Component {
 
     return (
       <div>
+        <CategoryBar></CategoryBar>
+
         <div className="cartWrapper">
           <Container>
             <Row>{productCards}</Row>
@@ -92,10 +96,12 @@ export default class Cart extends Component {
             <Card style={{ width: "18rem" }}>
               <Card.Body>
                 <Card.Title>Total: ₺{totalAmount}</Card.Title>
-                <Button variant="success" style={{ marginRight: "20px" }}>
-                  Buy
-                </Button>
-                <Button variant="danger">Empty Cart</Button>
+                <a href="/checkout" hidden={this.state.cart.length == 0}>
+                  <Button variant="success" style={{ marginRight: "20px" }} >
+                    Buy
+                  </Button>
+                </a>
+                <Button variant="danger" hidden={this.state.cart.length == 0}>Empty Cart</Button>
               </Card.Body>
             </Card>
           </Container>

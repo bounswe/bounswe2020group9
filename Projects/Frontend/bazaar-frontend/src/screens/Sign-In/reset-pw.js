@@ -79,7 +79,7 @@ export default class ResetPassword extends Component {
     }
     
     return (
-      <div className="entry-form">
+      <div className="entry-form background">
         <Alert variant="success" hidden={this.state.isHiddenSuccess}>
           Your password has been reset.
           You can <Alert.Link href="/signin">sign in</Alert.Link> to your account.

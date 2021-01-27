@@ -1,20 +1,19 @@
-.profile-form {
+.profile-container {
     align-content: center;
     max-width: 60rem;
     margin: auto;
-    margin-top: 15px;
-    margin-bottom: 15px;
     font-size: 80%;
+    padding-top: 20px;
+    padding-bottom: 40px;
 
-    & .profile-container {
-        border-radius: 3px;
+    & .alert {
+        text-align: center;
+    }
+
+    & .profile-form {
         padding: 15px;
-        border: solid 1px;
-        border-color: #e2e2e2;
-        margin-bottom: 35px;
 
         & #header3 {
-            margin-bottom: 20px;
             align-content: center;
         }
         

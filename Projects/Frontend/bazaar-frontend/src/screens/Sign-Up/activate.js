@@ -36,7 +36,7 @@ export default class SignUp extends Component {
     render() {
 
         return (
-          <div className="empty-space">
+          <div className="empty-space background">
             <Alert variant="success" hidden={this.state.isHiddenSuccess}>
               Your account has been activated.
               You can <Alert.Link href="/signin">sign in</Alert.Link> to your account.

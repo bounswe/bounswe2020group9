@@ -151,47 +151,50 @@ export default class SignIn extends Component {
     }
     
     return (
-      <div className="entry-form">
-        <Alert variant="danger" hidden={this.state.isHiddenFail}>
-          Invalid username or password.
-        </Alert>
-        <Alert variant="danger" hidden={this.state.isHiddenUnknown}>
-          Something went wrong. Please try again later.
-        </Alert>
-        <form onSubmit={this.handleSubmit}>
-          <h3>Sign In</h3>
+      <div className='background'>
+        <div className="signin-form">
+          <Alert variant="danger" hidden={this.state.isHiddenFail}>
+            Invalid username or password.
+          </Alert>
+          <Alert variant="danger" hidden={this.state.isHiddenUnknown}>
+            Something went wrong. Please try again later.
+          </Alert>
+          <form onSubmit={this.handleSubmit}>
+            <h3>Sign In</h3>
 
-          <div className="form-group">
-            <label>Email address</label>
-            <input type="text" name="username" className="form-control" placeholder="Enter email"
-              onChange={this.handleChange} />
-          </div>
-
-          <div className="form-group">
-            <label>Password</label>
-            <input type="password" name="password" className="form-control" placeholder="Enter password"
-              onChange={this.handleChange} />
-          </div>
-
-          <div className="form-group">
-            <div className="custom-control custom-checkbox">
-              <input type="checkbox" className="custom-control-input" id="customCheck1" />
-              <label className="custom-control-label" htmlFor="customCheck1">Remember me</label>
+            <div className="form-group">
+              <label>Email address</label>
+              <input type="text" name="username" className="form-control" placeholder="Enter email"
+                onChange={this.handleChange} />
             </div>
-          </div>
 
-          <div id="sign-in-div">
-            <Button variant="primary" id="sign-in" type="submit">Sign in</Button>
-          </div>
+            <div className="form-group">
+              <label>Password</label>
+              <input type="password" name="password" className="form-control" placeholder="Enter password"
+                onChange={this.handleChange} />
+            </div>
 
-          <p className="forgot-password">
-            Forgot <a href="/forgot-password">password?</a>
-          </p>
+            <div className="form-group">
+              <div className="custom-control custom-checkbox">
+                <input type="checkbox" className="custom-control-input" id="customCheck1" />
+                <label className="custom-control-label" htmlFor="customCheck1">Remember me</label>
+              </div>
+            </div>
 
-        </form>
-        <GoogleButton id= "SignInButton" onClick={this.insertGapiScript}className= "btn-google"></GoogleButton> 
-        
+            <div id="sign-in-div">
+              <Button variant="primary" id="sign-in" type="submit">Sign in</Button>
+            </div>
+
+            <p className="forgot-password">
+              Forgot <a href="/forgot-password">password?</a>
+            </p>
+
+          </form>
+          <GoogleButton id= "SignInButton" onClick={this.insertGapiScript}className= "btn-google"></GoogleButton> 
+          
+        </div>
       </div>
+
 
     );
   }

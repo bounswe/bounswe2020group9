@@ -4,6 +4,8 @@ import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
 import Cookies from 'js-cookie';
 import {serverUrl} from '../../utils/get-url'
 import { Button , Alert} from "react-bootstrap";
+import CategoryBar from "../../components/category-bar/category-bar";
+
 
 import "./profilepage.scss";
 import { faGlassWhiskey } from "@fortawesome/free-solid-svg-icons";
@@ -17,20 +19,17 @@ export default class ProfilePage extends Component {
           currpw: '',
           newpw: '',
           confpw: '',
-          fname: '',
-          lname: '',
+          first_name: '',
+          last_name: '',
           fullAddress: '',
           addressName: '',
           postalCode: '',
-          utype: '',
+          user_type: 0,
           token: '',
           isCustomer: true,
           redirect: null,
           hasError: false,
-          isHiddenSuccessPw: true,
-          isHiddenSuccess: true,
-          isHiddenFail: true,
-          isHiddenUnknown: true,
+          isHiddenStates: [true, true, true, true],
           errors: {}
         //   user_id: Cookies.get("user_id")
         }
@@ -41,6 +40,14 @@ export default class ProfilePage extends Component {
         event.preventDefault();
         this.setState({ [event.target.name]: event.target.value });
         
+      }
+
+      setHiddenStates(showNumber) {
+        let tempStates = this.state.isHiddenStates;
+        for (let i=0;i<tempStates.length;i++) {
+          tempStates[i] = !(i == showNumber);
+        }
+        this.setState({isHiddenStates: tempStates});
       }
 
       handlePasswordValidation(){
@@ -81,7 +88,7 @@ export default class ProfilePage extends Component {
 
         let myCookie = read_cookie('user');
         body.append("user_id", myCookie.user_id)
-        this.setState({utype: myCookie.user_type})
+        this.setState({user_type: myCookie.user_type})
         const header = {headers: {Authorization: "Token "+myCookie.token}};
         
         if (this.handlePasswordValidation()) {
@@ -91,15 +98,15 @@ export default class ProfilePage extends Component {
               console.log(res);
               console.log(res.data);
               //this.setState({ redirect: "/signin" });
-              this.setState({isHiddenSuccessPw: false})
+              this.setHiddenStates(1);
             }).catch((error) => {
               if (error.response) {
                 // Request made and server responded
-                this.setState({isHiddenFail: false})
+                this.setHiddenStates(2);
     
               } else {
                 // Something happened in setting up the request that triggered an Error
-                this.setState({isHiddenUnknown: false})
+                this.setHiddenStates(3);
 
               }
     
@@ -115,34 +122,19 @@ export default class ProfilePage extends Component {
         let formIsValid = true;
         let new_errors = {};
 
-        if(this.state.fname.length === 0){
+        if(this.state.first_name.length === 0){
           formIsValid = false;
-          new_errors["fname"] = "Please provide your name.";
+          new_errors["first_name"] = "Please provide your name.";
         }
   
-        if(this.state.lname.length === 0){
+        if(this.state.last_name.length === 0){
           formIsValid = false;
-          new_errors["lname"] = "Please provide your last name";      
+          new_errors["last_name"] = "Please provide your last name";      
         }
    
         if(this.state.company.length === 0){
           formIsValid = false;
           new_errors["company"] = "Please provide your company";      
-        }
-
-        if (this.state.addressName.length === 0){
-          formIsValid = false;
-          new_errors["addressName"] = "Please provide your address name";      
-        }
-        
-        if (this.state.fullAddress.length === 0){
-          formIsValid = false;
-          new_errors["fullAddress"] = "Please provide your full address";      
-        }
-
-        if (this.state.postalCode.length === 0){
-          formIsValid = false;
-          new_errors["postalCode"] = "Please provide your postal code.";      
         }
 
         this.setState({errors: new_errors});
@@ -151,9 +143,6 @@ export default class ProfilePage extends Component {
     
       handleSubmit = event => {  
         event.preventDefault();
-        const body = new FormData();
-        body.append("first_name", this.state.fname);
-        body.append("last_name", this.state.lname);
 
         let myCookie = read_cookie('user');
         const header = {
@@ -161,48 +150,59 @@ export default class ProfilePage extends Component {
             Authorization: "Token "+myCookie.token
           }
         };
-        if (this.state.utype === 2 && this.handleVendorValidation()){
-          body.append("address", this.state.fullAddress);
-          body.append("address_name", this.state.addressName);
-          body.append("company", this.state.company);
-          body.append("postal_code", this.state.postalCode);
+        if (this.state.user_type === 2 && this.handleVendorValidation()){
+          const data = {
+            first_name: this.state.first_name,
+            last_name: this.state.last_name,
+            company: this.state.company,
+          }
 
-          axios.put(serverUrl+'api/user/profile/', body, header)
+          axios.put(serverUrl+'api/user/profile/', data, header)
           .then(res => {
-    
-            this.setState({isHiddenSuccess: false})
+            this.setHiddenStates(0);
+
           }).catch((error) => {
             if (error.response) {
               // Request made and server responded
+              this.setHiddenStates(2);
               console.log(error.response)
             } else if (error.request) {
+              this.setHiddenStates(3);
               // The request was made but no response was received
               console.log(error.request);
             } else {
               // Something happened in setting up the request that triggered an Error
               console.log('Error', error.message);
             }
-            this.setState({isHiddenUnknown: false})
+            this.setHiddenStates(3);
+
   
   
         })
-        } else if (this.state.utype === 1){
-          axios.put(serverUrl+'api/user/profile/', body, header)
+        } else if (this.state.user_type === 1){
+          const data = {
+            first_name: this.state.first_name,
+            last_name: this.state.last_name,
+          }
+          axios.put(serverUrl+'api/user/profile/', data, header)
           .then(res => {
-    
-            this.setState({isHiddenSuccess: false})
+            this.setHiddenStates(0);
           }).catch((error) => {
             if (error.response) {
               // Request made and server responded
+              this.setHiddenStates(2);
               console.log(error.response)
             } else if (error.request) {
               // The request was made but no response was received
+              this.setHiddenStates(3);
               console.log(error.request);
             } else {
               // Something happened in setting up the request that triggered an Error
+              this.setHiddenStates(3);
               console.log('Error', error.message);
             }
-            this.setState({isHiddenUnknown: false})
+            this.setHiddenStates(3);
+
   
   
         })
@@ -216,132 +216,135 @@ export default class ProfilePage extends Component {
         let myCookie = read_cookie('user')
         axios.get(serverUrl+`api/user/${myCookie.user_id}/`)
           .then(res => {
-              console.log(res.data)
-              this.setState({fname : res.data.first_name})
-              this.setState({lname : res.data.last_name})
+              console.log("res data:  "+res.data.user_type)
+              this.setState({first_name : res.data.first_name})
+              this.setState({last_name : res.data.last_name})
               
               if (res.data.user_type === 1){
-                this.setState({user_type: "Customer"});
+
+                this.setState({user_type: 1});
               } else {
-                this.setState({user_type: "Vendor"});
+                this.setState({user_type: 2});
                 this.setState({company : res.data.company})
                 this.setState({isCustomer : false})
 
               }
 
+          }).catch(err => {
+            console.log("error:  "+err)
           })
+        
 
       }
 
 
     render() {
-      if (this.state.hasError) {
-        // You can render any custom fallback UI
-        return <h1>{this.validate.message}</h1>;
-      }
-        return (
-            <div className="profile-form">
-              <Alert variant="success" hidden={this.state.isHiddenSuccess}>
-                Profile details updated.
-              </Alert>
-              <Alert variant="success" hidden={this.state.isHiddenSuccessPw}>
-                Password updated.
-              </Alert>
-              <Alert variant="danger" hidden={this.state.isHiddenFail}>
-                Wrong password.
-              </Alert>
-              <Alert variant="danger" hidden={this.state.isHiddenUnknown}>
-                Something went wrong.
-              </Alert>
-                <div className="profile-container justify-content-center" id="header3">
-                    <h2 className="text-center">Profile Page</h2>
-                </div>
-                <div className="profile-container row">
+      return (
+        <div className='background'>
+          <CategoryBar></CategoryBar>
+          <div className="profile-container">
+            <Alert variant="success" hidden={this.state.isHiddenStates[0]}>
+              Profile details updated.
+            </Alert>
+            <Alert variant="success" hidden={this.state.isHiddenStates[1]}>
+              Password updated.
+            </Alert>
+            <Alert variant="danger" hidden={this.state.isHiddenStates[2]}>
+              Wrong password.
+            </Alert>
+            <Alert variant="danger" hidden={this.state.isHiddenStates[3]}>
+              Something went wrong.
+            </Alert>
+              <div className="justify-content-center" id="header3">
+                  <h2 className="text-center">Profile Page</h2>
+              </div>
+              <div className="profile-form row">
 
-                    <div className=" col-lg-6 col-md-6 col-sm-6 no-padding-left border-right">
-                        <h3 className="text-center heading-2">Change Details</h3>
-                        <div className="account-update">
-                            <form className='needs-validation' onSubmit={this.handleSubmit} noValidate>
-                              <div className="form-group row">
-                                  <label className="col-4 align-middle">First Name</label>
-                                  <div className="col">
-                                    <input type="text" name="fname"className="form-control col" value = {this.state.fname}
-                                    onChange={this.handleChange} required/>
-                                    <div className="error">{this.state.errors["fname"]}</div>                                
-                                  </div>
-                              </div>
-                              <div className="form-group row">
-                                  <label className="col-4 align-middle">Last Name</label>
-                                  <div className="col">
-                                    <input type="text" name="lname"className="form-control col" value = {this.state.lname}
-                                    onChange={this.handleChange} required/>
-                                    <div className="error">{this.state.errors["lname"]}</div>
-                                  </div>
-                              </div>
-                              <div className="form-group row" hidden={this.state.isCustomer}>
-                                  <label className="col-4 align-middle">Company</label>
-                                  <div className="col">
-                                    <input type="text" name="company" className="form-control col" value = {this.state.company}
-                                    onChange={this.handleChange}/>
-                                    <div className="error">{this.state.errors["company"]}</div>
-                                  </div>
-                              </div>
-                              <div className="form-group row">
-                                  <label className="col-4 align-middle">User Type</label>
-                                  <div className="col">
-                                    <input type="text" name="lname"className="form-control col" value = {this.state.user_type}
-                                    onChange={this.handleChange} disabled/>
-                                  </div>
-                              </div>
+                  <div className=" col-lg-6 col-md-6 col-sm-6 no-padding-left border-right border-left">
+                      <h3 className="text-center heading-2">Change Details</h3>
+                      <div className="account-update">
+                          <form className='needs-validation' onSubmit={this.handleSubmit} noValidate>
+                            <div className="form-group row">
+                                <label className="col-4 align-middle">First Name</label>
+                                <div className="col">
+                                  <input type="text" name="first_name"className="form-control col" value = {this.state.first_name}
+                                  onChange={this.handleChange} required/>
+                                  <div className="error">{this.state.errors["first_name"]}</div>                                
+                                </div>
+                            </div>
+                            <div className="form-group row">
+                                <label className="col-4 align-middle">Last Name</label>
+                                <div className="col">
+                                  <input type="text" name="last_name"className="form-control col" value = {this.state.last_name}
+                                  onChange={this.handleChange} required/>
+                                  <div className="error">{this.state.errors["last_name"]}</div>
+                                </div>
+                            </div>
+                            <div className="form-group row" hidden={this.state.isCustomer}>
+                                <label className="col-4 align-middle">Company</label>
+                                <div className="col">
+                                  <input type="text" name="company" className="form-control col" value = {this.state.company}
+                                  onChange={this.handleChange}/>
+                                  <div className="error">{this.state.errors["company"]}</div>
+                                </div>
+                            </div>
+                            <div className="form-group row">
+                                <label className="col-4 align-middle">User Type</label>
+                                <div className="col">
+                                  <input type="text" name="last_name"className="form-control col" value = {this.state.user_type}
+                                  onChange={this.handleChange} disabled/>
+                                </div>
+                            </div>
 
-                              <div id="save-changes-div">
-                                <Button variant="primary" id="save-changes" type="submit">Save changes</Button>
-                              </div>
+                            <div id="save-changes-div">
+                              <Button variant="primary" id="save-changes" type="submit">Save changes</Button>
+                            </div>
 
-                            </form>
-                        </div>
-                    </div>
-                    <div className=" col-lg-6 col-md-6 col-sm-6 no-padding-left">
-                    <h3 className="text-center heading-2">Change Password</h3>
-                        <div className="password-update">
-                            <form className='needs-validation' onSubmit={this.handlePasswordSubmit} noValidate>
-                              <div className="form-group row">
-                                  <label className="col-4 align-middle">Password</label>
-                                  <div className="col password-input">
-                                    <input type="password" name="currpw" className="form-control col" placeholder="Password" 
-                                    onChange={this.handleChange}/>
-                                    <div className="error">{this.state.errors["currpw"]}</div>
-                                  </div>
-                              </div>                    
-                              <div className="form-group row">
-                                  <label className="col-4 align-middle">New Password</label>
-                                  <div className="col password-input">
-                                    <input type="password" name="newpw" className="form-control col" placeholder="New password" 
-                                    onChange={this.handleChange}/>
-                                    <div className="error">{this.state.errors["newpw"]}</div>
-                                  </div>
-                              </div>
-                              <div className="form-group row">
-                                  <label className="col-4 align-middle">New Password(again)</label>
-                                  <div className="col password-input">
-                                    <input type="password" name="confpw" className="form-control col" placeholder="New password(again)" 
-                                    onChange={this.handleChange}/>
-                                    <div className="error">{this.state.errors["confpw"]}</div>
+                          </form>
+                      </div>
+                  </div>
+                  <div className=" col-lg-6 col-md-6 col-sm-6 no-padding-left border-right">
+                  <h3 className="text-center heading-2">Change Password</h3>
+                      <div className="password-update">
+                          <form className='needs-validation' onSubmit={this.handlePasswordSubmit} noValidate>
+                            <div className="form-group row">
+                                <label className="col-4 align-middle">Password</label>
+                                <div className="col password-input">
+                                  <input type="password" name="currpw" className="form-control col" placeholder="Password" 
+                                  onChange={this.handleChange}/>
+                                  <div className="error">{this.state.errors["currpw"]}</div>
+                                </div>
+                            </div>                    
+                            <div className="form-group row">
+                                <label className="col-4 align-middle">New Password</label>
+                                <div className="col password-input">
+                                  <input type="password" name="newpw" className="form-control col" placeholder="New password" 
+                                  onChange={this.handleChange}/>
+                                  <div className="error">{this.state.errors["newpw"]}</div>
+                                </div>
+                            </div>
+                            <div className="form-group row">
+                                <label className="col-4 align-middle">New Password(again)</label>
+                                <div className="col password-input">
+                                  <input type="password" name="confpw" className="form-control col" placeholder="New password(again)" 
+                                  onChange={this.handleChange}/>
+                                  <div className="error">{this.state.errors["confpw"]}</div>
 
-                                  </div>
-                              </div>
-                              <div id="save-changes-div">
-                                <Button variant="primary" id="save-changes" type="submit">Save changes</Button>
-                              </div>
+                                </div>
+                            </div>
+                            <div id="save-changes-div">
+                              <Button variant="primary" id="save-changes" type="submit">Save changes</Button>
+                            </div>
 
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                  
-            </div>
-            
+                          </form>
+                      </div>
+                  </div>
+              </div>
+                
+          </div>
+        </div>
+          
 
-        );
+      );
     }
 }

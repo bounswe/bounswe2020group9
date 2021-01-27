@@ -1,0 +1,35 @@
+.vendor-orders-display {
+  padding-left: 10rem;
+  padding-right: 10rem;
+  margin: auto;
+  & .delivery-button {
+    margin-right: 10px;
+    margin-left: 10px;
+
+  }
+  & .delivered {
+    color: darkgreen;
+    font-weight: 600;
+  }
+  & .on-the-way {
+    color: darkblue;
+    font-weight: 600;
+  }
+  & .preparing {
+    color: rgb(155, 155, 55);
+    font-weight: 600;
+  }
+  & .cancelled {
+    color: darkred;
+    font-weight: 600;
+  }
+}
+
+.recipient-name {
+  color: black;
+}
+
+.recipient-name:hover {
+  color: #f3ac4f!important;
+  text-decoration: none!important;
+}
