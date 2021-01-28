@@ -4,16 +4,17 @@ from django.utils import timezone
 from user.models import User
 from product.models import Delivery
 
+# Create your message models here.
 
-# Create your models here.
 
-
+# Conversation is a list of Messages between 2 Users
 class Conversation(models.Model):
     user1 = models.ForeignKey(User, related_name="user1", on_delete=models.CASCADE)
     user2 = models.ForeignKey(User, related_name="user2", on_delete=models.CASCADE)
     last_message_timestamp = models.DateTimeField(default=timezone.now)
 
 
+# One body of message that has been sent in a Conversation
 class Message(models.Model):
     timestamp = models.DateTimeField(default=timezone.now)
     conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE)

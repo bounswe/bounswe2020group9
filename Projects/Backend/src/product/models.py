@@ -5,7 +5,7 @@ from location.models import Location
 from user.models import Vendor, Customer, User
 
 
-# Create your models here.
+# Create your product models here.
 
 
 class ProductList(models.Model):
@@ -22,6 +22,7 @@ def productImage(instance, filename):
     return '/'.join(['images', str(instance.name), filename])
 
 
+# Category has a parent in the same table, De Facto rule is that parent of a parent will always be the id=1
 class Category(models.Model):
     name = models.CharField(max_length=255, unique=True)
     parent = models.ForeignKey("self", default=0, on_delete=models.CASCADE, db_constraint=False)
@@ -54,6 +55,7 @@ class Product(models.Model):
         return self.name + " " + self.vendor.user.username
 
 
+# SubOrder is equivalent to a Product in a Customer(User)'s Cart
 class SubOrder(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)

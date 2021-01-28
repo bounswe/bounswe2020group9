@@ -33,6 +33,7 @@ class CategorySerializer(serializers.ModelSerializer):
         return fields
 
     def to_representation(self, instance):
+        # We need to swap null parent with empty string ""
         data = super().to_representation(instance)
         if not data['parent']:
             data['parent'] = ""

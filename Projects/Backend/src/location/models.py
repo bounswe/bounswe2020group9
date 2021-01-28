@@ -1,6 +1,6 @@
 from django.db import models
 
-# Create your models here.
+# Create your location models here.
 from user.models import User
 
 

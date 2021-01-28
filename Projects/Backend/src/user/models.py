@@ -6,9 +6,15 @@ from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 
 
-# Create your models here.
+# Create your user models here.
+# There are 4 User Tables, User, Customer, Vendor, Admin
+
 
 class User(AbstractUser):
+    """
+    Every user is one of three: Customer, Vendor or Admin
+    Every user also has a related field in the related table,
+    """
     USER_TYPES = (
         (1, "Customer"),
         (2, "Vendor"),

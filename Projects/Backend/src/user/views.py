@@ -224,6 +224,7 @@ class UserSignupAPIView(APIView):
             return Response(serializer._errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+# UserProfile returns UserDetail based on token
 class UserProfileAPIView(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
