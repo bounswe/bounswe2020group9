@@ -22,6 +22,22 @@ export default class Messages extends Component {
     };
   }
 
+/*
+ * On load:
+ * 1. API Call GET /api/message/all/
+ * 2. Render Two Columns:
+ *  Left Column shows all Conversations as Pills, bold if unread
+ *    On Click: set as unread via API Call GET /api/message/<id>/
+ *  Right Column shows one Conversation, and the "Send Message" Form, depending on which Pill is active on Left Column
+ *    Send Message Form:
+ *    API Call POST /api/message/
+ *    sent the message body to the user of the current Conversation
+ *
+ *  New Message Pill: opens "Create Conversation" Form on Right Column
+ *    New Conversation Form:
+ *    API Call POST /api/message/
+ *    sent the message body to the entered user
+ */
   componentDidMount() {
     let myCookie = read_cookie("user");
     const headers = {
@@ -125,6 +141,7 @@ export default class Messages extends Component {
     });
     if (messages === undefined) messages = [];
 
+    // One Conversation
     let Conversation = (conversation) => {
       conversation = conversation[1];
       return conversation.map((message) => {
@@ -146,6 +163,7 @@ export default class Messages extends Component {
       });
     };
 
+    // All Conversations, uses the Conversation above + Create Conversation
     let Conversations = this.state.conversations.map((conversation) => {
       return (
         <div
@@ -194,6 +212,7 @@ export default class Messages extends Component {
       );
     });
 
+    // related Pills for all Conversations + Create Conversation Pill
     let LeftCol = conversations.map((user) => {
       return (
         <a

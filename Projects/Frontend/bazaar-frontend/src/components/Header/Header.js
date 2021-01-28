@@ -89,6 +89,35 @@ class Header extends Component {
     });
   };
 
+  /*
+   * On load:
+   *  Icon - Goes to Homepage "/"
+   *  Search Bar - Search products using API Call TODO
+   *
+   *  If Signed in:
+   *    If Vendor:
+   *      Inventory Dropdown:
+   *        My Products - opens vendor's product page "/inventory"
+   *        Add Product - opens vendor's add product page "/add-product"
+   *        My Orders - opens vendor order page "/my-orders-vendor"
+   *        Profile - Dropdown, opens profile page "/profile-page"
+   *    If Customer:
+   *      Profile Dropdown:
+   *        My Orders - opens customer's order page "/my-orders"
+   *        View Profile - opens profile page "/profile-page"
+   *        My Addresses - opens customer's addresses page "/MyAddresses"
+   *        My Lists - opens customer's lists page "/my-list"
+   *        My Comments - opens customer's comments page "/my-comments"
+   *        Cart Dropdown, opens customer cart page "/cart" (uses GET "/api/user/cart/" to show cart amount)
+   *    If Admin: TODO
+   *
+   *    Messages - Dropdown, opens messages page "/messages" (uses GET "/api/message/conversations/" to show new messages)
+   *    Notifications - Opens Notifications Modal (uses GET "/api/message/notifications/" to show new notifications)
+   *
+   *  If not Signed in:
+   *    Sign-up - Sign-up page "/SignUp"
+   *    Sign-in - Sign-in page "/SignIn"
+   */
   componentDidMount() {
     let myCookie = read_cookie("user");
 
@@ -176,6 +205,7 @@ class Header extends Component {
 
     let SignPart;
 
+    //Notification modal
     let Notifications = this.state.notifications.map((notification) => {
       return (
         <a

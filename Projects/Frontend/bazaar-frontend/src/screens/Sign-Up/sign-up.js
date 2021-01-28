@@ -128,6 +128,9 @@ export default class SignUp extends Component {
             return <Redirect to={this.state.redirect} />
           }
         return (
+          /*
+            Terms and Conditions checkbox: opens TermsNConditions Modal, must be checked to sign up
+           */
           <div className='background'>
 
             <Modal show={this.state.isOpen} onHide={this.closeModal}>

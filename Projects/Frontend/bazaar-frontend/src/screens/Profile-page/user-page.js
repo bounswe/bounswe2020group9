@@ -30,7 +30,7 @@ export default class ProfilePage extends Component {
       // Modal states
       //Customer states
       show_comments_modal: false,
-      show_lists_modal: false, // TODO this should redirect instead of opening a modal, fix it later
+      show_lists_modal: false,
       comments: [],
       lists: [],
       //Vendor states
@@ -40,7 +40,15 @@ export default class ProfilePage extends Component {
       products: [],
     };
   }
-
+/*
+ * On load:
+ * 1. Call GET /api/user/<id>/
+ *    -> Display User data on page
+ * 2. If Vendor, API call GET /api/product/vendor/<id>/ and GET /api/location/vendor/<id>/
+ *    -> Display User ID and Products-Locations as Modals
+ * 3. If Customer, call GET /api/user/<id>/lists/ and GET /api/product/comment/user/all/
+ *    -> Display User ID and Comments-Lists as Modals
+ */
   componentDidMount() {
     let myCookie = read_cookie("user");
     this.state.token = myCookie.token;
