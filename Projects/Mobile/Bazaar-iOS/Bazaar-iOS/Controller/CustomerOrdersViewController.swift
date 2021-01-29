@@ -29,7 +29,6 @@ class CustomerOrdersViewController: UIViewController{
     
     
     @IBAction func backButtonPressed(_ sender: UIButton) {
-        
         self.dismiss(animated: true, completion: nil)
     }
     
@@ -109,8 +108,9 @@ extension CustomerOrdersViewController:UITableViewDelegate,UITableViewDataSource
 
         
         cell.ProductImage?.image = UIImage(named:"xmark.circle")
+        var filteredOrders:[OrderData_Cust] = allOrdersInstance.allOrders
+
         //TODO change here
-        let filteredOrders:[OrderData_Cust] = allOrdersInstance.allOrders
         //let filteredProducts:[ProductData] = allProductsInstance.allProducts
         //let filteredVendors:[VendorData] = allVendorsInstance.allVendors
         let order = filteredOrders[indexPath.row]
@@ -351,6 +351,9 @@ class AllOrders {
                 
                 self.dataFetched = true
                 self.allOrders = orders!
+                if let userId = UserDefaults.standard.value(forKey: K.userIdKey) as? Int {
+                    self.allOrders = orders!.filter {$0.customer_id == userId}
+                }
                 self.delegate?.allOrdersAreFetched()
                 print("Fetched orders.")
             } else {

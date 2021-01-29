@@ -68,11 +68,7 @@ class VendorMyOrdersViewController: UIViewController {
                 vendors_dict[vendor.id]=vendor
             }
         }
-        if !(allOrdersInstance.dataFetched) {
-            print("orders not fetched yet,tryin to fetch right now")
-            ordersCannotBeFetched()
-            self.allOrdersInstance.fetchAllOrders()
-        }
+        self.allOrdersInstance.fetchAllOrders()
         
     }
     
