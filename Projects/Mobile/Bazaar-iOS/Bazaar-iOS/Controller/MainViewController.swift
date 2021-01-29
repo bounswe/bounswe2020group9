@@ -21,6 +21,8 @@ class MainViewController: UIViewController{
     var allProductsInstance = AllProducts.shared
     var allVendorsInstance = AllVendors.shared
     var selectedCategoryName: String?
+    var recommendations:[ProductData] = []
+    var recommendationsFetched = false
 
     var selectedCategoryButton: UIButton? {
         didSet{
@@ -213,7 +215,16 @@ extension MainViewController:UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //return 10
         if tableView == productTableView {
-            return allProductsInstance.allProducts.filter{($0.category.parent.contains(selectedCategoryName!)) || $0.category.name.contains(selectedCategoryName!)}.count
+            if recommendationsFetched {
+                if (recommendations.filter{($0.category.parent.contains(selectedCategoryName!)) || $0.category.name.contains(selectedCategoryName!)}.count > 1) {
+                    return recommendations.filter{($0.category.parent.contains(selectedCategoryName!)) || $0.category.name.contains(selectedCategoryName!)}.count
+                } else {
+                    return allProductsInstance.allProducts.filter{($0.category.parent.contains(selectedCategoryName!)) || $0.category.name.contains(selectedCategoryName!)}.count
+                }
+            } else {
+                return allProductsInstance.allProducts.filter{($0.category.parent.contains(selectedCategoryName!)) || $0.category.name.contains(selectedCategoryName!)}.count
+            }
+            
         }
         if tableView == searchHistoryTableView {
             return searchResults.count
@@ -226,7 +237,14 @@ extension MainViewController:UITableViewDelegate,UITableViewDataSource {
             let cell = productTableView.dequeueReusableCell(withIdentifier: "ReusableProdcutCell", for: indexPath) as! ProductCell
             cell.productImageView?.image = UIImage(named:"xmark.circle")
             //let filteredProducts:[Product] = products.filter { $0.category == selectedCategoryName }
-            let filteredProducts:[ProductData] = allProductsInstance.allProducts.filter{($0.category.parent.contains(selectedCategoryName!)) || $0.category.name.contains(selectedCategoryName!)}
+            var filteredProducts:[ProductData] = allProductsInstance.allProducts.filter{($0.category.parent.contains(selectedCategoryName!)) || $0.category.name.contains(selectedCategoryName!)}
+            if recommendationsFetched {
+                filteredProducts = recommendations.filter{($0.category.parent.contains(selectedCategoryName!)) || $0.category.name.contains(selectedCategoryName!)}
+                if filteredProducts.count < 1 {
+                    recommendationsFetched = false
+                    filteredProducts = allProductsInstance.allProducts.filter{($0.category.parent.contains(selectedCategoryName!)) || $0.category.name.contains(selectedCategoryName!)}
+                }
+            }
             let product = filteredProducts[indexPath.row]
             cell.productNameLabel.text = product.name
             cell.productNameLabel.font = UIFont.systemFont(ofSize: 15, weight: .black)
@@ -313,7 +331,10 @@ extension MainViewController:UITableViewDelegate,UITableViewDataSource {
             }
             
         } else {
-            let filteredProducts:[ProductData] = allProductsInstance.allProducts.filter{($0.category.parent.contains(selectedCategoryName!)) || $0.category.name.contains(selectedCategoryName!)}
+            var filteredProducts:[ProductData] = allProductsInstance.allProducts.filter{($0.category.parent.contains(selectedCategoryName!)) || $0.category.name.contains(selectedCategoryName!)}
+            if recommendationsFetched {
+                filteredProducts = recommendations.filter{($0.category.parent.contains(selectedCategoryName!)) || $0.category.name.contains(selectedCategoryName!)}
+            }
             let product = filteredProducts[indexPath.row]
             performSegue(withIdentifier: "mainToProductDetailSegue", sender: nil)
         }
@@ -403,6 +424,57 @@ extension MainViewController: AllProductsFetchDelegate {
         self.stopIndicator()
         self.productTableView.reloadData()
         self.searchBar.isUserInteractionEnabled = true
+        if let search_history = UserDefaults.standard.value(forKey: K.searchHistoryKey) as? [String]{
+            var search_hist_str = ""
+            if search_history.count == 1 {
+                print("22")
+                search_hist_str = search_history[0]
+                APIManager().search(filterType: "none", sortType: "none", searchWord: search_hist_str) { (result) in
+                    switch result {
+                    case .success(let searchResults):
+                        print("33")
+                        if searchResults.product_list!.count >= 10 {
+                            self.recommendations = searchResults.product_list ?? []
+                            self.recommendationsFetched = true
+                            self.productTableView.reloadData()
+                        } else {
+                            print("44")
+                            self.recommendationsFetched = false
+                        }
+                    case .failure(let err):
+                        print(err)
+                        print("55")
+                        self.recommendationsFetched = false
+                    }
+                }
+            } else if search_history.count > 1 {
+                print("11")
+                search_hist_str = search_history[search_history.count-1]//search_history[0] + " " + search_history[1]
+                APIManager().search(filterType: "none", sortType: "none", searchWord: search_hist_str) { (result) in
+                    switch result {
+                    case .success(let searchResults):
+                        print("66")
+                        if searchResults.product_list!.count >= 10 {
+                            print("77")
+                            self.recommendations = searchResults.product_list ?? []
+                            self.recommendationsFetched = true
+                            self.productTableView.reloadData()
+                        } else {
+                            print("88")
+                            self.recommendationsFetched = false
+                        }
+                    case .failure(let err):
+                        print(err)
+                        print("99")
+                        self.recommendationsFetched = false
+                    }
+                }
+            }
+            
+        } else {
+            self.recommendationsFetched = false
+            print("1010")
+        }
         //DispatchQueue.main.async {
         //  self.productTableView.reloadData()
         // self.searchBar.isUserInteractionEnabled = true

@@ -94,7 +94,6 @@ class SearchResultsViewController: UIViewController {
                 let filters = filterType.split(separator: "&")
                 let filtersValues = filters.map {$0.split(separator: "=")}
                 for filter in filtersValues {
-                    print("... ", filter)
                     if filter[0] == "pr" {
                         self.products = self.products.filter {$0.rating >= Double(filter[1])!}
                     } else if filter[0] == "prc" {
