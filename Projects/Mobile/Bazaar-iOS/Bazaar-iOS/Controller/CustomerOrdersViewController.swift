@@ -180,11 +180,11 @@ extension CustomerOrdersViewController:UITableViewDelegate,UITableViewDataSource
                 APIManager().deleteOrder(delivery_id: canceling_dId, status: 4){ (result) in
                     switch result {
                     case .success(_):
-                        alertController.message = "\(canceling_dId) is successfully deleted"
+                        alertController.message = "\(canceling_dId) is successfully canceled"
                         self.present(alertController, animated: true, completion: nil)
                         tableView.reloadData()
                     case .failure(_):
-                        alertController.message = "\(canceling_dId) cannot be deleted"
+                        alertController.message = "\(canceling_dId) could not cancel the order"
                         self.present(alertController, animated: true, completion: nil)
                     }
                 }
@@ -206,6 +206,8 @@ extension CustomerOrdersViewController:UITableViewDelegate,UITableViewDataSource
         let order_id = allOrdersInstance.allOrders[indexPath!.row].id
         if let detailResults = segue.destination as? OrderDetailViewController {
             detailResults.order_id = order_id
+            detailResults.isCustomer = true
+            
         }
     
     }

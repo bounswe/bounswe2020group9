@@ -38,6 +38,7 @@ class VendorNotificationViewController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         NotificationTableView.dataSource = self
+        NotificationTableView.delegate = self
         allNotificationsInstance.delegate = self
         allProductsInstance.delegate = self
         allOrdersInstance.delegate = self
@@ -67,6 +68,7 @@ class VendorNotificationViewController: UIViewController{
                 orders_dict[order.id]=order
             }
         }
+        self.allNotificationsInstance.fetchAllNotifications()
         if !(allNotificationsInstance.dataFetched) {
             print("notification not fetched yet,tryin to fetch right now")
             notificationsCannotBeFetched()
@@ -137,20 +139,20 @@ extension VendorNotificationViewController:UITableViewDelegate,UITableViewDataSo
         
         if (!notf_isVisited){
             cell.bodyLabel.text = notf_body
-            cell.bodyLabel.font = UIFont.systemFont(ofSize: 20, weight: .black)
+            cell.bodyLabel.font = UIFont.systemFont(ofSize: 10, weight: .black)
             cell.seenStatusLabel.text = "New notification"
             cell.seenStatusLabel.font = UIFont.systemFont(ofSize: 15, weight: .black)
             cell.productNameLabel.text = product.name
-            cell.productNameLabel.font = UIFont.systemFont(ofSize: 13, weight: .black)
+            cell.productNameLabel.font = UIFont.systemFont(ofSize: 10, weight: .regular)
             cell.timeLabel.text = "Time : " + notf_time
             cell.timeLabel.font = UIFont.systemFont(ofSize: 13, weight: .black)
         }else{
             cell.bodyLabel.text = notf_body
-            cell.bodyLabel.font = UIFont.systemFont(ofSize: 20, weight: .regular)
+            cell.bodyLabel.font = UIFont.systemFont(ofSize: 10, weight: .regular)
             cell.seenStatusLabel.text = "Seen"
             cell.seenStatusLabel.font = UIFont.systemFont(ofSize: 15, weight: .regular)
             cell.productNameLabel.text = product.name
-            cell.productNameLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
+            cell.productNameLabel.font = UIFont.systemFont(ofSize: 10, weight: .regular)
             cell.timeLabel.text = "Time : " + notf_time
             cell.timeLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         }
