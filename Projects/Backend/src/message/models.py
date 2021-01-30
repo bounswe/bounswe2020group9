@@ -4,7 +4,8 @@ from django.utils import timezone
 from user.models import User
 from product.models import Delivery
 
-# Create your message models here.
+# Admin imports
+from product.models import Comment
 
 
 # Conversation is a list of Messages between 2 Users
@@ -31,3 +32,22 @@ class Notification(models.Model):
     type = models.CharField(max_length=255)
     delivery_id = models.ForeignKey(Delivery, on_delete=models.CASCADE, null=True, default=None)
     is_visited = models.BooleanField(default=False)
+
+
+#Admin models
+class Report(models.Model):
+    REPORT_TYPES = (
+        (1, "User"),
+        (2, "Comment"),
+    )
+    report_type = models.PositiveSmallIntegerField(choices=REPORT_TYPES, default=1)
+    timestamp = models.DateTimeField(default=timezone.now)
+    user = models.ForeignKey(User, related_name="user", on_delete=models.CASCADE)
+    reported_user = models.ForeignKey(User, related_name="reported_user", on_delete=models.CASCADE, null=True, default=None)
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, null=True, default=None)
+
+
+
+
+
+

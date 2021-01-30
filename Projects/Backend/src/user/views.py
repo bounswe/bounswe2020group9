@@ -99,6 +99,8 @@ class UserLoginAPIView(ObtainAuthToken):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         u = User.objects.get(id=user.pk)
+        if u.is_banned:
+            return Response({"message": "User is banned."})
         u.last_login = timezone.now()
         u.save()
         password = serializer.validated_data['password']
