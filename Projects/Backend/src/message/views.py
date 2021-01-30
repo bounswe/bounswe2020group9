@@ -278,6 +278,9 @@ class Reports(APIView):
 
         report_type = int(request.data["report_type"])
         reported_id = int(request.data["reported_id"])
+        available_report = Report.objects.filter(report_type=report_type, reported_user_id= reported_id, user=user) | Report.objects.filter(report_type=report_type, comment_id= reported_id, user=user)
+        if len(available_report) > 0:
+            return Response({"message": "You have already reported this issue."})
         report = Report()
         report.report_type = report_type
         report.user = user
