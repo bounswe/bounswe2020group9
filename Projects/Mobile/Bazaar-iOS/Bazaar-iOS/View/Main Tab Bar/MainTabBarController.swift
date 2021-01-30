@@ -2,42 +2,30 @@
 //  MainTabBarController.swift
 //  Bazaar-iOS
 //
-//  Created by alc on 12.11.2020.
+//  Created by Alcan Ünsal on 12.11.2020.
 //
 
 import UIKit
 
 class MainTabBarController: UITabBarController, UITabBarControllerDelegate {
     
-    
+    /*
+     function for doing any additional setup after loading the view.
+     */
     override func viewDidLoad() {
         super.viewDidLoad()
         self.delegate = self
-        
-        //setupTabBar()
-                
-        //setTabBarImages()
-                
-        //setTabBarTitles()
-        // Do any additional setup after loading the view.
     }
     
+    /*
+     function that sets up the tab bar with view controllers
+     */
     func setupTabBar () {
         let mainScreenStoryboard = UIStoryboard(name: "mainScreen", bundle: nil).instantiateViewController(withIdentifier: "mainScreenViewController")
 
         let mainScreenViewController = UINavigationController(rootViewController: mainScreenStoryboard)
 
         viewControllers = [mainScreenViewController]
-
-        //guard let items = tabBar.items else { return }
-        //for item in items {
-        //    item.imageInsets = UIEdgeInsets(top: 4, left: 0, bottom: -4, right: 0)
-        //}
-        
-        //mainScreenViewController.tabBarItem.image = UIImage(systemName: "line.horizontal.3")?.withTintColor(UIColor.gray)
-        //mainScreenViewController.tabBarItem.selectedImage = UIImage(systemName: "line.horizontal.3")?.withTintColor(UIColor.blue)
-        //mainScreenViewController.tabBarItem.title = "Kategoriler"
-
     }
     
     func setTabBarImages () {

@@ -7,6 +7,9 @@
 
 import Foundation
 
+/*
+ a struct for storing the constant UserDefaults keys.
+ */
 struct K {
     static let isLoggedinKey = "isLoggedIn"
     static let searchHistoryKey = "searchHistory"

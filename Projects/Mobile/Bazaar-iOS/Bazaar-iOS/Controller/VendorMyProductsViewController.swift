@@ -14,6 +14,10 @@ class VendorMyProductsViewController: UIViewController {
     var vendor:VendorData?
     var products:[ProductData] = []
     
+    /*
+     function that is automatically called when the view first appears on screen.
+     used for fetching API related data and setting the initial values for the views.
+     */
     override func viewDidLoad() {
         super.viewDidLoad()
         productsTableView.delegate = self
@@ -32,17 +36,24 @@ class VendorMyProductsViewController: UIViewController {
                 case .failure(let error):
                     self.products = []
                     print(error)
-                // error ver
                 }
             }
         }
     }
-    
+    /*
+     function that is automatically called every time before the view will appear on screen.
+     used for reloading the data for the table view.
+     */
     override func viewWillAppear(_ animated: Bool) {
         self.productsTableView.reloadData()
     }
     
+    // MARK: - Navigation
+    
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destination.
+        // Pass the selected object to the new view controller.
         if let addEditProductVC = segue.destination as? VendorAddEditProductViewController {
             let indexPath = self.productsTableView.indexPathForSelectedRow
             addEditProductVC.delegate = self
@@ -50,16 +61,22 @@ class VendorMyProductsViewController: UIViewController {
                 addEditProductVC.product = products[indexPath!.row]
                 addEditProductVC.isEdit = true
             } else {
-                
                 addEditProductVC.isEdit = false
             }
         }
     }
     
+    /*
+     function that is called when the + button on the top right is pressed.
+     used for segueing to VendorAddEditProductViewController.
+     */
     @IBAction func addProductButtonPressed(_ sender: Any) {
         performSegue(withIdentifier: "VendorMyProductsToAddEditProductSegue", sender: nil)
     }
     
+    
+     /*function that decides if a segue from this view controller to another should be performed or not.
+     */
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
         if identifier == "VendorMyProductsToAddEditProductSegue" {
              return self.productsTableView.indexPathForSelectedRow != nil
@@ -69,10 +86,15 @@ class VendorMyProductsViewController: UIViewController {
 }
 
 extension VendorMyProductsViewController: UITableViewDelegate, UITableViewDataSource {
+    /*
+     function that sets the number of rows in a tableview.
+     */
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return products.count
     }
-    
+    /*
+     function that is called for filling out the data of a UITableViewCell while it's rendered
+     */
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = productsTableView.dequeueReusableCell(withIdentifier: "ReusableProdcutCell") as! ProductCell
         let product = products[indexPath.row]
@@ -115,6 +137,10 @@ extension VendorMyProductsViewController: UITableViewDelegate, UITableViewDataSo
         return cell
     }
     
+    /*
+     function that is called when a UITableViewCell is selected via clicking.
+     used for segueing to VendorAddEditProductViewController.
+     */
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if (shouldPerformSegue(withIdentifier: "VendorMyProductsToAddEditProductSegue", sender: nil)) {
             performSegue(withIdentifier: "VendorMyProductsToAddEditProductSegue", sender: nil)
@@ -124,6 +150,10 @@ extension VendorMyProductsViewController: UITableViewDelegate, UITableViewDataSo
 }
 
 extension VendorMyProductsViewController: VendorAddEditProductViewControllerDelegate {
+    /*
+     function that is called when a new product is added or some product is edited.
+     fetches the final version of vendor's products by using APIManager's getVendorsProducts function.
+     */
     func vendorAddEditProductViewControllerResponse() {
         if let vendorId = UserDefaults.standard.value(forKey: K.userIdKey) as? Int{
             APIManager().getVendorsProducts(vendorId: vendorId) { (result) in

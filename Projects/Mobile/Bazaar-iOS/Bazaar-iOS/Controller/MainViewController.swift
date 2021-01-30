@@ -49,6 +49,9 @@ class MainViewController: UIViewController{
     var brandsEndIndex: Int = 0
     var searchTextField: UITextField?
     
+    /*
+     function that is automatically called every time before the view will appear on screen
+     */
     override func viewWillAppear(_ animated: Bool) {
         searchHistoryTableView.reloadData()
         productTableView.reloadData()
@@ -79,9 +82,7 @@ class MainViewController: UIViewController{
                 }
                 
             })
-            //self.allVendorsInstance.fetchAllVendors()
         }
-        
         searchTextField?.alpha = 1.0
         searchResults = searchHistory
         historyEndIndex = searchHistory.count
@@ -91,12 +92,18 @@ class MainViewController: UIViewController{
         self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
+    /*
+     function that is automatically called every time before the view will disappear from screen.
+     */
     override func viewWillDisappear(_ animated: Bool) {
         searchResults = searchHistory
         searchBar.searchTextField.text = ""
         self.navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
+    /*
+     function that is automatically called when the view first appears on screen.
+     */
     override func viewDidLoad() {
         super.viewDidLoad()
         searchBar.delegate = self
@@ -112,7 +119,6 @@ class MainViewController: UIViewController{
         self.view.sendSubviewToBack(searchHistoryTableView)
         self.view.sendSubviewToBack(searchHistoryTableView)
         categoryCollectionView.register(CategoryCollectionViewCell.self, forCellWithReuseIdentifier:  "CategoryCollectionViewCell")
-        //generateProducts()
         createIndicatorView()
         let okButton = UIAlertAction(title: "Retry", style: .cancel, handler: { action in
             // fetch products
@@ -121,30 +127,32 @@ class MainViewController: UIViewController{
         networkFailedAlert.addAction(okButton)
         selectedCategoryName = CLOTHING
         productTableView.register(UINib(nibName: "ProductCell", bundle: nil), forCellReuseIdentifier: "ReusableProdcutCell")
-        //searchHistoryTableView.register(SearchHistoryTableViewCell.self, forCellReuseIdentifier: "searchHistoryCell")
         if !(allProductsInstance.dataFetched) {
             self.searchBar.resignFirstResponder()
             self.searchBar.isUserInteractionEnabled = false
             startIndicator()
             self.allProductsInstance.fetchAllProducts()
         }
-        /*DispatchQueue.global(qos: .background).async {
-            if !(self.allVendorsInstance.dataFetched) {
-                self.allVendorsInstance.fetchAllVendors()
-            }
-        }*/
+
         searchResults = searchHistory
         historyEndIndex = searchHistory.count
         
     }
     
     
+    /*
+     function that reloads the products of the tableview when a category is selected.
+     */
     func categorySelected () {
         self.productTableView.reloadData()
     }
     
     
     // MARK: - Navigation
+    /*
+     function that is automatically called before performing a segue from this view.
+     used for passing the values to the next view controller.
+     */
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         self.searchBar.showsCancelButton = false
         
@@ -153,7 +161,6 @@ class MainViewController: UIViewController{
         dismiss(animated: true, completion: nil)
         self.view.sendSubviewToBack(searchHistoryTableView)
         self.view.sendSubviewToBack(searchHistoryTableView)
-        //searchResults = searchHistory
         if let searchResultsVC = segue.destination as? SearchResultsViewController {
             searchResultsVC.searchWord = searchTextField!.text ?? ""
             let indexpath = searchHistoryTableView.indexPathForSelectedRow
@@ -197,6 +204,9 @@ class MainViewController: UIViewController{
         }
     }
     
+    /*
+     function that decides if a segue from this view controller to another should be performed or not.
+     */
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
         if identifier == "mainToSearchResultsSegue" {
             return !(searchTextField?.text == "")
@@ -207,13 +217,13 @@ class MainViewController: UIViewController{
         }
         return false
     }
-
-
 }
 
 extension MainViewController:UITableViewDelegate,UITableViewDataSource {
+    /*
+     function that sets the number of rows in a tableview.
+     */
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        //return 10
         if tableView == productTableView {
             if recommendationsFetched {
                 if (recommendations.filter{($0.category.parent.contains(selectedCategoryName!)) || $0.category.name.contains(selectedCategoryName!)}.count > 1) {
@@ -232,11 +242,13 @@ extension MainViewController:UITableViewDelegate,UITableViewDataSource {
         return 10
     }
     
+    /*
+     function that is called for filling out the data of a UITableViewCell while it's rendered
+     */
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if tableView == productTableView {
             let cell = productTableView.dequeueReusableCell(withIdentifier: "ReusableProdcutCell", for: indexPath) as! ProductCell
             cell.productImageView?.image = UIImage(named:"xmark.circle")
-            //let filteredProducts:[Product] = products.filter { $0.category == selectedCategoryName }
             var filteredProducts:[ProductData] = allProductsInstance.allProducts.filter{($0.category.parent.contains(selectedCategoryName!)) || $0.category.name.contains(selectedCategoryName!)}
             if recommendationsFetched {
                 filteredProducts = recommendations.filter{($0.category.parent.contains(selectedCategoryName!)) || $0.category.name.contains(selectedCategoryName!)}
@@ -252,27 +264,7 @@ extension MainViewController:UITableViewDelegate,UITableViewDataSource {
             cell.productDescriptionLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
             cell.productPriceLabel.text = "₺"+String(product.price) 
             cell.productPriceLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
-            /*if let url = product.picture {
-                do{
-                    try cell.productImageView.loadImageUsingCache(withUrl: url)
-                    cell.productImageView.contentMode = .scaleAspectFit
-                } catch let error {
-                    print(error)
-                    cell.productImageView.image = UIImage(named:"xmark.circle")
-                    cell.productImageView.tintColor = UIColor.lightGray
-                    cell.productImageView.contentMode = .scaleAspectFit
-                }
-            } else {
-                cell.productImageView.image = UIImage(named:"xmark.circle")
-                cell.productImageView.tintColor = UIColor.lightGray
-                cell.productImageView.contentMode = .scaleAspectFit
-            }*/
-            /*if let index = allProductsInstance.allProducts.firstIndex(of:product) {
-                print("ind:",index, product.name)
-                cell.productImageView.image = allProductsInstance.allImages[index]
-            } else {
-                cell.productImageView.image = UIImage(named: "xmark.circle")
-            }*/
+            
             if allProductsInstance.allImages.keys.contains(product.id) {
                 cell.productImageView.image = allProductsInstance.allImages[product.id]
                 cell.productImageView.contentMode = .scaleAspectFit
@@ -318,6 +310,9 @@ extension MainViewController:UITableViewDelegate,UITableViewDataSource {
         }
     }
     
+    /*
+     function that is called when a UITableViewCell is selected via clicking.
+     */
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if tableView == searchHistoryTableView {
             searchTextField?.text = searchResults[indexPath.row]
@@ -341,6 +336,9 @@ extension MainViewController:UITableViewDelegate,UITableViewDataSource {
         
     }
     
+    /*
+     function that determines if a tableviewcell data should be let to do swipe to delete action.
+     */
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         if tableView == searchHistoryTableView {
             if indexPath.row < historyEndIndex {
@@ -350,6 +348,9 @@ extension MainViewController:UITableViewDelegate,UITableViewDataSource {
         return false
     }
 
+    /*
+     function that performs the necessary data erasings after a tableviewcell is swiped to delete.
+     */
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if (editingStyle == .delete) {
             searchResults.remove(at: indexPath.row)
@@ -361,6 +362,9 @@ extension MainViewController:UITableViewDelegate,UITableViewDataSource {
 }
 
 extension UIColor {
+    /*
+     extension function for creating a UIImage from a UIColor
+     */
     func image(_ size: CGSize = CGSize(width: 1, height: 1)) -> UIImage {
         return UIGraphicsImageRenderer(size: size).image { rendererContext in
             self.setFill()
@@ -371,10 +375,16 @@ extension UIColor {
 
 //MARK: - Extension UICollectionViewDelegate , UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
 extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    /*
+     function that returns the number of category cells.
+     */
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.categories.count
     }
     
+    /*
+     function that fills out the name of the category to the CategoryCollectionViewCell.
+     */
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CategoryCollectionViewCell", for: indexPath)
             if let cell = cell as? CategoryCollectionViewCell {
@@ -390,7 +400,9 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
             return cell
         }
     
-    
+    /*
+     function to determine the width and appearance of the CategoryCollectionViewCell to fit the category name properly.
+     */
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let text = self.categories[indexPath.row]
         let width = self.estimatedFrame(text: text, font: .systemFont(ofSize: 17.0)).width
@@ -410,6 +422,10 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
 
 //MARK: - Extension CellDelegate
 extension MainViewController:CellDelegate {
+    /*
+     function that is called when a CategoryCollectionViewCell is selected.
+     used for filtering the tableviewcells by the category chosen.
+     */
     func didCellSelected(cell: UICollectionViewCell) {
         if let categoryCell = cell as? CategoryCollectionViewCell {
             self.selectedCategoryName=categoryCell.categoryName
@@ -420,6 +436,11 @@ extension MainViewController:CellDelegate {
 }
 
 extension MainViewController: AllProductsFetchDelegate {
+    /*
+     function that is called when all products of the database is fetched from the backend.
+     also fetches the images of the products and saves them to the cache.
+     also fetches the recommended products for the logged-in users if the amount of data of the user is sufficient.
+     */
     func allProductsAreFetched() {
         self.stopIndicator()
         self.productTableView.reloadData()
@@ -432,40 +453,32 @@ extension MainViewController: AllProductsFetchDelegate {
                 APIManager().search(filterType: "none", sortType: "none", searchWord: search_hist_str) { (result) in
                     switch result {
                     case .success(let searchResults):
-                        print("33")
                         if searchResults.product_list!.count >= 10 {
                             self.recommendations = searchResults.product_list ?? []
                             self.recommendationsFetched = true
                             self.productTableView.reloadData()
                         } else {
-                            print("44")
                             self.recommendationsFetched = false
                         }
                     case .failure(let err):
                         print(err)
-                        print("55")
                         self.recommendationsFetched = false
                     }
                 }
             } else if search_history.count > 1 {
-                print("11")
-                search_hist_str = search_history[search_history.count-1]//search_history[0] + " " + search_history[1]
+                search_hist_str = search_history[search_history.count-1]
                 APIManager().search(filterType: "none", sortType: "none", searchWord: search_hist_str) { (result) in
                     switch result {
                     case .success(let searchResults):
-                        print("66")
                         if searchResults.product_list!.count >= 10 {
-                            print("77")
                             self.recommendations = searchResults.product_list ?? []
                             self.recommendationsFetched = true
                             self.productTableView.reloadData()
                         } else {
-                            print("88")
                             self.recommendationsFetched = false
                         }
                     case .failure(let err):
                         print(err)
-                        print("99")
                         self.recommendationsFetched = false
                     }
                 }
@@ -473,20 +486,21 @@ extension MainViewController: AllProductsFetchDelegate {
             
         } else {
             self.recommendationsFetched = false
-            print("1010")
         }
-        //DispatchQueue.main.async {
-        //  self.productTableView.reloadData()
-        // self.searchBar.isUserInteractionEnabled = true
-        //}
     }
     
+    /*
+     function that is called when getAllProducts function's backend call throws an error.
+     */
     func productsCannotBeFetched() {
         startIndicator()
         presentAlert()
         
     }
     
+    /*
+     function that shows an alert when getAllProducts function's backend call throws an error.
+     */
     func presentAlert() {
         if allProductsInstance.apiFetchError {
             self.networkFailedAlert.message = "We couldn't connect to the network, please check your internet connection."
@@ -501,12 +515,18 @@ extension MainViewController: AllProductsFetchDelegate {
 }
 
 extension MainViewController: AllVendorsFetchDelegate {
+    /*
+     function that is called when all vendors of the database is fetched from the backend.
+     */
     func allVendorsAreFetched() {
         self.stopIndicator()
         self.vendors = self.allVendorsInstance.allVendors
         self.searchBar.isUserInteractionEnabled = true
     }
     
+    /*
+     function that is called when all vendors of the database cannot be fetched from the backend due to an error.
+     */
     func vendorsCannotBeFetched() {
         startIndicator()
     }
@@ -515,6 +535,10 @@ extension MainViewController: AllVendorsFetchDelegate {
 // MARK: - SearchBar
 extension MainViewController: UISearchBarDelegate, UISearchControllerDelegate {
     
+    /*
+     function that is automatically called when the text in search bar is changed.
+     used for updating search results.
+     */
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         searchResults = searchText.isEmpty ? searchHistory : searchHistory.filter{(query:String) -> (Bool) in
             return query.range(of:searchText, options: .caseInsensitive, range:nil, locale: nil) != nil
@@ -533,7 +557,10 @@ extension MainViewController: UISearchBarDelegate, UISearchControllerDelegate {
         searchHistoryTableView.reloadData()
     }
     
-    
+    /*
+     function that is automatically called when the search bar text is started editing.
+     used for showing the searchhistorytableview
+     */
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         searchResults = searchHistory
         self.searchBar.showsCancelButton = true
@@ -543,6 +570,10 @@ extension MainViewController: UISearchBarDelegate, UISearchControllerDelegate {
         self.searchHistoryTableView.setValue(1, forKeyPath: "alpha")
     }
     
+    /*
+     function that is automatically called when the search button is clicked.
+     used for segueing to search results.
+     */
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         if searchTextField?.text != "" {
             let brands = allProductsInstance.allProducts.map{$0.brand}
@@ -557,6 +588,10 @@ extension MainViewController: UISearchBarDelegate, UISearchControllerDelegate {
         }
     }
     
+    /*
+     function that is automatically called when the cancel button is clicked.
+     used for hiding searchhistorytableview and deleting the search text.
+     */
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         self.searchBar.showsCancelButton = false
         searchBar.text = ""
@@ -574,14 +609,19 @@ extension MainViewController: UISearchBarDelegate, UISearchControllerDelegate {
 
 // MARK: - IndicatorView
 extension MainViewController {
+    /*
+     function used for showing an activity indicator
+     */
     func startIndicator() {
-        //self.view.bringSubviewToFront(loadingView)
         loadingView.isHidden = false
         activityIndicator.isHidden = false
         activityIndicator.startAnimating()
         productTableView.isHidden = true
     }
     
+    /*
+     function that creates an activity indicator
+     */
     func createIndicatorView() {
         loadingView.isHidden = false
         activityIndicator.isHidden = false
@@ -589,6 +629,9 @@ extension MainViewController {
         productTableView.isHidden = true
     }
     
+    /*
+     function used for stopping an activity indicator and arranging the view hierarchy
+     */
     func stopIndicator() {
         DispatchQueue.main.async {
             self.logoImageView.isHidden = true
@@ -599,11 +642,6 @@ extension MainViewController {
             self.productTableView.isHidden = false
             self.productTableView.isUserInteractionEnabled = true
             self.productTableView.reloadData()
-            
-            /*for i in 0...(self.allProductsInstance.allProducts.count-1) {
-                print(self.allProductsInstance.allProducts[i].name)
-                print(self.allProductsInstance.allImageNames[i])
-            }*/
         }
     }
 }
@@ -641,6 +679,9 @@ class AllProducts {
         self.allImageNames = []
     }
     
+    /*
+     function that fetches all products by using APIManager's getAllProducts function and also fetching their photos asynchronously and saving them to cache.
+     */
     func fetchAllProducts() {
         dispatchGroup.enter()
         APIManager().getAllProducts(completionHandler: { products in
@@ -656,12 +697,10 @@ class AllProducts {
                         URLSession(configuration: .default).dataTask(with: url!) { (data, response, error) in
                             guard let data = data, let image = UIImage(data: data), error == nil else { group.leave(); return }
                             
-                            // ***************************************************************************
                             // creates a synchronized access to the images array
                             serialQueue.async {
                                 self.allImages[prod.id] = image
                                 
-                                // ****************************************************
                                 // tells the group a pending process has been completed
                                 group.leave()
                             }
@@ -669,7 +708,6 @@ class AllProducts {
                     } else {
                         group.leave()
                     }
-                    
                 }
                 group.wait()
                 self.delegate?.allProductsAreFetched()
@@ -682,7 +720,6 @@ class AllProducts {
         dispatchGroup.leave()
         dispatchGroup.wait()
     }
-        
 }
 
 class AllVendors {
@@ -708,6 +745,9 @@ class AllVendors {
         self.allVendors = []
     }
     
+    /*
+     function that fetches all vendors by using APIManager's getAllVendors function.
+     */
     func fetchAllVendors() {
         dispatchGroup.enter()
         APIManager().getAllVendors(str:"", completionHandler: { result in
