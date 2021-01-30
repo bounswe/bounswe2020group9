@@ -1,14 +1,11 @@
 import React, { Component } from "react";
 import Card from 'react-bootstrap/Card'
-import { Link } from 'react-router-dom'
 import "./addresscard.scss";
-import axios from 'axios'
-import { serverUrl } from "../../../../utils/get-url";
 
 export default class AddressCard extends Component {
 
   render() {
-    if (this.props.address == '') {
+    if (this.props.address === '') {
       return (
         <span className="align-middle">
           Select an address

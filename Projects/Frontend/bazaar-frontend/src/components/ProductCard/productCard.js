@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import Card from "react-bootstrap/Card";
 import { Link } from "react-router-dom";
 import "./productCard.scss";
-import axios from "axios";
 import { serverUrl } from "../../utils/get-url";
 
 export default class CardComponent extends Component {

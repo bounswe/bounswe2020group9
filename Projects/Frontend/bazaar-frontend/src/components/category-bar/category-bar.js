@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Link } from 'react-router-dom'
 import "./category-bar.scss";
 import axios from 'axios'
 import { serverUrl } from "../../utils/get-url";
@@ -24,7 +23,7 @@ export default class CategoryBar extends Component {
       let keys = [];
       let categoryDictTemp = {};
       for (let i = 0; i < resp.length; i++) {
-        if (resp[i]["parent"] == "Categories") {
+        if (resp[i]["parent"] === "Categories") {
           keys.push(resp[i]["name"]);
           categoryDictTemp[resp[i]["id"]] = resp[i]["name"];
         }
@@ -34,7 +33,7 @@ export default class CategoryBar extends Component {
       for (let i = 0; i < keys.length; i++) {
         let sublist = [];
         for (let j = 0; j < resp.length; j++) {
-          if (resp[j]["parent"] == keys[i]) {
+          if (resp[j]["parent"] === keys[i]) {
             sublist.push(resp[j]["name"]);
           }
         }
@@ -69,7 +68,7 @@ export default class CategoryBar extends Component {
         }
       }
 
-      if (subs.length == 0){
+      if (subs.length === 0){
         categories.push(
           <Pagination.Item
             key={number}

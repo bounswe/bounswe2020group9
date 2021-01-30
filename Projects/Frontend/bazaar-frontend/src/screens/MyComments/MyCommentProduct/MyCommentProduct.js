@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import Card from "react-bootstrap/Card";
 import { Link } from "react-router-dom";
 import "./mycommentproduct.scss";
-import axios from "axios";
 import { serverUrl } from "../../../utils/get-url";
 
 export default class MyCommentProduct extends Component {
@@ -22,10 +21,6 @@ export default class MyCommentProduct extends Component {
       imageLink = "";
     }
     this.props.product.picture = imageLink;
-    let categoryName = "";
-    if (this.props.product.category) {
-      categoryName = this.props.product.category["name"];
-    }
 
     //console.log("image link: "+imageLink)
 

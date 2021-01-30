@@ -1,18 +1,15 @@
 import React, { Component } from "react";
 import axios from 'axios'
-import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
-import Cookies from 'js-cookie';
+import { read_cookie } from 'sfcookies';
 import { serverUrl } from '../../../utils/get-url'
 import { Modal, Button, Alert } from "react-bootstrap";
 import CategoryBar from "../../../components/category-bar/category-bar";
 import AddressCard from "./AddressCard/addresscard";
 import CreditCardCard from "./CreditCardCard/creditcardcard";
 import Card from 'react-bootstrap/Card'
-import { CountryDropdown, RegionDropdown, CountryRegionData } from 'react-country-region-selector';
+import { CountryDropdown, RegionDropdown } from 'react-country-region-selector';
 import CreditCardView from "./CreditCardView";
 
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import "react-credit-cards/lib/styles.scss";
 
@@ -74,23 +71,22 @@ export default class Checkout extends Component {
   setHiddenStates(showNumber) {
     let tempStates = this.state.isHiddenStates;
     for (let i = 0; i < tempStates.length; i++) {
-      tempStates[i] = !(i == showNumber);
+      tempStates[i] = !(i === showNumber);
     }
     this.setState({ isHiddenStates: tempStates });
   }
 
   handleSubmit = event => {
 
-    if (this.state.selectedAddress == '') {
+    if (this.state.selectedAddress === '') {
       this.setHiddenStates(5);
-      if (this.state.selectedCard == '') {
+      if (this.state.selectedCard === '') {
         this.setHiddenStates(7);
       }
-    } else if (this.state.selectedCard == '') {
+    } else if (this.state.selectedCard === '') {
       this.setHiddenStates(6);
     } else {
       this.setHiddenStates(10);
-      let selectedCard = this.state.selectedCard;
       let selectedAddress = this.state.selectedAddress;
       let cart = this.state.cart;
 
@@ -143,7 +139,7 @@ export default class Checkout extends Component {
       }
       let postal_code_int = parseInt(editedItem_.postal_code)
       console.log(postal_code_int)
-      if (postal_code_int.toString().length != 5) {
+      if (postal_code_int.toString().length !== 5) {
         formIsValid = false;
         new_errors["postal_code"] = "Postal code should be 5 integers.";
       }
@@ -167,16 +163,16 @@ export default class Checkout extends Component {
         new_errors["name_on_card"] = "Owner name can not be empty.";
       }
       let card_id_int = parseInt(editedItem_.card_id)
-      if (card_id_int.toString().length != 16 || editedItem_.card_id.length != 16) {
+      if (card_id_int.toString().length !== 16 || editedItem_.card_id.length !== 16) {
         formIsValid = false;
         new_errors["card_id"] = "Card ID should be 16 integers.";
       }
       let cvv_int = parseInt(editedItem_.cvv)
-      if (cvv_int.toString().length != 3 && editedItem_.cvv.length != 3) {
+      if (cvv_int.toString().length !== 3 && editedItem_.cvv.length !== 3) {
         formIsValid = false;
         new_errors["cvv"] = "CVV should be 3 integers.";
       }
-      if (editedItem_.expiry.length != 5 || editedItem_.expiry.indexOf("/") < 0) {
+      if (editedItem_.expiry.length !== 5 || editedItem_.expiry.indexOf("/") < 0) {
         formIsValid = false;
         new_errors["expiry"] = "Invalid format.";
       } else {
@@ -455,7 +451,7 @@ export default class Checkout extends Component {
 
   handleCardClick = event => {
 
-    if (event.target.id != "") {
+    if (event.target.id !== "") {
 
       let id = event.target.id
       let indexOfDash = id.split("-", 2).join("-").length;

@@ -1,12 +1,10 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { bake_cookie, read_cookie, delete_cookie } from "sfcookies";
-import Cookies from "js-cookie";
-import { Modal, Button, Alert } from "react-bootstrap";
+import { read_cookie } from "sfcookies";
+import { Button, Alert } from "react-bootstrap";
 import { serverUrl } from "../../utils/get-url";
 
 import "./addproduct.scss";
-import { faGlassWhiskey } from "@fortawesome/free-solid-svg-icons";
 
 export default class AddProduct extends Component {
   constructor() {
@@ -38,7 +36,7 @@ export default class AddProduct extends Component {
   handleChange = (event) => {
     event.preventDefault();
     this.setState({ [event.target.name]: event.target.value });
-    if (event.target.name == "category") {
+    if (event.target.name === "category") {
       this.setState({ subHidden: false });
     }
   };
@@ -118,14 +116,13 @@ export default class AddProduct extends Component {
   };
 
   componentDidMount() {
-    let myCookie = read_cookie("user");
     axios.get(serverUrl + "api/product/categories/").then((res) => {
       let resp = res.data;
       let categoryStructureTemp = {};
       let categoryListTemp = {};
       let keys = [];
       for (let i = 0; i < resp.length; i++) {
-        if (resp[i]["parent"] == "Categories") {
+        if (resp[i]["parent"] === "Categories") {
           keys.push(resp[i]["name"]);
         }
         categoryListTemp[resp[i]["name"]] = resp[i]["id"];
@@ -133,7 +130,7 @@ export default class AddProduct extends Component {
       for (let i = 0; i < keys.length; i++) {
         let sublist = [];
         for (let j = 0; j < resp.length; j++) {
-          if (resp[j]["parent"] == keys[i]) {
+          if (resp[j]["parent"] === keys[i]) {
             sublist.push(resp[j]["name"]);
           }
         }

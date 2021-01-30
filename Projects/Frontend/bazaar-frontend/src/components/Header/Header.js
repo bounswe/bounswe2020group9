@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import ReactDOM from "react-dom";
 import axios from "axios";
 import { Button, Modal } from "react-bootstrap";
 import { Redirect } from "react-router-dom";
@@ -12,7 +11,7 @@ import "./header.scss";
 
 //components
 import { serverUrl } from "../../utils/get-url";
-import { bake_cookie, read_cookie, delete_cookie } from "sfcookies";
+import { read_cookie, delete_cookie } from "sfcookies";
 
 //utils
 import bazaarIMG from "../../assets/bazaar-4.png";

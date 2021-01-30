@@ -2,26 +2,15 @@ import React, { Component } from 'react'
 import axios from 'axios'
 
 //components
-import Accordion from 'react-bootstrap/Accordion'
-import Card from 'react-bootstrap/Card'
-import ProductCard from "../../components/ProductCard/productCard"
 import Button from 'react-bootstrap/Button'
-import Container from 'react-bootstrap/Container'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
-import ListGroup from 'react-bootstrap/ListGroup'
-import CategoryBar from "../../components/category-bar/category-bar";
 import { Link } from 'react-router-dom'
-import { faBan } from "@fortawesome/free-solid-svg-icons";
-import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
-import { faTruck } from "@fortawesome/free-solid-svg-icons";
-import { faBoxOpen } from "@fortawesome/free-solid-svg-icons";
+import { faBan, faCheckCircle, faTruck, faBoxOpen } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 
 //helpers
 import {serverUrl} from '../../utils/get-url'
-import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
+import { read_cookie } from 'sfcookies';
 
 import "./my-orders.scss";
 

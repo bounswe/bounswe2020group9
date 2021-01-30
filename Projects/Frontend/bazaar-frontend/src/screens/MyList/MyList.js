@@ -3,20 +3,15 @@ import "./mylist.scss";
 import axios from "axios";
 
 //components
-import Accordion from "react-bootstrap/Accordion";
-import Card from "react-bootstrap/Card";
 import ProductCard from "../../components/ProductCard/productCard";
-import Button from "react-bootstrap/Button";
-import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import ListGroup from "react-bootstrap/ListGroup";
-import CategoryBar from "../../components/category-bar/category-bar";
 import Form from "react-bootstrap/Form";
 
 //helpers
 import { serverUrl } from "../../utils/get-url";
-import { bake_cookie, read_cookie, delete_cookie } from "sfcookies";
+import { read_cookie } from "sfcookies";
 
 //icons
 import addListIcon from "../../assets/icons/add-list-icon.svg";

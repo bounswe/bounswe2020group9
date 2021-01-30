@@ -1,12 +1,10 @@
 import React, { Component } from "react";
 import GoogleButton from 'react-google-button'
 import axios from 'axios'
-import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
+import { bake_cookie } from 'sfcookies';
 import { Redirect } from "react-router-dom";
 import {serverUrl} from '../../utils/get-url'
 import { Button, Alert} from "react-bootstrap";
-
-import { GoogleLogin } from 'react-google-login';
 
 import "./sign-in.scss";
 
