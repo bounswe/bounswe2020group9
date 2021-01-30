@@ -11,7 +11,9 @@ class OrderDetailViewController: UIViewController {
 
     @IBOutlet weak var ordersTableView: UITableView!
     var order_id : Int = -1
+    var isCustomer : Bool = true
     var allOrdersInstance = AllOrders.shared
+    var allOrdersInstance_vend = AllOrders_vendor.shared
     var allVendorsInstance = AllVendors.shared
     var allProductsInstance = AllProducts.shared
     
@@ -87,8 +89,13 @@ extension OrderDetailViewController: UITableViewDelegate, UITableViewDataSource 
         //return 10
         print("returned order count")
         if tableView == ordersTableView {
-            print(allOrdersInstance.allOrders.filter{$0.id==order_id}.count)
-            return (allOrdersInstance.allOrders.filter{$0.id==order_id})[0].deliveries.count
+            // print(allOrdersInstance.allOrders.filter{$0.id==order_id}.count)
+            if (isCustomer){
+                return (allOrdersInstance.allOrders.filter{$0.id==order_id})[0].deliveries.count
+            }else{
+                return (allOrdersInstance_vend.allOrders.filter{$0.id==order_id}).count
+            }
+            
         }else {
             print("Should not see this.")
             return 5
@@ -98,37 +105,70 @@ extension OrderDetailViewController: UITableViewDelegate, UITableViewDataSource 
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = ordersTableView.dequeueReusableCell(withIdentifier: "ReusableOrderCell", for: indexPath) as! OrderCell
-        
-        
+        // set default image
         cell.ProductImage?.image = UIImage(named:"xmark.circle")
-        //TODO change here
-        let filteredOrders:[OrderData_Cust] = allOrdersInstance.allOrders.filter{$0.id==order_id}
-        //let filteredProducts:[ProductData] = allProductsInstance.allProducts
-        //let filteredVendors:[VendorData] = allVendorsInstance.allVendors
-        let order = filteredOrders[0]
-        print("Order deliveries count:" + String(order.deliveries.count))
-        let delivery = order.deliveries[indexPath.row]
-        print("Product ID: " + String(delivery.product_id))
-        let product = allProductsInstance.allProducts.filter{$0.id==delivery.product_id}[0]            //filteredProducts[delivery.product_id]
-        //let vendor = vendors_dict[delivery.vendor]!
-        let orderStatus=orderStatusArray[delivery.current_status]
-        cell.delivery_id=delivery.id
+        let product:ProductData
+        if (isCustomer){
+            //filter orders
+            let filteredOrders:[OrderData_Cust] = allOrdersInstance.allOrders.filter{$0.id==order_id}
+            //let filteredProducts:[ProductData] = allProductsInstance.allProducts
+            //let filteredVendors:[VendorData] = allVendorsInstance.allVendors
+            let order = filteredOrders[0]
+            print("Order deliveries count:" + String(order.deliveries.count))
+            let delivery = order.deliveries[indexPath.row]
+            print("Product ID: " + String(delivery.product_id))
+            product = allProductsInstance.allProducts.filter{$0.id==delivery.product_id}[0]            //filteredProducts[delivery.product_id]
+            //let vendor = vendors_dict[delivery.vendor]!
+            let orderStatus=orderStatusArray[delivery.current_status]
+            cell.delivery_id=delivery.id
+            
+            cell.Cancel_OrderButton.isHidden=true
+            cell.Name_BrandLabel.text = product.name + " - " + product.brand//product.detail + ", " +
+            cell.Name_BrandLabel.font = UIFont.systemFont(ofSize: 10, weight: .regular)
+            cell.Price_StatusLabel.text = "₺" + String(product.price) + ", Status: " + orderStatus
+            cell.Price_StatusLabel.font = UIFont.systemFont(ofSize: 13, weight: .black)
+            cell.VendorLabel.text = "Vendor Company : " + AllVendors.shared.allVendors.filter{$0.id == product.vendor}[0].company//vendor.company
+            cell.VendorLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
+            cell.AmountLabel.text = "Amount : " + String(delivery.amount)
+            cell.AmountLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
+            cell.DatesLabel.text = "Order Date: " + delivery.timestamp.prefix(10) + " Estimated Delivery : " + delivery.delivery_time.prefix(10)
+            cell.DatesLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
+            cell.AdressLabel.text = "Order Adress: " + delivery.delivery_address.address + " " + delivery.delivery_address.city
+            cell.AdressLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
+            print("complete setting order cell")
+            cell.isUserInteractionEnabled=false
+        }else{
+            //filter orders
+            let filteredOrders:[VendorOrderData] = allOrdersInstance_vend.allOrders.filter{$0.id==order_id}
+            //select order
+            let order = filteredOrders[0]
+            let delivery = order
+            print("Product ID: " + String(delivery.product_id))
+            product = allProductsInstance.allProducts.filter{$0.id==delivery.product_id}[0]            //filteredProducts[delivery.product_id]
         
-        cell.Cancel_OrderButton.isHidden=true
-        cell.Name_BrandLabel.text = product.name + " - " + product.brand//product.detail + ", " +
-        cell.Name_BrandLabel.font = UIFont.systemFont(ofSize: 10, weight: .regular)
-        cell.Price_StatusLabel.text = "₺" + String(product.price) + ", Status: " + orderStatus
-        cell.Price_StatusLabel.font = UIFont.systemFont(ofSize: 13, weight: .black)
-        cell.VendorLabel.text = "Vendor Company : " + AllVendors.shared.allVendors.filter{$0.id == product.vendor}[0].company//vendor.company
-        cell.VendorLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
-        cell.AmountLabel.text = "Amount : " + String(delivery.amount)
-        cell.AmountLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
-        cell.DatesLabel.text = "Order Date: " + delivery.timestamp.prefix(10) + " Estimated Delivery : " + delivery.delivery_time.prefix(10)
-        cell.DatesLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
-        cell.AdressLabel.text = "Order Adress: " + delivery.delivery_address.address + " " + delivery.delivery_address.city
-        cell.AdressLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
-        print("complete setting order cell")
-        cell.isUserInteractionEnabled=false
+            //let vendor = vendors_dict[delivery.vendor]!
+            let orderStatus=orderStatusArray[delivery.current_status]
+            cell.delivery_id=delivery.id
+            
+            cell.Cancel_OrderButton.isHidden=true
+            cell.Name_BrandLabel.text = product.name + " - " + product.brand//product.detail + ", " +
+            cell.Name_BrandLabel.font = UIFont.systemFont(ofSize: 10, weight: .regular)
+            cell.Price_StatusLabel.text = "₺" + String(product.price) + ", Status: " + orderStatus
+            cell.Price_StatusLabel.font = UIFont.systemFont(ofSize: 13, weight: .black)
+            cell.VendorLabel.text = "Vendor Company : " + AllVendors.shared.allVendors.filter{$0.id == product.vendor}[0].company//vendor.company
+            cell.VendorLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
+            cell.AmountLabel.text = "Amount : " + String(delivery.amount)
+            cell.AmountLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
+            cell.DatesLabel.text = "Order Date: " + delivery.timestamp.prefix(10) + " Estimated Delivery : " + delivery.delivery_time.prefix(10)
+            cell.DatesLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
+            cell.AdressLabel.text = "Order Adress: " + delivery.delivery_address.address + " " + delivery.delivery_address.city
+            cell.AdressLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
+            print("complete setting order cell")
+            cell.isUserInteractionEnabled=false
+        }
+        
+        
+
         
         if allProductsInstance.allImages.keys.contains(product.id) {
             cell.ProductImage.image = allProductsInstance.allImages[product.id]
