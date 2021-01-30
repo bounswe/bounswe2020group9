@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import Messages, AllMessages, Conversations, GetConversation, Notifications, Reports, AdminComments
+from .views import Messages, AllMessages, Conversations, GetConversation, Notifications, Reports, AdminComments, AdminUserBan
 
 urlpatterns = [
 	path('', Messages.as_view(), name="messages"),
@@ -10,4 +10,6 @@ urlpatterns = [
 	path('notifications/', Notifications.as_view(), name="notifications" ),
     path('admin/report/', Reports.as_view(), name="admin-report" ),
     path('admin/comment/', AdminComments.as_view(), name="admin-comment" ),
+    path('admin/ban/', AdminUserBan.as_view(), name="admin-ban" ),
+
 ]

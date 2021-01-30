@@ -233,6 +233,24 @@ class AdminUserBan(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
+    def get(self, request):
+        try:
+            user = request.user
+        except:
+            return Response({"message": "Token is not valid."}, status=status.HTTP_401_UNAUTHORIZED)
+
+        if user.user_type != 3:
+            return Response({"message": "You are not an admin."}, status=status.HTTP_401_UNAUTHORIZED)
+
+        users = User.objects.all()
+        userList = []
+        for user in users:
+            d = {**UserSerializer(user).data}
+            d["is_banned"] = user.is_banned
+            userList.append(d)
+        return Response(userList)
+
+
     def post(self, request):
         try:
             user = request.user
@@ -244,9 +262,14 @@ class AdminUserBan(APIView):
 
         user_id = request.data["user_id"]
         banned_user = User.objects.get(id=user_id)
-        banned_user.is_banned = True
-        banned_user.save()
-        return Response({"message": "User is banned."})
+        if banned_user.is_banned:
+            banned_user.is_banned = False
+            banned_user.save()
+            return Response({"message": "Ban of the user is removed."})
+        else:
+            banned_user.is_banned = True
+            banned_user.save()
+            return Response({"message": "User is banned."})
 
 
 class Reports(APIView):
