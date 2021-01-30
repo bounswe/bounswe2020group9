@@ -8,7 +8,7 @@
 import UIKit
 
 class OrderDetailViewController: UIViewController {
-
+    // ordersTable for orders
     @IBOutlet weak var ordersTableView: UITableView!
     var order_id : Int = -1
     var isCustomer : Bool = true
@@ -18,16 +18,16 @@ class OrderDetailViewController: UIViewController {
     var allProductsInstance = AllProducts.shared
     
     let orderStatusArray = ["", "Preparing", "On the Way", "Delivered", "Canceled"]
-    //var orders:[OrderData]!
-    //var allProducts:[ProductData]!
-    //var amounts:[Int:Int]!
+    
     
     let imageCache = NSCache<NSString,UIImage>()
     var networkFailedAlert:UIAlertController = UIAlertController(title: "Error while retrieving orders", message: "We encountered a problem while retrieving the orders, please check your internet connection.", preferredStyle: .alert)
     
     
     override func viewDidLoad() {
+        //didLoad statements
         super.viewDidLoad()
+        //set delegates
         ordersTableView.delegate = self
         ordersTableView.dataSource = self
         ordersTableView.register(UINib(nibName: "OrderCell", bundle: nil), forCellReuseIdentifier: "ReusableOrderCell")
@@ -41,6 +41,8 @@ class OrderDetailViewController: UIViewController {
         networkFailedAlert.addAction(okButton)
         
         self.ordersTableView.backgroundColor = UIColor.systemBackground
+        
+        //fetch necessary instances
         if !(allProductsInstance.dataFetched) {
             print("products not fetched yet,tryin to fetch right now")
             productsCannotBeFetched()
@@ -59,7 +61,7 @@ class OrderDetailViewController: UIViewController {
         
     }
     
-    
+    //backButton Pressed
     @IBAction func didBackButtonPressed(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
         self.dismiss(animated: true, completion: nil)
@@ -84,9 +86,8 @@ class OrderDetailViewController: UIViewController {
 }
 
 extension OrderDetailViewController: UITableViewDelegate, UITableViewDataSource {
-    
+    //GET number of rows
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        //return 10
         print("returned order count")
         if tableView == ordersTableView {
             // print(allOrdersInstance.allOrders.filter{$0.id==order_id}.count)
@@ -95,14 +96,13 @@ extension OrderDetailViewController: UITableViewDelegate, UITableViewDataSource 
             }else{
                 return (allOrdersInstance_vend.allOrders.filter{$0.id==order_id}).count
             }
-            
         }else {
             print("Should not see this.")
-            return 5
+            return 5 //random cell count, should not come here
         }
     }
     
-    
+    //set cells for every index
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = ordersTableView.dequeueReusableCell(withIdentifier: "ReusableOrderCell", for: indexPath) as! OrderCell
         // set default image
@@ -111,8 +111,7 @@ extension OrderDetailViewController: UITableViewDelegate, UITableViewDataSource 
         if (isCustomer){
             //filter orders
             let filteredOrders:[OrderData_Cust] = allOrdersInstance.allOrders.filter{$0.id==order_id}
-            //let filteredProducts:[ProductData] = allProductsInstance.allProducts
-            //let filteredVendors:[VendorData] = allVendorsInstance.allVendors
+           //set order instance
             let order = filteredOrders[0]
             print("Order deliveries count:" + String(order.deliveries.count))
             let delivery = order.deliveries[indexPath.row]
@@ -169,7 +168,7 @@ extension OrderDetailViewController: UITableViewDelegate, UITableViewDataSource 
         
         
 
-        
+        //put image for product
         if allProductsInstance.allImages.keys.contains(product.id) {
             cell.ProductImage.image = allProductsInstance.allImages[product.id]
             cell.ProductImage.contentMode = .scaleAspectFit
@@ -195,6 +194,7 @@ extension OrderDetailViewController: UITableViewDelegate, UITableViewDataSource 
     }
     
 }
+//setting delegate-functions
 extension OrderDetailViewController: AllProductsFetchDelegate {
     func allProductsAreFetched() {
         self.stopIndicator()
@@ -241,26 +241,16 @@ extension OrderDetailViewController: AllOrdersFetchDelegate {
 // MARK: - IndicatorView
 extension OrderDetailViewController {
     func startIndicator() {
-        //self.view.bringSubviewToFront(loadingView)
-        //loadingView.isHidden = false
-        //activityIndicator.isHidden = false
-        //activityIndicator.startAnimating()
         ordersTableView.isHidden = true
         print("Start-Indicator")
     }
     
     func createIndicatorView() {
-        //loadingView.isHidden = false
-        //activityIndicator.isHidden = false
-        //activityIndicator.startAnimating()
         ordersTableView.isHidden = true
     }
     
     func stopIndicator() {
         DispatchQueue.main.async {
-            //self.loadingView.isHidden = true
-            //self.activityIndicator.isHidden = true
-            //self.activityIndicator.stopAnimating()
             self.ordersTableView.isHidden = false
             self.ordersTableView.reloadData()
             

@@ -32,10 +32,9 @@ class VendorMyOrdersViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         ordersTableView.reloadData()
         ordersTableView.tableFooterView = UIView(frame: .zero)
-        //self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
-    
+    // set up necessary variables and cells , fetch necessary items
     override func viewDidLoad() {
         super.viewDidLoad()
         ordersTableView.dataSource = self
@@ -78,7 +77,6 @@ class VendorMyOrdersViewController: UIViewController {
 
 extension VendorMyOrdersViewController:UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        //return 10
         print("returned order count")
         if tableView == ordersTableView {
             print(allOrdersInstance.allOrders.count)
@@ -88,6 +86,7 @@ extension VendorMyOrdersViewController:UITableViewDelegate,UITableViewDataSource
             return 5
         }
     }
+    //for cancel button not necessary for now
     @objc func cancel_button_clicked(_ sender : UIButton){
         print("Button clicked. ")
         // need to take status information and set to cancel_button_status
@@ -105,19 +104,15 @@ extension VendorMyOrdersViewController:UITableViewDelegate,UITableViewDataSource
             }
         }
     }
-    
+    //set order cells
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         print("setting order cell : "+String(indexPath.row))
         let cell = ordersTableView.dequeueReusableCell(withIdentifier: "ReusableOrderCell", for: indexPath) as! OrderCell
         cell.ProductImage?.image = UIImage(named:"xmark.circle")
         cell.Cancel_OrderButton.isHidden=true
-        //TODO change here
         let filteredOrders:[VendorOrderData] = allOrdersInstance.allOrders
-        //let filteredProducts:[ProductData] = allProductsInstance.allProducts
-        //let filteredVendors:[VendorData] = allVendorsInstance.allVendors
         let order = filteredOrders[indexPath.row]
-        //print("Order deliveries count:" + String(order.deliveries.count))
         let delivery = order
         print("Product ID: " + String(delivery.product_id))
         let product = allProductsInstance.allProducts.filter{$0.id==delivery.product_id}[0]               //filteredProducts[delivery.product_id]
@@ -145,15 +140,7 @@ extension VendorMyOrdersViewController:UITableViewDelegate,UITableViewDataSource
         cell.AdressLabel.text = "Order Adress: " + delivery.delivery_address.address + " " + delivery.delivery_address.city
         cell.AdressLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         print("complete setting order cell")
-        
-        
-        print(cell.Name_BrandLabel.text)
-        print(cell.Price_StatusLabel.text)
-        print(cell.VendorLabel.text)
-        print(cell.AmountLabel.text)
-        print(cell.DatesLabel.text)
-        print(cell.AdressLabel.text)
-        
+// set images
         if allProductsInstance.allImages.keys.contains(product.id) {
             cell.ProductImage.image = allProductsInstance.allImages[product.id]
             cell.ProductImage.contentMode = .scaleAspectFit
@@ -175,7 +162,7 @@ extension VendorMyOrdersViewController:UITableViewDelegate,UITableViewDataSource
         
         return cell
     }
-    
+    //swipe action change status of the order
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let order = allOrdersInstance.allOrders[indexPath.row]
         let canceling_dId = order.id
@@ -212,7 +199,7 @@ extension VendorMyOrdersViewController:UITableViewDelegate,UITableViewDataSource
         swipeActionConfig.performsFirstActionWithFullSwipe = false
         return swipeActionConfig
     }
-    
+    //take necessary steps before leaving to details Page
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let indexPath = ordersTableView.indexPathForSelectedRow
@@ -224,7 +211,7 @@ extension VendorMyOrdersViewController:UITableViewDelegate,UITableViewDataSource
         }
     
     }
-    
+    //perfomr segue to detail page
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("HERE CLICKED")
         
@@ -234,6 +221,7 @@ extension VendorMyOrdersViewController:UITableViewDelegate,UITableViewDataSource
     
     
 }
+//set delegates-functions
 extension VendorMyOrdersViewController: AllProductsFetchDelegate {
     func allProductsAreFetched() {
         for prod in allProductsInstance.allProducts {
@@ -322,7 +310,7 @@ extension VendorMyOrdersViewController {
         }
     }
 }
-
+//All orders fetching structure for vendor orders
 class AllOrders_vendor {
     static let shared = AllOrders_vendor()
     var allOrders: [VendorOrderData]

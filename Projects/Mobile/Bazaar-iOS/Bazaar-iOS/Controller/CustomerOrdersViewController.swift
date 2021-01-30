@@ -28,6 +28,7 @@ class CustomerOrdersViewController: UIViewController{
     var networkFailedAlert:UIAlertController = UIAlertController(title: "Error while retrieving orders", message: "We encountered a problem while retrieving the orders, please check your internet connection.", preferredStyle: .alert)
     
     
+    //backc button pressed
     @IBAction func backButtonPressed(_ sender: UIButton) {
         self.dismiss(animated: true, completion: nil)
     }
@@ -40,7 +41,7 @@ class CustomerOrdersViewController: UIViewController{
         //self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
-    
+    //fetch necessary items and set up
     override func viewDidLoad() {
         super.viewDidLoad()
         ordersTableView.dataSource = self
@@ -86,7 +87,7 @@ class CustomerOrdersViewController: UIViewController{
     
     
 }
-
+// return order count
 extension CustomerOrdersViewController:UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //return 10
@@ -100,7 +101,7 @@ extension CustomerOrdersViewController:UITableViewDelegate,UITableViewDataSource
         }
     }
     
-    
+    //SET order cells according to index
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         print("setting order cell : "+String(indexPath.row))
@@ -109,16 +110,12 @@ extension CustomerOrdersViewController:UITableViewDelegate,UITableViewDataSource
         
         cell.ProductImage?.image = UIImage(named:"xmark.circle")
         var filteredOrders:[OrderData_Cust] = allOrdersInstance.allOrders
-
-        //TODO change here
-        //let filteredProducts:[ProductData] = allProductsInstance.allProducts
-        //let filteredVendors:[VendorData] = allVendorsInstance.allVendors
+        //set order instance
         let order = filteredOrders[indexPath.row]
         print("Order deliveries count:" + String(order.deliveries.count))
         let delivery = order.deliveries[0]
         print("Product ID: " + String(delivery.product_id))
-        let product = allProductsInstance.allProducts.filter{$0.id==delivery.product_id}[0]                //filteredProducts[delivery.product_id]
-        //let vendor = vendors_dict[delivery.vendor]!
+        let product = allProductsInstance.allProducts.filter{$0.id==delivery.product_id}[0]
         let orderStatus=orderStatusArray[delivery.current_status]
         cell.delivery_id=delivery.id
         
@@ -136,15 +133,12 @@ extension CustomerOrdersViewController:UITableViewDelegate,UITableViewDataSource
         cell.AmountLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
         cell.DatesLabel.text = "Click to see order details."
         cell.DatesLabel.font = UIFont.systemFont(ofSize: 15, weight: .black)
-        //cell.AmountLabel.isHidden=true
-        //cell.DatesLabel.isHidden=true
         
         cell.AdressLabel.text = "Order Adress: " + delivery.delivery_address.address + " " + delivery.delivery_address.city
         cell.AdressLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         print("complete setting order cell")
         
-        
-        
+        //set image
         if allProductsInstance.allImages.keys.contains(product.id) {
             cell.ProductImage.image = allProductsInstance.allImages[product.id]
             cell.ProductImage.contentMode = .scaleAspectFit
@@ -166,7 +160,7 @@ extension CustomerOrdersViewController:UITableViewDelegate,UITableViewDataSource
         
         return cell
     }
-    
+    // swipe action canceling order
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let canceling_dId = self.orders[indexPath.row].id
         print(canceling_dId)
@@ -199,7 +193,7 @@ extension CustomerOrdersViewController:UITableViewDelegate,UITableViewDataSource
         
     }
     
-    
+    //take necessary steps before Segue to Details
     // MARK: - Navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let indexPath = ordersTableView.indexPathForSelectedRow
@@ -213,7 +207,7 @@ extension CustomerOrdersViewController:UITableViewDelegate,UITableViewDataSource
     }
     
     
-    
+    //perform segue to orderDetails
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("HERE CLICKED")
         
@@ -221,12 +215,8 @@ extension CustomerOrdersViewController:UITableViewDelegate,UITableViewDataSource
         
     }
     
-    
-    
-    
-    
-    
 }
+//set delegates-functions
 extension CustomerOrdersViewController: AllProductsFetchDelegate {
     func allProductsAreFetched() {
         for prod in allProductsInstance.allProducts {
@@ -283,7 +273,7 @@ extension CustomerOrdersViewController: AllOrdersFetchDelegate {
     }
 }
 
-
+//not necessary for now
 extension CustomerOrdersViewController:TableViewNewProtocol {
     func buttonClicked(index:Int) {
         print("Index:" + String(index))
@@ -296,33 +286,23 @@ extension CustomerOrdersViewController:TableViewNewProtocol {
 // MARK: - IndicatorView
 extension CustomerOrdersViewController {
     func startIndicator() {
-        //self.view.bringSubviewToFront(loadingView)
-        //loadingView.isHidden = false
-        //activityIndicator.isHidden = false
-        //activityIndicator.startAnimating()
         ordersTableView.isHidden = true
         print("Start-Indicator")
     }
     
     func createIndicatorView() {
-        //loadingView.isHidden = false
-        //activityIndicator.isHidden = false
-        //activityIndicator.startAnimating()
         ordersTableView.isHidden = true
     }
     
     func stopIndicator() {
         DispatchQueue.main.async {
-            //self.loadingView.isHidden = true
-            //self.activityIndicator.isHidden = true
-            //self.activityIndicator.stopAnimating()
             self.ordersTableView.isHidden = false
             self.ordersTableView.reloadData()
             
         }
     }
 }
-
+// ALL orders class for fetching orders for customers
 class AllOrders {
     static let shared = AllOrders()
     var allOrders: [OrderData_Cust]

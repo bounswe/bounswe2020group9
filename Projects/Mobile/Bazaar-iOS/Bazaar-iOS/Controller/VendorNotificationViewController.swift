@@ -23,7 +23,7 @@ class VendorNotificationViewController: UIViewController{
     
     var networkFailedAlert:UIAlertController = UIAlertController(title: "Error while retrieving notification", message: "We encountered a problem while retrieving the notification, please check your internet connection.", preferredStyle: .alert)
     
-    
+    //back button pressed
     @IBAction func backButtonPressed(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }
@@ -34,7 +34,7 @@ class VendorNotificationViewController: UIViewController{
         //self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
-    
+    // set up necessary fetching structs and variables
     override func viewDidLoad() {
         super.viewDidLoad()
         NotificationTableView.dataSource = self
@@ -79,7 +79,7 @@ class VendorNotificationViewController: UIViewController{
     
     
 }
-
+//return cell count
 extension VendorNotificationViewController:UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //return 10
@@ -92,25 +92,8 @@ extension VendorNotificationViewController:UITableViewDelegate,UITableViewDataSo
             return 5
         }
     }
-    /*
-     @objc func cancel_button_clicked(_ sender : UIButton){
-     print("Button clicked. ")
-     // need to take status information and set to cancel_button_status
-     let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
-     alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
-     APIManager().deleteOrder(delivery_id: cancel_button_delivery_id,status:cancel_button_status) { (result) in
-     switch result {
-     case .success(let message):
-     self.dismiss(animated: false, completion: nil)
-     alertController.message = "Order status succesfully changed."
-     self.present(alertController, animated: true, completion: nil)
-     case .failure(_):
-     alertController.message = "Order status did not changed. Try again later."
-     self.present(alertController, animated: true, completion: nil)
-     }
-     }
-     }*/
     
+    // set up cells according to index
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         print("setting notification cell : "+String(indexPath.row))
@@ -131,11 +114,7 @@ extension VendorNotificationViewController:UITableViewDelegate,UITableViewDataSo
         let notf_userId=notification.user
         
         let product=allProductsInstance.allProducts.filter{$0.id == notification.delivery[0].product_id}[0]
-        //let product=products_dict[product_id]
-        
-        //cell.Cancel_OrderButton.tag = indexPath.row
-        //cancel_button_delivery_id=delivery.id
-        //cell.Cancel_OrderButton.addTarget(self, action: #selector(self.cancel_button_clicked(_:)), for: .allTouchEvents);
+
         
         if (!notf_isVisited){
             cell.bodyLabel.text = notf_body
@@ -182,7 +161,7 @@ extension VendorNotificationViewController:UITableViewDelegate,UITableViewDataSo
     }
     
 }
-
+//set up delegates-functions
 extension VendorNotificationViewController: AllNotificationsFetchDelegate {
     func allNotificationsAreFetched() {
         self.stopIndicator()
