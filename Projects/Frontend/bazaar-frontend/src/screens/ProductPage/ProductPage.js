@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import "./productpage.scss";
 import { Redirect } from "react-router-dom";
 import axios from "axios";
-import { Link } from "react-router-dom";
 
 //components
 import StarRatings from "../../../node_modules/react-star-ratings";
@@ -10,7 +9,7 @@ import Carousel from "react-bootstrap/Carousel";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { bake_cookie, read_cookie, delete_cookie } from "sfcookies";
+import {read_cookie } from "sfcookies";
 import CommentCard from "./CommentCard/CommentCard";
 import CategoryBar from "../../components/category-bar/category-bar";
 import Form from "react-bootstrap/Form";
@@ -18,7 +17,6 @@ import Button from "react-bootstrap/Button";
 
 //icons
 import AddToCartIcon from "../../assets/icons/add-to-cart.svg";
-import RemoveFromCartIcon from "../../assets/icons/remove-from-cart.svg";
 import AddToListIcon from "../../assets/icons/add-to-list-hand-drawn-interface-symbol.svg";
 
 //helpers

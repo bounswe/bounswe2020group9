@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import CategoryBar from "../../components/category-bar/category-bar";
-import { Alert, Button } from "react-bootstrap";
+import { Alert } from "react-bootstrap";
 import axios from "axios";
 import { serverUrl } from "../../utils/get-url";
 import { read_cookie } from "sfcookies";

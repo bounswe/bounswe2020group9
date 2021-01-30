@@ -1,14 +1,12 @@
 import React, { Component } from "react";
 import axios from 'axios'
-import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
-import Cookies from 'js-cookie';
+import { read_cookie } from 'sfcookies';
 import {serverUrl} from '../../utils/get-url'
 import { Button , Alert} from "react-bootstrap";
 import CategoryBar from "../../components/category-bar/category-bar";
 
 
 import "./profilepage.scss";
-import { faGlassWhiskey } from "@fortawesome/free-solid-svg-icons";
 
 export default class ProfilePage extends Component {
 
@@ -45,7 +43,7 @@ export default class ProfilePage extends Component {
       setHiddenStates(showNumber) {
         let tempStates = this.state.isHiddenStates;
         for (let i=0;i<tempStates.length;i++) {
-          tempStates[i] = !(i == showNumber);
+          tempStates[i] = !(i === showNumber);
         }
         this.setState({isHiddenStates: tempStates});
       }

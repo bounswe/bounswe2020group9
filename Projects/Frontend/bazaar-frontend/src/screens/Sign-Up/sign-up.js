@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { Component } from "react";
 import GoogleButton from 'react-google-button'
 import axios from 'axios'
 import { Redirect } from "react-router-dom";

@@ -1,15 +1,11 @@
 import React, { Component } from "react";
 import axios from 'axios'
-import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
-import Cookies from 'js-cookie';
+import { read_cookie } from 'sfcookies';
 import DataTable, { createTheme } from 'react-data-table-component';
-import { Modal, Button, Alert } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { serverUrl } from '../../utils/get-url'
 
-import { faBan } from "@fortawesome/free-solid-svg-icons";
-import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
-import { faTruck } from "@fortawesome/free-solid-svg-icons";
-import { faBoxOpen } from "@fortawesome/free-solid-svg-icons";
+import { faBan, faCheckCircle, faTruck, faBoxOpen } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import "./my-orders-vendor.scss";

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import axios from 'axios'
-import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
-import Cookies from 'js-cookie';
+import { read_cookie } from 'sfcookies';
 import DataTable from 'react-data-table-component';
 import { Modal, Button, Alert } from "react-bootstrap";
 import { serverUrl } from '../../utils/get-url'

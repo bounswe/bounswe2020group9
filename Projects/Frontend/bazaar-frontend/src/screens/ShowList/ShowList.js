@@ -3,20 +3,15 @@ import "./showlist.scss";
 import axios from "axios";
 
 //components
-import Accordion from "react-bootstrap/Accordion";
-import Card from "react-bootstrap/Card";
 import ProductCard from "../../components/ProductCard/productCard";
-import Button from "react-bootstrap/Button";
-import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import ListGroup from "react-bootstrap/ListGroup";
-import CategoryBar from "../../components/category-bar/category-bar";
 import Form from "react-bootstrap/Form";
 
 //helpers
 import { serverUrl } from "../../utils/get-url";
-import { bake_cookie, read_cookie, delete_cookie } from "sfcookies";
+import { read_cookie } from "sfcookies";
 
 //icons
 import addListIcon from "../../assets/icons/add-list-icon.svg";
@@ -42,14 +37,14 @@ export default class ShowList extends Component {
     .get(serverUrl + `api/user/${this.props.location.state.user}/`)
     .then((res) => {
       this.setState({ lists_owner: res.data });
-      if (myCookie.user_id != res.data.id){
+      if (myCookie.user_id !== res.data.id){
         this.setState({isAuthorizedUser: false})
       }
 
     })
 
 
-    if (myCookie.length != 0) {
+    if (myCookie.length !== 0) {
       axios
         .get(serverUrl + `api/user/${this.props.location.state.user}/lists/`, {
           headers: {
@@ -61,7 +56,7 @@ export default class ShowList extends Component {
         })
         .catch((error) => {
           if (error.response) {
-            if (error.response.status == 401) {
+            if (error.response.status === 401) {
               this.setState({ isAuthorizedUser: false });
               axios
                 .get(
@@ -104,7 +99,7 @@ export default class ShowList extends Component {
       })
       .catch((error) => {
         if (error.response) {
-          if (error.response.status == 401) {
+          if (error.response.status === 401) {
             this.setState({ isAuthorizedUser: false });
 
             axios
@@ -166,7 +161,7 @@ export default class ShowList extends Component {
             className="listProductRemoveButton"
             onClick={(event) => this.onDeleteListProductButton(event, product)}
           >
-            <img src={removeListIcon} hidden={!this.state.isAuthorizedUser} />
+            <img src={removeListIcon} alt={""} hidden={!this.state.isAuthorizedUser} />
           </button>
           <ProductCard product={product}></ProductCard>
         </Col>
@@ -289,7 +284,7 @@ export default class ShowList extends Component {
             className="listRemoveButton"
             onClick={(event) => this.onDeleteListButton(event, list)}
           >
-            <img src={removeListIcon} hidden={!this.state.isAuthorizedUser} />
+            <img src={removeListIcon} alt={""} hidden={!this.state.isAuthorizedUser} />
           </button>
         </Row>
       );
@@ -323,7 +318,7 @@ export default class ShowList extends Component {
               </Form.Group>
 
               <button className="addListButton" onClick={this.onAddListSubmit}>
-                Add List <img src={addListIcon} />
+                Add List <img src={addListIcon} alt={""} />
               </button>
             </Row>
           </Col>
