@@ -471,6 +471,7 @@ class CommentsOfProductAPIView(APIView):
             else:
                 serializer = {**CommentSerializer(comment).data,
                               **UserSerializer(User.objects.get(id=comment.customer.user_id)).data}
+                serializer["id"] = comment.id
                 serializers.append(serializer)
         return Response(serializers)
 
