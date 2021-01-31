@@ -1,14 +1,12 @@
 import React, { Component } from "react";
 import axios from 'axios'
-import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
-import Cookies from 'js-cookie';
+import { read_cookie } from 'sfcookies';
 import {serverUrl} from '../../utils/get-url'
 import { Button , Alert} from "react-bootstrap";
 import CategoryBar from "../../components/category-bar/category-bar";
 
 
 import "./profilepage.scss";
-import { faGlassWhiskey } from "@fortawesome/free-solid-svg-icons";
 
 export default class ProfilePage extends Component {
 
@@ -19,8 +17,8 @@ export default class ProfilePage extends Component {
           currpw: '',
           newpw: '',
           confpw: '',
-          fname: '',
-          lname: '',
+          first_name: '',
+          last_name: '',
           fullAddress: '',
           addressName: '',
           postalCode: '',
@@ -45,7 +43,7 @@ export default class ProfilePage extends Component {
       setHiddenStates(showNumber) {
         let tempStates = this.state.isHiddenStates;
         for (let i=0;i<tempStates.length;i++) {
-          tempStates[i] = !(i == showNumber);
+          tempStates[i] = !(i === showNumber);
         }
         this.setState({isHiddenStates: tempStates});
       }
@@ -122,34 +120,19 @@ export default class ProfilePage extends Component {
         let formIsValid = true;
         let new_errors = {};
 
-        if(this.state.fname.length === 0){
+        if(this.state.first_name.length === 0){
           formIsValid = false;
-          new_errors["fname"] = "Please provide your name.";
+          new_errors["first_name"] = "Please provide your name.";
         }
   
-        if(this.state.lname.length === 0){
+        if(this.state.last_name.length === 0){
           formIsValid = false;
-          new_errors["lname"] = "Please provide your last name";      
+          new_errors["last_name"] = "Please provide your last name";      
         }
    
         if(this.state.company.length === 0){
           formIsValid = false;
           new_errors["company"] = "Please provide your company";      
-        }
-
-        if (this.state.addressName.length === 0){
-          formIsValid = false;
-          new_errors["addressName"] = "Please provide your address name";      
-        }
-        
-        if (this.state.fullAddress.length === 0){
-          formIsValid = false;
-          new_errors["fullAddress"] = "Please provide your full address";      
-        }
-
-        if (this.state.postalCode.length === 0){
-          formIsValid = false;
-          new_errors["postalCode"] = "Please provide your postal code.";      
         }
 
         this.setState({errors: new_errors});
@@ -158,8 +141,6 @@ export default class ProfilePage extends Component {
     
       handleSubmit = event => {  
         event.preventDefault();
-        const body = new FormData();
-        console.log("user_type: "+this.state.user_type)
 
         let myCookie = read_cookie('user');
         const header = {
@@ -168,12 +149,13 @@ export default class ProfilePage extends Component {
           }
         };
         if (this.state.user_type === 2 && this.handleVendorValidation()){
-          body.append("address", this.state.fullAddress);
-          body.append("address_name", this.state.addressName);
-          body.append("company", this.state.company);
-          body.append("postal_code", this.state.postalCode);
+          const data = {
+            first_name: this.state.first_name,
+            last_name: this.state.last_name,
+            company: this.state.company,
+          }
 
-          axios.put(serverUrl+'api/user/profile/', body, header)
+          axios.put(serverUrl+'api/user/profile/', data, header)
           .then(res => {
             this.setHiddenStates(0);
 
@@ -196,10 +178,11 @@ export default class ProfilePage extends Component {
   
         })
         } else if (this.state.user_type === 1){
-          body.append("first_name", this.state.fname);
-          body.append("last_name", this.state.lname);
-          console.log("here")
-          axios.put(serverUrl+'api/user/profile/', body, header)
+          const data = {
+            first_name: this.state.first_name,
+            last_name: this.state.last_name,
+          }
+          axios.put(serverUrl+'api/user/profile/', data, header)
           .then(res => {
             this.setHiddenStates(0);
           }).catch((error) => {
@@ -232,8 +215,8 @@ export default class ProfilePage extends Component {
         axios.get(serverUrl+`api/user/${myCookie.user_id}/`)
           .then(res => {
               console.log("res data:  "+res.data.user_type)
-              this.setState({fname : res.data.first_name})
-              this.setState({lname : res.data.last_name})
+              this.setState({first_name : res.data.first_name})
+              this.setState({last_name : res.data.last_name})
               
               if (res.data.user_type === 1){
 
@@ -282,17 +265,17 @@ export default class ProfilePage extends Component {
                             <div className="form-group row">
                                 <label className="col-4 align-middle">First Name</label>
                                 <div className="col">
-                                  <input type="text" name="fname"className="form-control col" value = {this.state.fname}
+                                  <input type="text" name="first_name"className="form-control col" value = {this.state.first_name}
                                   onChange={this.handleChange} required/>
-                                  <div className="error">{this.state.errors["fname"]}</div>                                
+                                  <div className="error">{this.state.errors["first_name"]}</div>                                
                                 </div>
                             </div>
                             <div className="form-group row">
                                 <label className="col-4 align-middle">Last Name</label>
                                 <div className="col">
-                                  <input type="text" name="lname"className="form-control col" value = {this.state.lname}
+                                  <input type="text" name="last_name"className="form-control col" value = {this.state.last_name}
                                   onChange={this.handleChange} required/>
-                                  <div className="error">{this.state.errors["lname"]}</div>
+                                  <div className="error">{this.state.errors["last_name"]}</div>
                                 </div>
                             </div>
                             <div className="form-group row" hidden={this.state.isCustomer}>
@@ -306,7 +289,7 @@ export default class ProfilePage extends Component {
                             <div className="form-group row">
                                 <label className="col-4 align-middle">User Type</label>
                                 <div className="col">
-                                  <input type="text" name="lname"className="form-control col" value = {this.state.user_type}
+                                  <input type="text" name="last_name"className="form-control col" value = {this.state.user_type}
                                   onChange={this.handleChange} disabled/>
                                 </div>
                             </div>

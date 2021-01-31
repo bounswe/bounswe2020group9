@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import "./mylist.scss";
+import "./showlist.scss";
 import axios from "axios";
 
 //components
@@ -17,7 +17,7 @@ import { read_cookie } from "sfcookies";
 import addListIcon from "../../assets/icons/add-list-icon.svg";
 import removeListIcon from "../../assets/icons/remove.svg";
 
-export default class MyList extends Component {
+export default class ShowList extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -27,15 +27,26 @@ export default class MyList extends Component {
       list_name: "",
       list_is_private: false,
       isAuthorizedUser: true,
+      lists_owner: {}
     };
   }
 
   componentDidMount() {
     let myCookie = read_cookie("user");
+    axios
+    .get(serverUrl + `api/user/${this.props.location.state.user}/`)
+    .then((res) => {
+      this.setState({ lists_owner: res.data });
+      if (myCookie.user_id !== res.data.id){
+        this.setState({isAuthorizedUser: false})
+      }
 
-    if (myCookie.length != 0) {
+    })
+
+
+    if (myCookie.length !== 0) {
       axios
-        .get(serverUrl + `api/user/${myCookie.user_id}/lists/`, {
+        .get(serverUrl + `api/user/${this.props.location.state.user}/lists/`, {
           headers: {
             Authorization: `Token ${myCookie.token}`,
           },
@@ -45,10 +56,14 @@ export default class MyList extends Component {
         })
         .catch((error) => {
           if (error.response) {
-            if (error.response.status == 401) {
-              this.setState({isAuthorizedUser: false})
+            if (error.response.status === 401) {
+              this.setState({ isAuthorizedUser: false });
               axios
-                .get(serverUrl + `api/user/${myCookie.user_id}/lists/`, {})
+                .get(
+                  serverUrl +
+                    `api/user/${this.props.location.state.user}/lists/`,
+                  {}
+                )
                 .then((res) => {
                   this.setState({ productLists: res.data });
                 });
@@ -58,16 +73,21 @@ export default class MyList extends Component {
         });
     } else {
       axios
-        .get(serverUrl + `api/user/${myCookie.user_id}/lists/`, {})
+        .get(
+          serverUrl + `api/user/${this.props.location.state.user}/lists/`,
+          {}
+        )
         .then((res) => {
           this.setState({ productLists: res.data });
+          this.setState({ isAuthorizedUser: false });
+
         });
     }
 
     axios
       .get(
         serverUrl +
-          `api/user/${myCookie.user_id}/list/${this.state.whichList}/`,
+          `api/user/${this.props.location.state.user}/list/${this.state.whichList}/`,
         {
           headers: {
             Authorization: `Token ${myCookie.token}`,
@@ -79,11 +99,13 @@ export default class MyList extends Component {
       })
       .catch((error) => {
         if (error.response) {
-          if (error.response.status == 401) {
+          if (error.response.status === 401) {
+            this.setState({ isAuthorizedUser: false });
+
             axios
               .get(
                 serverUrl +
-                  `api/user/${myCookie.user_id}/list/${this.state.whichList}/`
+                  `api/user/${this.props.location.state.user}/list/${this.state.whichList}/`
               )
               .then((res) => {
                 this.setState({ productList: res.data });
@@ -92,9 +114,9 @@ export default class MyList extends Component {
           console.log(error.response.status);
         }
       });
-      if (this.state.productLists.length > 0) {
-        this.setState({whichList: 2})
-      }
+    if (this.state.productLists.length > 0) {
+      this.setState({ whichList: 2 });
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -103,34 +125,35 @@ export default class MyList extends Component {
     if (prevState.whichList !== this.state.whichList) {
       if (this.state.isAuthorizedUser) {
         axios
-        .get(
-          serverUrl +
-            `api/user/${myCookie.user_id}/list/${this.state.whichList}/`,
-          {
-            headers: {
-              Authorization: `Token ${myCookie.token}`,
-            },
-          }
-        )
-        .then((res) => {
-          this.setState({ productList: res.data });
-        });
+          .get(
+            serverUrl +
+              `api/user/${this.props.location.state.user}/list/${this.state.whichList}/`,
+            {
+              headers: {
+                Authorization: `Token ${myCookie.token}`,
+              },
+            }
+          )
+          .then((res) => {
+            this.setState({ productList: res.data });
+          });
       } else {
         axios
-        .get(
-          serverUrl +
-            `api/user/${myCookie.user_id}/list/${this.state.whichList}/`
-        )
-        .then((res) => {
-          this.setState({ productList: res.data });
-        });
+          .get(
+            serverUrl +
+              `api/user/${this.props.location.state.user}/list/${this.state.whichList}/`
+          )
+          .then((res) => {
+            this.setState({ productList: res.data });
+          });
       }
     }
   }
 
   renderList() {
+    console.log("whichlist: ", this.state.whichList);
+    console.log("lists owner: ", this.state.lists_owner);
 
-    console.log("whichlist: ", this.state.whichList)
     let productCards = this.state.productList.products?.map((product) => {
       return (
         <Col sm="3">
@@ -138,7 +161,7 @@ export default class MyList extends Component {
             className="listProductRemoveButton"
             onClick={(event) => this.onDeleteListProductButton(event, product)}
           >
-            <img src={removeListIcon} hidden={!this.state.isAuthorizedUser}/>
+            <img src={removeListIcon} alt={""} hidden={!this.state.isAuthorizedUser} />
           </button>
           <ProductCard product={product}></ProductCard>
         </Col>
@@ -247,6 +270,7 @@ export default class MyList extends Component {
   };
 
   render() {
+    console.log("props: ",this.props)
     let listNames = this.state.productLists?.map((list) => {
       return (
         <Row className="listRow">
@@ -260,7 +284,7 @@ export default class MyList extends Component {
             className="listRemoveButton"
             onClick={(event) => this.onDeleteListButton(event, list)}
           >
-            <img src={removeListIcon} hidden={!this.state.isAuthorizedUser}/>
+            <img src={removeListIcon} alt={""} hidden={!this.state.isAuthorizedUser} />
           </button>
         </Row>
       );
@@ -271,7 +295,7 @@ export default class MyList extends Component {
         <Row className={"listWrapper"}>
           <Col xs={3} className={"lists"}>
             <Row>
-              <h2>My Lists</h2>
+              <h2>{this.state.lists_owner.first_name}'s List</h2>
             </Row>
             <ListGroup variant="flush">{listNames}</ListGroup>
             <Row className="addListRow" hidden={!this.state.isAuthorizedUser}>
@@ -283,7 +307,7 @@ export default class MyList extends Component {
                   onChange={this.onListNameChange}
                 />
 
-                <div className="isFormPrivate" >
+                <div className="isFormPrivate">
                   <Form.Check
                     type="switch"
                     id="custom-switch"
@@ -294,7 +318,7 @@ export default class MyList extends Component {
               </Form.Group>
 
               <button className="addListButton" onClick={this.onAddListSubmit}>
-                Add List <img src={addListIcon} />
+                Add List <img src={addListIcon} alt={""} />
               </button>
             </Row>
           </Col>

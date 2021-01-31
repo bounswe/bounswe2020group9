@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import ReactDOM from "react-dom";
 import axios from "axios";
 import { Button, Modal } from "react-bootstrap";
 import { Redirect } from "react-router-dom";
@@ -12,11 +11,11 @@ import "./header.scss";
 
 //components
 import { serverUrl } from "../../utils/get-url";
-import { bake_cookie, read_cookie, delete_cookie } from "sfcookies";
+import { read_cookie, delete_cookie } from "sfcookies";
 
 //utils
 import bazaarIMG from "../../assets/bazaar-4.png";
-import { faUserPlus } from "@fortawesome/free-solid-svg-icons";
+import { faComment, faUserPlus, faBook} from "@fortawesome/free-solid-svg-icons";
 import { faSignInAlt } from "@fortawesome/free-solid-svg-icons";
 import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
@@ -89,6 +88,35 @@ class Header extends Component {
     });
   };
 
+  /*
+   * On load:
+   *  Icon - Goes to Homepage "/"
+   *  Search Bar - Search products using API Call TODO
+   *
+   *  If Signed in:
+   *    If Vendor:
+   *      Inventory Dropdown:
+   *        My Products - opens vendor's product page "/inventory"
+   *        Add Product - opens vendor's add product page "/add-product"
+   *        My Orders - opens vendor order page "/my-orders-vendor"
+   *        Profile - Dropdown, opens profile page "/profile-page"
+   *    If Customer:
+   *      Profile Dropdown:
+   *        My Orders - opens customer's order page "/my-orders"
+   *        View Profile - opens profile page "/profile-page"
+   *        My Addresses - opens customer's addresses page "/MyAddresses"
+   *        My Lists - opens customer's lists page "/my-list"
+   *        My Comments - opens customer's comments page "/my-comments"
+   *        Cart Dropdown, opens customer cart page "/cart" (uses GET "/api/user/cart/" to show cart amount)
+   *    If Admin: TODO
+   *
+   *    Messages - Dropdown, opens messages page "/messages" (uses GET "/api/message/conversations/" to show new messages)
+   *    Notifications - Opens Notifications Modal (uses GET "/api/message/notifications/" to show new notifications)
+   *
+   *  If not Signed in:
+   *    Sign-up - Sign-up page "/SignUp"
+   *    Sign-in - Sign-in page "/SignIn"
+   */
   componentDidMount() {
     let myCookie = read_cookie("user");
 
@@ -163,6 +191,16 @@ class Header extends Component {
   }
 
   render() {
+    let logo;
+    if (this.state.user_type === 3){
+      logo =<a className="navbar-brand" href="/admin-home">
+            <img src={bazaarIMG} width="100" height="100" />
+          </a>
+    } else {
+      logo = <a className="navbar-brand" href="/">
+      <img src={bazaarIMG} width="100" height="100" />
+    </a>
+    }
     let cartItems = this.state.cartProducts.map((product) => {
       return (
         <Link
@@ -176,6 +214,7 @@ class Header extends Component {
 
     let SignPart;
 
+    //Notification modal
     let Notifications = this.state.notifications.map((notification) => {
       return (
         <a
@@ -220,6 +259,9 @@ class Header extends Component {
                 Profile
               </a>
               <div className="dropdown-menu" aria-labelledby="ddlProfile">
+                <a className="dropdown-item" href="/my-orders">
+                  My Orders
+                </a>
                 <a className="dropdown-item" href="/profile-page">
                   View Profile
                 </a>
@@ -231,6 +273,10 @@ class Header extends Component {
                 </a>
                 <a className="dropdown-item" href="/MyCredictCards">
                   My Credict Cards
+
+                <a className="dropdown-item" href="/my-comments">
+                  My Comments
+
                 </a>
               </div>
             </li>
@@ -311,7 +357,7 @@ class Header extends Component {
             </li>
           </ul>
         );
-      } else {
+      } else if (read_cookie("user").user_type === 2) {
         SignPart = (
           <ul className="navbar-nav navbar-right">
             <li className="nav-item dropdown">
@@ -333,6 +379,9 @@ class Header extends Component {
                 </a>
                 <a className="dropdown-item" href="/add-product">
                   Add Product
+                </a>
+                <a className="dropdown-item" href="/my-orders-vendor">
+                  My Orders
                 </a>
               </div>
             </li>
@@ -406,6 +455,38 @@ class Header extends Component {
             </li>
           </ul>
         );
+      } else {
+        SignPart = (
+          <ul className="navbar-nav navbar-right">
+            <li className="nav-item">
+              <a
+                className="nav-link"
+                href="/admin-user-list"
+              >
+                <FontAwesomeIcon icon={faUser} />
+                <span className="mr-1" />
+                Users
+              </a>
+            </li>
+            <li className="nav-item">
+              <a
+                className="nav-link"
+                href="/admin-comment-list"
+              >
+                <FontAwesomeIcon icon={faComment} />
+                <span className="mr-1" />
+                Comments
+              </a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="/" onClick={this.handleSignout}>
+                <FontAwesomeIcon icon={faSignOutAlt} />
+                <span className="mr-1" />
+                Sign Out
+              </a>
+            </li>
+          </ul>
+        );
       }
     } else {
       SignPart = (
@@ -459,9 +540,7 @@ class Header extends Component {
           </Modal.Footer>
         </Modal>
 
-        <a className="navbar-brand" href="/">
-          <img src={bazaarIMG} width="100" height="100" />
-        </a>
+        {logo}
 
         <div className="collapse navbar-collapse" id="collapsibleNavId">
           <ul className="navbar-nav mr-auto mt-2 mt-lg-0 search-wrapper">

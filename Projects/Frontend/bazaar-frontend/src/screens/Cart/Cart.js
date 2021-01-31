@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import "./cart.scss";
 import axios from "axios";
-import { Redirect } from "react-router-dom";
 
 //components
 import Col from "react-bootstrap/Col";
@@ -15,7 +14,7 @@ import CategoryBar from "../../components/category-bar/category-bar";
 
 //helpers
 import { serverUrl } from "../../utils/get-url";
-import { bake_cookie, read_cookie, delete_cookie } from "sfcookies";
+import { read_cookie } from "sfcookies";
 
 export default class Cart extends Component {
   constructor(props) {
@@ -96,10 +95,12 @@ export default class Cart extends Component {
             <Card style={{ width: "18rem" }}>
               <Card.Body>
                 <Card.Title>Total: ₺{totalAmount}</Card.Title>
-                <Button variant="success" style={{ marginRight: "20px" }}>
-                  Buy
-                </Button>
-                <Button variant="danger">Empty Cart</Button>
+                <a href="/checkout" hidden={this.state.cart.length === 0}>
+                  <Button variant="success" style={{ marginRight: "20px" }} >
+                    Buy
+                  </Button>
+                </a>
+                <Button variant="danger" hidden={this.state.cart.length === 0}>Empty Cart</Button>
               </Card.Body>
             </Card>
           </Container>

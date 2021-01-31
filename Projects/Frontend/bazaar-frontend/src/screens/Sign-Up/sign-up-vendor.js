@@ -120,17 +120,19 @@ export default class SignUp extends Component {
         event.preventDefault();
 
         if (this.handleValidation()){
-          const data = new FormData();
-          data.append("username", this.state.username);
-          data.append("password", this.state.password);
-          data.append("first_name", this.state.fname);
-          data.append("last_name", this.state.lname);
-          data.append("company", this.state.company);
-          data.append("postal_code", this.state.postal_code);
-          data.append("address", this.state.address);
-          data.append("address_name", this.state.address_name);
-          data.append("user_type", 2);
+          const data = {
+            "username": this.state.username,
+            "password": this.state.password,
+            "company" : this.state.company,
+            "user_type": 2,
+            "address_name" : this.state.address_name,
+            "address" : this.state.address,
+            "country" : "none",
+            "city" : "none",
+            "postal_code" : this.state.postal_code
+        }
           console.log("here")
+          console.log(data)
           axios.post(serverUrl+`api/user/signup/`, data)
             .then(res => {
       
@@ -142,7 +144,7 @@ export default class SignUp extends Component {
                 // Request made and server responded
                 let new_errors = this.state.errors
                 new_errors["username"] = error.response.data["username"][0]
-                //console.log(error.response.data)
+                console.log(error.response.data)
                 this.setState({errors: new_errors})
               } else if (error.request) {
                 // The request was made but no response was received
@@ -162,6 +164,9 @@ export default class SignUp extends Component {
             return <Redirect to={this.state.redirect} />
           }
         return (
+          /*
+            Terms and Conditions checkbox: opens TermsNConditions Modal, must be checked to sign up
+           */
           <div className='background'>
 
             <Modal show={this.state.isOpen} onHide={this.closeModal}>

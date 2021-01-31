@@ -1,9 +1,6 @@
 import React, { Component } from "react";
 import Card from 'react-bootstrap/Card'
-import { Link } from 'react-router-dom'
 import "./creditcardcard.scss";
-import axios from 'axios'
-import { serverUrl } from "../../../../utils/get-url";
 import CreditCard from 'react-credit-cards';
 
 export default class CreditCardCard extends Component {
@@ -14,7 +11,7 @@ export default class CreditCardCard extends Component {
 
 
     //console.log("image link: "+imageLink)
-      if (this.props.creditCard == '') {
+      if (this.props.creditCard === '') {
         return (
           <span className="align-middle">
             Select a card

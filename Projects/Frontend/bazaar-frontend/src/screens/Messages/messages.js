@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import CategoryBar from "../../components/category-bar/category-bar";
-import { Alert, Button } from "react-bootstrap";
+import { Alert } from "react-bootstrap";
 import axios from "axios";
 import { serverUrl } from "../../utils/get-url";
 import { read_cookie } from "sfcookies";
@@ -22,6 +22,22 @@ export default class Messages extends Component {
     };
   }
 
+/*
+ * On load:
+ * 1. API Call GET /api/message/all/
+ * 2. Render Two Columns:
+ *  Left Column shows all Conversations as Pills, bold if unread
+ *    On Click: set as unread via API Call GET /api/message/<id>/
+ *  Right Column shows one Conversation, and the "Send Message" Form, depending on which Pill is active on Left Column
+ *    Send Message Form:
+ *    API Call POST /api/message/
+ *    sent the message body to the user of the current Conversation
+ *
+ *  New Message Pill: opens "Create Conversation" Form on Right Column
+ *    New Conversation Form:
+ *    API Call POST /api/message/
+ *    sent the message body to the entered user
+ */
   componentDidMount() {
     let myCookie = read_cookie("user");
     const headers = {
@@ -33,9 +49,15 @@ export default class Messages extends Component {
         headers: headers,
       })
       .then((response) => {
+        let conversations = response.data.conversations;
+        conversations.forEach((conversation)=>{
+          conversation.messages.forEach((message)=>{
+            message.is_me = conversation.am_I_user1 === message.is_user1;
+          });
+        });
         this.setState({
           token: myCookie.token,
-          conversations: response.data.conversations,
+          conversations: conversations,
         });
         console.log("API returns:", this.state.conversations);
       });
@@ -84,7 +106,6 @@ export default class Messages extends Component {
       });
       return;
     }
-    console.log("reached");
 
     const body = new FormData();
     body.append("receiver_username", this.state.message_username);
@@ -113,24 +134,26 @@ export default class Messages extends Component {
   };
 
   render() {
+
     const { conversations } = this.state;
     let messages = conversations.map((conversation) => {
       return [conversation.email, conversation.messages];
     });
     if (messages === undefined) messages = [];
 
+    // One Conversation
     let Conversation = (conversation) => {
       conversation = conversation[1];
       return conversation.map((message) => {
         return (
           <div
             className={
-              "row justify-content-" + (message.is_user1 ? "end" : "start")
+              "row justify-content-" + (message.is_me ? "end" : "start")
             }
           >
             <div
               className={
-                "col-8 chatText " + (message.is_user1 ? "user1" : "user2")
+                "col-8 chatText " + (message.is_me ? "user1" : "user2")
               }
             >
               {message.body}
@@ -140,6 +163,7 @@ export default class Messages extends Component {
       });
     };
 
+    // All Conversations, uses the Conversation above + Create Conversation
     let Conversations = this.state.conversations.map((conversation) => {
       return (
         <div
@@ -148,7 +172,13 @@ export default class Messages extends Component {
           role="tabpanel"
           aria-labelledby={"v-pills-" + conversation.user_id + "-tab"}
         >
-          <h4 className="text-center">{conversation.email}</h4>
+            <h4 className="text-center col-md-12">{conversation.email}</h4>
+          <div className="textCenter">
+            <a className="btn btn-info justify-content-center"
+              href={"/user/"+conversation.user_id}>
+              View Profile
+            </a>
+          </div>
           <div className="container chatBox">
             {
               //This is magnificent coding in act, selects the related conversation of the user
@@ -182,6 +212,7 @@ export default class Messages extends Component {
       );
     });
 
+    // related Pills for all Conversations + Create Conversation Pill
     let LeftCol = conversations.map((user) => {
       return (
         <a

@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import Card from "react-bootstrap/Card";
 import { Link } from "react-router-dom";
-import "./productCard.scss";
-import { serverUrl } from "../../utils/get-url";
+import "./mycommentproduct.scss";
+import { serverUrl } from "../../../utils/get-url";
 
-export default class CardComponent extends Component {
+export default class MyCommentProduct extends Component {
   render() {
     //console.log("category name: "+this.props.product?.category["name"])
     let imageLink;
@@ -21,10 +21,6 @@ export default class CardComponent extends Component {
       imageLink = "";
     }
     this.props.product.picture = imageLink;
-    let categoryName = "";
-    if (this.props.product.category) {
-      categoryName = this.props.product.category["name"];
-    }
 
     //console.log("image link: "+imageLink)
 
@@ -36,14 +32,7 @@ export default class CardComponent extends Component {
             state: { product: this.props.product },
           }}
         >
-          <Card className={"productCard"}>
-            <div className={"productImgWrapper"}>
-              <Card.Img
-                className={"productCardImage"}
-                variant="top"
-                src={this.props.product.picture}
-              />
-            </div>
+          <Card className={"myCommentproductCard"}>
             <Card.Body className={"productCardBody"}>
               <Card.Title>{this.props.product.name}</Card.Title>
               <Card.Text>{this.categoryName}</Card.Text>

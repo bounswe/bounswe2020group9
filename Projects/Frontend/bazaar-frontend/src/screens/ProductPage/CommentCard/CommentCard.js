@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./commentCard.scss";
+import { Link } from "react-router-dom";
 
 //components
 import Row from "react-bootstrap/Row";
@@ -11,8 +12,10 @@ export default class CommentCard extends Component {
       <div className={"commentWrapper"}>
         {!this.props.comment.is_anonymous ? (
           <Row className={"commentName"}>
-            {this.props.comment.first_name}{" "}
-            {this.props.comment.first_name.substring(0, 1)}***{" "}
+            <Link to={`/user/${this.props.comment.customer}`}>
+              {this.props.comment.first_name}{" "}
+              {this.props.comment.last_name.substring(0, 1)}******{" "}
+            </Link>
           </Row>
         ) : (
           <Row className={"commentName"}>*Anonimous*</Row>
