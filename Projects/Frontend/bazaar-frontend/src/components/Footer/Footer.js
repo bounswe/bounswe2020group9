@@ -1,87 +1,65 @@
 import React from 'react';
 import {Container, Col, Row} from 'react-bootstrap';
 import './footer.css'
+import axios from "axios";
+import {serverUrl} from "../../utils/get-url";
 
-function Footer() {
+function FooterColumn(props) {
+  const listItems = props.subcategs.map(subcateg => {
+      const link = "/category/" + subcateg;
+      return <li><a href={link}><DoubleAngle/>{subcateg}</a></li>
+    }
+  );
+  console.log(listItems);
   return (
-    <Container fluid id="footer">
+    <Col>
+      <h4>{props.categName}</h4>
+      <ul class="list-unstyled quick-links">
+        {listItems}
+      </ul>
+    </Col>
+  )
+}
+
+class Footer extends React.Component {
+
+  constructor(props){
+    super(props);
+    this.state = {
+      categs : {}
+    }
+  }
+
+  componentDidMount() {
+    let categsTemp = {}
+    axios.get(serverUrl + "api/product/categories/").then( res => {
+      for(let i=0; i<res.data.length; i++){
+        if(res.data[i].parent === "Categories"){
+          categsTemp[res.data[i].name] = [];
+        }
+      }
+      for(let i=0; i<res.data.length; i++){
+        if(res.data[i].parent !== "Categories"){
+          categsTemp[res.data[i].parent].push( res.data[i].name );
+        }
+      }
+    });
+    this.setState({categs : categsTemp})
+    let a = 4
+    let b = 31
+  }
+
+  render() {
+
+    return (
+      <Container fluid id="footer">
         <Row>
-          <Col>
-            <h4>Electronics</h4>
-            <ul class="list-unstyled quick-links">
-              <li><a href="/category/Tablets"><DoubleAngle/>Tablets</a></li>
-              <li><a href="/category/Computers"><DoubleAngle/>Computers</a></li>
-              <li><a href="/category/Photography"><DoubleAngle/>Photography</a></li>
-              <li><a href="/category/Home Appliances"><DoubleAngle/>Home Appliances</a></li>
-              <li><a href="/category/TV"><DoubleAngle/>TV</a></li>
-              <li><a href="/category/Gaming"><DoubleAngle/>Gaming</a></li>
-              <li><a href="/category/Electronics/Other"><DoubleAngle/>Other</a></li>
-              <li><a href="/category/Mobile Devices"><DoubleAngle/>Mobile Devices</a></li>
-            </ul>
-          </Col>
-
-          <Col>
-            <h4>Home</h4>
-            <ul class="list-unstyled quick-links">
-              <li><a href="/"><DoubleAngle/>Home Textile</a></li>
-              <li><a href="/category/Kitchen"><DoubleAngle/>Kitchen</a></li>
-              <li><a href="/category/Bedroom"><DoubleAngle/>Bedroom</a></li>
-              <li><a href="/category/Bathroom"><DoubleAngle/>Bathroom</a></li>
-              <li><a href="/category/Furniture"><DoubleAngle/>Furniture</a></li>
-              <li><a href="/category/Lighting"><DoubleAngle/>Lighting</a></li>
-              <li><a href="/category/Home/Other"><DoubleAngle/>Other</a></li>
-              <li><a href="/category/Petshop"><DoubleAngle/>Petshop</a></li>
-            </ul>
-          </Col>
-
-          <Col>
-            <h4>Clothing</h4>
-            <ul class="list-unstyled quick-links">
-              <li><a href="/category/Top"><DoubleAngle/>Top</a></li>
-              <li><a href="/category/Bottom"><DoubleAngle/>Bottom</a></li>
-              <li><a href="/category/Outerwear"><DoubleAngle/>Outerwear</a></li>
-              <li><a href="/category/Shoes"><DoubleAngle/>Shoes</a></li>
-              <li><a href="/category/Bags"><DoubleAngle/>Bags</a></li>
-              <li><a href="/category/Accessories"><DoubleAngle/>Accessories</a></li>
-              <li><a href="/category/Activewear"><DoubleAngle/>Activewear</a></li>
-            </ul>
-          </Col>
-
-          <Col>
-            <h4>Books</h4>
-            <ul class="list-unstyled quick-links">
-              <li><a href="/category/Books"><DoubleAngle/>Books</a></li>
-            </ul>
-          </Col>
-
-          <Col>
-            <h4>Living</h4>
-            <ul class="list-unstyled quick-links">
-              <li><a href="/category/Art Supplies"><DoubleAngle/>Art Supplies</a></li>
-              <li><a href="/category/Musical Devices"><DoubleAngle/>Musical Devices</a></li>
-              <li><a href="/category/Sports"><DoubleAngle/>Sports</a></li>
-              <li><a href="/category/Living/Other"><DoubleAngle/>Other</a></li>
-            </ul>
-          </Col>
-
-          <Col>
-            <h4>Selfcare</h4>
-            <ul class="list-unstyled quick-links">
-              <li><a href="/category/Perfumes"><DoubleAngle/>Perfumes</a></li>
-              <li><a href="/category/Makeup"><DoubleAngle/>Makeup</a></li>
-              <li><a href="/category/Skincare"><DoubleAngle/>Skincare</a></li>
-              <li><a href="/category/Hair"><DoubleAngle/>Hair</a></li>
-              <li><a href="/category/Body Care"><DoubleAngle/>Body Care</a></li>
-              <li><a href="/category/Selfcare/Other"><DoubleAngle/>Other</a></li>
-            </ul>
-          </Col>
-
-          <Col>
-            <h4>Health</h4>
-            <ul class="list-unstyled quick-links">
-              <li><a href="/category/Health"><DoubleAngle/>Health</a></li>
-            </ul>
-          </Col>
+          {
+          Object.keys(this.state.categs).map( categName =>
+            <FooterColumn categName={categName} subcategs={this.state.categs[categName]}
+            />
+          )
+          }
         </Row>
 
         <Row>
@@ -98,7 +76,7 @@ function Footer() {
         <Row className="text-center footerLower">
           <Col>
             <p>34342, Bebek, Besiktas, Istanbul/Turkey<br />
-					© {new Date().getFullYear()} <a href="/">Bazaar Inc.</a> All rights reserved</p>
+          © {new Date().getFullYear()} <a href="/">Bazaar Inc.</a> All rights reserved</p>
           </Col>
         </Row>
 
@@ -126,8 +104,9 @@ function Footer() {
           </Col>
         </Row>
 
-    </Container>
-  );
+      </Container>
+    )
+  }
 }
 
 function Minus() {
