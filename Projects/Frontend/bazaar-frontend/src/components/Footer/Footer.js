@@ -10,7 +10,7 @@ function FooterColumn(props) {
       return <li><a href={link}><DoubleAngle/>{subcateg}</a></li>
     }
   );
-  console.log(listItems);
+  
   return (
     <Col>
       <h4>{props.categName}</h4>
@@ -45,8 +45,6 @@ class Footer extends React.Component {
       }
     });
     this.setState({categs : categsTemp})
-    let a = 4
-    let b = 31
   }
 
   render() {
