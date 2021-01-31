@@ -20,6 +20,10 @@ class VendorProfileForUserViewController: UIViewController {
     var delegate: VendorProfileForUserViewController?
     var products: [ProductData] = []
     
+    /*
+     function that is automatically called when the view first appears on screen.
+     used for setting the initial values for the views.
+     */
     override func viewDidLoad() {
         super.viewDidLoad()
         productsTableView.tableFooterView = UIView(frame: .zero)
@@ -29,9 +33,11 @@ class VendorProfileForUserViewController: UIViewController {
         setAttributes()
         productsTableView.register(UINib(nibName: "ProductCell", bundle: nil), forCellReuseIdentifier: "ReusableProdcutCell")
         productsTableView.reloadData()
-        // Do any additional setup after loading the view.
     }
     
+    /*
+     function that is used for fetching the location information of the vendor and setting other values for the vendor information.
+     */
     func setAttributes() {
         APIManager().getLocationOfVendor(vendorId: vendor.id, completionHandler: { (result) in
             switch result {
@@ -62,22 +68,39 @@ class VendorProfileForUserViewController: UIViewController {
         }
     }
     
+    /*
+     function that is automatically called every time before the view will appear on screen.
+     used for setting the top navigation bar hidden.
+     */
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
+    /*
+     function that is automatically called every time before the view will disappear from the screen.
+     used for setting the top navigation bar visible.
+     */
     override func viewWillDisappear(_ animated: Bool) {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
     }
     
+    /*
+     function that is used for segueing to the previous view controller when the back button is pressed.
+     */
     @IBAction func backButtonPressed(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
     }
 
+    /*
+     function that is used for segueing to the messaging view controller when the message button is pressed.
+     */
     @IBAction func messageButtonPressed(_ sender: Any) {
         self.performSegue(withIdentifier: "vendorProfileToSendMessageSegue", sender: nil)
     }
     
+    /*
+     function that is used for calculating the average rating score of the vendor.
+     */
     func calcAverageRating() -> Double {
         return (Double((products.map{$0.rating}).reduce(0, +))/Double(products.count)).rounded(toPlaces: 2)
     }
@@ -98,6 +121,9 @@ class VendorProfileForUserViewController: UIViewController {
         }
     }
     
+    /*
+     function that decides if a segue from this view controller to another should be performed or not.
+     */
     override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
         if identifier == "vendorProfileForUserToProductDetailSegue" {
              return self.productsTableView.indexPathForSelectedRow != nil
@@ -108,10 +134,16 @@ class VendorProfileForUserViewController: UIViewController {
 }
 
 extension VendorProfileForUserViewController: UITableViewDelegate, UITableViewDataSource {
+    /*
+     function that sets the number of rows in a tableview.
+     */
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return products.count
     }
     
+    /*
+     function that is called for filling out the data of a UITableViewCell while it's rendered
+     */
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = productsTableView.dequeueReusableCell(withIdentifier: "ReusableProdcutCell") as! ProductCell
         let product = products[indexPath.row]
@@ -145,6 +177,9 @@ extension VendorProfileForUserViewController: UITableViewDelegate, UITableViewDa
         return cell
     }
     
+    /*
+     function that is called when a UITableViewCell is selected via clicking.
+     */
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let product = products[indexPath.row]
         if (shouldPerformSegue(withIdentifier: "vendorProfileForUserToProductDetailSegue", sender: nil)) {

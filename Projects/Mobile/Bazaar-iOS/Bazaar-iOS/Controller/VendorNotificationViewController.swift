@@ -23,7 +23,7 @@ class VendorNotificationViewController: UIViewController{
     
     var networkFailedAlert:UIAlertController = UIAlertController(title: "Error while retrieving notification", message: "We encountered a problem while retrieving the notification, please check your internet connection.", preferredStyle: .alert)
     
-    
+    //back button pressed
     @IBAction func backButtonPressed(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }
@@ -34,10 +34,11 @@ class VendorNotificationViewController: UIViewController{
         //self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
-    
+    // set up necessary fetching structs and variables
     override func viewDidLoad() {
         super.viewDidLoad()
         NotificationTableView.dataSource = self
+        NotificationTableView.delegate = self
         allNotificationsInstance.delegate = self
         allProductsInstance.delegate = self
         allOrdersInstance.delegate = self
@@ -67,6 +68,7 @@ class VendorNotificationViewController: UIViewController{
                 orders_dict[order.id]=order
             }
         }
+        self.allNotificationsInstance.fetchAllNotifications()
         if !(allNotificationsInstance.dataFetched) {
             print("notification not fetched yet,tryin to fetch right now")
             notificationsCannotBeFetched()
@@ -77,7 +79,7 @@ class VendorNotificationViewController: UIViewController{
     
     
 }
-
+//return cell count
 extension VendorNotificationViewController:UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //return 10
@@ -90,25 +92,8 @@ extension VendorNotificationViewController:UITableViewDelegate,UITableViewDataSo
             return 5
         }
     }
-    /*
-     @objc func cancel_button_clicked(_ sender : UIButton){
-     print("Button clicked. ")
-     // need to take status information and set to cancel_button_status
-     let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
-     alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
-     APIManager().deleteOrder(delivery_id: cancel_button_delivery_id,status:cancel_button_status) { (result) in
-     switch result {
-     case .success(let message):
-     self.dismiss(animated: false, completion: nil)
-     alertController.message = "Order status succesfully changed."
-     self.present(alertController, animated: true, completion: nil)
-     case .failure(_):
-     alertController.message = "Order status did not changed. Try again later."
-     self.present(alertController, animated: true, completion: nil)
-     }
-     }
-     }*/
     
+    // set up cells according to index
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         print("setting notification cell : "+String(indexPath.row))
@@ -129,28 +114,24 @@ extension VendorNotificationViewController:UITableViewDelegate,UITableViewDataSo
         let notf_userId=notification.user
         
         let product=allProductsInstance.allProducts.filter{$0.id == notification.delivery[0].product_id}[0]
-        //let product=products_dict[product_id]
-        
-        //cell.Cancel_OrderButton.tag = indexPath.row
-        //cancel_button_delivery_id=delivery.id
-        //cell.Cancel_OrderButton.addTarget(self, action: #selector(self.cancel_button_clicked(_:)), for: .allTouchEvents);
+
         
         if (!notf_isVisited){
             cell.bodyLabel.text = notf_body
-            cell.bodyLabel.font = UIFont.systemFont(ofSize: 20, weight: .black)
+            cell.bodyLabel.font = UIFont.systemFont(ofSize: 10, weight: .black)
             cell.seenStatusLabel.text = "New notification"
             cell.seenStatusLabel.font = UIFont.systemFont(ofSize: 15, weight: .black)
             cell.productNameLabel.text = product.name
-            cell.productNameLabel.font = UIFont.systemFont(ofSize: 13, weight: .black)
+            cell.productNameLabel.font = UIFont.systemFont(ofSize: 10, weight: .regular)
             cell.timeLabel.text = "Time : " + notf_time
             cell.timeLabel.font = UIFont.systemFont(ofSize: 13, weight: .black)
         }else{
             cell.bodyLabel.text = notf_body
-            cell.bodyLabel.font = UIFont.systemFont(ofSize: 20, weight: .regular)
+            cell.bodyLabel.font = UIFont.systemFont(ofSize: 10, weight: .regular)
             cell.seenStatusLabel.text = "Seen"
             cell.seenStatusLabel.font = UIFont.systemFont(ofSize: 15, weight: .regular)
             cell.productNameLabel.text = product.name
-            cell.productNameLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
+            cell.productNameLabel.font = UIFont.systemFont(ofSize: 10, weight: .regular)
             cell.timeLabel.text = "Time : " + notf_time
             cell.timeLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         }
@@ -180,7 +161,7 @@ extension VendorNotificationViewController:UITableViewDelegate,UITableViewDataSo
     }
     
 }
-
+//set up delegates-functions
 extension VendorNotificationViewController: AllNotificationsFetchDelegate {
     func allNotificationsAreFetched() {
         self.stopIndicator()

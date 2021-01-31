@@ -184,6 +184,9 @@ struct APIManager {
         }
     }
     
+    /*
+     Function that makes asynchronous Alamofire call for retrieving all of the products in the database.
+     */
     func getAllProducts(completionHandler: @escaping ([ProductData]?) -> Void) {
         let callURL = "http://3.121.223.52:8000/api/product/"
         if let url = URL(string: callURL){
@@ -441,6 +444,9 @@ struct APIManager {
         }
     }
     
+    /*
+     Function that makes the asynchronous Alamofire call for retrieving the cart of the currently logged-in customer.
+     */
     func getCart(user:Int, completionHandler: @escaping (Result<[CartProduct], Error>) -> Void) {
         do {
             let request = try ApiRouter.getCart(user: user).asURLRequest()
@@ -463,6 +469,9 @@ struct APIManager {
         }
     }
     
+    /*
+     Function that makes the asynchronous Alamofire call for adding a product to the cart of the currently logged-in customer.
+     */
     func addToCart(user: Int, productID: Int, amount: Int, completionHandler: @escaping (Result<[CartProduct], Error>) -> Void) {
         do {
             let request = try ApiRouter.addToCart(user: user, productID: productID, amount: amount).asURLRequest()
@@ -484,6 +493,9 @@ struct APIManager {
         }
     }
     
+    /*
+     Function that makes the asynchronous Alamofire call for editing the amount of a product in the cart of the currently logged-in customer.
+     */
     func editAmountInCart(productID: Int, amount: Int, completionHandler: @escaping (Result<[CartProduct], Error>) -> Void) {
         do {
             let request = try ApiRouter.editAmountInCart(productID: productID, amount: amount).asURLRequest()
@@ -505,6 +517,9 @@ struct APIManager {
         }
     }
     
+    /*
+     Function that makes the asynchronous Alamofire call for deleting a product from the cart of the currently logged-in customer.
+     */
     func deleteProductFromCart(productID: Int, completionHandler: @escaping (Result<[CartProduct], Error>) -> Void) {
         do {
             let request = try ApiRouter.deleteProductFromCart(productID: productID).asURLRequest()
@@ -549,6 +564,10 @@ struct APIManager {
                 completionHandler(.failure(error))
             }
         }
+    
+    /*
+     Function that makes the asynchronous Alamofire call for retrieving the search/filter/sort calls.
+     */
     func search(filterType: String, sortType: String, searchWord: String, completionHandler: @escaping (Result<SearchProductList, Error>) -> Void) {
         do {
             let request = try ApiRouter.search(filterType: filterType, sortType: sortType, searchWord: searchWord).asURLRequest()
@@ -599,6 +618,9 @@ struct APIManager {
         }
     }
     
+    /*
+     Function that makes the asynchronous Alamofire call for retrieving all the vendors in the database.
+     */
     func getAllVendors(str:String, completionHandler: @escaping (Result<[VendorData], Error>) -> Void) {
         do {
             let request = try ApiRouter.getAllVendors(str: str).asURLRequest()
@@ -718,6 +740,9 @@ struct APIManager {
         }
     }
     
+    /*
+     Function that makes the asynchronous Alamofire call for retrieving the products of the currently logged-in vendor.
+     */
     func getVendorsProducts(vendorId:Int, completionHandler: @escaping (Result<[ProductData] ,Error>) -> Void) {
         do {
             let request = try ApiRouter.getVendorsProducts(vendorId: vendorId).asURLRequest()
@@ -761,6 +786,9 @@ struct APIManager {
         }
     }
     
+    /*
+     Function that makes the asynchronous Alamofire call for adding a new product to the inventory of the currently logged-in vendor.
+     */
     func vendorAddProduct(title:String, brand:String, price:Double, stock:Int, description:String, image:String, categoryID: Int, completionHandler: @escaping (Result<ProductData ,Error>) -> Void) {
         do {
             let request = try ApiRouter.vendorAddProduct(title: title, brand: brand, price: price, stock: stock, description: description, image: image, categoryID: categoryID).asURLRequest()
@@ -804,7 +832,9 @@ struct APIManager {
         }
     }
     
-
+    /*
+     Function that makes the asynchronous Alamofire call for editing a product in the inventory of the currently logged-in vendor.
+     */
     func vendorEditProduct(prodID:Int, title:String, brand:String, price:Double, stock:Int, description:String, image:String, categoryID: Int, completionHandler: @escaping (Result<ProductData ,Error>) -> Void) {
         do {
             let request = try ApiRouter.vendorEditProduct(prodId:prodID, title: title, brand: brand, price: price, stock: stock, description: description, image: image, categoryID: categoryID).asURLRequest()
@@ -982,6 +1012,9 @@ struct APIManager {
         }
     }
     
+    /*
+     Function that makes the asynchronous Alamofire call for retrieving the company address of a vendor.
+     */
     func getLocationOfVendor(vendorId:Int, completionHandler: @escaping (Result<[AddressDataVendor] ,Error>) -> Void) {
         do {
             let request = try ApiRouter.getLocationOfVendor(vendorId: vendorId).asURLRequest()
@@ -1005,6 +1038,9 @@ struct APIManager {
         }
     }
     
+    /*
+     Function that makes the asynchronous Alamofire call for getting a product's information by product id.
+     */
     func getProduct(p_id:Int, completionHandler: @escaping (Result<ProductData ,Error>) -> Void) {
         do {
             let request = try ApiRouter.getProduct(p_id: p_id).asURLRequest()

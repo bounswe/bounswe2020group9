@@ -20,6 +20,10 @@ class MyCartViewController: UIViewController {
     let dispatchGroup = DispatchGroup()
     var userCart:[CartProduct] = []
     
+    /*
+     function that is automatically called every time before the view will appear on screen.
+     used for fetching the API related data before the view appears.
+     */
     override func viewWillAppear(_ animated: Bool) {
         if let isLoggedIn = UserDefaults.standard.value(forKey: K.isLoggedinKey) as? Bool {
             if (isLoggedIn) {
@@ -46,6 +50,11 @@ class MyCartViewController: UIViewController {
 
         }
     }
+    
+    /*
+     function that is automatically called when the view first appears on screen.
+     used for fetching API related data and setting the initial values for the views.
+     */
     override func viewDidLoad() {
         super.viewDidLoad()
         cartTableView.delegate = self
@@ -78,6 +87,9 @@ class MyCartViewController: UIViewController {
         }
     }
     
+    /*
+     function that fetches the cart of the currently logged-in user by using APIManager's getCart function.
+     */
     func fetchCart() {
         if let user = UserDefaults.standard.value(forKey: K.userIdKey) as? Int {
             APIManager().getCart(user: user, completionHandler: {(result) in
@@ -106,23 +118,11 @@ class MyCartViewController: UIViewController {
         }else {
             print(UserDefaults.standard.value(forKey: K.userIdKey))
         }
-        /*APIManager().getCart(user:user , completionHandler: { result in
-            switch result {
-            case .success(let cart):
-                DispatchQueue.main.async {
-                    print("******cart fetched")
-                    print(cart)
-                }
-            case .failure(let error):
-                DispatchQueue.main.async {
-                    print(error)
-                    print("***** error happened")
-                }
-            }
-        })*/
-        
     }
     
+    /*
+     function that calculates the total price for all the products in the cart.
+     */
     func reloadTotalPrice () {
         var totalPrice:Double = 0.0
         for product in userCart {
@@ -131,7 +131,9 @@ class MyCartViewController: UIViewController {
         }
         self.totalPriceLabel.text = "Total:\n₺" + String(totalPrice.rounded(toPlaces: 2))
     }
-    
+    /*
+     function used for showing an activity indicator
+     */
     func startIndicator() {
         loadingContainerView.isHidden = false
         activityIndicator.isHidden = false
@@ -140,6 +142,9 @@ class MyCartViewController: UIViewController {
         emptyCartLabel.isHidden = true
     }
     
+    /*
+     function used for stopping an activity indicator and arranging the view hierarchy
+     */
     func stopIndicator() {
         self.loadingContainerView.isHidden = true
         self.activityIndicator.isHidden = true
@@ -172,21 +177,21 @@ class MyCartViewController: UIViewController {
             paymentVC.deliveries = myDict
         }
      }
-     
-    
 }
 
 extension MyCartViewController: UITableViewDelegate, UITableViewDataSource {
+    /*
+     function that sets the number of rows in a tableview.
+     */
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return userCart.count
     }
     
+    /*
+     function that is called for filling out the data of a UITableViewCell while it's rendered
+     */
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = cartTableView.dequeueReusableCell(withIdentifier: "CartCell", for: indexPath) as! CartTableViewCell
-        /*cell.amountTextField.text = "1"
-        cell.productBrandLabel.text = "rolex"
-        cell.productImageView.image = UIImage(named: "1")
-        cell.productPriceLabel.text = "₺"+"15000.00"*/
         let product = AllProducts.shared.allProducts.filter {$0.id == userCart[indexPath.row].product}[0]
         cell.product = product
         cell.amountChangedDelegate = self
@@ -213,36 +218,35 @@ extension MyCartViewController: UITableViewDelegate, UITableViewDataSource {
                 }
             }
         }
-//        if let url = product.picture {
-//            do{
-//                try cell.productImageView.loadImageUsingCache(withUrl: url, forProduct: product)
-//            } catch let error {
-//                print(error)
-//                cell.productImageView.image = UIImage(named:"xmark.circle")
-//                cell.productImageView.tintColor = UIColor.lightGray
-//            }
-//        } else {
-//            cell.productImageView.image = UIImage(named:"xmark.circle")
-//            cell.productImageView.tintColor = UIColor.lightGray
-//            cell.productImageView.contentMode = .center
-//        }
         return cell
-        
     }
     
+    /*
+     function that sets the height of the cells
+     */
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return self.view.frame.size.height/6
     }
     
+    /*
+     function that is called when a UITableViewCell is selected via clicking.
+     used for segueing to the product that was clicked.
+     */
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let product = AllProducts.shared.allProducts.filter {$0.id == userCart[indexPath.row].product}[0]
         performSegue(withIdentifier: "cartToProductDetailSegue", sender: nil)
     }
     
+    /*
+     function that determines if a tableviewcell data should be let to do swipe to delete action.
+     */
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
     
+    /*
+     function that performs the necessary data erasings after a tableviewcell is swiped to delete.
+     */
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if(editingStyle == .delete) {
             let product = AllProducts.shared.allProducts.filter {$0.id == userCart[indexPath.row].product}[0]
@@ -276,6 +280,10 @@ extension MyCartViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension MyCartViewController: CartItemAmountChangedDelegate {
+    /*
+     function that is called when the amount of a product in cart is changed.
+     it calls the reloadTotalPrice function that calculates the total price and changes the value of text label.
+     */
     func amountChangedForItem(product: ProductData, amount: Int) {
         reloadTotalPrice()
     }

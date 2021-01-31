@@ -32,13 +32,13 @@ class VendorMyOrdersViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         ordersTableView.reloadData()
         ordersTableView.tableFooterView = UIView(frame: .zero)
-        //self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
-    
+    // set up necessary variables and cells , fetch necessary items
     override func viewDidLoad() {
         super.viewDidLoad()
         ordersTableView.dataSource = self
+        ordersTableView.delegate = self
         allProductsInstance.delegate = self
         allVendorsInstance.delegate = self
         allOrdersInstance.delegate = self
@@ -68,11 +68,7 @@ class VendorMyOrdersViewController: UIViewController {
                 vendors_dict[vendor.id]=vendor
             }
         }
-        if !(allOrdersInstance.dataFetched) {
-            print("orders not fetched yet,tryin to fetch right now")
-            ordersCannotBeFetched()
-            self.allOrdersInstance.fetchAllOrders()
-        }
+        self.allOrdersInstance.fetchAllOrders()
         
     }
     
@@ -81,7 +77,6 @@ class VendorMyOrdersViewController: UIViewController {
 
 extension VendorMyOrdersViewController:UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        //return 10
         print("returned order count")
         if tableView == ordersTableView {
             print(allOrdersInstance.allOrders.count)
@@ -91,6 +86,7 @@ extension VendorMyOrdersViewController:UITableViewDelegate,UITableViewDataSource
             return 5
         }
     }
+    //for cancel button not necessary for now
     @objc func cancel_button_clicked(_ sender : UIButton){
         print("Button clicked. ")
         // need to take status information and set to cancel_button_status
@@ -108,51 +104,43 @@ extension VendorMyOrdersViewController:UITableViewDelegate,UITableViewDataSource
             }
         }
     }
-    
+    //set order cells
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         print("setting order cell : "+String(indexPath.row))
         let cell = ordersTableView.dequeueReusableCell(withIdentifier: "ReusableOrderCell", for: indexPath) as! OrderCell
         cell.ProductImage?.image = UIImage(named:"xmark.circle")
         cell.Cancel_OrderButton.isHidden=true
-        //TODO change here
         let filteredOrders:[VendorOrderData] = allOrdersInstance.allOrders
-        //let filteredProducts:[ProductData] = allProductsInstance.allProducts
-        //let filteredVendors:[VendorData] = allVendorsInstance.allVendors
         let order = filteredOrders[indexPath.row]
-        //print("Order deliveries count:" + String(order.deliveries.count))
         let delivery = order
         print("Product ID: " + String(delivery.product_id))
-        let product = products_dict[delivery.product_id]!                //filteredProducts[delivery.product_id]
+        let product = allProductsInstance.allProducts.filter{$0.id==delivery.product_id}[0]               //filteredProducts[delivery.product_id]
         //let vendor = vendors_dict[delivery.vendor]!
         let orderStatus=orderStatusArray[delivery.current_status]
-        //cell.Cancel_OrderButton.tag = indexPath.row
-        cancel_button_delivery_id=delivery.id
-        //cell.Cancel_OrderButton.addTarget(self, action: #selector(self.cancel_button_clicked(_:)), for: .allTouchEvents);
+        cell.delivery_id=delivery.id
         
-        cell.Name_BrandLabel.text = product.name + " - " + product.brand
+        cell.Cancel_OrderButton.isHidden=true
+        cell.Name_BrandLabel.text = product.name + " - " + product.brand//product.detail + ", " +
         cell.Name_BrandLabel.font = UIFont.systemFont(ofSize: 10, weight: .regular)
         
         cell.Price_StatusLabel.text = "₺" + String(product.price) + ", Status: " + orderStatus
         cell.Price_StatusLabel.font = UIFont.systemFont(ofSize: 13, weight: .black)
-        cell.VendorLabel.text = "Order Date: " + delivery.timestamp.prefix(10)
-        cell.VendorLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
-        cell.AmountLabel.text = "Amount : " + String(delivery.amount)
-        cell.AmountLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
-        cell.DatesLabel.text = "Estimated Delivery : " + delivery.delivery_time.prefix(10)
-        cell.DatesLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
+        
+        cell.VendorLabel.text = "Order adress :" + String(order.delivery_address.address + " " + order.delivery_address.city)
+        cell.VendorLabel.font = UIFont.systemFont(ofSize: 15, weight: .regular)
+        
+        cell.AmountLabel.text = "Order Date: " + delivery.timestamp.prefix(10) + " Estimated Delivery : " + delivery.delivery_time.prefix(10)
+        cell.AmountLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
+        cell.DatesLabel.text = "Click to see order details."
+        cell.DatesLabel.font = UIFont.systemFont(ofSize: 15, weight: .black)
+        //cell.AmountLabel.isHidden=true
+        //cell.DatesLabel.isHidden=true
+        
         cell.AdressLabel.text = "Order Adress: " + delivery.delivery_address.address + " " + delivery.delivery_address.city
         cell.AdressLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
         print("complete setting order cell")
-        
-        
-        print(cell.Name_BrandLabel.text)
-        print(cell.Price_StatusLabel.text)
-        print(cell.VendorLabel.text)
-        print(cell.AmountLabel.text)
-        print(cell.DatesLabel.text)
-        print(cell.AdressLabel.text)
-        
+// set images
         if allProductsInstance.allImages.keys.contains(product.id) {
             cell.ProductImage.image = allProductsInstance.allImages[product.id]
             cell.ProductImage.contentMode = .scaleAspectFit
@@ -174,8 +162,66 @@ extension VendorMyOrdersViewController:UITableViewDelegate,UITableViewDataSource
         
         return cell
     }
+    //swipe action change status of the order
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let order = allOrdersInstance.allOrders[indexPath.row]
+        let canceling_dId = order.id
+        let order_new_status_id=(order.current_status+1)%5
+        print(canceling_dId)
+        print("hey")
+        if (order_new_status_id != 0 && order_new_status_id != 4){
+            let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+            let delete = UIContextualAction(style: .destructive, title: "Mark as: " + orderStatusArray[order_new_status_id]) { (action, sourceView, completionHandler) in
+                print("index path of cancel: \(indexPath)")
+                completionHandler(true)
+                DispatchQueue.main.async {
+                    APIManager().deleteOrder(delivery_id: canceling_dId, status: order_new_status_id){ (result) in
+                        switch result {
+                        case .success(_):
+                            alertController.message = "\(canceling_dId) is successfully changed status to" + self.orderStatusArray[order_new_status_id]
+                            self.present(alertController, animated: true, completion: nil)
+                            tableView.reloadData()
+                        case .failure(_):
+                            alertController.message = "\(canceling_dId) could not change status"
+                            self.present(alertController, animated: true, completion: nil)
+                        }
+                    }
+                }
+            }
+            
+            delete.backgroundColor = #colorLiteral(red: 1, green: 0.6431372549, blue: 0.3568627451, alpha: 1)
+            let swipeActionConfig = UISwipeActionsConfiguration(actions: [delete])
+            swipeActionConfig.performsFirstActionWithFullSwipe = false
+            return swipeActionConfig
+        }
+        let swipeActionConfig = UISwipeActionsConfiguration(actions: [])
+        swipeActionConfig.performsFirstActionWithFullSwipe = false
+        return swipeActionConfig
+    }
+    //take necessary steps before leaving to details Page
+    // MARK: - Navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let indexPath = ordersTableView.indexPathForSelectedRow
+        let order_id = allOrdersInstance.allOrders[indexPath!.row].id
+        if let detailResults = segue.destination as? OrderDetailViewController {
+            detailResults.order_id = order_id
+            detailResults.isCustomer = false
+            
+        }
+    
+    }
+    //perfomr segue to detail page
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("HERE CLICKED")
+        
+        performSegue(withIdentifier: "orderVendToDetailSegue", sender: nil)
+        
+    }
+    
     
 }
+//set delegates-functions
 extension VendorMyOrdersViewController: AllProductsFetchDelegate {
     func allProductsAreFetched() {
         for prod in allProductsInstance.allProducts {
@@ -264,7 +310,7 @@ extension VendorMyOrdersViewController {
         }
     }
 }
-
+//All orders fetching structure for vendor orders
 class AllOrders_vendor {
     static let shared = AllOrders_vendor()
     var allOrders: [VendorOrderData]

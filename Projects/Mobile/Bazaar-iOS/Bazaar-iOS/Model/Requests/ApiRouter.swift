@@ -308,7 +308,7 @@ enum ApiRouter: URLRequestBuilder {
                 headers["Authorization"] = "Token \(token)"
                 print(token)
             }else {
-                headers["Authorization"] = "Token 57bcb0493429453fad027bc6552cc1b28d6df955"
+                headers["Authorization"] = "Token ce4b96c3f871f70954f5f41d1068fea3b8c92766"
             }
         case .deleteAccount(let token):
             headers["Authorization"] = "Token \(token)"

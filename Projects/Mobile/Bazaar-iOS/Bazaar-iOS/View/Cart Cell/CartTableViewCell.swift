@@ -19,18 +19,25 @@ class CartTableViewCell: UITableViewCell {
     var product: ProductData!
     var amountChangedDelegate: CartItemAmountChangedDelegate!
     
+    /*
+     function for providing the default start values for a CartTableViewCell when it's first created.
+     */
     override func awakeFromNib() {
         super.awakeFromNib()
         amountStepper.minimumValue = 1
-        // amountStepper.maximumVaule = stock **
-        // Initialization code
     }
 
+    /*
+     default function that configures the view for the selected state
+     */
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
-        // Configure the view for the selected state
     }
+    
+    /*
+     the function that is called when the amount of a product in cart is changed.
+     */
     @IBAction func changeAmount(_ sender: UIStepper) {
         let quantity = Int(sender.value)
         APIManager().editAmountInCart(productID: product!.id, amount: quantity, completionHandler: { result in
@@ -49,6 +56,9 @@ class CartTableViewCell: UITableViewCell {
     
 }
 
+/*
+ protocol that is to inform delegate ViewController that the amount of a product in cart is changed.
+ */
 protocol CartItemAmountChangedDelegate {
     func amountChangedForItem(product: ProductData, amount: Int)
 }

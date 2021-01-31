@@ -31,6 +31,10 @@ class ProductDetailViewController: UIViewController {
     var customerListsInstance = CustomerLists.shared
     var selectedList: Int?
     
+    /*
+     function that is automatically called every time the view is going to appear.
+     used for doing the initializations necessary for the view.
+     */
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.setNavigationBarHidden(true, animated: true)
         amountPickerTextField.tintColor = UIColor.clear
@@ -47,7 +51,6 @@ class ProductDetailViewController: UIViewController {
         
         let arrow = UIImageView(image: UIImage(named: "chevron.down")?.withAlignmentRectInsets(UIEdgeInsets(top: 0, left: -3, bottom: 0, right: -3)))
         
-        //arrow.translatesAutoresizingMaskIntoConstraints = true
         amountPickerTextField.setRightView(arrow, padding: 0)
         arrow.contentMode = .scaleAspectFill
         amountPickerTextField.rightView = arrow
@@ -55,9 +58,7 @@ class ProductDetailViewController: UIViewController {
         
         self.view.bringSubviewToFront(priceLabel)
         self.view.bringSubviewToFront(addToCartBurtton)
-        //vendorBackgroundView.layer.borderWidth = 2
-        //vendorBackgroundView.layer.cornerRadius = 20
-        //vendorBackgroundView.layer.borderColor = #colorLiteral(red: 1, green: 0.6431372549, blue: 0.3568627451, alpha: 1)
+
         self.navigationController?.navigationBar.backItem?.title = ""
         
         if let isLoggedIn = UserDefaults.standard.value(forKey: K.isLoggedinKey) as? Bool{
@@ -70,11 +71,17 @@ class ProductDetailViewController: UIViewController {
         
     }
     
+    /*
+     function that is automatically called every time the view is going to disappear.
+     */
     override func viewWillDisappear(_ animated: Bool) {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
 
     }
     
+    /*
+     function that is automatically called every time after the view appeared.
+     */
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -90,6 +97,9 @@ class ProductDetailViewController: UIViewController {
         }
     }
     
+    /*
+     function that is automatically called when the view is first loaded.
+     */
     override func viewDidLoad() {
         super.viewDidLoad()
         pickerView.delegate = self
@@ -120,6 +130,9 @@ class ProductDetailViewController: UIViewController {
         seeVendorButton.sizeToFit()
     }
     
+    /*
+     function for filling the labes and imageviews in the viewcontroller with product's information.
+     */
     func setProductInfo() {
         brandLabel.text = product.brand
         productNameLabel.text = product.name
@@ -127,7 +140,7 @@ class ProductDetailViewController: UIViewController {
         let description = "No description provided for this product."
         descriptionLabel.text = description
         if product.detail != "" {
-            descriptionLabel.text = product.detail//"Vendor: " + String(product.vendor) + "\n\nStock: " + String(product.stock)
+            descriptionLabel.text = product.detail
         }
         descriptionLabel.numberOfLines = 0
         descriptionLabel.sizeToFit()
@@ -151,6 +164,9 @@ class ProductDetailViewController: UIViewController {
         }
     }
     
+    /*
+     function that is called when Add to Cart button is pressed
+     */
     @IBAction func addToCart(_ sender: UIButton) {
         if let user = UserDefaults.standard.value(forKey: K.userIdKey) as? Int {
             let amount:Int? = Int(amountPickerTextField.text!)
@@ -171,18 +187,22 @@ class ProductDetailViewController: UIViewController {
         } else {
             let alertController = UIAlertController(title: "Problem", message: "You should be logged in to use your cart.", preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.cancel, handler: nil))
-            /*alertController.addAction(UIAlertAction(title: "Login", style: .default, handler: {_ in
-                self.view.isHidden = true
-                self.performSegue(withIdentifier: "cartToLoginSegue", sender: nil)
-            }))*/
             self.present(alertController, animated:true, completion: nil)
         }
     }
     
+    /*
+     function that is called when See the Vendor's profile button is pressed.
+     used for directing the user to the product's vendor's profile.
+     */
     @IBAction func seeVendorButtonPressed(_ sender: Any) {
         self.performSegue(withIdentifier: "productDetailToVendorProfileForUserSegue", sender: nil)
     }
     
+    /*
+     function that is called when Add to List button is pressed.
+     used for adding the product to the customer list that was chosen.
+     */
     @IBAction func addToList(_ sender: UIButton) {
         if let user = UserDefaults.standard.value(forKey: K.userIdKey) as? Int {
             if(listPickerTextField.text == "Choose List") {
@@ -219,28 +239,37 @@ class ProductDetailViewController: UIViewController {
         
     }
     
+    /*
+     function that navigates the user to the previous viewcontroller when the back button is pressed.
+     */
     @IBAction func backButtonPressed(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
     }
     
+    /*
+     function that sends the necessary information to the next view controller before a segue is performed.
+     */
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
         if let reviewsVC = segue.destination as? ReviewsViewController {
             reviewsVC.productId = product.id
         } else if let vendorProfileVC = segue.destination as? VendorProfileForUserViewController {
             vendorProfileVC.vendor = AllVendors.shared.allVendors.filter{$0.id == product.vendor}[0]
         }
-        
     }
-    
 }
 
 // MARK: - Amount of Purchase
 extension ProductDetailViewController: UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate {
-    
+    /*
+     default function for UIPickerView.
+     */
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
+    
+    /*
+     default function that returns the number of options that will be shown in the UIPickerView.
+     */
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         if pickerView == listPickerView {
             return self.customerListsInstance.customerLists.count+1
@@ -248,6 +277,10 @@ extension ProductDetailViewController: UIPickerViewDelegate, UIPickerViewDataSou
             return buyCount.filter{$0<=product.stock}.count
         }
     }
+    
+    /*
+     function that sets the names of the options in the UIPickerView
+     */
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if pickerView == listPickerView {
             if row == 0 {
@@ -261,6 +294,10 @@ extension ProductDetailViewController: UIPickerViewDelegate, UIPickerViewDataSou
             return str
         }
     }
+    
+    /*
+     function that decides what will happen after an option from the UIPickerView is selected.
+     */
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if pickerView == self.pickerView {
             let available = buyCount.filter{Int($0)<=product.stock}
@@ -275,7 +312,10 @@ extension ProductDetailViewController: UIPickerViewDelegate, UIPickerViewDataSou
             }
         }
     }
-    
+
+    /*
+     function that is called to reset the values of the UIPickerView before it's dismissed.
+     */
     func dismissPickerView() {
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
@@ -292,6 +332,7 @@ extension ProductDetailViewController: UIPickerViewDelegate, UIPickerViewDataSou
     @objc func action() {
         view.endEditing(true)
     }
+    
     @objc func pickerCancel() {
         if pickerView == listPickerView {
             listPickerTextField.text = "Choose List"
@@ -301,6 +342,9 @@ extension ProductDetailViewController: UIPickerViewDelegate, UIPickerViewDataSou
 }
 
 extension UITextField {
+    /*
+     function that sets an arrow image for the UITextField for choosing the amount of the product.
+     */
     func setRightView(_ view: UIView, padding: CGFloat) {
         view.translatesAutoresizingMaskIntoConstraints = true
 
@@ -327,7 +371,13 @@ extension UITextField {
 
 let imageCache = NSCache<NSString, UIImage>()
 
+
 extension UIImageView {
+    
+    /*
+     an extension function for cache support while downloading images via Alamofire.
+     loads from cache if the url is previously used, downloads via Alamofire if the url is not previously used.
+     */
     func loadImageUsingCache(withUrl urlString : String, forProduct prod: ProductData?) throws -> String {
         let url = URL(string: urlString)
         if url == nil { return "url nil" }

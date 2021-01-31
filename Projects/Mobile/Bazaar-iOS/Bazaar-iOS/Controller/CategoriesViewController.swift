@@ -1,14 +1,15 @@
 //
-//  SearchViewController.swift
+//  CategoriesViewController.swift
 //  Bazaar-iOS
 //
-//  Created by alc on 12.11.2020.
+//  Created by Uysal, Sadi on 12.11.2020.
 //
 
 import UIKit
 
 class CategoriesViewController: UIViewController {
-
+ 
+    //set necessary variables
     
     @IBOutlet weak var subCategoriesTableView: UITableView!
     @IBOutlet weak var searchHistoryTableView: UITableView!
@@ -48,6 +49,7 @@ class CategoriesViewController: UIViewController {
      var categoriesEndIndex: Int = 0
     var searchTextField: UITextField?
      
+    // to do for viewWillappear, set seachBar features
      override func viewWillAppear(_ animated: Bool) {
          searchHistoryTableView.reloadData()
          subCategoriesTableView.reloadData()
@@ -92,8 +94,6 @@ class CategoriesViewController: UIViewController {
          })
          networkFailedAlert.addAction(okButton)
          selectedCategoryName = CLOTHING
-        // subCategoriesTableView.register(SubCategoryCell.self, forCellReuseIdentifier: "SubCategoryCell")
-         // searchHistoryTableView.register(SearchHistoryTableViewCell.self, forCellReuseIdentifier: "searchHistoryCell")
         subCategoriesTableView.register(UINib(nibName: "SubCategoryCell", bundle: nil), forCellReuseIdentifier: "SubCategoryCell")
         subCategoriesTableView.layer.cornerRadius=20
          if !(allProductsInstance.dataFetched) {
@@ -108,13 +108,13 @@ class CategoriesViewController: UIViewController {
          
      }
      
-     
+     //reload selected category
      func categorySelected () {
         // DO SOMETHING
          self.subCategoriesTableView.reloadData()
      }
      
-     
+     //prepare to segue
      // MARK: - Navigation
      override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
          self.searchBar.showsCancelButton = false
@@ -156,19 +156,14 @@ class CategoriesViewController: UIViewController {
             let indexpath = subCategoriesTableView.indexPathForSelectedRow
             if indexpath != nil {
                 let subCategories=subCategoryDict[selectedCategoryName!]!
-                //print(indexPath.row)
-                
-                // look here ***************
-                //cell.nameLabel?.text = subCategories[indexPath.row]
                 searchResultsVC.searchWord = subCategories[indexpath!.row]
                 searchResultsVC.isSearchWord = false
                 searchResultsVC.isBrand = false
                 searchResultsVC.isCategory = true
             }
-            //************  Look again to check *********
         }
      }
-     
+     // segue configuration
      override func shouldPerformSegue(withIdentifier identifier: String, sender: Any?) -> Bool {
          if identifier == "categoriesToSearchResultsSegue" {
              return !(searchBar.searchTextField.text == "")
@@ -182,31 +177,28 @@ class CategoriesViewController: UIViewController {
  }
 
 
-
+//return count
  extension CategoriesViewController:UITableViewDelegate,UITableViewDataSource {
      func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-         //return 10
         
          if tableView == subCategoriesTableView {
             return subCategoryDict[selectedCategoryName!]!.count
-            // ***look again to check
-            
+        
          }
          if tableView == searchHistoryTableView {
              return searchResults.count
          }
          return 10
      }
-     
+    
+     // set up cells according to index
+    
      func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
          if tableView == subCategoriesTableView {
             let cell = subCategoriesTableView.dequeueReusableCell(withIdentifier: "SubCategoryCell", for: indexPath) as! SubCategoryCell
             let subCategories=subCategoryDict[selectedCategoryName!]!
             cell.layer.cornerRadius=5
-            //print(indexPath.row)
-            
-            // look here ***************
             cell.nameLabel?.text = subCategories[indexPath.row]
             cell.subCategoryImage?.image = UIImage(named: subCategories[indexPath.row].lowercased().replacingOccurrences(of: " ", with: ""))
              return cell
@@ -230,25 +222,23 @@ class CategoriesViewController: UIViewController {
 
      
      }
-     
+     // selected row operations when selected
      func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
          if tableView == searchHistoryTableView {
              searchBar.searchTextField.text = searchResults[indexPath.row]
              searchBar.text = searchResults[indexPath.row]
              performSegue(withIdentifier: "categoriesToSearchResultsSegue", sender: nil)
-             // print("f")
          } else {
             let subCategories=subCategoryDict[selectedCategoryName!]!
             searchBar.searchTextField.text = subCategories[indexPath.row]
             //searchBar.text = searchResults[indexPath.row]
             performSegue(withIdentifier: "categoriesToResultsSegue", sender: nil)
             searchBar.searchTextField.text = ""
-            //   *******  TODO check again *****************
             
          }
          
      }
-     
+     // editable??
      func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
          if tableView == searchHistoryTableView {
              if indexPath.row < historyEndIndex {
@@ -257,7 +247,8 @@ class CategoriesViewController: UIViewController {
          }
          return false
      }
-
+    
+    //editing style
      func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
          if (editingStyle == .delete) {
              searchResults.remove(at: indexPath.row)
@@ -268,7 +259,7 @@ class CategoriesViewController: UIViewController {
      }
  }
 
-
+// return category count
  //MARK: - Extension UICollectionViewDelegate , UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
  extension CategoriesViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
      func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -290,7 +281,8 @@ class CategoriesViewController: UIViewController {
              return cell
          }
      
-     
+     // design choices
+    
      func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
          let text = self.categories[indexPath.row]
          let width = self.estimatedFrame(text: text, font: .systemFont(ofSize: 17.0)).width
@@ -307,7 +299,7 @@ class CategoriesViewController: UIViewController {
      }
      
  }
-
+// selected category cell operations
  //MARK: - Extension CellDelegate
  extension CategoriesViewController:CellDelegate {
      func didCellSelected(cell: UICollectionViewCell) {
@@ -319,6 +311,7 @@ class CategoriesViewController: UIViewController {
      }
  }
 
+// all products fetching delegates -functions
  extension CategoriesViewController: AllProductsFetchDelegate_temp {
      
      func allProductsAreFetched_temp() {
@@ -406,7 +399,7 @@ class CategoriesViewController: UIViewController {
  }
 
 
-
+//indicators
  // MARK: - IndicatorView
  extension CategoriesViewController {
      func startIndicator() {
@@ -436,13 +429,14 @@ class CategoriesViewController: UIViewController {
          }
      }
  }
-
+//protocol for fetching
  protocol AllProductsFetchDelegate_temp {
      func allProductsAreFetched_temp()
      func productsCannotBeFetched_temp()
      func presentAlert_temp()
  }
 
+// all products class for fetching all products
  class AllProducts_temp {
      static let shared = AllProducts_temp()
      var allProducts: [ProductData]

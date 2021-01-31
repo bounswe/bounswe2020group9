@@ -29,6 +29,10 @@ class SearchResultsViewController: UIViewController {
     var products: [ProductData] = []
     var networkFailedAlert:UIAlertController = UIAlertController(title: "Error while retrieving products", message: "We encountered a problem while retrieving the products, please check your internet connection.", preferredStyle: .alert)
     
+    /*
+     function that is automatically called every time before the view will appear on screen
+     used for fetching the API related data before the view appears.
+     */
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         setTitle()
@@ -36,6 +40,10 @@ class SearchResultsViewController: UIViewController {
         searchResultsTableView.reloadData()
     }
     
+    /*
+     function that is automatically called when the view first appears on screen.
+     used for fetching API related data and setting the initial values for the views.
+     */
     override func viewDidLoad() {
         super.viewDidLoad()
         allProductsInstance.delegate = self
@@ -71,10 +79,17 @@ class SearchResultsViewController: UIViewController {
         searchResultsTableView.reloadData()
     }
     
+    /*
+     function that is automatically called every time before the view will disappear from the screen
+     used for making the navigation bar hidden.
+     */
     override func viewWillDisappear(_ animated: Bool) {
         self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
+    /*
+     function that sets the title of the viewcontroller to  "Search Results for:<search-word>"
+     */
     func setTitle() {
         if (isSearchWord) {
             self.title = "Search Results for: \""+searchWord + "\""
@@ -86,6 +101,10 @@ class SearchResultsViewController: UIViewController {
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.darkGray]
     }
     
+    /*
+     function that fetches the search results for the searched phrase by using APIManager's search function.
+     for searching by brand or category, the function handles the logic itself rather than using the API.
+     */
     func fetchSearchResults(filterType:String, sortType:String) {
         if (isCategory) {
             self.searchResultsTableView.isHidden = true
@@ -94,7 +113,6 @@ class SearchResultsViewController: UIViewController {
                 let filters = filterType.split(separator: "&")
                 let filtersValues = filters.map {$0.split(separator: "=")}
                 for filter in filtersValues {
-                    print("... ", filter)
                     if filter[0] == "pr" {
                         self.products = self.products.filter {$0.rating >= Double(filter[1])!}
                     } else if filter[0] == "prc" {
@@ -130,14 +148,7 @@ class SearchResultsViewController: UIViewController {
             DispatchQueue.main.async {
                 self.stopIndicator()
             }
-        /*} else if (isBrand) {
-            self.searchResultsTableView.isHidden = true
-            self.products = allProductsInstance.allProducts.filter{$0.brand.lowercased() == searchWord.lowercased()}
-            self.searchResultsTableView.reloadData()
-            DispatchQueue.main.async {
-                self.stopIndicator()
-            }
-            self.searchResultsTableView.isHidden = false */
+
         } else if (isBrand){
             self.searchResultsTableView.isHidden = true
             self.products = allProductsInstance.allProducts.filter{$0.brand.lowercased().contains(searchWord!.lowercased())}
@@ -187,15 +198,7 @@ class SearchResultsViewController: UIViewController {
                 switch result {
                 case .success(let searchResultList):
                     DispatchQueue.main.async {
-                        /*let searchResultIDs = searchResultList.product_list.map{$0.id}
-                        self.products = []
-                        for id in searchResultIDs {
-                            if self.allProductsInstance.allProducts.filter({$0.id == id}).count > 0 {
-                                self.products.append(self.allProductsInstance.allProducts.filter{$0.id == id}[0])
-                            }
-                        }*/
                         self.products = searchResultList.product_list ?? []
-                        //self.products = self.allProductsInstance.allProducts.filter{searchResultIDs.contains($0.id)}
                         if(self.products.count == 0) {
                             self.searchResultsTableView.isHidden = true
                             self.searchResultsEmptyLabel.isHidden = false
@@ -211,9 +214,7 @@ class SearchResultsViewController: UIViewController {
                         print(err)
                         self.networkFailedAlert.message = "Search results cannot be retrieved due to a network problem. Please try again later."
                         
-                        self.present(self.networkFailedAlert, animated:true, completion: nil /*{
-                                     self.fetchSearchResults(filterType: self.filterType, sortType: self.sortType)
-                                     }*/)
+                        self.present(self.networkFailedAlert, animated:true, completion: nil)
                     }
                 }
                 self.stopIndicator()
@@ -223,17 +224,6 @@ class SearchResultsViewController: UIViewController {
         self.stopIndicator()
         self.searchResultsTableView.reloadData()
     }
-    
-    /*func findProducts() {
-       if (isSearchWord) {
-        products = allProductsInstance.allProducts.filter{$0.brand.contains(searchWord) || $0.name.contains(searchWord)}
-       } else if (isCategory) {
-        products = allProductsInstance.allProducts.filter{$0.category.parent!.contains(searchWord!) || $0.category.name.contains(searchWord!)}
-       } else {
-        products = allProductsInstance.allProducts.filter{$0.brand.contains(searchWord)}
-       }
-    }*/
-    
     
 
     
@@ -258,10 +248,16 @@ class SearchResultsViewController: UIViewController {
 }
 
 extension SearchResultsViewController: UITableViewDelegate, UITableViewDataSource {
+    /*
+     function that sets the number of rows in a tableview.
+     */
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return products.count
     }
     
+    /*
+     function that is called for filling out the data of a UITableViewCell while it's rendered
+     */
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = searchResultsTableView.dequeueReusableCell(withIdentifier: "ReusableProdcutCell", for: indexPath) as! ProductCell
         cell.productImageView?.image = UIImage(named:"xmark.circle")
@@ -272,22 +268,6 @@ extension SearchResultsViewController: UITableViewDelegate, UITableViewDataSourc
         cell.productDescriptionLabel.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
         cell.productPriceLabel.text = "₺\(product.price)"
         cell.productPriceLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
-        //cell.productImageView.image = UIImage(named: "iphone12")
-        /*if let url = product.picture {
-            do{
-                try cell.productImageView.loadImageUsingCache(withUrl: url)
-                cell.productImageView.contentMode = .scaleAspectFit
-            } catch let error {
-                print(error)
-                cell.productImageView.image = UIImage(named:"xmark.circle")
-                cell.productImageView.tintColor = UIColor.lightGray
-                cell.productImageView.contentMode = .scaleAspectFit
-            }
-        } else {
-            cell.productImageView.image = UIImage(named:"xmark.circle")
-            cell.productImageView.tintColor = UIColor.lightGray
-            cell.productImageView.contentMode = .scaleAspectFit
-        }*/
         if allProductsInstance.allImages.keys.contains(product.id) {
             cell.productImageView.image = allProductsInstance.allImages[product.id]
             cell.productImageView.contentMode = .scaleAspectFit
@@ -311,7 +291,10 @@ extension SearchResultsViewController: UITableViewDelegate, UITableViewDataSourc
         return cell
     }
     
-    
+    /*
+     function that is called when a UITableViewCell is selected via clicking.
+     used for segueing to the product that was clicked.
+     */
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         performSegue(withIdentifier: "searchResultsToProductDetailSegue", sender: nil)
     }
@@ -320,6 +303,10 @@ extension SearchResultsViewController: UITableViewDelegate, UITableViewDataSourc
 }
 
 extension SearchResultsViewController: FilterViewControllerDelegate {
+    /*
+     function that is called when filtering is applied to the search results.
+     fetches the results by using fetchSearchResults function.
+     */
     func filterViewControllerResponse(filterStr: String, sortStr: String) {
         self.filterType = filterStr
         self.sortType = sortStr
@@ -328,16 +315,25 @@ extension SearchResultsViewController: FilterViewControllerDelegate {
 }
 
 extension SearchResultsViewController: AllProductsFetchDelegate {
+    /*
+     function that is called when all the products are fetched.
+     */
     func allProductsAreFetched() {
         stopIndicator()
         self.searchResultsTableView.reloadData()
     }
     
+    /*
+     function that is called when backend call throws an error.
+     */
     func productsCannotBeFetched() {
         startIndicator()
         presentAlert()
     }
     
+    /*
+     function that shows an alert when a backend call throws an error.
+     */
     func presentAlert() {
         if allProductsInstance.apiFetchError {
             self.networkFailedAlert.message = "We couldn't connect to the network, please check your internet connection."
@@ -352,6 +348,9 @@ extension SearchResultsViewController: AllProductsFetchDelegate {
 }
 
 extension SearchResultsViewController {
+    /*
+     function used for showing an activity indicator
+     */
     func startIndicator() {
         DispatchQueue.main.async {
             self.loadingView.isHidden = false
@@ -361,6 +360,9 @@ extension SearchResultsViewController {
         }
     }
 
+    /*
+     function that creates an activity indicator
+     */
     func createIndicatorView() {
         loadingView.isHidden = false
         activityIndicator.isHidden = false
@@ -368,15 +370,16 @@ extension SearchResultsViewController {
         searchResultsTableView.isHidden = true
     }
     
+    /*
+     function used for stopping an activity indicator and arranging the view hierarchy
+     */
     func stopIndicator() {
-        //DispatchQueue.main.async {
             self.loadingView.isHidden = true
             self.activityIndicator.isHidden = true
             self.activityIndicator.stopAnimating()
             self.searchResultsTableView.isHidden = false
             self.searchResultsTableView.isUserInteractionEnabled = true
             self.searchResultsTableView.reloadData()
-        //}
     }
 }
 

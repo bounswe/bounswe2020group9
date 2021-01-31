@@ -34,7 +34,7 @@ class NotificationsViewController: UIViewController{
         //self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
-    
+    // set up necessary variables and fetching structures
     override func viewDidLoad() {
         super.viewDidLoad()
         NotificationTableView.dataSource = self
@@ -77,7 +77,7 @@ class NotificationsViewController: UIViewController{
     
     
 }
-
+//return number of rows in the table view
 extension NotificationsViewController:UITableViewDelegate,UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         //return 10
@@ -90,25 +90,7 @@ extension NotificationsViewController:UITableViewDelegate,UITableViewDataSource 
             return 5
         }
     }
-    /*
-     @objc func cancel_button_clicked(_ sender : UIButton){
-     print("Button clicked. ")
-     // need to take status information and set to cancel_button_status
-     let alertController = UIAlertController(title: "Alert!", message: "Message", preferredStyle: .alert)
-     alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
-     APIManager().deleteOrder(delivery_id: cancel_button_delivery_id,status:cancel_button_status) { (result) in
-     switch result {
-     case .success(let message):
-     self.dismiss(animated: false, completion: nil)
-     alertController.message = "Order status succesfully changed."
-     self.present(alertController, animated: true, completion: nil)
-     case .failure(_):
-     alertController.message = "Order status did not changed. Try again later."
-     self.present(alertController, animated: true, completion: nil)
-     }
-     }
-     }*/
-    
+    //setting notf cells
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         print("setting notification cell : "+String(indexPath.row))
@@ -128,27 +110,20 @@ extension NotificationsViewController:UITableViewDelegate,UITableViewDataSource 
         let notf_userId=notification.user
         
         let product=allProductsInstance.allProducts.filter{$0.id == notification.delivery[0].product_id}[0]
-        
-        //let order=orders_dict[notification.id]
-        //let product_id=(order?.deliveries[0].product_id)!
-        //let product=products_dict[product_id]
-        
-        //cell.Cancel_OrderButton.tag = indexPath.row
-        //cancel_button_delivery_id=delivery.id
-        //cell.Cancel_OrderButton.addTarget(self, action: #selector(self.cancel_button_clicked(_:)), for: .allTouchEvents);
+        // change desing according to customer-vendor selection
         
         if (!notf_isVisited){
             cell.bodyLabel.text = notf_body
-            cell.bodyLabel.font = UIFont.systemFont(ofSize: 20, weight: .black)
+            cell.bodyLabel.font = UIFont.systemFont(ofSize: 10, weight: .black)
             cell.seenStatusLabel.text = "New notification"
             cell.seenStatusLabel.font = UIFont.systemFont(ofSize: 15, weight: .black)
             cell.productNameLabel.text = product.name
-            cell.productNameLabel.font = UIFont.systemFont(ofSize: 13, weight: .black)
+            cell.productNameLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
             cell.timeLabel.text = "Time : " + notf_time
             cell.timeLabel.font = UIFont.systemFont(ofSize: 13, weight: .black)
         }else{
             cell.bodyLabel.text = notf_body
-            cell.bodyLabel.font = UIFont.systemFont(ofSize: 20, weight: .regular)
+            cell.bodyLabel.font = UIFont.systemFont(ofSize: 10, weight: .regular)
             cell.seenStatusLabel.text = "Seen"
             cell.seenStatusLabel.font = UIFont.systemFont(ofSize: 15, weight: .regular)
             cell.productNameLabel.text = product.name
@@ -184,7 +159,7 @@ extension NotificationsViewController:UITableViewDelegate,UITableViewDataSource 
     
     
     
-
+// set delegates-functions
 extension NotificationsViewController: AllNotificationsFetchDelegate {
     func allNotificationsAreFetched() {
         self.stopIndicator()
@@ -273,18 +248,7 @@ extension NotificationsViewController {
     }
 }
 
-/*
- extension NotificationsViewController: AllOrdersFetchDelegate {
- func allOrdersAreFetched() {
- self.stopIndicator()
- self.orders = self.allOrdersInstance.allOrders
- }
- 
- func ordersCannotBeFetched() {
- startIndicator()
- }
- }*/
-
+// All notifications customer fetching architecture
 class AllNotifications {
     static let shared = AllNotifications()
     var allNotifications: [Notification]

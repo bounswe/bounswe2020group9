@@ -2,11 +2,14 @@
 //  Product.swift
 //  Bazaar-iOS
 //
-//  Created by alc on 19.11.2020.
+//  Created by Alcan Ünsal on 19.11.2020.
 //
 
 import Foundation
 
+/*
+ Class for representing a product, initially used but unused now.
+ */
 class Product {
     
     var title: String

@@ -38,10 +38,19 @@ class FilterViewController: UIViewController {
     var brandNameToCodeMapping = Dictionary<String, String>()
     
     
+    /*
+     function that is automatically called every time before the view will appear on screen.
+     used for setting the top navigation bar visible with no "Back" text.
+     */
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         self.navigationController?.navigationBar.backItem?.title = ""
     }
+    
+    /*
+     function that is automatically called when the view first appears on screen.
+     used for setting the initial values for the views.
+     */
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -70,11 +79,7 @@ class FilterViewController: UIViewController {
                }
         }
         let sortTypes = ["Choose an option", "Best Sellers", "Most Favorites", "Price: High to Low", "Price: Low to High"]
-            /*["none" = No sorting
-                         "bs" = sorts products according to their sell counter. Best sellers on top
-                         "mf" = sorts products according to their rating. Most Favorite on top
-                         "pr_des" = sorts products according to their price in descending order
-                         "pr_asc" = sorts products according to their price in ascending order]*/
+    
         sortDropdown = DropDown(anchorView: sortParentView)
         sortDropdown!.dataSource = sortTypes
         sortDropdown!.direction = .bottom
@@ -99,19 +104,32 @@ class FilterViewController: UIViewController {
         reviewRangeSlider.maximumValue = 5.0
     }
     
+    /*
+     function that is automatically called every time before the view will disappear from the screen.
+     used for setting the top navigation bar hidden.
+     */
     override func viewWillDisappear(_ animated: Bool) {
         self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
     
-
+    /*
+     function that is called when "Choose an Option" button for sort is pressed. Shows the dropdown options for sort.
+     */
     @IBAction func chooseSortButtonPressed(_ sender: UIButton) {
         sortDropdown!.show()
     }
     
+    /*
+     function that is called when "Choose a Brand" button is pressed. Shows the dropdown options for brand filtering.
+     */
     @IBAction func chooseBrandButtonPressed(_ sender: UIButton) {
         brandDropdown!.show()
     }
 
+    /*
+     function thst is called when the filter button is pressed.
+     returns to SearchResultsViewController and shows the updated results.
+     */
     @IBAction func filterButtonPressed(_ sender: UIButton) {
         if let returnedVC = self.delegate as? SearchResultsViewController {
             returnedVC.filterType = prepareFilterType()
@@ -120,15 +138,23 @@ class FilterViewController: UIViewController {
         }
     }
     
+    /*
+     function that updates the threshold value when the slider for review score is changed.
+     */
     @IBAction func reviewSliderValueChanged(_ sender: UISlider) {
         reviewTitleLabel.text = "Review Score: \(Double(sender.value).rounded(toPlaces: 1))+"
     }
     
-    
+    /*
+     function that updates the threshold values when the slider for price is changed.
+     */
     @IBAction func priceSliderValueChanged(_ sender: MARKRangeSlider) {
         priceTitleLabel.text = "Price: ₺\(Int(sender.leftValue)) - ₺\(Int(sender.rightValue))"
     }
     
+    /*
+     function that maps the chosen filtering options to their corresponding code names for the API calls.
+     */
     func prepareFilterType() -> String {
         var filter = ""
         var priceFilter = ""
@@ -161,18 +187,12 @@ class FilterViewController: UIViewController {
         sortFilter = sortTypeToCodeMapping[chooseSortTypeButton.currentTitle!] ?? "none"
         return sortFilter
     }
-    
-    
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    /*override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    }*/
-    
-
 }
 
 extension MARKRangeSlider {
+    /*
+     function that changes the color of the range image of the range slider.
+     */
     func changeColor(color: UIColor) {
         self.rangeImage = UIImage(systemName: "rectangle.fill")?.withTintColor(color)
     }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="n1Y-by-cQR">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="n1Y-by-cQR">
     <device id="retina6_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -6165,11 +6165,12 @@ If you have any questions about these terms, please contact us.
                     <tabBarItem key="tabBarItem" title="My Orders" image="doc.text" catalog="system" id="cdN-Gf-k8T"/>
                     <connections>
                         <outlet property="ordersTableView" destination="K7r-gM-XcI" id="O0g-Nq-5ly"/>
+                        <segue destination="xq2-qy-UJ5" kind="show" identifier="orderVendToDetailSegue" id="2cL-0J-iSW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="11U-Gh-BNK" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="809" y="4688"/>
+            <point key="canvasLocation" x="1909" y="4747"/>
         </scene>
         <!--Customer My Addresses View Controller-->
         <scene sceneID="EpO-4g-hTu">
@@ -7686,7 +7687,7 @@ If you have any questions about these terms, please contact us.
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3Pk-96-aiz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="6559" y="2628"/>
+            <point key="canvasLocation" x="6935" y="4389"/>
         </scene>
         <!--My Reviews View Controller-->
         <scene sceneID="s98-ht-yoh">
@@ -7966,6 +7967,7 @@ If you have any questions about these terms, please contact us.
     <inferredMetricsTieBreakers>
         <segue reference="fcj-3j-DLf"/>
         <segue reference="nqL-k4-z4V"/>
+        <segue reference="2cL-0J-iSW"/>
         <segue reference="wg2-uU-39g"/>
         <segue reference="HSB-zT-ihT"/>
         <segue reference="F5l-V4-YaC"/>
@@ -8026,9 +8028,6 @@ If you have any questions about these terms, please contact us.
         </systemColor>
         <systemColor name="opaqueSeparatorColor">
             <color red="0.77647058823529413" green="0.77647058823529413" blue="0.78431372549019607" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
-        <systemColor name="scrollViewTexturedBackgroundColor">
-            <color red="0.43529411764705878" green="0.44313725490196082" blue="0.47450980392156861" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="scrollViewTexturedBackgroundColor">
             <color red="0.43529411764705878" green="0.44313725490196082" blue="0.47450980392156861" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
