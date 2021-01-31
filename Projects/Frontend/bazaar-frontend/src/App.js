@@ -24,6 +24,11 @@ import Cart from "./screens/Cart/Cart";
 import SearchResults from "./screens/SearchResults/search-results";
 import Checkout from "./screens/Cart/Checkout/checkout";
 import Messages from "./screens/Messages/messages";
+
+import MyAddresses from "./screens/MyAdresses/MyAddresses"
+import MyCredictCards from "./screens/MyCredictCards/MyCredictCards"
+
+
 import MyAddresses from "./screens/MyAdresses/MyAddresses";
 import MyOrdersVendor from "./screens/MyOrders/my-orders-vendor";
 import MyComments from "./screens/MyComments/MyComments";
@@ -31,6 +36,7 @@ import ShowList from "./screens/ShowList/ShowList";
 import AdminHome from "./screens/Admin/admin-home";
 import UserList from "./screens/Admin/user-list";
 import CommentList from "./screens/Admin/comment-list";
+
 
 //components
 import Header from "./components/Header/Header";
@@ -140,6 +146,10 @@ function App() {
         <Route path="/MyAddresses">
           <Header />
           <MyAddresses />
+        </Route>
+        <Route path="/MyCredictCards">
+          <Header />
+          <MyCredictCards />
         </Route>
         <Route path="/add-product">
           <Header />
