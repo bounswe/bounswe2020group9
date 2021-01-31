@@ -68,11 +68,11 @@ export default class SignIn extends Component {
 
     
 
-    axios.post(`http://13.59.236.175:8000/api/user/googleuser/`, { "username": profile.getEmail(), 
-                                                                  "token": googleUser.getAuthResponse().id_token, 
-                                                                  "first_name": profile.getGivenName(),
-                                                                  "last_name": profile.getFamilyName() 
-                                                                })
+    axios.post(serverUrl + 'api/user/googleuser/' + { "username": profile.getEmail(), 
+                                                         "token": googleUser.getAuthResponse().id_token, 
+                                                    "first_name": profile.getGivenName(),
+                                                    "last_name": profile.getFamilyName() 
+                })
       .then(res => {
         
         const cookie_key = 'user';
