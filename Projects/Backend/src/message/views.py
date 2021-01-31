@@ -10,12 +10,12 @@ from rest_framework.views import APIView
 from django.utils import timezone
 
 
-from message.models import Message, Conversation, Notification
-from message.serializers import MessageSerializer, NotificationSerializer, ConversationSerializer
+from message.models import Message, Conversation, Notification, Report
+from message.serializers import MessageSerializer, NotificationSerializer, ConversationSerializer, ReportSerializer
 from user.models import User, Customer, Vendor
 from user.serializers import UserSerializer
-from product.models import Delivery
-
+from product.models import Delivery, Comment
+from product.serializers import CommentSerializer
 
 class AllMessages(APIView):
     def get(self, request):
@@ -227,3 +227,157 @@ class Notifications(APIView):
 
 
 
+#Admin calls
+class AdminUserBan(APIView):
+
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        try:
+            user = request.user
+        except:
+            return Response({"message": "Token is not valid."}, status=status.HTTP_401_UNAUTHORIZED)
+
+        if user.user_type != 3:
+            return Response({"message": "You are not an admin."}, status=status.HTTP_401_UNAUTHORIZED)
+
+        users = User.objects.all()
+        userList = []
+        for user in users:
+            d = {**UserSerializer(user).data}
+            d["is_banned"] = user.is_banned
+            userList.append(d)
+        return Response(userList)
+
+
+    def post(self, request):
+        try:
+            user = request.user
+        except:
+            return Response({"message": "Token is not valid."}, status=status.HTTP_401_UNAUTHORIZED)
+
+        if user.user_type != 3:
+            return Response({"message": "You are not an admin."}, status=status.HTTP_401_UNAUTHORIZED)
+
+        user_id = request.data["user_id"]
+        banned_user = User.objects.get(id=user_id)
+        if banned_user.is_banned:
+            banned_user.is_banned = False
+            banned_user.save()
+            return Response({"message": "Ban of the user is removed."})
+        else:
+            banned_user.is_banned = True
+            banned_user.save()
+            return Response({"message": "User is banned."})
+
+
+class Reports(APIView):
+
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        try:
+            user = request.user
+        except:
+            return Response({"message": "Token is not valid."}, status=status.HTTP_401_UNAUTHORIZED)
+
+        if user.user_type != 3:
+            return Response({"message": "You are not an admin."}, status=status.HTTP_401_UNAUTHORIZED)
+
+        reports  = Report.objects.all()
+        reportList = []
+        for report in reports:
+            reportList.append(ReportSerializer(report).data)
+
+        return Response(reportList)
+
+    def post(self, request):
+        try:
+            user = request.user
+        except:
+            return Response({"message": "Token is not valid."}, status=status.HTTP_401_UNAUTHORIZED)
+
+        report_type = int(request.data["report_type"])
+        reported_id = int(request.data["reported_id"])
+        available_report = Report.objects.filter(report_type=report_type, reported_user_id= reported_id, user=user) | Report.objects.filter(report_type=report_type, comment_id= reported_id, user=user)
+        if len(available_report) > 0:
+            return Response({"message": "You have already reported this issue."})
+        report = Report()
+        report.report_type = report_type
+        report.user = user
+        if report_type == 1:
+            try:
+                reported_user = User.objects.get(id=reported_id)
+            except:
+                return Response({"message": "Reported user is not valid."}, status=status.HTTP_400_BAD_REQUEST)
+            report.reported_user = reported_user
+        elif report_type == 2:
+            try:
+                reported_comment = Comment.objects.get(id=reported_id)
+            except:
+                return Response({"message": "Reported comment is not valid."}, status=status.HTTP_400_BAD_REQUEST)
+            report.comment = reported_comment
+        else:
+            return Response({"message": "Report type is not valid."}, status=status.HTTP_400_BAD_REQUEST)
+        report.save()
+        return Response({"message": "Report is created."}, status=status.HTTP_201_CREATED) 
+
+    def delete(self, request):
+        try:
+            user = request.user
+        except:
+            return Response({"message": "Token is not valid."}, status=status.HTTP_401_UNAUTHORIZED)
+
+        if user.user_type != 3:
+            return Response({"message": "You are not an admin."}, status=status.HTTP_401_UNAUTHORIZED)
+
+        report_id = request.data["report_id"]
+        try:
+            report = Report.objects.get(id=report_id)
+            report.delete()
+        except:
+            return Response({"message": "Report is not available."}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"message": "Report is deleted."}, status=status.HTTP_202_ACCEPTED)
+
+
+
+
+class AdminComments(APIView):
+
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        try:
+            user = request.user
+        except:
+            return Response({"message": "Token is not valid."}, status=status.HTTP_401_UNAUTHORIZED)
+
+        if user.user_type != 3:
+            return Response({"message": "You are not an admin."}, status=status.HTTP_401_UNAUTHORIZED)
+
+        comments = Comment.objects.all()
+        commentList = []
+        for comment in comments:
+            commentList.append(CommentSerializer(comment).data)
+        return Response(commentList)
+
+
+    def delete(self, request):
+        try:
+            user = request.user
+        except:
+            return Response({"message": "Token is not valid."}, status=status.HTTP_401_UNAUTHORIZED)
+
+        if user.user_type != 3:
+            return Response({"message": "You are not an admin."}, status=status.HTTP_401_UNAUTHORIZED)
+
+        comment_id = request.data["comment_id"]
+        try:
+            comment = Comment.objects.get(id=comment_id)
+            comment.delete()
+        except:
+            return Response({"message": "Comment is not available."}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"message": "Comment is deleted."}, status=status.HTTP_202_ACCEPTED)

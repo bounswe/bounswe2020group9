@@ -11,7 +11,17 @@ Class-based views
 Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+
+---
+
+Main URL page, includes different url variations:
+
+Redirects: "product", "user", "location", "message", "url" pages
+Admin: Django Admin page, quite useful to reach/edit database
+Images: Media(Images) links
+
 """
+
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin

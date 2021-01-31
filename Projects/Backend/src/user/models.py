@@ -6,9 +6,15 @@ from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 
 
-# Create your models here.
+# Create your user models here.
+# There are 4 User Tables, User, Customer, Vendor, Admin
+
 
 class User(AbstractUser):
+    """
+    Every user is one of three: Customer, Vendor or Admin
+    Every user also has a related field in the related table,
+    """
     USER_TYPES = (
         (1, "Customer"),
         (2, "Vendor"),
@@ -17,6 +23,7 @@ class User(AbstractUser):
     user_type = models.PositiveSmallIntegerField(choices=USER_TYPES, default=1)
     bazaar_point = models.PositiveSmallIntegerField(default=0)
     company = models.CharField(max_length=255, blank=True)
+    is_banned = models.BooleanField(default=False)
 
     def __str__(self):
         return self.email + ", (" + str(self.USER_TYPES[self.user_type - 1][1]) + ")"
