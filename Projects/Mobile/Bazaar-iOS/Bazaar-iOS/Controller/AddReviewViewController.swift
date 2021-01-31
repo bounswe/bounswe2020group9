@@ -14,6 +14,7 @@ class AddReviewViewController: UIViewController {
     @IBOutlet weak var commentLabel: UITextField!
     @IBOutlet weak var isAnonButton: RadioButton!
     @IBOutlet weak var frameView: UIView!
+    @IBOutlet weak var starRatingView: StarRatingView!
     
     var isAnon = false
     
@@ -30,6 +31,9 @@ class AddReviewViewController: UIViewController {
             commentLabel.placeholder = review.body
             isAnonButton.isSelected = review.is_anonymous
             self.isAnon =  review.is_anonymous
+            self.starRatingView.rating = Float(review.rating)
+        } else {
+            self.starRatingView.rating = Float(0)
         }
     }
     
@@ -40,7 +44,7 @@ class AddReviewViewController: UIViewController {
         if let review = reviewToEdit {
             if let commentBody = commentLabel.text{
                 let comment = ((commentBody.count) > 0) ? commentBody : review.body
-                APIManager().updateComment(c_id: review.id, body: comment, rating: review.rating, is_anon: isAnon, product: review.product) { (result) in
+                APIManager().updateComment(c_id: review.id, body: comment, rating: Int(self.starRatingView.rating), is_anon: isAnon, product: review.product) { (result) in
                     switch result {
                     case .success(let comment):
                         alertController.message = "Your review is updated successfully."
@@ -58,15 +62,16 @@ class AddReviewViewController: UIViewController {
                 alertController.message = "Please enter a Comment"
                 self.present(alertController, animated: true, completion: nil)
             } else {
-                APIManager().addComment(body: comment, rating: 3, is_anon: isAnon, product: productToReview!){ (result) in
+                APIManager().addComment(body: comment, rating: Int(self.starRatingView.rating), is_anon: isAnon, product: productToReview!){ (result) in
                     switch result {
                     case .success(let comment):
-                        alertController.message = "Your review has been added successfully . Thank you!"
-                        alertController.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: {
+                        let alertController2 = UIAlertController(title: nil, message: "Message", preferredStyle: .alert)
+                        alertController2.message = "Your review has been added successfully . Thank you!"
+                        alertController2.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: {
                             action in
                             self.dismiss(animated: false, completion: nil)
                         }))
-                        self.present(alertController, animated: true, completion: nil)
+                        self.present(alertController2, animated: true, completion: nil)
                     case .failure(_):
                         alertController.message = "The review cannot be added"
                         self.present(alertController, animated: true, completion: nil)
@@ -84,4 +89,5 @@ class AddReviewViewController: UIViewController {
         sender.isSelected = !sender.isSelected
         self.isAnon = sender.isSelected
     }
+        
 }

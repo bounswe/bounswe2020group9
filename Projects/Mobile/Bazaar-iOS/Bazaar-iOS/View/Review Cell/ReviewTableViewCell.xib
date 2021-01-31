@@ -45,7 +45,7 @@
                                             </label>
                                         </subviews>
                                     </stackView>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FWx-r4-CbD" customClass="StarRatingView" customModule="Bazaar_iOS" customModuleProvider="target">
+                                    <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FWx-r4-CbD" customClass="StarRatingView" customModule="Bazaar_iOS" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="33" width="76" height="18.5"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                     </view>
