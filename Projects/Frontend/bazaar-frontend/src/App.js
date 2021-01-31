@@ -28,6 +28,9 @@ import MyAddresses from "./screens/MyAdresses/MyAddresses";
 import MyOrdersVendor from "./screens/MyOrders/my-orders-vendor";
 import MyComments from "./screens/MyComments/MyComments";
 import ShowList from "./screens/ShowList/ShowList";
+import AdminHome from "./screens/Admin/admin-home";
+import UserList from "./screens/Admin/user-list";
+import CommentList from "./screens/Admin/comment-list";
 
 //components
 import Header from "./components/Header/Header";
@@ -92,6 +95,18 @@ function App() {
         <Route path="/forgot-password">
           <Header />
           <ForgotPassword />
+        </Route>
+        <Route path="/admin-home">
+          <Header />
+          <AdminHome />
+        </Route>
+        <Route path="/admin-user-list">
+          <Header />
+          <UserList />
+        </Route>
+        <Route path="/admin-comment-list">
+          <Header />
+          <CommentList />
         </Route>
         <Route path="/profile-page">
           <Header />

@@ -47,6 +47,7 @@ export default class Productpage extends Component {
       )
       .then((res) => {
         this.setState({ comments: res.data });
+        console.log("res.data: ", res.data)
       });
 
     axios
@@ -166,6 +167,29 @@ export default class Productpage extends Component {
       .then((res) => {});
   };
 
+  reportComment = (event) => {
+
+    
+    let myCookie = read_cookie('user');
+    const headers = { Authorization: "Token " + myCookie.token };
+    const data = {
+      "report_type": 2,
+      "reported_id": event.target.id
+    }
+
+    console.log(event.target)
+    axios.post(serverUrl + 'api/message/admin/report/', data, {
+      headers: headers
+    })
+      .then(res => {
+  
+        console.log("reported")
+        console.log(res.data)
+      })
+
+    }
+
+
   render() {
     let listItems = this.state.listProducts.map((list) => {
       return (
@@ -185,9 +209,16 @@ export default class Productpage extends Component {
     }
 
     let CommentCards = this.state.comments.map((comment) => {
+      console.log(comment)
       return (
         <Row style={{ marginLeft: 0 }}>
           <CommentCard comment={comment}></CommentCard>
+          <div>
+            <Button variant="danger" className="report-button"
+              onClick={(event) => this.reportComment(event)} id={comment.id}>
+              Report Comment
+            </Button>
+          </div>
         </Row>
       );
     });
