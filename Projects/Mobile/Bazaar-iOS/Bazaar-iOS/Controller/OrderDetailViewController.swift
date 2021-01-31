@@ -220,30 +220,32 @@ extension OrderDetailViewController: UITableViewDelegate, UITableViewDataSource 
     }
     
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let filteredOrders:[OrderData_Cust] = allOrdersInstance.allOrders.filter{$0.id==order_id}
-        let order = filteredOrders[0]
-        let delivery = order.deliveries[indexPath.row]
-        let filteredReviews = allReviewsInstance.comments.filter{$0.product==delivery.product_id}
-        if filteredReviews.count==0 {
-            let add = UIContextualAction(style: .destructive, title: "Add Review") { (action, sourceView, completionHandler) in
-                self.addCommentProductId = delivery.product_id
-                self.performSegue(withIdentifier: "orderDetailToAddReviewSegue", sender: nil)
+        if isCustomer {
+            let filteredOrders:[OrderData_Cust] = allOrdersInstance.allOrders.filter{$0.id==order_id}
+            let order = filteredOrders[0]
+            let delivery = order.deliveries[indexPath.row]
+            let filteredReviews = allReviewsInstance.comments.filter{$0.product==delivery.product_id}
+            if filteredReviews.count==0 {
+                let add = UIContextualAction(style: .destructive, title: "Add Review") { (action, sourceView, completionHandler) in
+                    self.addCommentProductId = delivery.product_id
+                    self.performSegue(withIdentifier: "orderDetailToAddReviewSegue", sender: nil)
+                }
+                add.backgroundColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
+                let swipeActionConfig = UISwipeActionsConfiguration(actions: [add])
+                swipeActionConfig.performsFirstActionWithFullSwipe = false
+                return swipeActionConfig
+            }else {
+                let edit = UIContextualAction(style: .destructive, title: "Edit Review") { (action, sourceView, completionHandler) in
+                    self.editCommentRowIndex = indexPath.row
+                    self.performSegue(withIdentifier: "orderDetailToEditReviewSegue", sender: nil)
+                }
+                edit.backgroundColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
+                let swipeActionConfig = UISwipeActionsConfiguration(actions: [edit])
+                swipeActionConfig.performsFirstActionWithFullSwipe = false
+                return swipeActionConfig
             }
-            add.backgroundColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
-            let swipeActionConfig = UISwipeActionsConfiguration(actions: [add])
-            swipeActionConfig.performsFirstActionWithFullSwipe = false
-            return swipeActionConfig
-        }else {
-            let edit = UIContextualAction(style: .destructive, title: "Edit Review") { (action, sourceView, completionHandler) in
-                self.editCommentRowIndex = indexPath.row
-                self.performSegue(withIdentifier: "orderDetailToEditReviewSegue", sender: nil)
-            }
-            edit.backgroundColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
-            let swipeActionConfig = UISwipeActionsConfiguration(actions: [edit])
-            swipeActionConfig.performsFirstActionWithFullSwipe = false
-            return swipeActionConfig
         }
-        
+        return nil
     }
     
 }
