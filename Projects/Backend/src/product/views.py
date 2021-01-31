@@ -506,22 +506,21 @@ class VendorOrderView(APIView):
         delivery = Delivery.objects.get(id = delivery_id)
         if "status" in request.data:
             status1 = request.data["status"]
-            if status1 != 4:
-                delivery.current_status = status1
-                st = ""
-                if status1 == 1:
-                    st = "Preparing"
-                elif status1 ==2:
-                    st= "On The Way"
-                elif status1 == 3:
-                    st = "Delivered"
-                try:
-                    body = "Your delivery with id "+ str(delivery_id) + " is now " +st
-                    Notification.objects.create(user=User.objects.get(id=delivery.customer_id),body=body,timestamp=timezone.now(), delivery_id=delivery)
-                except:
-                    pass
-            else:
-                return Response({"message" : "Vendor can not cancel order"},status=status.HTTP_400_BAD_REQUEST)
+            
+            delivery.current_status = status1
+            st = ""
+            if status1 == 1:
+                st = "Preparing"
+            elif status1 ==2:
+                st= "On The Way"
+            elif status1 == 3:
+                st = "Delivered"
+            try:
+                body = "Your delivery with id "+ str(delivery_id) + " is now " +st
+                Notification.objects.create(user=User.objects.get(id=delivery.customer_id),body=body,timestamp=timezone.now(), delivery_id=delivery)
+            except:
+                pass
+            
         if "delivery_time" in request.data:
             delivery_time1 = request.data["delivery_time"]
             a = datetime.datetime(delivery_time1["year"],delivery_time1["month"],delivery_time1["day"])
@@ -564,7 +563,11 @@ class OrderView(APIView):
             delivery["delivery_time"] = timezone.now() + timedelta(7)
             delivery["location"] = location_id
             product_id = delivery["product"]
+            amount = int(delivery["amount"])
             p1 = Product.objects.get(id = product_id)
+            a = p1.stock
+            p1.stock = a- amount
+            p1.save()
             v1 = p1.vendor_id
             serializer = DeliverySerializer(data=delivery)
             if serializer.is_valid():
