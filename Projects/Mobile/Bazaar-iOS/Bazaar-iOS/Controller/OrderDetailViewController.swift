@@ -14,7 +14,10 @@ class OrderDetailViewController: UIViewController {
     var allOrdersInstance = AllOrders.shared
     var allVendorsInstance = AllVendors.shared
     var allProductsInstance = AllProducts.shared
+    var allReviewsInstance = MyReviews.shared
     
+    var editCommentRowIndex:Int!
+    var addCommentProductId:Int!
     let orderStatusArray = ["", "Preparing", "On the Way", "Delivered", "Canceled"]
     //var orders:[OrderData]!
     //var allProducts:[ProductData]!
@@ -35,6 +38,7 @@ class OrderDetailViewController: UIViewController {
             self.allProductsInstance.fetchAllProducts()
             self.allVendorsInstance.fetchAllVendors()
             self.allOrdersInstance.fetchAllOrders()
+            self.allReviewsInstance.fetchReviews()
         })
         networkFailedAlert.addAction(okButton)
         
@@ -53,6 +57,10 @@ class OrderDetailViewController: UIViewController {
             print("vendors not fetched yet,tryin to fetch right now")
             vendorsCannotBeFetched()
             self.allVendorsInstance.fetchAllVendors()
+        }
+        if !(allReviewsInstance.dataFetched) {
+            reviewsCannotBeFetched()
+            self.allReviewsInstance.fetchReviews()
         }
         
     }
@@ -76,6 +84,24 @@ class OrderDetailViewController: UIViewController {
         
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    
+        if segue.identifier == "orderDetailToEditReviewSegue" {
+            if let popoverVC = segue.destination as? AddReviewViewController {
+                if self.editCommentRowIndex != nil {
+                    popoverVC.reviewToEdit = allReviewsInstance.comments[self.editCommentRowIndex]
+                    self.editCommentRowIndex = nil
+                }
+            }
+        } else if segue.identifier == "orderDetailToAddReviewSegue" {
+            if let popoverVC = segue.destination as? AddReviewViewController {
+                if self.addCommentProductId != nil {
+                    popoverVC.productToReview = self.addCommentProductId
+                    self.addCommentProductId = nil
+                }
+            }
+        }
+    }
     
     
     
@@ -111,6 +137,8 @@ extension OrderDetailViewController: UITableViewDelegate, UITableViewDataSource 
         print("Product ID: " + String(delivery.product_id))
         let product = allProductsInstance.allProducts.filter{$0.id==delivery.product_id}[0]            //filteredProducts[delivery.product_id]
         //let vendor = vendors_dict[delivery.vendor]!
+        
+        cell.product_id = product.id
         let orderStatus=orderStatusArray[delivery.current_status]
         cell.delivery_id=delivery.id
         
@@ -154,6 +182,35 @@ extension OrderDetailViewController: UITableViewDelegate, UITableViewDataSource 
         return cell
     }
     
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let filteredOrders:[OrderData_Cust] = allOrdersInstance.allOrders.filter{$0.id==order_id}
+        let order = filteredOrders[0]
+        let delivery = order.deliveries[indexPath.row]
+        print("DELIVERY ID", delivery)
+        print("all reviews", allReviewsInstance.comments)
+        let filteredReviews = allReviewsInstance.comments.filter{$0.product==delivery.product_id}
+        if filteredReviews.count==0 {
+            let add = UIContextualAction(style: .destructive, title: "Add Review") { (action, sourceView, completionHandler) in
+                self.addCommentProductId = delivery.product_id
+                self.performSegue(withIdentifier: "orderDetailToAddReviewSegue", sender: nil)
+            }
+            add.backgroundColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
+            let swipeActionConfig = UISwipeActionsConfiguration(actions: [add])
+            swipeActionConfig.performsFirstActionWithFullSwipe = false
+            return swipeActionConfig
+        }else {
+            let edit = UIContextualAction(style: .destructive, title: "Edit Review") { (action, sourceView, completionHandler) in
+                self.editCommentRowIndex = indexPath.row
+                self.performSegue(withIdentifier: "orderDetailToEditReviewSegue", sender: nil)
+            }
+            edit.backgroundColor = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
+            let swipeActionConfig = UISwipeActionsConfiguration(actions: [edit])
+            swipeActionConfig.performsFirstActionWithFullSwipe = false
+            return swipeActionConfig
+        }
+        
+    }
+    
 }
 extension OrderDetailViewController: AllProductsFetchDelegate {
     func allProductsAreFetched() {
@@ -188,6 +245,17 @@ extension OrderDetailViewController: AllVendorsFetchDelegate {
         startIndicator()
     }
 }
+
+extension OrderDetailViewController: MyReviewsFetchDelegate {
+    func allReviewsAreFetched() {
+        self.stopIndicator()
+    }
+    
+    func reviewsCannotBeFetched() {
+        startIndicator()
+    }
+}
+
 extension OrderDetailViewController: AllOrdersFetchDelegate {
     func allOrdersAreFetched() {
         //self.orders = self.allOrdersInstance.allOrders

@@ -18,49 +18,58 @@
                 <rect key="frame" x="0.0" y="0.0" width="381" height="141"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="oDn-Z1-s1X">
-                        <rect key="frame" x="15" y="15" width="351" height="111"/>
+                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="MNk-fq-PYC">
+                        <rect key="frame" x="10" y="10" width="361" height="121"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="csk-oW-eP2" userLabel="Comment Info Stack View">
-                                <rect key="frame" x="0.0" y="0.0" width="113" height="16.5"/>
+                            <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nXW-Ls-uxy" userLabel="Product Image View">
+                                <rect key="frame" x="-38" y="0.0" width="38" height="121"/>
+                            </imageView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="oDn-Z1-s1X">
+                                <rect key="frame" x="0.0" y="0.0" width="361" height="121"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NEL-qI-JqM" userLabel="Comment Time Label">
-                                        <rect key="frame" x="0.0" y="0.0" width="41.5" height="16.5"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="csk-oW-eP2" userLabel="Comment Info Stack View">
+                                        <rect key="frame" x="0.0" y="0.0" width="113" height="18"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NEL-qI-JqM" userLabel="Comment Time Label">
+                                                <rect key="frame" x="0.0" y="0.0" width="41.5" height="18"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <color key="textColor" red="0.99958151579999999" green="0.64487946029999998" blue="0.3569172323" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dun-77-cGO" userLabel="Customer Name Label">
+                                                <rect key="frame" x="71.5" y="0.0" width="41.5" height="18"/>
+                                                <color key="tintColor" red="0.99958151579999999" green="0.64487946029999998" blue="0.3569172323" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <color key="textColor" red="0.99958151579999999" green="0.64487946029999998" blue="0.3569172323" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FWx-r4-CbD" customClass="StarRatingView" customModule="Bazaar_iOS" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="33" width="76" height="18.5"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                    </view>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="AZL-PE-4Yy" userLabel="Comment Body Label">
+                                        <rect key="frame" x="0.0" y="66.5" width="41.5" height="54.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="0.99958151579999999" green="0.64487946029999998" blue="0.3569172323" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Dun-77-cGO" userLabel="Customer Name Label">
-                                        <rect key="frame" x="71.5" y="0.0" width="41.5" height="16.5"/>
-                                        <color key="tintColor" red="0.99958151579999999" green="0.64487946029999998" blue="0.3569172323" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="0.99958151579999999" green="0.64487946029999998" blue="0.3569172323" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstItem="csk-oW-eP2" firstAttribute="height" secondItem="oDn-Z1-s1X" secondAttribute="height" multiplier="0.15" id="437-5c-2VH"/>
+                                    <constraint firstItem="FWx-r4-CbD" firstAttribute="height" secondItem="oDn-Z1-s1X" secondAttribute="height" multiplier="0.15" id="m3T-EA-C8W"/>
+                                </constraints>
                             </stackView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FWx-r4-CbD" customClass="StarRatingView" customModule="Bazaar_iOS" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="31.5" width="240" height="17"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                            </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="AZL-PE-4Yy" userLabel="Comment Body Label">
-                                <rect key="frame" x="0.0" y="63.5" width="41.5" height="47.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
-                        <constraints>
-                            <constraint firstItem="csk-oW-eP2" firstAttribute="height" secondItem="oDn-Z1-s1X" secondAttribute="height" multiplier="0.15" id="437-5c-2VH"/>
-                            <constraint firstItem="FWx-r4-CbD" firstAttribute="height" secondItem="oDn-Z1-s1X" secondAttribute="height" multiplier="0.15" id="m3T-EA-C8W"/>
-                        </constraints>
                     </stackView>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="oDn-Z1-s1X" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="4H9-lb-HG6"/>
-                    <constraint firstItem="oDn-Z1-s1X" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="15" id="4NG-UG-OQD"/>
-                    <constraint firstAttribute="trailing" secondItem="oDn-Z1-s1X" secondAttribute="trailing" constant="15" id="8HU-RD-tHp"/>
-                    <constraint firstAttribute="bottom" secondItem="oDn-Z1-s1X" secondAttribute="bottom" constant="15" id="xaC-kb-WxF"/>
+                    <constraint firstItem="MNk-fq-PYC" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="9Je-6l-GRS"/>
+                    <constraint firstItem="nXW-Ls-uxy" firstAttribute="width" secondItem="H2p-sc-9uM" secondAttribute="width" multiplier="0.1" id="bTd-fK-1S5"/>
+                    <constraint firstAttribute="trailing" secondItem="MNk-fq-PYC" secondAttribute="trailing" constant="10" id="d6v-Jz-i4C"/>
+                    <constraint firstAttribute="bottom" secondItem="MNk-fq-PYC" secondAttribute="bottom" constant="10" id="dyL-5R-BCw"/>
+                    <constraint firstItem="MNk-fq-PYC" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="ggQ-p8-Sc0"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
@@ -68,6 +77,7 @@
                 <outlet property="commentBody" destination="AZL-PE-4Yy" id="MyH-0R-O2K"/>
                 <outlet property="commentTimeLabel" destination="NEL-qI-JqM" id="M2E-LU-mtt"/>
                 <outlet property="customerNameLabel" destination="Dun-77-cGO" id="NVh-XZ-T9n"/>
+                <outlet property="productImageView" destination="nXW-Ls-uxy" id="jSE-z0-oRW"/>
                 <outlet property="starRatingView" destination="FWx-r4-CbD" id="K64-MN-5DM"/>
             </connections>
             <point key="canvasLocation" x="97.826086956521749" y="102.12053571428571"/>
