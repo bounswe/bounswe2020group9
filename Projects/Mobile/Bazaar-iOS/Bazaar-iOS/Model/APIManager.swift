@@ -1063,6 +1063,100 @@ struct APIManager {
             completionHandler(.failure(err))
         }
     }
+    
+    func getAllCommentsOfUser(completionHandler: @escaping (Result<[CommentData] ,Error>) -> Void) {
+        do {
+            if let userId = UserDefaults.standard.value(forKey: K.userIdKey) as? Int{
+                let request = try ApiRouter.getAllCommentsOfUser(user_id: userId).asURLRequest()
+                AF.request(request).responseJSON { (response) in
+                    if (response.response?.statusCode != nil){
+                        guard let safeData = response.data else  {
+                            completionHandler(.failure(MyError.runtimeError("Error")))
+                            return
+                        }
+                        if let decodedData:[CommentData] = APIParse().parseJSON(safeData: safeData){
+                            completionHandler(.success(decodedData))
+                        }else {
+                            completionHandler(.failure(MyError.runtimeError("Failed to parse json 2")))
+                        }
+                    }else {
+                        completionHandler(.failure(MyError.runtimeError("Failed to parse json ")))
+                    }
+                }
+            }
+        } catch let err {
+            completionHandler(.failure(err))
+        }
+    }
+    
+    func addComment(body:String, rating:Int, is_anon:Bool, product:Int, completionHandler: @escaping (Result<CommentData ,Error>) -> Void) {
+        do {
+            if let userId = UserDefaults.standard.value(forKey: K.userIdKey) as? Int{
+                let request = try ApiRouter.addComment(body: body, rating: rating, customer: userId, is_anon: is_anon, product: product).asURLRequest()
+                AF.request(request).responseJSON { (response) in
+                    if (response.response?.statusCode != nil){
+                        guard let safeData = response.data else  {
+                            completionHandler(.failure(MyError.runtimeError("Error")))
+                            return
+                        }
+                        if let decodedData:CommentData = APIParse().parseJSON(safeData: safeData){
+                            completionHandler(.success(decodedData))
+                        }else {
+                            completionHandler(.failure(MyError.runtimeError("Failed to parse json 2")))
+                        }
+                    }else {
+                        completionHandler(.failure(MyError.runtimeError("Failed to parse json ")))
+                    }
+                }
+            }
+        } catch let err {
+            completionHandler(.failure(err))
+        }
+    }
+    
+    func updateComment(c_id:Int, body:String, rating:Int, is_anon:Bool, product:Int, completionHandler: @escaping (Result<CommentData ,Error>) -> Void) {
+        do {
+            if let userId = UserDefaults.standard.value(forKey: K.userIdKey) as? Int{
+                let request = try ApiRouter.updateComment(c_id:c_id, body: body, rating: rating, customer: userId, is_anon: is_anon, product: product).asURLRequest()
+                AF.request(request).responseJSON { (response) in
+                    if (response.response?.statusCode != nil){
+                        guard let safeData = response.data else  {
+                            completionHandler(.failure(MyError.runtimeError("Error")))
+                            return
+                        }
+                        if let decodedData:CommentData = APIParse().parseJSON(safeData: safeData){
+                            completionHandler(.success(decodedData))
+                        }else {
+                            completionHandler(.failure(MyError.runtimeError("Failed to parse json 2")))
+                        }
+                    }else {
+                        completionHandler(.failure(MyError.runtimeError("Failed to parse json ")))
+                    }
+                }
+            }
+        } catch let err {
+            completionHandler(.failure(err))
+        }
+    }
+    
+    func deleteComment(c_id:Int, completionHandler: @escaping (Result<String ,Error>) -> Void) {
+        do {
+            let request = try ApiRouter.deleteComment(c_id:c_id).asURLRequest()
+            AF.request(request).responseJSON { (response) in
+                if (response.response?.statusCode != nil){
+                    if response.response?.statusCode != 404 {
+                        completionHandler(.success("success"))
+                    } else {
+                        completionHandler(.failure(MyError.runtimeError("Failed to parse json 2")))
+                    }
+                }else {
+                    completionHandler(.failure(MyError.runtimeError("Failed to parse json ")))
+                }
+            }
+        } catch let err {
+            completionHandler(.failure(err))
+        }
+    }
 }
 
 

@@ -54,6 +54,11 @@ enum ApiRouter: URLRequestBuilder {
     case getNotifications
     case getLocationOfVendor(vendorId:Int)
     case getProduct(p_id:Int)
+    case getAllCommentsOfUser(user_id:Int)
+    case addComment(body:String, rating:Int, customer:Int, is_anon:Bool, product:Int)
+    case updateComment(c_id:Int, body:String, rating:Int, customer:Int, is_anon:Bool, product:Int)
+    case deleteComment(c_id:Int)
+    
     
   // MARK: - Path
     internal var path: String {
@@ -135,6 +140,12 @@ enum ApiRouter: URLRequestBuilder {
             return "api/message/notifications/"
         case .getLocationOfVendor(let vendorId):
             return "api/location/vendor/\(vendorId)/"
+        case .getAllCommentsOfUser(let user_id):
+            return "api/product/comment/user/\(user_id)/all/"
+        case .addComment:
+            return "api/product/comment/"
+        case .updateComment(let c_id, _,_,_,_,_), .deleteComment(let c_id):
+            return "api/product/comment/update/\(c_id)/"
         }
     }
 
@@ -237,7 +248,6 @@ enum ApiRouter: URLRequestBuilder {
             }
             params["deliveries"] = arr
             params["location"] = add_id
-            print(params)
         case .addNewAddressForCustomer(let addressName, let fullAddress, let country, let city, let postalCode, let user):
             params["address_name"] = addressName
             params["address"] = fullAddress
@@ -255,7 +265,19 @@ enum ApiRouter: URLRequestBuilder {
         case .sendMessage(let receiver_username, let body):
             params["receiver_username"] = receiver_username
             params["body"] = body
-            print(params)
+        case .addComment(let body, let rating, let customer, let is_anon, let product):
+            params["body"] = body
+            params["rating"] = rating
+            params["customer"] = customer
+            params["is_anonymous"] = is_anon
+            params["product"] = product
+        case .updateComment(let c_id, let body, let rating, let customer, let is_anon , let product ):
+            params["id"] = c_id
+            params["body"] = body
+            params["rating"] = rating
+            params["customer"] = customer
+            params["is_anonymous"] = is_anon
+            params["product"] = product
         default:
             break
         }
@@ -275,7 +297,7 @@ enum ApiRouter: URLRequestBuilder {
             if let token = UserDefaults.standard.value(forKey: K.token) as? String {
                 headers["Authorization"] = "Token \(token)"
             }
-        case .getCart, .addToCart, .editAmountInCart, .deleteProductFromCart, .placeOrder, .getConversations, .getMessages, .getConversationsWithMessages, .sendMessage, .getNotifications:
+        case .getCart, .addToCart, .editAmountInCart, .deleteProductFromCart, .placeOrder, .getConversations, .getMessages, .getConversationsWithMessages, .sendMessage, .getNotifications, .addComment, .updateComment, .deleteComment:
             headers["Authorization"] = "Token " +  (UserDefaults.standard.value(forKey: K.token) as! String)
         case .getProfileInfo(let authorization):
             headers["Authorization"] = "Token \(authorization)"
@@ -299,13 +321,13 @@ enum ApiRouter: URLRequestBuilder {
     // MARK: - Methods
     internal var method: HTTPMethod {
         switch self {
-        case .authenticate, .addList,.addToList, .signUpCustomer, .signUpVendor, .resetPasswordEmail, .addToCart,.updatePassword, .googleSignIn, .addNewCreditCard, .addNewAddressForCustomer, .search, .placeOrder, .sendMessage, .vendorAddProduct:
+        case .authenticate, .addList,.addToList, .signUpCustomer, .signUpVendor, .resetPasswordEmail, .addToCart,.updatePassword, .googleSignIn, .addNewCreditCard, .addNewAddressForCustomer, .search, .placeOrder, .sendMessage, .vendorAddProduct, .addComment:
             return .post
-        case .getCustomerLists, .getComments, .getUsersComment, .getCart, .getProfileInfo, .getAllVendors, .getCreditCards, .getCustomerAddresses, .getConversations, .getMessages, .getConversationsWithMessages, .getCustomerOrders, .getVendorOrders,.getNotifications, .getVendorsProducts, .getLocationOfVendor, .getProduct:
+        case .getCustomerLists, .getComments, .getUsersComment, .getCart, .getProfileInfo, .getAllVendors, .getCreditCards, .getCustomerAddresses, .getConversations, .getMessages, .getConversationsWithMessages, .getCustomerOrders, .getVendorOrders,.getNotifications, .getVendorsProducts, .getLocationOfVendor, .getProduct, .getAllCommentsOfUser:
             return .get
-        case .deleteList, .deleteProductFromList,.deleteProductFromCart, .removeCreditCard, .removeCustomerAddress, .deleteAccount:
+        case .deleteList, .deleteProductFromList,.deleteProductFromCart, .removeCreditCard, .removeCustomerAddress, .deleteAccount, .deleteComment:
             return .delete
-        case .editList,.editAmountInCart,.setProfileInfo, .updateCustomerAddress,.deleteOrder, .vendorEditProduct:
+        case .editList,.editAmountInCart,.setProfileInfo, .updateCustomerAddress,.deleteOrder, .vendorEditProduct, .updateComment:
             return .put
         }
     }

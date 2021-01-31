@@ -24,7 +24,7 @@ class OrderCell: UITableViewCell {
     var cellDelegate:TableViewNewProtocol?
     var index:IndexPath?
     var delivery_id:Int!
- 
+    var product_id:Int!
     
     override func awakeFromNib() {
         super.awakeFromNib()

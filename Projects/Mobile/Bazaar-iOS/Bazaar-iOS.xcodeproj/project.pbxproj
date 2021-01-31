@@ -79,6 +79,8 @@
 		99A654D725BEEFD500A22B95 /* ChatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A654D525BEEFD500A22B95 /* ChatTableViewCell.swift */; };
 		99A654D825BEEFD500A22B95 /* ChatTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 99A654D625BEEFD500A22B95 /* ChatTableViewCell.xib */; };
 		99A654E125BF2D3500A22B95 /* SendMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99A654E025BF2D3400A22B95 /* SendMessageViewController.swift */; };
+		99B4129A25C327F300AC4CF5 /* MyReviewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99B4129925C327F300AC4CF5 /* MyReviewsViewController.swift */; };
+		99B4129F25C3280300AC4CF5 /* AddReviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99B4129E25C3280300AC4CF5 /* AddReviewViewController.swift */; };
 		99DE0AE825967DD3004BAFDA /* ReviewsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DE0AE725967DD3004BAFDA /* ReviewsViewController.swift */; };
 		99DE0AEF25967E10004BAFDA /* ReviewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99DE0AED25967E10004BAFDA /* ReviewTableViewCell.swift */; };
 		99DE0AF025967E10004BAFDA /* ReviewTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 99DE0AEE25967E10004BAFDA /* ReviewTableViewCell.xib */; };
@@ -196,6 +198,8 @@
 		99A654D525BEEFD500A22B95 /* ChatTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTableViewCell.swift; sourceTree = "<group>"; };
 		99A654D625BEEFD500A22B95 /* ChatTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatTableViewCell.xib; sourceTree = "<group>"; };
 		99A654E025BF2D3400A22B95 /* SendMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMessageViewController.swift; sourceTree = "<group>"; };
+		99B4129925C327F300AC4CF5 /* MyReviewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyReviewsViewController.swift; sourceTree = "<group>"; };
+		99B4129E25C3280300AC4CF5 /* AddReviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddReviewViewController.swift; sourceTree = "<group>"; };
 		99DE0AE725967DD3004BAFDA /* ReviewsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewsViewController.swift; sourceTree = "<group>"; };
 		99DE0AED25967E10004BAFDA /* ReviewTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewTableViewCell.swift; sourceTree = "<group>"; };
 		99DE0AEE25967E10004BAFDA /* ReviewTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReviewTableViewCell.xib; sourceTree = "<group>"; };
@@ -494,6 +498,8 @@
 				9916E57E25BF4D51004C7832 /* VendorMessagesViewController.swift */,
 				9916E58325BF4D68004C7832 /* VendorChatViewController.swift */,
 				9916E58E25BFE6B4004C7832 /* OrderDetailViewController.swift */,
+				99B4129925C327F300AC4CF5 /* MyReviewsViewController.swift */,
+				99B4129E25C3280300AC4CF5 /* AddReviewViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -901,6 +907,7 @@
 				93EE3CDA25594A6800B504DF /* ProductCell.swift in Sources */,
 				930C1FA0256C08E20086E1DC /* URLRequestBuilder.swift in Sources */,
 				93E99DDA2577E8CD00BCFDAD /* SignUpViewController.swift in Sources */,
+				99B4129F25C3280300AC4CF5 /* AddReviewViewController.swift in Sources */,
 				99F6E84D257EBDBB0045C7BD /* ListCell.swift in Sources */,
 				93E99DDF2577E91B00BCFDAD /* RadioButton.swift in Sources */,
 				930C1FB4256C12A00086E1DC /* APIParse.swift in Sources */,
@@ -911,6 +918,7 @@
 				696B5E21258E988800CF1FB8 /* CartTableViewCell.swift in Sources */,
 				FC5F73CA25BF1D1C003684D6 /* VendorNotificationViewController.swift in Sources */,
 				FC49043125BC7C9300849906 /* OrderCell.swift in Sources */,
+				99B4129A25C327F300AC4CF5 /* MyReviewsViewController.swift in Sources */,
 				9916E58F25BFE6B4004C7832 /* OrderDetailViewController.swift in Sources */,
 				93EE3CAD2558822500B504DF /* Bazaar_iOS.xcdatamodeld in Sources */,
 				93E3C20B25BDA5A5007255A3 /* VendorAddNewAddressViewController.swift in Sources */,

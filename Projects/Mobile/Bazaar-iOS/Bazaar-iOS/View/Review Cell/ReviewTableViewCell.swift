@@ -14,7 +14,8 @@ class ReviewTableViewCell: UITableViewCell {
     @IBOutlet weak var commentTimeLabel: UILabel!
     @IBOutlet weak var commentBody: UILabel!
     
-
+    @IBOutlet weak var productImageView: UIImageView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
