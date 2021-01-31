@@ -1,12 +1,10 @@
 import React, { Component } from "react";
 import GoogleButton from 'react-google-button'
 import axios from 'axios'
-import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
+import { bake_cookie } from 'sfcookies';
 import { Redirect } from "react-router-dom";
 import {serverUrl} from '../../utils/get-url'
 import { Button, Alert} from "react-bootstrap";
-
-import { GoogleLogin } from 'react-google-login';
 
 import "./sign-in.scss";
 
@@ -70,11 +68,11 @@ export default class SignIn extends Component {
 
     
 
-    axios.post(`http://13.59.236.175:8000/api/user/googleuser/`, { "username": profile.getEmail(), 
-                                                                  "token": googleUser.getAuthResponse().id_token, 
-                                                                  "first_name": profile.getGivenName(),
-                                                                  "last_name": profile.getFamilyName() 
-                                                                })
+    axios.post(serverUrl + 'api/user/googleuser/' + { "username": profile.getEmail(), 
+                                                         "token": googleUser.getAuthResponse().id_token, 
+                                                    "first_name": profile.getGivenName(),
+                                                    "last_name": profile.getFamilyName() 
+                })
       .then(res => {
         
         const cookie_key = 'user';
@@ -128,8 +126,14 @@ export default class SignIn extends Component {
 
         console.log(res);
         console.log(res.data);
+        if (res.data.user_type === 3) {
+          this.setState({ redirect: "/admin-home" });
+          
+        } else {
+          this.setState({ redirect: "/" });
 
-        this.setState({ redirect: "/" });
+        }
+
       }).catch((error) => {
         if (error.response) {
           // Request made and server responded

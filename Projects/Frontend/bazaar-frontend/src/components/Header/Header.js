@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import ReactDOM from "react-dom";
 import axios from "axios";
 import { Button, Modal } from "react-bootstrap";
 import { Redirect } from "react-router-dom";
@@ -12,11 +11,11 @@ import "./header.scss";
 
 //components
 import { serverUrl } from "../../utils/get-url";
-import { bake_cookie, read_cookie, delete_cookie } from "sfcookies";
+import { read_cookie, delete_cookie } from "sfcookies";
 
 //utils
 import bazaarIMG from "../../assets/bazaar-4.png";
-import { faUserPlus } from "@fortawesome/free-solid-svg-icons";
+import { faComment, faUserPlus, faBook } from "@fortawesome/free-solid-svg-icons";
 import { faSignInAlt } from "@fortawesome/free-solid-svg-icons";
 import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
@@ -89,6 +88,35 @@ class Header extends Component {
     });
   };
 
+  /*
+   * On load:
+   *  Icon - Goes to Homepage "/"
+   *  Search Bar - Search products using API Call TODO
+   *
+   *  If Signed in:
+   *    If Vendor:
+   *      Inventory Dropdown:
+   *        My Products - opens vendor's product page "/inventory"
+   *        Add Product - opens vendor's add product page "/add-product"
+   *        My Orders - opens vendor order page "/my-orders-vendor"
+   *        Profile - Dropdown, opens profile page "/profile-page"
+   *    If Customer:
+   *      Profile Dropdown:
+   *        My Orders - opens customer's order page "/my-orders"
+   *        View Profile - opens profile page "/profile-page"
+   *        My Addresses - opens customer's addresses page "/MyAddresses"
+   *        My Lists - opens customer's lists page "/my-list"
+   *        My Comments - opens customer's comments page "/my-comments"
+   *        Cart Dropdown, opens customer cart page "/cart" (uses GET "/api/user/cart/" to show cart amount)
+   *    If Admin: TODO
+   *
+   *    Messages - Dropdown, opens messages page "/messages" (uses GET "/api/message/conversations/" to show new messages)
+   *    Notifications - Opens Notifications Modal (uses GET "/api/message/notifications/" to show new notifications)
+   *
+   *  If not Signed in:
+   *    Sign-up - Sign-up page "/SignUp"
+   *    Sign-in - Sign-in page "/SignIn"
+   */
   componentDidMount() {
     let myCookie = read_cookie("user");
 
@@ -137,9 +165,8 @@ class Header extends Component {
         .then((res) => {
           res.data.notifications.forEach((notification) => {
             const date = new Date(notification.timestamp);
-            notification.customTime = `${date.getDate()}.${
-              date.getMonth() + 1
-            }.${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
+            notification.customTime = `${date.getDate()}.${date.getMonth() + 1
+              }.${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
           });
           //console.log("Notifications",res.data);
           this.setState({
@@ -163,6 +190,16 @@ class Header extends Component {
   }
 
   render() {
+    let logo;
+    if (this.state.user_type === 3) {
+      logo = <a className="navbar-brand" href="/admin-home">
+        <img src={bazaarIMG} width="100" height="100" />
+      </a>
+    } else {
+      logo = <a className="navbar-brand" href="/">
+        <img src={bazaarIMG} width="100" height="100" />
+      </a>
+    }
     let cartItems = this.state.cartProducts.map((product) => {
       return (
         <Link
@@ -176,6 +213,7 @@ class Header extends Component {
 
     let SignPart;
 
+    //Notification modal
     let Notifications = this.state.notifications.map((notification) => {
       return (
         <a
@@ -217,286 +255,320 @@ class Header extends Component {
               >
                 <FontAwesomeIcon icon={faUser} />
                 <span className="mr-1" />
-                Profile
-              </a>
+                  Profile
+                </a>
               <div className="dropdown-menu" aria-labelledby="ddlProfile">
                 <a className="dropdown-item" href="/my-orders">
                   My Orders
-                </a>
+                  </a>
                 <a className="dropdown-item" href="/profile-page">
                   View Profile
-                </a>
+                  </a>
                 <a className="dropdown-item" href="/MyAddresses">
                   My Addresses
-                </a>
+                  </a>
                 <a className="dropdown-item" href="/my-list">
                   My Lists
+                  </a>
+                <a className="dropdown-item" href="/MyCredictCards">
+                  My Credict Cards
                 </a>
-                <a className="dropdown-item" href="/my-comments">
-                  My Comments
-                </a>
-              </div>
-            </li>
-            <li className="nav-item dropdown">
-              <a
-                className="nav-link dropdown-toggle"
-                href="#"
-                id="ddlCart"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                <FontAwesomeIcon icon={faShoppingCart} />
-                <span className="mr-1" />
+                  <a className="dropdown-item" href="/my-comments">
+                    My Comments
+
+                  </a>
+                </div>
+              </li>
+              <li className="nav-item dropdown">
+                <a
+                  className="nav-link dropdown-toggle"
+                  href="#"
+                  id="ddlCart"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <FontAwesomeIcon icon={faShoppingCart} />
+                  <span className="mr-1" />
                 Cart
                 <span className="badge badge-secondary badge-pill">
-                  {this.state.cart?.length}
-                </span>
-              </a>
-              <div className="dropdown-menu" aria-labelledby="ddlCart">
-                {cartItems}
-                <div className="dropdown-divider" />
-                <Link
-                  to={{ pathname: `/cart`, state: { cart: this.state.cart } }}
+                    {this.state.cart?.length}
+                  </span>
+                </a>
+                <div className="dropdown-menu" aria-labelledby="ddlCart">
+                  {cartItems}
+                  <div className="dropdown-divider" />
+                  <Link
+                    to={{ pathname: `/cart`, state: { cart: this.state.cart } }}
+                  >
+                    <span className="dropdown-item">Go to Cart</span>
+                  </Link>
+                </div>
+              </li>
+              <li className="nav-item dropdown">
+                <a
+                  className="nav-link dropdown-toggle"
+                  href="#"
+                  id="ddlMessages"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
                 >
-                  <span className="dropdown-item">Go to Cart</span>
-                </Link>
-              </div>
-            </li>
-            <li className="nav-item dropdown">
-              <a
-                className="nav-link dropdown-toggle"
-                href="#"
-                id="ddlMessages"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                <FontAwesomeIcon icon={faEnvelope} />
-                <span className="mr-1" />
+                  <FontAwesomeIcon icon={faEnvelope} />
+                  <span className="mr-1" />
                 Messages
                 <span
-                  hidden={!this.state.new_messages}
-                  className="badge badge-secondary badge-pill"
-                >
-                  {this.state.new_messages}
-                </span>
-              </a>
-              <div className="dropdown-menu" aria-labelledby="ddlMessages">
-                <a className="dropdown-item" href="/messages">
-                  Go to Messages
+                    hidden={!this.state.new_messages}
+                    className="badge badge-secondary badge-pill"
+                  >
+                    {this.state.new_messages}
+                  </span>
                 </a>
-              </div>
-            </li>
-            <li className="nav-item">
-              <a
-                className="nav-link"
-                href="/"
-                onClick={this.openNotificationModal}
-              >
-                <FontAwesomeIcon icon={faBell} />
-                <span className="mr-1" />
+                <div className="dropdown-menu" aria-labelledby="ddlMessages">
+                  <a className="dropdown-item" href="/messages">
+                    Go to Messages
+                </a>
+                </div>
+              </li>
+              <li className="nav-item">
+                <a
+                  className="nav-link"
+                  href="/"
+                  onClick={this.openNotificationModal}
+                >
+                  <FontAwesomeIcon icon={faBell} />
+                  <span className="mr-1" />
                 Notifications
                 <span
-                  hidden={!this.state.new_notifications}
-                  className="badge badge-secondary badge-pill"
-                >
-                  {this.state.new_notifications}
-                </span>
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="/" onClick={this.handleSignout}>
-                <FontAwesomeIcon icon={faSignOutAlt} />
-                <span className="mr-1" />
+                    hidden={!this.state.new_notifications}
+                    className="badge badge-secondary badge-pill"
+                  >
+                    {this.state.new_notifications}
+                  </span>
+                </a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="/" onClick={this.handleSignout}>
+                  <FontAwesomeIcon icon={faSignOutAlt} />
+                  <span className="mr-1" />
                 Sign Out
               </a>
-            </li>
+              </li>
           </ul>
         );
-      } else {
-        SignPart = (
-          <ul className="navbar-nav navbar-right">
-            <li className="nav-item dropdown">
-              <a
-                className="nav-link dropdown-toggle"
-                href="#"
-                id="ddlInventory"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                <FontAwesomeIcon icon={faWarehouse} />
-                <span className="mr-1" />
+      } else if (read_cookie("user").user_type === 2) {
+              SignPart = (
+                <ul className="navbar-nav navbar-right">
+                  <li className="nav-item dropdown">
+                    <a
+                      className="nav-link dropdown-toggle"
+                      href="#"
+                      id="ddlInventory"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                    >
+                      <FontAwesomeIcon icon={faWarehouse} />
+                      <span className="mr-1" />
                 Inventory
               </a>
-              <div className="dropdown-menu" aria-labelledby="ddlProfile">
-                <a className="dropdown-item" href="/inventory">
-                  My Products
+                    <div className="dropdown-menu" aria-labelledby="ddlProfile">
+                      <a className="dropdown-item" href="/inventory">
+                        My Products
                 </a>
-                <a className="dropdown-item" href="/add-product">
-                  Add Product
+                      <a className="dropdown-item" href="/add-product">
+                        Add Product
                 </a>
-                <a className="dropdown-item" href="/my-orders-vendor">
-                  My Orders
+                      <a className="dropdown-item" href="/my-orders-vendor">
+                        My Orders
                 </a>
-              </div>
-            </li>
-            <li className="nav-item dropdown">
-              <a
-                className="nav-link dropdown-toggle"
-                href="#"
-                id="ddlProfile"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                <FontAwesomeIcon icon={faUser} />
-                <span className="mr-1" />
+                    </div>
+                  </li>
+                  <li className="nav-item dropdown">
+                    <a
+                      className="nav-link dropdown-toggle"
+                      href="#"
+                      id="ddlProfile"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                    >
+                      <FontAwesomeIcon icon={faUser} />
+                      <span className="mr-1" />
                 Profile
               </a>
-              <div className="dropdown-menu" aria-labelledby="ddlProfile">
-                <a className="dropdown-item" href="/profile-page">
-                  View Profile
+                    <div className="dropdown-menu" aria-labelledby="ddlProfile">
+                      <a className="dropdown-item" href="/profile-page">
+                        View Profile
                 </a>
-              </div>
-            </li>
-            <li className="nav-item dropdown">
-              <a
-                className="nav-link dropdown-toggle"
-                href="#"
-                id="ddlMessages"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false"
-              >
-                <FontAwesomeIcon icon={faEnvelope} />
-                <span className="mr-1" />
+                    </div>
+                  </li>
+                  <li className="nav-item dropdown">
+                    <a
+                      className="nav-link dropdown-toggle"
+                      href="#"
+                      id="ddlMessages"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                    >
+                      <FontAwesomeIcon icon={faEnvelope} />
+                      <span className="mr-1" />
                 Messages
                 <span
-                  hidden={!this.state.new_messages}
-                  className="badge badge-secondary badge-pill"
-                >
-                  {this.state.new_messages}
-                </span>
-              </a>
-              <div className="dropdown-menu" aria-labelledby="ddlMessages">
-                <a className="dropdown-item" href="/messages">
-                  Go to Messages
+                        hidden={!this.state.new_messages}
+                        className="badge badge-secondary badge-pill"
+                      >
+                        {this.state.new_messages}
+                      </span>
+                    </a>
+                    <div className="dropdown-menu" aria-labelledby="ddlMessages">
+                      <a className="dropdown-item" href="/messages">
+                        Go to Messages
                 </a>
-              </div>
-            </li>
-            <li className="nav-item">
-              <a
-                className="nav-link"
-                href="/"
-                onClick={this.openNotificationModal}
-              >
-                <FontAwesomeIcon icon={faBell} />
-                <span className="mr-1" />
+                    </div>
+                  </li>
+                  <li className="nav-item">
+                    <a
+                      className="nav-link"
+                      href="/"
+                      onClick={this.openNotificationModal}
+                    >
+                      <FontAwesomeIcon icon={faBell} />
+                      <span className="mr-1" />
                 Notifications
                 <span
-                  hidden={!this.state.new_notifications}
-                  className="badge badge-secondary badge-pill"
-                >
-                  {this.state.new_notifications}
-                </span>
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="/" onClick={this.handleSignout}>
-                <FontAwesomeIcon icon={faSignOutAlt} />
-                <span className="mr-1" />
+                        hidden={!this.state.new_notifications}
+                        className="badge badge-secondary badge-pill"
+                      >
+                        {this.state.new_notifications}
+                      </span>
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a className="nav-link" href="/" onClick={this.handleSignout}>
+                      <FontAwesomeIcon icon={faSignOutAlt} />
+                      <span className="mr-1" />
                 Sign Out
               </a>
-            </li>
-          </ul>
-        );
+                  </li>
+                </ul>
+              );
+      } else {
+              SignPart = (
+                <ul className="navbar-nav navbar-right">
+                  <li className="nav-item">
+                    <a
+                      className="nav-link"
+                      href="/admin-user-list"
+                    >
+                      <FontAwesomeIcon icon={faUser} />
+                      <span className="mr-1" />
+                Users
+              </a>
+                  </li>
+                  <li className="nav-item">
+                    <a
+                      className="nav-link"
+                      href="/admin-comment-list"
+                    >
+                      <FontAwesomeIcon icon={faComment} />
+                      <span className="mr-1" />
+                Comments
+              </a>
+                  </li>
+                  <li className="nav-item">
+                    <a className="nav-link" href="/" onClick={this.handleSignout}>
+                      <FontAwesomeIcon icon={faSignOutAlt} />
+                      <span className="mr-1" />
+                Sign Out
+              </a>
+                  </li>
+                </ul>
+              );
       }
     } else {
-      SignPart = (
-        <ul className="navbar-nav navbar-right">
-          <li className="nav-item">
-            <a className="nav-link" href="/signUp">
-              <FontAwesomeIcon icon={faUserPlus} />
-              <span className="mr-1" />
+              SignPart = (
+                <ul className="navbar-nav navbar-right">
+                  <li className="nav-item">
+                    <a className="nav-link" href="/signUp">
+                      <FontAwesomeIcon icon={faUserPlus} />
+                      <span className="mr-1" />
               Sign Up
             </a>
-          </li>
-          <li className="nav-item">
-            <a className="nav-link" href="/signIn">
-              <FontAwesomeIcon icon={faSignInAlt} />
-              <span className="mr-1" />
+                  </li>
+                  <li className="nav-item">
+                    <a className="nav-link" href="/signIn">
+                      <FontAwesomeIcon icon={faSignInAlt} />
+                      <span className="mr-1" />
               Sign In
             </a>
-          </li>
-        </ul>
-      );
+                  </li>
+                </ul>
+              );
     }
 
     if (this.state.redirect) {
       return <Redirect to={this.state.redirect} />;
     }
     return (
-      <nav className="navbar navbar-expand-md navbar-light myNavbar">
-        <Modal
-          show={this.state.showNotification}
-          onHide={this.closeNotificationModal}
-        >
-          <Modal.Header closeButton>
-            <Modal.Title>
-              {(this.state.new_notifications
-                ? this.state.new_notifications
-                : "No") +
-                " new Notification" +
-                (this.state.new_notifications === 1 ? "" : "s")}
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <ul className="list-group">{Notifications}</ul>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={this.readAllNotifications}>
-              Unmark All
+            <nav className="navbar navbar-expand-md navbar-light myNavbar">
+              <Modal
+                show={this.state.showNotification}
+                onHide={this.closeNotificationModal}
+              >
+                <Modal.Header closeButton>
+                  <Modal.Title>
+                    {(this.state.new_notifications
+                      ? this.state.new_notifications
+                      : "No") +
+                      " new Notification" +
+                      (this.state.new_notifications === 1 ? "" : "s")}
+                  </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                  <ul className="list-group">{Notifications}</ul>
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button variant="secondary" onClick={this.readAllNotifications}>
+                    Unmark All
             </Button>
-            <Button variant="secondary" onClick={this.closeNotificationModal}>
-              Close
+                  <Button variant="secondary" onClick={this.closeNotificationModal}>
+                    Close
             </Button>
-          </Modal.Footer>
-        </Modal>
+                </Modal.Footer>
+              </Modal>
 
-        <a className="navbar-brand" href="/">
-          <img src={bazaarIMG} width="100" height="100" />
-        </a>
+              {logo}
 
-        <div className="collapse navbar-collapse" id="collapsibleNavId">
-          <ul className="navbar-nav mr-auto mt-2 mt-lg-0 search-wrapper">
-            <form
-              className="search-form justify-content-center"
-              onSubmit={this.handleSearchSubmit}
-            >
-              <div className="form-row align-items-center">
-                <div className="col">
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="keywords"
-                    id="search-bar"
-                    placeholder="Search product or brand"
-                    onChange={this.handleSearchChange}
-                  />
-                </div>
-                <div id="search-button-div" className="col">
-                  <Button variant="primary" id="search-button" type="submit">
-                    Search
+              <div className="collapse navbar-collapse" id="collapsibleNavId">
+                <ul className="navbar-nav mr-auto mt-2 mt-lg-0 search-wrapper">
+                  <form
+                    className="search-form justify-content-center"
+                    onSubmit={this.handleSearchSubmit}
+                  >
+                    <div className="form-row align-items-center">
+                      <div className="col">
+                        <input
+                          type="text"
+                          className="form-control"
+                          name="keywords"
+                          id="search-bar"
+                          placeholder="Search product or brand"
+                          onChange={this.handleSearchChange}
+                        />
+                      </div>
+                      <div id="search-button-div" className="col">
+                        <Button variant="primary" id="search-button" type="submit">
+                          Search
                   </Button>
-                </div>
+                      </div>
+                    </div>
+                  </form>
+                </ul>
+                {SignPart}
               </div>
-            </form>
-          </ul>
-          {SignPart}
-        </div>
-      </nav>
+            </nav>
     );
   }
 }

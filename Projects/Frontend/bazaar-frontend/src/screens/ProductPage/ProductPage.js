@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import "./productpage.scss";
 import { Redirect } from "react-router-dom";
 import axios from "axios";
-import { Link } from "react-router-dom";
 
 //components
 import StarRatings from "../../../node_modules/react-star-ratings";
@@ -10,7 +9,7 @@ import Carousel from "react-bootstrap/Carousel";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { bake_cookie, read_cookie, delete_cookie } from "sfcookies";
+import {read_cookie } from "sfcookies";
 import CommentCard from "./CommentCard/CommentCard";
 import CategoryBar from "../../components/category-bar/category-bar";
 import Form from "react-bootstrap/Form";
@@ -18,7 +17,6 @@ import Button from "react-bootstrap/Button";
 
 //icons
 import AddToCartIcon from "../../assets/icons/add-to-cart.svg";
-import RemoveFromCartIcon from "../../assets/icons/remove-from-cart.svg";
 import AddToListIcon from "../../assets/icons/add-to-list-hand-drawn-interface-symbol.svg";
 
 //helpers
@@ -49,6 +47,7 @@ export default class Productpage extends Component {
       )
       .then((res) => {
         this.setState({ comments: res.data });
+        console.log("res.data: ", res.data)
       });
 
     axios
@@ -168,6 +167,29 @@ export default class Productpage extends Component {
       .then((res) => {});
   };
 
+  reportComment = (event) => {
+
+    
+    let myCookie = read_cookie('user');
+    const headers = { Authorization: "Token " + myCookie.token };
+    const data = {
+      "report_type": 2,
+      "reported_id": event.target.id
+    }
+
+    console.log(event.target)
+    axios.post(serverUrl + 'api/message/admin/report/', data, {
+      headers: headers
+    })
+      .then(res => {
+  
+        console.log("reported")
+        console.log(res.data)
+      })
+
+    }
+
+
   render() {
     let listItems = this.state.listProducts.map((list) => {
       return (
@@ -187,9 +209,16 @@ export default class Productpage extends Component {
     }
 
     let CommentCards = this.state.comments.map((comment) => {
+      console.log(comment)
       return (
         <Row style={{ marginLeft: 0 }}>
           <CommentCard comment={comment}></CommentCard>
+          <div>
+            <Button variant="danger" className="report-button"
+              onClick={(event) => this.reportComment(event)} id={comment.id}>
+              Report Comment
+            </Button>
+          </div>
         </Row>
       );
     });

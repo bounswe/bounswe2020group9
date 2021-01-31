@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import axios from 'axios'
-import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
-import Cookies from 'js-cookie';
+import { read_cookie } from 'sfcookies';
 import DataTable from 'react-data-table-component';
 import { Modal, Button, Alert } from "react-bootstrap";
 import { serverUrl } from '../../utils/get-url'
@@ -35,7 +34,9 @@ export default class Inventory extends Component {
 
   }
 
-
+/*
+Loads categories and gets user's products.
+*/
   componentDidMount() {
     let myCookie = read_cookie('user')
     axios.get(serverUrl + 'api/product/categories/')
@@ -74,6 +75,9 @@ export default class Inventory extends Component {
 
   }
 
+  /*
+  handle validation while submitting. In this case, checks if the edited product's fields are valid.
+  */
   handleValidation() {
     let formIsValid = true;
     let new_errors = {};
@@ -98,21 +102,18 @@ export default class Inventory extends Component {
       formIsValid = false;
       new_errors["category"] = "Category can not be empty.";
     }
-
-
-
     this.setState({ errors: new_errors });
     return formIsValid;
   }
 
+  /*
+  Sends the necessary requests to backend. Delete or edit product. 
+  */
   handleSubmit = event => {
-    console.log("im at handlesubmit")
     event.preventDefault();
 
     let myCookie = read_cookie('user');
     const header = { headers: { Authorization: "Token " + myCookie.token } };
-    console.log(header)
-    console.log("event:  ", event)
 
     if (!this.state.delete) {
 
@@ -123,14 +124,11 @@ export default class Inventory extends Component {
         price: this.state.price,
         stock: this.state.stock
       }
-      //let uploadedImage = URL.createObjectURL(event.target.files[0])
 
       if (this.handleValidation()) {
         axios.put(serverUrl + `api/product/` + this.state.id + "/", data, header)
           .then(res => {
 
-            console.log("res: " + res);
-            console.log("res.data: " + res.data);
             this.setState({ isHiddenSuccess: false })
 
             axios.get(serverUrl + `api/product/`)
@@ -143,7 +141,6 @@ export default class Inventory extends Component {
               })
 
           }).catch(error => {
-            console.log("error: " + JSON.stringify(error))
             this.setState({ isHiddenFail: false })
 
           })
@@ -155,15 +152,12 @@ export default class Inventory extends Component {
       axios.delete(serverUrl + `api/product/` + this.state.id + "/", header)
         .then(res => {
 
-          console.log("res: " + res);
-          console.log("res.data: " + res.data);
           this.setState({ isHiddenDeleteSuccess: false })
           let myProducts = this.state.products.filter(product => product.id !== this.state.id)
           this.setState({ products: myProducts })
           this.closeModal()
 
         }).catch(error => {
-          console.log("error: " + JSON.stringify(error))
           this.setState({ isHiddenDeleteFail: false })
 
         })

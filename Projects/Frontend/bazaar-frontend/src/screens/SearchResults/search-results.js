@@ -1,8 +1,4 @@
 import React, { Component } from 'react';
-import Pagination from 'react-bootstrap/Pagination'
-import Jumbotron from 'react-bootstrap/Jumbotron'
-import Button from 'react-bootstrap/Button'
-import Image from 'react-bootstrap/Image'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
@@ -10,7 +6,7 @@ import axios from 'axios'
 import Card from "../../components/ProductCard/productCard"
 import CategoryBar from "../../components/category-bar/category-bar";
 import {serverUrl} from '../../utils/get-url'
-import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
+import { read_cookie } from 'sfcookies';
 
 import './search-results.scss'
 

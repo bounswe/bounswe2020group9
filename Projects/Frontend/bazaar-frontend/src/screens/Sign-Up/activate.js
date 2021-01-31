@@ -1,7 +1,5 @@
-import React, { Component, useState } from "react";
-import GoogleButton from 'react-google-button'
+import React, { Component } from "react";
 import axios from 'axios'
-import { Redirect } from "react-router-dom";
 import {serverUrl} from '../../utils/get-url'
 import Alert from 'react-bootstrap/Alert'
 

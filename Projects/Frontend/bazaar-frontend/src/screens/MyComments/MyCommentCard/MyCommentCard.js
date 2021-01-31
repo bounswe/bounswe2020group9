@@ -9,7 +9,7 @@ import Row from "react-bootstrap/Row";
 import MyCommentProduct from "../MyCommentProduct/MyCommentProduct";
 
 //helpers
-import { bake_cookie, read_cookie, delete_cookie } from "sfcookies";
+import { read_cookie } from "sfcookies";
 import { serverUrl } from "../../../utils/get-url";
 
 //icons

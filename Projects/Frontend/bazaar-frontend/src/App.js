@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import "./App.css";
@@ -24,10 +24,18 @@ import Cart from "./screens/Cart/Cart";
 import SearchResults from "./screens/SearchResults/search-results";
 import Checkout from "./screens/Cart/Checkout/checkout";
 import Messages from "./screens/Messages/messages";
+
+import MyCredictCards from "./screens/MyCredictCards/MyCredictCards"
+
+
 import MyAddresses from "./screens/MyAdresses/MyAddresses";
 import MyOrdersVendor from "./screens/MyOrders/my-orders-vendor";
 import MyComments from "./screens/MyComments/MyComments";
 import ShowList from "./screens/ShowList/ShowList";
+import AdminHome from "./screens/Admin/admin-home";
+import UserList from "./screens/Admin/user-list";
+import CommentList from "./screens/Admin/comment-list";
+
 
 //components
 import Header from "./components/Header/Header";
@@ -93,6 +101,18 @@ function App() {
           <Header />
           <ForgotPassword />
         </Route>
+        <Route path="/admin-home">
+          <Header />
+          <AdminHome />
+        </Route>
+        <Route path="/admin-user-list">
+          <Header />
+          <UserList />
+        </Route>
+        <Route path="/admin-comment-list">
+          <Header />
+          <CommentList />
+        </Route>
         <Route path="/profile-page">
           <Header />
           <ProfilePage />
@@ -125,6 +145,10 @@ function App() {
         <Route path="/MyAddresses">
           <Header />
           <MyAddresses />
+        </Route>
+        <Route path="/MyCredictCards">
+          <Header />
+          <MyCredictCards />
         </Route>
         <Route path="/add-product">
           <Header />

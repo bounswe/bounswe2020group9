@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { bake_cookie, read_cookie, delete_cookie } from "sfcookies";
-import Cookies from "js-cookie";
+import { read_cookie } from "sfcookies";
 import { serverUrl } from "../../utils/get-url";
 import { Button, Alert, Modal } from "react-bootstrap";
 import "./userpage.scss";
@@ -30,7 +29,7 @@ export default class ProfilePage extends Component {
       // Modal states
       //Customer states
       show_comments_modal: false,
-      show_lists_modal: false, // TODO this should redirect instead of opening a modal, fix it later
+      show_lists_modal: false,
       comments: [],
       lists: [],
       //Vendor states
@@ -40,7 +39,15 @@ export default class ProfilePage extends Component {
       products: [],
     };
   }
-
+/*
+ * On load:
+ * 1. Call GET /api/user/<id>/
+ *    -> Display User data on page
+ * 2. If Vendor, API call GET /api/product/vendor/<id>/ and GET /api/location/vendor/<id>/
+ *    -> Display User ID and Products-Locations as Modals
+ * 3. If Customer, call GET /api/user/<id>/lists/ and GET /api/product/comment/user/all/
+ *    -> Display User ID and Comments-Lists as Modals
+ */
   componentDidMount() {
     let myCookie = read_cookie("user");
     this.state.token = myCookie.token;
@@ -158,6 +165,27 @@ export default class ProfilePage extends Component {
   openLocationsModal = () => this.setState({ show_locations_modal: true });
   closeLocationsModal = () => this.setState({ show_locations_modal: false });
 
+  reportUser=(event)=> {
+
+    let myCookie = read_cookie('user');
+    const headers = { Authorization: "Token " + myCookie.token } ;
+    const data = {
+      "report_type": 1,
+      "reported_id": this.state.user_id,
+    }
+
+    axios.post(serverUrl + 'api/message/admin/report/', data, {
+      headers: headers
+    })
+      .then(res => {
+
+        console.log(res.data)
+
+      }).catch(error => {
+        console.log(error)
+      })
+  }
+
   render() {
     const user = this.state.user;
 
@@ -269,6 +297,10 @@ export default class ProfilePage extends Component {
                 >
                   View Locations
                 </button>
+                <Button variant="danger" className="ban-button"
+                          onClick={this.reportUser}>
+                          Report Vendor
+                        </Button>
               </li>
             </ul>
           </div>
@@ -382,6 +414,10 @@ export default class ProfilePage extends Component {
               <button className="btn btn-info" onClick={this.openListsModal}>
                 View Lists
               </button>
+              <Button variant="danger" className="ban-button"
+                          onClick={this.reportUser}>
+                          Report User
+                        </Button>
             </li>
           </ul>
         </div>

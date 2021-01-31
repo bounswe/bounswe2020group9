@@ -1,15 +1,11 @@
 import React, { Component } from "react";
 import axios from 'axios'
-import { bake_cookie, read_cookie, delete_cookie } from 'sfcookies';
-import Cookies from 'js-cookie';
+import { read_cookie } from 'sfcookies';
 import DataTable, { createTheme } from 'react-data-table-component';
-import { Modal, Button, Alert } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { serverUrl } from '../../utils/get-url'
 
-import { faBan } from "@fortawesome/free-solid-svg-icons";
-import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
-import { faTruck } from "@fortawesome/free-solid-svg-icons";
-import { faBoxOpen } from "@fortawesome/free-solid-svg-icons";
+import { faBan, faCheckCircle, faTruck, faBoxOpen } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import "./my-orders-vendor.scss";
@@ -117,7 +113,11 @@ export default class MyOrdersVendor extends Component {
                       <Button variant="primary" className="delivery-button"
                         onClick={(event) => this.setStatus(event, 2)} id={orders_temp[i].id}>
                         Set to "On the Way"
-                    </Button>
+                      </Button>
+                      <Button variant="danger" className="delivery-button"
+                          onClick={(event) => this.setStatus(event, 4)} id={orders_temp[i].id}>
+                          Cancel
+                      </Button>
                     </div>
                 } else if (orders_temp[i].current_status == 2) {
                   orders_temp[i].action =
@@ -230,6 +230,8 @@ export default class MyOrdersVendor extends Component {
           orders_temp[deliveryToModifyID].action = '';
           orders_temp[deliveryToModifyID].delivery_date = "26 Jan 2021"
               
+        } else if (parameter == 4) {
+          orders_temp[deliveryToModifyID].action = '';
         }
         this.setState({ orders: orders_temp })
 
@@ -271,7 +273,7 @@ export default class MyOrdersVendor extends Component {
         name: "Action",
         selector: "action",
         sortable: true,
-        minWidth: "200px",
+        minWidth: "400px",
         center: true,
         button: true,
         compact: true
