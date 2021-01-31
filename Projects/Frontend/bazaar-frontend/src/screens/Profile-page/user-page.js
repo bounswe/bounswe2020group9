@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import { read_cookie } from "sfcookies";
 import { serverUrl } from "../../utils/get-url";
-import { Alert, Modal } from "react-bootstrap";
+import { Button, Alert, Modal } from "react-bootstrap";
 import "./userpage.scss";
 
 import "./profilepage.scss";
@@ -165,6 +165,27 @@ export default class ProfilePage extends Component {
   openLocationsModal = () => this.setState({ show_locations_modal: true });
   closeLocationsModal = () => this.setState({ show_locations_modal: false });
 
+  reportUser=(event)=> {
+
+    let myCookie = read_cookie('user');
+    const headers = { Authorization: "Token " + myCookie.token } ;
+    const data = {
+      "report_type": 1,
+      "reported_id": this.state.user_id,
+    }
+
+    axios.post(serverUrl + 'api/message/admin/report/', data, {
+      headers: headers
+    })
+      .then(res => {
+
+        console.log(res.data)
+
+      }).catch(error => {
+        console.log(error)
+      })
+  }
+
   render() {
     const user = this.state.user;
 
@@ -276,6 +297,10 @@ export default class ProfilePage extends Component {
                 >
                   View Locations
                 </button>
+                <Button variant="danger" className="ban-button"
+                          onClick={this.reportUser}>
+                          Report Vendor
+                        </Button>
               </li>
             </ul>
           </div>
@@ -389,6 +414,10 @@ export default class ProfilePage extends Component {
               <button className="btn btn-info" onClick={this.openListsModal}>
                 View Lists
               </button>
+              <Button variant="danger" className="ban-button"
+                          onClick={this.reportUser}>
+                          Report User
+                        </Button>
             </li>
           </ul>
         </div>

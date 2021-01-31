@@ -15,7 +15,7 @@ import { read_cookie, delete_cookie } from "sfcookies";
 
 //utils
 import bazaarIMG from "../../assets/bazaar-4.png";
-import { faUserPlus } from "@fortawesome/free-solid-svg-icons";
+import { faComment, faUserPlus, faBook} from "@fortawesome/free-solid-svg-icons";
 import { faSignInAlt } from "@fortawesome/free-solid-svg-icons";
 import { faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
@@ -191,6 +191,16 @@ class Header extends Component {
   }
 
   render() {
+    let logo;
+    if (this.state.user_type === 3){
+      logo =<a className="navbar-brand" href="/admin-home">
+            <img src={bazaarIMG} width="100" height="100" />
+          </a>
+    } else {
+      logo = <a className="navbar-brand" href="/">
+      <img src={bazaarIMG} width="100" height="100" />
+    </a>
+    }
     let cartItems = this.state.cartProducts.map((product) => {
       return (
         <Link
@@ -343,7 +353,7 @@ class Header extends Component {
             </li>
           </ul>
         );
-      } else {
+      } else if (read_cookie("user").user_type === 2) {
         SignPart = (
           <ul className="navbar-nav navbar-right">
             <li className="nav-item dropdown">
@@ -441,6 +451,38 @@ class Header extends Component {
             </li>
           </ul>
         );
+      } else {
+        SignPart = (
+          <ul className="navbar-nav navbar-right">
+            <li className="nav-item">
+              <a
+                className="nav-link"
+                href="/admin-user-list"
+              >
+                <FontAwesomeIcon icon={faUser} />
+                <span className="mr-1" />
+                Users
+              </a>
+            </li>
+            <li className="nav-item">
+              <a
+                className="nav-link"
+                href="/admin-comment-list"
+              >
+                <FontAwesomeIcon icon={faComment} />
+                <span className="mr-1" />
+                Comments
+              </a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link" href="/" onClick={this.handleSignout}>
+                <FontAwesomeIcon icon={faSignOutAlt} />
+                <span className="mr-1" />
+                Sign Out
+              </a>
+            </li>
+          </ul>
+        );
       }
     } else {
       SignPart = (
@@ -494,9 +536,7 @@ class Header extends Component {
           </Modal.Footer>
         </Modal>
 
-        <a className="navbar-brand" href="/">
-          <img src={bazaarIMG} width="100" height="100" />
-        </a>
+        {logo}
 
         <div className="collapse navbar-collapse" id="collapsibleNavId">
           <ul className="navbar-nav mr-auto mt-2 mt-lg-0 search-wrapper">

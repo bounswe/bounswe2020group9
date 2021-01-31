@@ -113,7 +113,11 @@ export default class MyOrdersVendor extends Component {
                       <Button variant="primary" className="delivery-button"
                         onClick={(event) => this.setStatus(event, 2)} id={orders_temp[i].id}>
                         Set to "On the Way"
-                    </Button>
+                      </Button>
+                      <Button variant="danger" className="delivery-button"
+                          onClick={(event) => this.setStatus(event, 4)} id={orders_temp[i].id}>
+                          Cancel
+                      </Button>
                     </div>
                 } else if (orders_temp[i].current_status == 2) {
                   orders_temp[i].action =
@@ -226,6 +230,8 @@ export default class MyOrdersVendor extends Component {
           orders_temp[deliveryToModifyID].action = '';
           orders_temp[deliveryToModifyID].delivery_date = "26 Jan 2021"
               
+        } else if (parameter == 4) {
+          orders_temp[deliveryToModifyID].action = '';
         }
         this.setState({ orders: orders_temp })
 
@@ -267,7 +273,7 @@ export default class MyOrdersVendor extends Component {
         name: "Action",
         selector: "action",
         sortable: true,
-        minWidth: "200px",
+        minWidth: "400px",
         center: true,
         button: true,
         compact: true

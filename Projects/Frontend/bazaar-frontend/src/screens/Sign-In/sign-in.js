@@ -126,8 +126,14 @@ export default class SignIn extends Component {
 
         console.log(res);
         console.log(res.data);
+        if (res.data.user_type === 3) {
+          this.setState({ redirect: "/admin-home" });
+          
+        } else {
+          this.setState({ redirect: "/" });
 
-        this.setState({ redirect: "/" });
+        }
+
       }).catch((error) => {
         if (error.response) {
           // Request made and server responded
